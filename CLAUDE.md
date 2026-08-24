@@ -21,7 +21,7 @@ ratings). Read that file before changing positioning.
 - Swift 6 / SwiftUI (strict concurrency)
 - XcodeGen (`project.yml`). Targets: iOS 17+, `ElectricianTests`,
   `ElectricianScreenshots`
-- RevenueCat, entitlement `pro`, membership brand `Electrician+`
+- RevenueCat, entitlement **`electrician_pro`** (not the fleet's `pro`), membership brand `Electrician+`
 
 ## Product rules
 
@@ -70,8 +70,25 @@ means updating both; a test enforces that they resolve.
 - **Not yet on the App Store.** `AppStoreLinks.appStoreID` is empty on purpose,
   which disables the rating route rather than pointing it at the app this was
   ported from. Set it when the ASC record exists.
-- **RevenueCat keys are placeholders.** Never paste mahj's keys in; that would
-  file this app's purchases under mahj's project.
+- **RevenueCat** project `projfc676ce9`, App Store app `app03a1f0929d`. The
+  public `appl_` key ships in `SubscriptionService`; the `sk_` secret lives in
+  `~/.electrician_credentials` and never enters source. DEBUG stays a
+  placeholder until there is a test-store key, so debug builds run without
+  RevenueCat rather than touching production.
+- **The entitlement is `electrician_pro`.** `lookup_key` is immutable in both
+  RevenueCat APIs, so the app matches the project. Change one and you get a
+  purchase that charges and unlocks nothing.
+- **Re-run `scripts/rc-setup.py` after touching products or offerings**, then
+  probe with the iOS platform header. The project shipped with the fleet's
+  recurring empty-offering bug (Test Store products only, so iOS filtered every
+  package out and the paywall was dead on device). Fixed 2026-08-24. A
+  simulator can never catch this because it never configures RevenueCat:
+
+  ```sh
+  curl -s -H "Authorization: Bearer appl_JNXhRRCBfqpJqOpxFnylwNcqvby" \
+       -H "X-Platform: ios" \
+       https://api.revenuecat.com/v1/subscribers/probe-1/offerings
+  ```
 - US-only. The 50-locale metadata machine does not apply here.
 - ASO: the category's ranking lever is the year in the app name
   (`Electrician Test Prep 2026` and friends all do it). Decide the store name

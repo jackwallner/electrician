@@ -2,15 +2,20 @@ import Foundation
 import RevenueCat
 
 enum RevenueCatConfig {
-    /// Both keys are placeholders until this app has its own RevenueCat
-    /// project. They are deliberately NOT the keys from the app this shell was
-    /// ported from: reusing those would file this app's purchases, trials and
-    /// charts under someone else's product. `configure` below already
-    /// early-returns on a PLACEHOLDER key, so the app runs fine without them.
+    /// The PUBLIC Apple SDK key for this app's own RevenueCat project. Public
+    /// keys are meant to ship inside the binary; the matching SECRET (`sk_`)
+    /// key never appears in source and lives in `~/.electrician_credentials`,
+    /// which the release scripts read.
+    ///
+    /// DEBUG stays a placeholder until this project has a RevenueCat test-store
+    /// key. `configureIfNeeded` early-returns on it, so debug builds simply run
+    /// without RevenueCat rather than touching production. That is deliberate:
+    /// a debug build pointed at the production key mints fake customers in the
+    /// real charts.
     #if DEBUG
     static let apiKey = "test_PLACEHOLDER"
     #else
-    static let apiKey = "appl_PLACEHOLDER"
+    static let apiKey = "appl_JNXhRRCBfqpJqOpxFnylwNcqvby"
     #endif
 }
 
@@ -170,8 +175,15 @@ final class SubscriptionService: NSObject, ObservableObject {
         apply(info)
     }
 
+    /// The entitlement key must match the RevenueCat project exactly. It is
+    /// `electrician_pro`, not the fleet's usual `pro`: a `lookup_key` is
+    /// immutable in both RevenueCat APIs, so the app matches the project rather
+    /// than the other way round. Get this wrong and a purchase completes,
+    /// charges the customer, and unlocks nothing.
+    private static let entitlementKey = "electrician_pro"
+
     private func apply(_ info: CustomerInfo) {
-        let entitled = info.entitlements["pro"]?.isActive == true
+        let entitled = info.entitlements[Self.entitlementKey]?.isActive == true
         let override = UserDefaults.standard.bool(forKey: localOverrideKey)
         isPro = entitled || override
     }
