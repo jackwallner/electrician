@@ -76,7 +76,7 @@ enum CalcContent {
                 Given("Internal clamps", "yes"),
                 Given("Devices", "1", unit: "yoke"),
             ],
-            choices: ["22.5 in³", "20.25 in³", "27.0 in³", "18.0 in³"],
+            choices: ["22.5 in³", "20.25 in³", "27 in³", "18 in³"],
             answerIndex: 0,
             steps: [
                 "Each allowance for 12 AWG is 2.25 in³.",

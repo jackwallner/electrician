@@ -35,7 +35,7 @@ struct CodeMinuteView: View {
                 Text("Today's Code Minute")
                     .font(Theme.display(27))
                     .foregroundStyle(Theme.ink)
-                Text("The same five original questions for every member: two rack reads, one Charleston call, and two table judgments.")
+                Text("The same five questions for every member: two generated calculations and three drawn from across the rooms.")
                     .font(.subheadline)
                     .foregroundStyle(Theme.inkSecondary)
                     .multilineTextAlignment(.center)

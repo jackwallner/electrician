@@ -24,7 +24,7 @@ struct HomeView: View {
     @State private var highlightedRoomID: String?
     @AppStorage("electrician.skillLevel") private var skillLevel = ""
     /// Set once the primer has been read all the way through. After that it
-    /// lives in Settings only; a permanent "How to Play" card on Home is a
+    /// lives in Settings only; a permanent "How the Exam Works" card on Home is a
     /// standing tax on the rooms below it.
     @AppStorage("electrician.hasReadPrimer") private var hasReadPrimer = false
     /// One-shot hint set by `HowToPlayView`'s end-of-primer recommendation:
@@ -334,7 +334,7 @@ struct HomeView: View {
                     .frame(width: 38, height: 38)
                     .background(Theme.gold.opacity(0.13), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("How to Play")
+                    Text("How the Exam Works")
                         .font(.headline)
                         .foregroundStyle(Theme.ink)
                     Text("New here? Start with the five-minute primer")

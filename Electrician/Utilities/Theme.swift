@@ -91,7 +91,7 @@ extension Room {
 }
 
 /// The membership brand. The RevenueCat entitlement is still `pro`; this is
-/// only what players read.
+/// only what readers see.
 enum Membership {
     static let name = "Electrician+"
 }

@@ -49,7 +49,10 @@ enum CalcGenerator {
         let forgotTerminals = derated
 
         let candidates = [answer, startedAt75, forgotBundling, forgotTerminals]
-        let choices = uniqueChoices(from: candidates, answer: answer) { "\($0.roundedAmps) A" }
+        let choices = uniqueChoices(from: candidates, answer: answer,
+                                    pad: { $0 * Double.random(in: 0.8...1.2, using: &rng) }) {
+            "\($0.roundedAmpsText) A"
+        }
 
         var steps = [
             "Start in the 90°C column, because that is the conductor's own rating: \(size) \(material.displayName) is \(Int(base)) A.",
@@ -57,9 +60,9 @@ enum CalcGenerator {
             "\(ccc) current-carrying conductors adjust by \(adjustment.factorText): \((base * correction).roundedAmpsText) × \(adjustment.factorText) = \(derated.roundedAmpsText) A.",
         ]
         if answer < derated {
-            steps.append("The 75°C termination limits it to \(Int(terminalLimit)) A, and the lower number wins, so the answer is \(answer.roundedAmps) A.")
+            steps.append("The 75°C termination limits it to \(Int(terminalLimit)) A, and the lower number wins, so the answer is \(answer.roundedAmpsText) A.")
         } else {
-            steps.append("That is still under the \(Int(terminalLimit)) A termination limit, so the derated value stands: \(answer.roundedAmps) A.")
+            steps.append("That is still under the \(Int(terminalLimit)) A termination limit, so the derated value stands: \(answer.roundedAmpsText) A.")
         }
 
         return CalcScenario(
@@ -105,7 +108,16 @@ enum CalcGenerator {
 
         let choices = uniqueChoices(
             from: [answer, ignoredCeiling, roundedUp, usedNinety],
-            answer: answer
+            answer: answer,
+            // Not every conductor has a 240.4(D) cap, and without one the three
+            // mistake-distractors can all land on the answer. Adjacent standard
+            // ratings keep the question from collapsing to a coin flip.
+            pad: { value in
+                let index = NECTables.standardOCPD.firstIndex { Double($0) >= value } ?? 0
+                let offset = Int.random(in: 1...3, using: &rng) * (Bool.random(using: &rng) ? 1 : -1)
+                let clamped = min(max(index + offset, 0), NECTables.standardOCPD.count - 1)
+                return Double(NECTables.standardOCPD[clamped])
+            }
         ) { "\(Int($0)) A" }
 
         var steps = [
@@ -162,7 +174,13 @@ enum CalcGenerator {
 
         let choices = uniqueChoices(
             from: [answerTrade, oneSmaller, oneBigger, usedFiftyThree],
-            answer: answerTrade
+            answer: answerTrade,
+            pad: { trade in
+                let index = NECTables.emtTradeSizes.firstIndex(of: trade) ?? 0
+                let offset = Int.random(in: 1...2, using: &rng) * (Bool.random(using: &rng) ? 1 : -1)
+                let clamped = min(max(index + offset, 0), NECTables.emtTradeSizes.count - 1)
+                return NECTables.emtTradeSizes[clamped]
+            }
         ) { $0 }
 
         let allowance = (NECTables.emtArea[answerTrade] ?? 0) * percent
@@ -215,8 +233,9 @@ enum CalcGenerator {
 
         let choices = uniqueChoices(
             from: [required, countedGroundsIndividually, forgotDevices, countedYokeAsOne],
-            answer: required
-        ) { "\($0.areaText) in³" }
+            answer: required,
+            pad: { $0 + Double(Int.random(in: 1...4, using: &rng)) * volume }
+        ) { "\($0.volumeText) in³" }
 
         var givens: [Given] = [
             .conductor(size, "THHN"),
@@ -227,13 +246,13 @@ enum CalcGenerator {
         if hasClamp { givens.append(Given("Internal clamps", "yes")) }
 
         var steps = [
-            "Each allowance for \(size) is \(volume.areaText) in³, so this is a counting problem first and a multiplication problem second.",
+            "Each allowance for \(size) is \(volume.volumeText) in³, so this is a counting problem first and a multiplication problem second.",
             "\(currentCarrying) insulated conductors is \(currentCarrying) allowances.",
-            "All \(groundCount) equipment grounds together count as one allowance, not \(groundCount).",
+            "The \(groundCount) equipment grounds together count as ONE allowance, not \(groundCount).",
         ]
         if hasClamp { steps.append("Internal clamps count as one allowance no matter how many there are.") }
         steps.append("Each device yoke counts as two, so \(devices) yoke\(devices == 1 ? "" : "s") is \(deviceUnits).")
-        steps.append("\(totalUnits) allowances × \(volume.areaText) in³ = \(required.areaText) in³.")
+        steps.append("\(totalUnits) allowances × \(volume.volumeText) in³ = \(required.volumeText) in³.")
 
         return CalcScenario(
             id: "gen-boxfill-\(UUID().uuidString)",
@@ -271,7 +290,8 @@ enum CalcGenerator {
 
         let choices = uniqueChoices(
             from: [drop, usedWrongFactor, forgotFactor, usedOtherMetal],
-            answer: drop
+            answer: drop,
+            pad: { $0 * Double.random(in: 0.6...1.5, using: &rng) }
         ) { "\($0.voltsText) V" }
 
         let percent = drop / Double(volts) * 100
@@ -305,22 +325,55 @@ enum CalcGenerator {
         let answerIndex: Int
     }
 
-    /// Formats candidate values into a de-duplicated, shuffled choice list and
-    /// reports where the correct one landed.
+    /// How many options every generated question shows.
+    private static let choiceCount = 4
+
+    /// Formats candidate values into a de-duplicated, shuffled choice list of
+    /// exactly `choiceCount` options, and reports where the correct one landed.
     ///
-    /// De-duplication matters: two different mistakes sometimes land on the same
-    /// number, and showing that number twice makes a correct answer look wrong.
-    /// If de-duplication leaves fewer than two choices the caller still gets a
-    /// valid question, just an easier one.
+    /// Two things are going on here, and both are load-bearing.
+    ///
+    /// De-duplication: two different mistakes often land on the same number,
+    /// and showing that number twice makes a correct answer look wrong.
+    ///
+    /// Padding: de-duplication can collapse the list. A conductor with no
+    /// 240.4(D) cap, for instance, makes three of the four mistake-distractors
+    /// identical to the answer, which would ship a question with one option.
+    /// `pad` generates further plausible neighbours from an existing value
+    /// until there are enough. It gets a bounded number of attempts so a
+    /// generator that cannot produce a distinct neighbour degrades to a shorter
+    /// list rather than spinning forever.
+    /// `pad` and `format` are non-escaping on purpose: every caller closes over
+    /// its `inout` generator, and an Optional closure parameter is implicitly
+    /// escaping, which the compiler rightly rejects.
     private static func uniqueChoices<T>(from candidates: [T], answer: T,
+                                         pad: (T) -> T,
                                          format: (T) -> String) -> Choices {
         let answerLabel = format(answer)
         var seen: Set<String> = [answerLabel]
         var labels: [String] = [answerLabel]
-        for candidate in candidates {
+        var values: [T] = [answer]
+
+        for candidate in candidates where labels.count < choiceCount {
             let label = format(candidate)
-            if seen.insert(label).inserted { labels.append(label) }
+            if seen.insert(label).inserted {
+                labels.append(label)
+                values.append(candidate)
+            }
         }
+
+        var attempts = 0
+        while labels.count < choiceCount, attempts < 40 {
+            attempts += 1
+            let seed = values.randomElement() ?? answer
+            let candidate = pad(seed)
+            let label = format(candidate)
+            if seen.insert(label).inserted {
+                labels.append(label)
+                values.append(candidate)
+            }
+        }
+
         labels.shuffle()
         return Choices(labels: labels, answerIndex: labels.firstIndex(of: answerLabel) ?? 0)
     }
@@ -340,5 +393,13 @@ extension Double {
     }
 
     var areaText: String { String(format: "%.2f", self) }
+
+    /// Box volumes the way the code prints them: 20 in³, not 20.00 in³, but
+    /// 22.5 in³ keeps its half.
+    var volumeText: String {
+        if self == rounded() { return String(Int(rounded())) }
+        return String(format: "%.2f", self)
+            .replacingOccurrences(of: "0$", with: "", options: .regularExpression)
+    }
     var voltsText: String { String(format: "%.1f", self) }
 }

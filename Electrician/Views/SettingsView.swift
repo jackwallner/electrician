@@ -163,7 +163,7 @@ struct SettingsView: View {
             NavigationLink {
                 HowToPlayView()
             } label: {
-                Label("How to Play", systemImage: "book.fill")
+                Label("How the Exam Works", systemImage: "book.fill")
             }
             if WhatsNew.currentRelease != nil {
                 Button {

@@ -57,7 +57,7 @@ struct HowToPlayView: View {
         .frame(maxWidth: .infinity)
         .background(Theme.background)
         .overlay { ConfettiBurst(trigger: confettiTrigger, origin: .init(x: 0.5, y: 0.35)) }
-        .navigationTitle("How to Play")
+        .navigationTitle("How the Exam Works")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { fireShine() }
     }
