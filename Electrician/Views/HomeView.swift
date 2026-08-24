@@ -1,0 +1,679 @@
+import SwiftUI
+
+/// Home is the lobby: Get Started, then the rooms as doors. The drills
+/// themselves live one level down in `RoomView`. (Home used to list every
+/// drill flat; once each room grew a Electrician+ extra set that list ran to a dozen
+/// rows and the rooms stopped reading as places.)
+///
+/// The rooms are what Home is FOR, so everything else earns its space or
+/// leaves: the stats ride beside the title instead of eating a row of their
+/// own, and the primer card disappears the moment it has been read.
+struct HomeView: View {
+    @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var subscriptions: SubscriptionService
+    @EnvironmentObject private var settings: AppSettings
+    @EnvironmentObject private var router: AppRouter
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @StateObject private var records = PracticeRecordStore.shared
+    @StateObject private var minuteStore = CodeMinuteStore.shared
+    @State private var path: [AppDestination] = []
+    @State private var showPaywall = false
+    @State private var showSettings = false
+    @State private var showWhatsNew = false
+    @State private var pendingAfterUpgrade: AppDestination?
+    @State private var highlightedRoomID: String?
+    @AppStorage("electrician.skillLevel") private var skillLevel = ""
+    /// Set once the primer has been read all the way through. After that it
+    /// lives in Settings only; a permanent "How to Play" card on Home is a
+    /// standing tax on the rooms below it.
+    @AppStorage("electrician.hasReadPrimer") private var hasReadPrimer = false
+    /// One-shot hint set by `HowToPlayView`'s end-of-primer recommendation:
+    /// the room id to highlight/scroll to the next time Home appears.
+    @AppStorage("electrician.recommendedRoomHint") private var recommendedRoomHint = ""
+
+    private var showsPrimerCard: Bool { skillLevel == "new" && !hasReadPrimer }
+
+    var body: some View {
+        NavigationStack(path: $path) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    homeContent
+                    .padding(.bottom, 24)
+                }
+                .onAppear {
+                    consumeRecommendedRoomHint(proxy: proxy)
+                    consumePendingDestination()
+                }
+                .onChange(of: showSettings) { _, isShowing in
+                    if !isShowing { consumeRecommendedRoomHint(proxy: proxy) }
+                }
+            }
+            .background(Theme.background)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
+                            .foregroundStyle(Theme.inkSecondary)
+                    }
+                    .accessibilityLabel("Settings")
+                }
+            }
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .navigationDestination(for: AppDestination.self) { destination in
+                switch destination {
+                case .gameNightPrepSession:
+                    QuickSessionView(gameNightPrep: gameNightPrepItems)
+                }
+            }
+            .sheet(isPresented: $showPaywall) { PaywallView(source: "electrician_home_sheet") }
+            .sheet(isPresented: $showSettings) { SettingsView() }
+            .sheet(isPresented: $showWhatsNew) {
+                if let release = WhatsNew.currentRelease {
+                    WhatsNewSheet(release: release) {
+                        showWhatsNew = false
+                        // The sheet cannot present the paywall while it is
+                        // dismissing, so hand off on the next runloop.
+                        Task { @MainActor in
+                            try? await Task.sleep(nanoseconds: 350_000_000)
+                            showPaywall = true
+                        }
+                    }
+                }
+            }
+            .task { presentWhatsNewIfNeeded() }
+            .onChange(of: router.pendingDestination) { _, _ in consumePendingDestination() }
+            .onChange(of: subscriptions.isPro) { _, isMember in
+                if isMember {
+                    if let pendingAfterUpgrade {
+                        self.pendingAfterUpgrade = nil
+                        path = [pendingAfterUpgrade]
+                    } else {
+                        consumePendingDestination()
+                    }
+                } else if settings.gameNightReminderEnabled {
+                    settings.gameNightReminderEnabled = false
+                }
+            }
+            .onChange(of: showPaywall) { _, isShowing in
+                if !isShowing, !subscriptions.isPro { pendingAfterUpgrade = nil }
+            }
+        }
+        .tint(Theme.jade)
+    }
+
+    @ViewBuilder
+    private var homeContent: some View {
+        if horizontalSizeClass == .regular {
+            VStack(spacing: 18) {
+                header
+                HStack(alignment: .top, spacing: 20) {
+                    todayColumn
+                    roomsColumn
+                }
+                disclaimerFooter
+            }
+            .padding(.horizontal, 24)
+            .frame(maxWidth: Theme.wideContentWidth)
+            .frame(maxWidth: .infinity)
+        } else {
+            VStack(spacing: 14) {
+                header
+                todaySession
+                if showsPrimerCard { howToPlayCard }
+                trainingSection
+                roomsColumn
+                if !subscriptions.isPro { upgradeCard }
+                disclaimerFooter
+            }
+            .padding(.horizontal)
+        }
+    }
+
+    private var todayColumn: some View {
+        VStack(spacing: 14) {
+            todaySession
+            if showsPrimerCard { howToPlayCard }
+            trainingSection
+            if !subscriptions.isPro { upgradeCard }
+        }
+        .frame(maxWidth: .infinity, alignment: .top)
+    }
+
+    private var roomsColumn: some View {
+        VStack(spacing: 14) {
+            roomsHeading
+            ForEach(DrillLibrary.rooms) { room in
+                roomCard(room)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .top)
+    }
+
+    @ViewBuilder
+    private var todaySession: some View {
+        if progress.quickSessionCompletedToday() {
+            getStartedDoneCard
+        } else {
+            getStartedCard
+        }
+    }
+
+    private var gameNightPrepItems: [QuickItem] {
+        SessionBuilder.gameNightPrep(
+            seen: progress.seenItems,
+            missed: progress.missedItems,
+            dueIDs: records.reviewQueue(),
+            weakestRoomID: records.weakestRoom()?.id
+        )
+    }
+
+    private func consumePendingDestination() {
+        guard let destination = router.consumePendingDestination() else { return }
+        guard subscriptions.isPro else {
+            pendingAfterUpgrade = destination
+            showPaywall = true
+            return
+        }
+        path = [destination]
+    }
+
+    /// The post-update note, once. Deliberately deferred a beat so it lands on
+    /// a drawn Home rather than racing the first frame.
+    private func presentWhatsNewIfNeeded() {
+        guard WhatsNew.shouldPresent(hasOnboarded: progress.hasOnboarded) else { return }
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            showWhatsNew = true
+        }
+    }
+
+    /// Consumes the one-shot recommendation hint: scrolls to and briefly
+    /// highlights the recommended room's card, then clears the hint so it
+    /// only ever fires once per recommendation.
+    private func consumeRecommendedRoomHint(proxy: ScrollViewProxy) {
+        guard !recommendedRoomHint.isEmpty else { return }
+        let roomID = recommendedRoomHint
+        recommendedRoomHint = ""
+        guard DrillLibrary.rooms.contains(where: { $0.id == roomID }) else { return }
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 400_000_000)
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
+                proxy.scrollTo(roomID, anchor: .center)
+                highlightedRoomID = roomID
+            }
+            try? await Task.sleep(nanoseconds: 2_200_000_000)
+            withAnimation(.easeOut(duration: 0.4)) { highlightedRoomID = nil }
+        }
+    }
+
+    // MARK: - Header (title left, stats right, one row total)
+
+    private var header: some View {
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Electrician")
+                    .font(Theme.display(32))
+                    .foregroundStyle(Theme.ink)
+                Text("Open book. Beat the clock.")
+                    .font(.subheadline)
+                    .foregroundStyle(Theme.inkSecondary)
+            }
+            Spacer(minLength: 8)
+            // The chips were already the honest summary of practice, so they
+            // are also the door to the full breakdown rather than yet another
+            // row competing with the rooms.
+            NavigationLink {
+                StatsView()
+            } label: {
+                HStack(spacing: 8) {
+                    statChip(value: progress.streakCount, icon: "flame.fill", color: Theme.coral,
+                             label: "\(progress.streakCount) day streak")
+                    statChip(value: progress.totalSessions, icon: "checkmark.seal.fill", color: Theme.jade,
+                             label: "\(progress.totalSessions) drills done")
+                }
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint("Opens your progress breakdown")
+            .padding(.top, 4)
+        }
+        .padding(.top, 2)
+    }
+
+    private func statChip(value: Int, icon: String, color: Color, label: String) -> some View {
+        HStack(spacing: 5) {
+            Image(systemName: icon)
+                .font(.caption)
+                .foregroundStyle(color)
+            Text("\(value)")
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(Theme.ink)
+                .monospacedDigit()
+        }
+        .padding(.horizontal, 9)
+        .padding(.vertical, 6)
+        .background(color.opacity(0.12), in: Capsule())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label)
+    }
+
+    /// The one-tap way in: builds a short mixed session, no browsing needed.
+    private var getStartedCard: some View {
+        NavigationLink {
+            QuickSessionView(items: SessionBuilder.quickSession(
+                seen: progress.seenItems,
+                missed: progress.missedItems,
+                includePro: subscriptions.isPro
+            ))
+        } label: {
+            HStack(spacing: 14) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Get Started")
+                        .font(Theme.display(24))
+                        .foregroundStyle(.white)
+                    Text("A five-minute mix of what you need next")
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.85))
+                }
+                Spacer(minLength: 4)
+                Image(systemName: "play.circle.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(.white)
+            }
+            .padding(20)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                LinearGradient(
+                    colors: [Theme.jade, Theme.jade.opacity(0.82)],
+                    startPoint: .topLeading, endPoint: .bottomTrailing
+                ),
+                in: RoundedRectangle(cornerRadius: Theme.cardCorner, style: .continuous)
+            )
+            .shadow(color: Theme.jade.opacity(0.3), radius: 10, y: 5)
+        }
+        .buttonStyle(PressableCardStyle())
+    }
+
+    /// Today's Get Started is spent. Rather than hand back the same questions
+    /// (a repeat teaches nothing), the card rests and points at the rooms for
+    /// more practice, and comes back fresh tomorrow.
+    private var getStartedDoneCard: some View {
+        HStack(spacing: 14) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 30))
+                .foregroundStyle(Theme.jade)
+                .frame(width: 44, height: 44)
+                .background(Theme.jade.opacity(0.12), in: Circle())
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Today's session is done")
+                    .font(.headline)
+                    .foregroundStyle(Theme.ink)
+                Text("A fresh mix lands tomorrow. Keep going in any room below.")
+                    .font(.subheadline)
+                    .foregroundStyle(Theme.inkSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .themedCard()
+    }
+
+    /// Shown only until the primer has actually been read; after that it's a
+    /// Settings row like every other reference material.
+    private var howToPlayCard: some View {
+        NavigationLink {
+            HowToPlayView()
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "book.fill")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(Theme.gold)
+                    .frame(width: 38, height: 38)
+                    .background(Theme.gold.opacity(0.13), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("How to Play")
+                        .font(.headline)
+                        .foregroundStyle(Theme.ink)
+                    Text("New here? Start with the five-minute primer")
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                }
+                Spacer(minLength: 4)
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(Theme.inkTertiary)
+            }
+            .padding(12)
+            .themedCard(corner: 16)
+        }
+        .buttonStyle(PressableCardStyle())
+    }
+
+    // MARK: - Training modes
+
+    /// The cross-cutting practice modes. They sit above the rooms
+    /// because they are what a returning player comes back FOR, but they ride
+    /// in one scrolling row of compact tiles rather than three full-width
+    /// cards: Home's job is still the rooms, and everything else earns its
+    /// space.
+    private var trainingSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("TRAINING")
+                    .font(.caption.weight(.heavy))
+                    .kerning(1.4)
+                    .foregroundStyle(Theme.inkSecondary)
+                Spacer()
+            }
+            .padding(.horizontal, 4)
+            if horizontalSizeClass == .regular {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 10)], spacing: 10) {
+                    trainingTiles
+                }
+                .padding(.horizontal, 4)
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        trainingTiles
+                    }
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 2)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var trainingTiles: some View {
+        trainingTile(
+            title: "Endless\nPractice",
+            icon: "infinity",
+            color: Theme.jade,
+            badge: nil
+        ) {
+            EndlessPickerView()
+        }
+        trainingTile(
+            title: "Electrician\nMinute",
+            icon: "calendar.badge.clock",
+            color: Theme.coral,
+            badge: minuteStore.result(for: Date()).map { "\($0.score)/\($0.total) today" } ?? "Daily"
+        ) {
+            CodeMinuteView()
+        }
+        trainingTile(
+            title: "Exam\nWarm-Up",
+            icon: "person.2.fill",
+            color: Theme.plum,
+            badge: settings.gameNightReminderEnabled ? settings.gameNightDay.displayName : "Weekly"
+        ) {
+            GameNightPrepView()
+        }
+        trainingTile(
+            title: "Timed\nChallenge",
+            icon: "timer",
+            color: Theme.coral,
+            badge: records.bestChallengeScore > 0 ? "Best \(records.bestChallengeScore)" : nil
+        ) {
+            PracticeRunView(mode: .timed)
+        }
+        // Only offered when there is something to fix. An empty review
+        // session is a dead end dressed up as a feature.
+        if records.dueCount > 0 {
+            trainingTile(
+                title: "Fix My\nMistakes",
+                icon: "arrow.trianglehead.counterclockwise",
+                color: Theme.plum,
+                badge: "\(records.dueCount) due"
+            ) {
+                PracticeRunView(
+                    mode: .review,
+                    items: SessionBuilder.reviewSession(
+                        ids: records.reviewQueue(),
+                        includePro: subscriptions.isPro
+                    )
+                )
+            }
+        }
+    }
+
+    /// A compact training tile. Locked for free players: tapping opens the
+    /// paywall instead of the mode, and the tile says so before it is tapped.
+    @ViewBuilder
+    private func trainingTile<Destination: View>(
+        title: String,
+        icon: String,
+        color: Color,
+        badge: String?,
+        @ViewBuilder destination: @escaping () -> Destination
+    ) -> some View {
+        let locked = !subscriptions.isPro
+        if locked {
+            Button { showPaywall = true } label: {
+                trainingTileLabel(title: title, icon: icon, color: color, badge: badge, locked: true)
+            }
+            .buttonStyle(PressableCardStyle())
+            .accessibilityHint("Included with \(Membership.name)")
+        } else {
+            NavigationLink { destination() } label: {
+                trainingTileLabel(title: title, icon: icon, color: color, badge: badge, locked: false)
+            }
+            .buttonStyle(PressableCardStyle())
+        }
+    }
+
+    private func trainingTileLabel(title: String, icon: String, color: Color, badge: String?, locked: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 4) {
+                Image(systemName: icon)
+                    .font(.title3.weight(.semibold))
+                    .foregroundStyle(color)
+                Spacer(minLength: 0)
+                if locked {
+                    Image(systemName: "lock.fill")
+                        .font(.caption2)
+                        .foregroundStyle(Theme.gold)
+                }
+            }
+            Spacer(minLength: 0)
+            Text(title)
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(Theme.ink)
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+            if let badge {
+                Text(badge)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(color)
+            } else {
+                Text(locked ? Membership.name : " ")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(Theme.gold)
+            }
+        }
+        .padding(12)
+        .frame(width: horizontalSizeClass == .regular ? nil : 128, height: 118, alignment: .leading)
+        .frame(maxWidth: horizontalSizeClass == .regular ? .infinity : nil, alignment: .leading)
+        .themedCard(corner: 16)
+    }
+
+    // MARK: - Rooms
+
+    private var roomsHeading: some View {
+        HStack {
+            Text("THE ROOMS")
+                .font(.caption.weight(.heavy))
+                .kerning(1.4)
+                .foregroundStyle(Theme.inkSecondary)
+            Spacer()
+        }
+        .padding(.top, 6)
+        .padding(.horizontal, 4)
+    }
+
+    /// Progress is a ring, not a sentence. "2 of 3 done · 2 free, 1 with Electrician+"
+    /// was three facts nobody asked for on a card whose job is to be a door.
+    private func roomCard(_ room: Room) -> some View {
+        let locked = !room.isFree && !subscriptions.isPro
+        let highlighted = highlightedRoomID == room.id
+        // Count only the drills this player can actually open. Putting the
+        // locked Electrician+ set in the denominator would mean a free player's ring
+        // can never close, which is a nag dressed up as progress.
+        let open = room.drills.filter { !room.isLocked($0, isMember: subscriptions.isPro) }
+        let total = open.count
+        let done = open.filter { progress.completions(for: $0.id) > 0 }.count
+        return NavigationLink {
+            RoomView(room: room)
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: room.icon)
+                    .font(.title3.weight(.semibold))
+                    .foregroundStyle(room.accent)
+                    .frame(width: 48, height: 48)
+                    .background(room.accent.opacity(0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack(spacing: 6) {
+                        Text(room.name)
+                            .font(.headline)
+                            .foregroundStyle(Theme.ink)
+                        if locked {
+                            PlusBadge()
+                        }
+                    }
+                    Text(room.tagline)
+                        .font(.subheadline)
+                        .foregroundStyle(Theme.inkSecondary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer(minLength: 4)
+                if locked {
+                    Image(systemName: "lock.fill")
+                        .font(.footnote)
+                        .foregroundStyle(Theme.gold)
+                } else {
+                    ProgressRing(done: done, total: total, color: room.accent)
+                }
+            }
+            .padding(14)
+            .themedCard()
+            .overlay(
+                RoundedRectangle(cornerRadius: Theme.cardCorner, style: .continuous)
+                    .strokeBorder(highlighted ? room.accent : Color.clear, lineWidth: 2.5)
+            )
+            .contentShape(RoundedRectangle(cornerRadius: Theme.cardCorner, style: .continuous))
+        }
+        .buttonStyle(PressableCardStyle())
+        .accessibilityHint(locked
+            ? "Locked. \(total) drills, included with \(Membership.name)"
+            : "\(done) of \(total) drills done")
+        .id(room.id)
+    }
+
+    private var upgradeCard: some View {
+        Button {
+            showPaywall = true
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "sparkles")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(Theme.gold)
+                    .frame(width: 38, height: 38)
+                    .background(Theme.gold.opacity(0.14), in: Circle())
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Get \(Membership.name)")
+                        .font(.headline)
+                        .foregroundStyle(Theme.ink)
+                    Text("Code Minute, Exam Warm-Up, endless modes, and \(lockedDrillCount) more drills across every room")
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer(minLength: 4)
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(Theme.inkTertiary)
+            }
+            .padding(12)
+            .themedCard(corner: 16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Theme.gold.opacity(0.35), lineWidth: 1)
+            )
+        }
+        .buttonStyle(PressableCardStyle())
+        .padding(.top, 2)
+    }
+
+    private var lockedDrillCount: Int {
+        DrillLibrary.rooms.reduce(0) { $0 + $1.plusDrillCount }
+    }
+
+    private var disclaimerFooter: some View {
+        Text("A study aid, not a code book. Not affiliated with or endorsed by the NFPA. Concepts and calculations in original wording, with article numbers so you can verify each one in the code in force where you work.")
+            .font(.caption2)
+            .foregroundStyle(Theme.inkTertiary)
+            .multilineTextAlignment(.center)
+            .padding(.top, 8)
+    }
+}
+
+/// Room completion at a glance: a ring that fills as the room's drills get
+/// done, and becomes a seal once they all are.
+struct ProgressRing: View {
+    let done: Int
+    let total: Int
+    var color: Color
+
+    private var fraction: Double {
+        guard total > 0 else { return 0 }
+        return Double(done) / Double(total)
+    }
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(color.opacity(0.18), lineWidth: 3)
+            Circle()
+                .trim(from: 0, to: fraction)
+                .stroke(color, style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+                .animation(.spring(response: 0.5, dampingFraction: 0.8), value: fraction)
+            if done == total, total > 0 {
+                Image(systemName: "checkmark")
+                    .font(.caption2.weight(.black))
+                    .foregroundStyle(color)
+            } else {
+                Text("\(done)/\(total)")
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.inkSecondary)
+                    .monospacedDigit()
+            }
+        }
+        .frame(width: 32, height: 32)
+        .accessibilityHidden(true)
+    }
+}
+
+extension DrillKind {
+    var symbol: String {
+        switch self {
+        case .flashcards: return "rectangle.stack.fill"
+        case .quiz: return "questionmark.circle.fill"
+        case .articleMatch: return "book.closed.fill"
+        case .calc: return "function"
+        }
+    }
+
+    var unitName: String {
+        switch self {
+        case .flashcards: return "cards"
+        case .quiz: return "questions"
+        case .articleMatch: return "scenarios"
+        case .calc: return "problems"
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "6E3A1C40-9D71-4B2E-9F0A-2C1D5B7E4A31",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "storeKitConfiguration" : "Electrician.storekit",
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Electrician.xcodeproj",
+      "identifier" : "EC20D96BEF060DAF18E56E7D",
+      "name" : "Electrician"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Electrician.xcodeproj",
+        "identifier" : "D0CE1C2C79B5EAAC96C1E68D",
+        "name" : "ElectricianScreenshots"
+      }
+    }
+  ],
+  "version" : 1
+}

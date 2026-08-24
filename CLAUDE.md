@@ -1,0 +1,82 @@
+# Electrician — Project Guide
+
+NEC licensing-exam practice app for journeyman and master electrician
+candidates. Drills code navigation, ampacity derating, overcurrent sizing,
+raceway fill, box fill and voltage drop. XcodeGen project/scheme: `Electrician`,
+sim lease owner `electrician`. Bundle ID `com.jackwallner.electrician`.
+
+Ported from `~/mahj` (the shell: rooms, drills, generated practice, progress,
+paywall, review funnel, release scripts). The mahjong domain is gone; only the
+shell is shared.
+
+## Why this app exists
+
+`~/ios/aso/practice-app-fingerprint-2026-08-23.md` is the research. Short
+version: Mahj Trainer earns because American Mah Jongg has no substitute
+product, a standard that changes on a schedule, and in-person play. The NEC has
+all three, plus a better generator, plus an open SERP (top incumbent 439
+ratings). Read that file before changing positioning.
+
+## Tech Stack
+- Swift 6 / SwiftUI (strict concurrency)
+- XcodeGen (`project.yml`). Targets: iOS 17+, `ElectricianTests`,
+  `ElectricianScreenshots`
+- RevenueCat, entitlement `pro`, membership brand `Electrician+`
+
+## Product rules
+
+**Legal position, and it is load-bearing.** NFPA holds copyright in the text of
+the National Electrical Code and enforces it. This app reproduces none of it.
+What it ships is the underlying numbers (facts), article numbers (citations),
+and explanations written from scratch. Cite `310.16`; never quote it. Same
+discipline the fleet already applies to the NMJL card and the DSkV
+Skatordnung, for the same reason.
+
+**Accuracy is a product requirement, not a nicety.** A wrong ampacity is a
+refund and a one-star review from a professional who trusted it in an exam.
+`ContentValidityTests` therefore recomputes every authored calculation against
+`NECTables` and fuzzes the generator (thousands of problems per run) for:
+answer in range, no duplicate choices, derated ampacity never above the
+termination limit, OCPD never above the 240.4(D) cap, conduit fill actually
+fits and the next size down does not. Do not weaken those tests to make a
+content change pass.
+
+**The generator is the moat.** `CalcGenerator` emits five problem shapes as
+pure functions with exactly one correct answer, so the paid tier never runs
+out. Unlike mahj's `RackGenerator` there is no ambiguity-rejection loop, because
+a code calculation cannot be ambiguous. **Every distractor is the number you get
+from one specific common mistake** (started the derate at 75°C, ignored
+240.4(D), used 53% fill, counted grounds individually). Keep it that way: random
+wrong numbers teach nothing.
+
+**Values follow the 2023 cycle** while the 2026 adoptions roll out. When the
+tables move, update `NECTables` and let the tests catch the authored content
+that drifted.
+
+## Structure
+- `Shared/Models` — `Given` (a labelled condition chip, the equivalent of a
+  dealt tile), `CodeArticle`, `NECTables` (all reference data), `Drill`
+- `Shared/Content` — `CalcGenerator` (the asset), authored content per room,
+  `DrillLibrary` (rooms), `CodeMinuteContent` (seeded daily five)
+- `Electrician/Views/Drills` — `CalcDrillView` is the one genuinely new screen:
+  numbered working after the answer, because a miss is almost always one skipped
+  step rather than bad arithmetic
+
+Room ids (`basics-room`, `conductors-room`, `calc-room`, `grounding-room`) are
+referenced by `PracticeSkill.roomID` and `Theme`'s accent map. Renaming one
+means updating both; a test enforces that they resolve.
+
+## App-specific notes
+- **Not yet on the App Store.** `AppStoreLinks.appStoreID` is empty on purpose,
+  which disables the rating route rather than pointing it at the app this was
+  ported from. Set it when the ASC record exists.
+- **RevenueCat keys are placeholders.** Never paste mahj's keys in; that would
+  file this app's purchases under mahj's project.
+- US-only. The 50-locale metadata machine does not apply here.
+- ASO: the category's ranking lever is the year in the app name
+  (`Electrician Test Prep 2026` and friends all do it). Decide the store name
+  from the research file, not from the fleet's `X Trainer` habit.
+
+---
+Shared iOS conventions (build, simulator, release/TestFlight, ASC key, signing,
+review funnel, gotchas): always-loaded global CLAUDE.md + the `ios-dev` skill.

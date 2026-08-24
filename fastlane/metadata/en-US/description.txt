@@ -1,0 +1,30 @@
+The licensing exam is open book. That is not the relief it sounds like. It is timed, and every question you have to hunt for costs you two more you never reach. What is actually being tested is how fast you navigate, and how reliably you run the handful of calculations that decide the rest.
+
+This app drills both.
+
+FIND IT FAST
+Read a scenario and name the article before you open anything. Branch circuits or load calculations. Article 310 or Article 240. Chapter 9 or the raceway article. The navigation drill is the one nobody builds and the one that saves you minutes on exam day.
+
+THE CALCULATIONS THAT FAIL PEOPLE
+Ampacity derating. Overcurrent sizing. Conduit fill. Box fill. Voltage drop. Every one is a pure calculation with exactly one right answer, which means we generate them instead of shipping the same fifty questions in a new order. Practice as long as you want and never see a repeat.
+
+WRONG ANSWERS THAT TEACH
+Every incorrect choice is the number you get from one specific, common mistake: starting the derate in the 75 degree column, missing the small-conductor cap in 240.4(D), using 53 percent fill out of habit, counting each ground wire separately. Pick one and you find out which mistake you made, not just that you missed.
+
+SHOW THE WORKING
+Miss a calculation and you get numbered steps, not a paragraph. Almost nobody fails these on arithmetic. They fail on one skipped step, and a paragraph hides which one.
+
+CODE MINUTE
+One shared five-question challenge a day, the same five for everybody, with a score you can share.
+
+BUILT AROUND YOUR MISTAKES
+Progress tracks accuracy per topic. Fix My Mistakes brings back exactly the questions you keep missing. Exam Warm-Up builds a five-minute session from your weakest area.
+
+WHAT IS FREE
+Code Basics and Conductors and Ampacity are free, including the article navigation drills and the ampacity quizzes.
+
+ELECTRICIAN+
+Unlocks the Worked Calculations and Grounding and Motors rooms, the extra sets in every free room, endless generated practice, the timed challenge, and Code Minute.
+
+A NOTE ON THE CODE
+This app is not affiliated with, endorsed by, or connected to the NFPA. It teaches concepts and calculations in original wording and cites article numbers so you can look each one up in your own code book. It does not reproduce code text, and it is a study aid rather than a substitute for the code book itself. Requirements vary by the edition your jurisdiction has adopted and by local amendments. Always verify against the code in force where you work.
