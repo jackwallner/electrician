@@ -76,15 +76,15 @@ final class PracticeRecordStoreTests: XCTestCase {
     }
 
     func testRoomStatsAggregate() {
-        store.record(itemID: "q1", roomID: "tile-room", correct: true)
-        store.record(itemID: "q2", roomID: "tile-room", correct: false)
-        store.record(itemID: "q3", roomID: "card-room", correct: true)
+        store.record(itemID: "q1", roomID: "basics-room", correct: true)
+        store.record(itemID: "q2", roomID: "basics-room", correct: false)
+        store.record(itemID: "q3", roomID: "conductors-room", correct: true)
 
         let stats = store.roomStats()
         XCTAssertEqual(stats.count, 2)
-        let cardRoom = stats.first { $0.id == "tile-room" }
-        XCTAssertEqual(cardRoom?.attempts, 2)
-        XCTAssertEqual(cardRoom?.accuracy, 0.5)
+        let basics = stats.first { $0.id == "basics-room" }
+        XCTAssertEqual(basics?.attempts, 2)
+        XCTAssertEqual(basics?.accuracy, 0.5)
         XCTAssertEqual(store.overallAccuracy, 2.0 / 3.0, accuracy: 0.0001)
     }
 
@@ -144,15 +144,26 @@ final class WhatsNewTests: XCTestCase {
         XCTAssertFalse(WhatsNew.shouldPresent(hasOnboarded: true, defaults: defaults))
     }
 
-    func testReleaseNotesAreWellFormed() {
-        let release = try! XCTUnwrap(WhatsNew.currentRelease)
-        XCTAssertEqual(release.version, WhatsNew.currentVersion)
-        XCTAssertFalse(release.items.isEmpty)
-        XCTAssertEqual(Set(release.items.map(\.id)).count, release.items.count)
-        for item in release.items {
-            XCTAssertFalse(item.title.isEmpty)
-            XCTAssertFalse(item.body.isEmpty)
-            XCTAssertFalse(item.body.contains("—"), "No em dashes in copy")
+    /// 1.0 has no previous version to have updated from, so `releases` is
+    /// legitimately empty. This checks the shape of whatever IS there, and
+    /// starts enforcing the real contract as soon as 1.1 adds a release.
+    func testReleaseNotesAreWellFormed() throws {
+        let versions = WhatsNew.releases.map(\.version)
+        XCTAssertEqual(Set(versions).count, versions.count, "duplicate release versions")
+
+        for release in WhatsNew.releases {
+            XCTAssertFalse(release.headline.isEmpty, release.version)
+            XCTAssertFalse(release.items.isEmpty, release.version)
+            XCTAssertEqual(Set(release.items.map(\.id)).count, release.items.count, release.version)
+            for item in release.items {
+                XCTAssertFalse(item.title.isEmpty)
+                XCTAssertFalse(item.body.isEmpty)
+                XCTAssertFalse(item.body.contains("—"), "No em dashes in copy")
+            }
+        }
+
+        if let release = WhatsNew.currentRelease {
+            XCTAssertEqual(release.version, WhatsNew.currentVersion)
         }
     }
 }

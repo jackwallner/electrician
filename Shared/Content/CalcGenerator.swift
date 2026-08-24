@@ -27,6 +27,11 @@ enum CalcGenerator {
     /// is then capped by the terminal rating. Getting that order wrong is the
     /// single most common derating error.
     static func ampacityProblem(using rng: inout RandomNumberGenerator) -> CalcScenario {
+        // Padding needs randomness too, but it cannot borrow `rng` while
+        // `uniqueChoices` already holds it. Seeding a sub-generator from the
+        // main stream keeps the whole problem reproducible without the
+        // overlapping-access violation.
+        var padRNG: RandomNumberGenerator = SeededGenerator(seed: rng.next())
         let sizes = ["12 AWG", "10 AWG", "8 AWG", "6 AWG", "4 AWG", "2 AWG", "1/0 AWG", "3/0 AWG"]
         let size = sizes.randomElement(using: &rng)!
         let material = ConductorMaterial.allCases.randomElement(using: &rng)!
@@ -49,8 +54,8 @@ enum CalcGenerator {
         let forgotTerminals = derated
 
         let candidates = [answer, startedAt75, forgotBundling, forgotTerminals]
-        let choices = uniqueChoices(from: candidates, answer: answer,
-                                    pad: { $0 * Double.random(in: 0.8...1.2, using: &rng) }) {
+        let choices = uniqueChoices(from: candidates, answer: answer, using: &rng,
+                                    pad: { $0 * Double.random(in: 0.8...1.2, using: &padRNG) }) {
             "\($0.roundedAmpsText) A"
         }
 
@@ -88,6 +93,11 @@ enum CalcGenerator {
     /// the small-conductor ceiling overrides whatever the ampacity table says,
     /// and candidates who learned the table first walk straight into it.
     static func ocpdProblem(using rng: inout RandomNumberGenerator) -> CalcScenario {
+        // Padding needs randomness too, but it cannot borrow `rng` while
+        // `uniqueChoices` already holds it. Seeding a sub-generator from the
+        // main stream keeps the whole problem reproducible without the
+        // overlapping-access violation.
+        var padRNG: RandomNumberGenerator = SeededGenerator(seed: rng.next())
         let sizes = ["14 AWG", "12 AWG", "10 AWG", "8 AWG", "6 AWG", "4 AWG", "2 AWG"]
         let size = sizes.randomElement(using: &rng)!
         let material: ConductorMaterial = size == "14 AWG" ? .copper
@@ -109,12 +119,13 @@ enum CalcGenerator {
         let choices = uniqueChoices(
             from: [answer, ignoredCeiling, roundedUp, usedNinety],
             answer: answer,
+            using: &rng,
             // Not every conductor has a 240.4(D) cap, and without one the three
             // mistake-distractors can all land on the answer. Adjacent standard
             // ratings keep the question from collapsing to a coin flip.
             pad: { value in
                 let index = NECTables.standardOCPD.firstIndex { Double($0) >= value } ?? 0
-                let offset = Int.random(in: 1...3, using: &rng) * (Bool.random(using: &rng) ? 1 : -1)
+                let offset = Int.random(in: 1...3, using: &padRNG) * (Bool.random(using: &padRNG) ? 1 : -1)
                 let clamped = min(max(index + offset, 0), NECTables.standardOCPD.count - 1)
                 return Double(NECTables.standardOCPD[clamped])
             }
@@ -148,6 +159,11 @@ enum CalcGenerator {
     /// "Does it fit?" Over two conductors the allowance is 40%, and the
     /// candidate mistake is using 53% or 31% out of habit.
     static func conduitFillProblem(using rng: inout RandomNumberGenerator) -> CalcScenario {
+        // Padding needs randomness too, but it cannot borrow `rng` while
+        // `uniqueChoices` already holds it. Seeding a sub-generator from the
+        // main stream keeps the whole problem reproducible without the
+        // overlapping-access violation.
+        var padRNG: RandomNumberGenerator = SeededGenerator(seed: rng.next())
         let sizes = ["12 AWG", "10 AWG", "8 AWG", "6 AWG", "4 AWG", "2 AWG"]
         let size = sizes.randomElement(using: &rng)!
         let count = [4, 6, 7, 9, 12].randomElement(using: &rng)!
@@ -175,9 +191,10 @@ enum CalcGenerator {
         let choices = uniqueChoices(
             from: [answerTrade, oneSmaller, oneBigger, usedFiftyThree],
             answer: answerTrade,
+            using: &rng,
             pad: { trade in
                 let index = NECTables.emtTradeSizes.firstIndex(of: trade) ?? 0
-                let offset = Int.random(in: 1...2, using: &rng) * (Bool.random(using: &rng) ? 1 : -1)
+                let offset = Int.random(in: 1...2, using: &padRNG) * (Bool.random(using: &padRNG) ? 1 : -1)
                 let clamped = min(max(index + offset, 0), NECTables.emtTradeSizes.count - 1)
                 return NECTables.emtTradeSizes[clamped]
             }
@@ -211,6 +228,11 @@ enum CalcGenerator {
     /// people: all the grounds together are one allowance, a yoke is two, and
     /// the conductors that only pass through still count.
     static func boxFillProblem(using rng: inout RandomNumberGenerator) -> CalcScenario {
+        // Padding needs randomness too, but it cannot borrow `rng` while
+        // `uniqueChoices` already holds it. Seeding a sub-generator from the
+        // main stream keeps the whole problem reproducible without the
+        // overlapping-access violation.
+        var padRNG: RandomNumberGenerator = SeededGenerator(seed: rng.next())
         let size = ["14 AWG", "12 AWG"].randomElement(using: &rng)!
         let volume = NECTables.conductorVolume[size] ?? 2.0
         let currentCarrying = [4, 5, 6, 7, 8].randomElement(using: &rng)!
@@ -234,7 +256,8 @@ enum CalcGenerator {
         let choices = uniqueChoices(
             from: [required, countedGroundsIndividually, forgotDevices, countedYokeAsOne],
             answer: required,
-            pad: { $0 + Double(Int.random(in: 1...4, using: &rng)) * volume }
+            using: &rng,
+            pad: { $0 + Double(Int.random(in: 1...4, using: &padRNG)) * volume }
         ) { "\($0.volumeText) in³" }
 
         var givens: [Given] = [
@@ -271,6 +294,11 @@ enum CalcGenerator {
     /// anyway. Kept because it is also the calculation electricians actually
     /// run in the field.
     static func voltageDropProblem(using rng: inout RandomNumberGenerator) -> CalcScenario {
+        // Padding needs randomness too, but it cannot borrow `rng` while
+        // `uniqueChoices` already holds it. Seeding a sub-generator from the
+        // main stream keeps the whole problem reproducible without the
+        // overlapping-access violation.
+        var padRNG: RandomNumberGenerator = SeededGenerator(seed: rng.next())
         let size = ["12 AWG", "10 AWG", "8 AWG", "6 AWG", "4 AWG", "2 AWG"].randomElement(using: &rng)!
         let material = ConductorMaterial.allCases.randomElement(using: &rng)!
         let phase = Phase.allCases.randomElement(using: &rng)!
@@ -291,7 +319,8 @@ enum CalcGenerator {
         let choices = uniqueChoices(
             from: [drop, usedWrongFactor, forgotFactor, usedOtherMetal],
             answer: drop,
-            pad: { $0 * Double.random(in: 0.6...1.5, using: &rng) }
+            using: &rng,
+            pad: { $0 * Double.random(in: 0.6...1.5, using: &padRNG) }
         ) { "\($0.voltsText) V" }
 
         let percent = drop / Double(volts) * 100
@@ -347,6 +376,7 @@ enum CalcGenerator {
     /// its `inout` generator, and an Optional closure parameter is implicitly
     /// escaping, which the compiler rightly rejects.
     private static func uniqueChoices<T>(from candidates: [T], answer: T,
+                                         using rng: inout RandomNumberGenerator,
                                          pad: (T) -> T,
                                          format: (T) -> String) -> Choices {
         let answerLabel = format(answer)
@@ -365,7 +395,7 @@ enum CalcGenerator {
         var attempts = 0
         while labels.count < choiceCount, attempts < 40 {
             attempts += 1
-            let seed = values.randomElement() ?? answer
+            let seed = values.randomElement(using: &rng) ?? answer
             let candidate = pad(seed)
             let label = format(candidate)
             if seen.insert(label).inserted {
@@ -374,7 +404,7 @@ enum CalcGenerator {
             }
         }
 
-        labels.shuffle()
+        labels.shuffle(using: &rng)
         return Choices(labels: labels, answerIndex: labels.firstIndex(of: answerLabel) ?? 0)
     }
 }
