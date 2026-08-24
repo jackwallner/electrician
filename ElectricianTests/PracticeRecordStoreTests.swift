@@ -128,10 +128,22 @@ final class WhatsNewTests: XCTestCase {
         XCTAssertFalse(WhatsNew.shouldPresent(hasOnboarded: false, defaults: defaults))
     }
 
-    /// A player updating from a build that predates the feature has no stored
-    /// marker at all. That is exactly who the sheet is for.
+    /// Someone updating from a build that predates the feature has no stored
+    /// marker at all. That is exactly who the sheet is for, once there is a
+    /// release to show them.
+    ///
+    /// At 1.0 there is nothing to announce, so `releases` is empty and the
+    /// correct behaviour is to stay silent. Asserting on `currentRelease`
+    /// rather than hardcoding either answer means this test starts enforcing
+    /// the real contract the moment 1.1 adds a release, instead of being a
+    /// false green that has to be remembered later.
     func testShownToAnUpgraderWithNoMarker() {
-        XCTAssertTrue(WhatsNew.shouldPresent(hasOnboarded: true, defaults: defaults))
+        let shouldShow = WhatsNew.shouldPresent(hasOnboarded: true, defaults: defaults)
+        if WhatsNew.currentRelease == nil {
+            XCTAssertFalse(shouldShow, "No release for \(WhatsNew.currentVersion); the sheet must stay closed")
+        } else {
+            XCTAssertTrue(shouldShow, "An upgrader with no marker should see \(WhatsNew.currentVersion) notes")
+        }
     }
 
     func testShownOnlyOnce() {
