@@ -1,0 +1,277 @@
+{
+  "app": "electrician",
+  "display_name": "Electrician Exam Practice 2026",
+  "target": "iphone_69",
+  "copy_contract": "single-header-benefit-story-v3",
+  "market": {
+    "category": "US journeyman and master electrician NEC exam practice",
+    "audience": "Journeyman and master electrician candidates who need faster open-book lookup and more reliable code calculations before a licensing exam",
+    "problem": "An open-book exam still punishes slow article lookup and skipped calculation steps, while generic question dumps do not show what mistake produced a wrong number",
+    "advantage": "Electrician combines article-navigation drills, five endlessly generated calculation shapes, numbered working, named mistake patterns, and free field tools around the 2023 NEC cycle",
+    "competitive_context": "The category is crowded with small question-bank apps that use a 2026 name, but the open SERP leaves room for a focused practice product that teaches lookup speed and calculation reasoning instead of only repeating a fixed bank",
+    "search_intent": [
+      "NEC electrical exam prep 2026",
+      "journeyman electrician exam practice",
+      "master electrician exam prep",
+      "2023 NEC practice",
+      "NEC ampacity practice"
+    ],
+    "proof_points": [
+      {
+        "claim": "The local market research identifies year-suffixed NEC exam searches and an open top SERP for electrician practice apps",
+        "source": "../../ios/aso/practice-app-fingerprint-2026-08-23.md"
+      },
+      {
+        "claim": "The article-match capture makes the open-book lookup task visible as a timed practice decision",
+        "source": "../build/asc-screenshots/02_article_match.png"
+      },
+      {
+        "claim": "The worked-calculation capture shows generated ampacity inputs and four distinct answer traps",
+        "source": "../build/asc-screenshots/04_worked_calc.png"
+      },
+      {
+        "claim": "The home capture shows short practice, readiness, rooms, field tools, and the 2023 NEC edition in one real product surface",
+        "source": "../build/asc-screenshots/05_home.png"
+      }
+    ]
+  },
+  "capture_report": "../build/asc-screenshots/capture-report.json",
+  "theme": {
+    "background": "#f3efe3",
+    "background_2": "#e1d3c0",
+    "ink": "#28211c",
+    "muted": "#75695e",
+    "accent": "#177467",
+    "accent_2": "#d87855",
+    "headline_font": "serif",
+    "body_font": "sans",
+    "icon_source": "../Electrician/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
+  },
+  "capture": {
+    "mode": "command",
+    "lease": "electrician",
+    "project_root": "/Users/jackwallner/electrician",
+    "expected_screenshot_count": 6,
+    "expected_size": [1170, 2532],
+    "rename": [
+      { "pattern": "01_quick_session_*.png", "name": "01_quick_session.png" },
+      { "pattern": "02_article_match_*.png", "name": "02_article_match.png" },
+      { "pattern": "03_ampacity_quiz_*.png", "name": "03_ampacity_quiz.png" },
+      { "pattern": "04_worked_calc_*.png", "name": "04_worked_calc.png" },
+      { "pattern": "05_home_*.png", "name": "05_home.png" },
+      { "pattern": "06_basics_room_*.png", "name": "06_basics_room.png" }
+    ],
+    "command": ["bash", "scripts/capture-screenshots.sh", "{udid}", "{output}"]
+  },
+  "sets": [
+    {
+      "id": "open-book-calculation-practice",
+      "submission": true,
+      "style": "warm-code-practice",
+      "story": {
+        "throughline": "Move from hunting through the NEC to practicing the calculations and traps that decide an open-book exam",
+        "sequence": ["problem", "mechanism", "proof"]
+      },
+      "frames": [
+        {
+          "filename": "01-find-the-right-article-faster.png",
+          "header": "Find the right NEC article faster",
+          "story_role": "problem",
+          "story_focus": "right NEC article faster",
+          "pitch": {
+            "benefit": "Spend the exam finding the rule instead of losing time guessing where it lives",
+            "problem": "Open-book questions are still expensive when the candidate cannot identify the article quickly",
+            "advantage": "Which Article drills recognition from a situation before the candidate opens the code book",
+            "header_problem": "slow lookup",
+            "header_advantage": "right article faster",
+            "search_terms": [
+              "NEC electrical exam prep 2026",
+              "journeyman electrician exam practice"
+            ],
+            "proof": "The literal Which Article screen presents a realistic lookup situation and four article choices"
+          },
+          "source": "../build/asc-screenshots/02_article_match.png",
+          "source_evidence": "../build/asc-screenshots/02_article_match.png",
+          "capture_flow": "repo-command",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 112,
+            "header_size": 170,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "header_margin": 42,
+            "header_bottom_padding": 28,
+            "phone_top": 500,
+            "bottom_margin": 24,
+            "phone_width": 1170
+          }
+        },
+        {
+          "filename": "02-work-the-numbers-step-by-step.png",
+          "header": "Work the numbers step by step",
+          "story_role": "mechanism",
+          "story_focus": "numbers step by step",
+          "pitch": {
+            "benefit": "Build calculation speed from the order of operations, not from memorizing a fixed answer bank",
+            "problem": "A candidate can know the formula and still miss the temperature, conductor-count, or termination step",
+            "advantage": "The Five Shapes generates new calculation inputs and keeps the working visible after the answer",
+            "header_problem": "skipped calculation steps",
+            "header_advantage": "step-by-step working",
+            "search_terms": ["2023 NEC practice", "NEC ampacity practice"],
+            "proof": "The literal calculation screen shows six current-carrying conductors, ambient temperature, material, terminals, and answer traps"
+          },
+          "source": "../build/asc-screenshots/04_worked_calc.png",
+          "source_evidence": "../build/asc-screenshots/04_worked_calc.png",
+          "capture_flow": "repo-command",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 112,
+            "header_size": 170,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "header_margin": 42,
+            "header_bottom_padding": 28,
+            "phone_top": 500,
+            "bottom_margin": 24,
+            "phone_width": 1170
+          }
+        },
+        {
+          "filename": "03-practice-the-mistakes-that-cost-points.png",
+          "header": "Practice the mistakes that cost points",
+          "story_role": "proof",
+          "story_focus": "mistakes that cost points",
+          "pitch": {
+            "benefit": "Rehearse the judgment calls that turn a technically familiar question into a wrong answer",
+            "problem": "Choosing the 90°C column or ignoring the termination cap can look plausible under exam pressure",
+            "advantage": "Named mistake patterns turn common wrong choices into targeted follow-up practice",
+            "header_problem": "plausible wrong answers",
+            "header_advantage": "mistake-specific practice",
+            "search_terms": [
+              "NEC ampacity practice",
+              "master electrician exam prep"
+            ],
+            "proof": "The literal Ampacity Check screen shows the 90°C versus 75°C termination judgment as a four-choice drill"
+          },
+          "source": "../build/asc-screenshots/03_ampacity_quiz.png",
+          "source_evidence": "../build/asc-screenshots/03_ampacity_quiz.png",
+          "capture_flow": "repo-command",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 112,
+            "header_size": 170,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "header_margin": 42,
+            "header_bottom_padding": 28,
+            "phone_top": 500,
+            "bottom_margin": 24,
+            "phone_width": 1170
+          }
+        },
+        {
+          "filename": "04-build-a-daily-code-practice-habit.png",
+          "header": "Build a daily code practice habit",
+          "story_role": "support",
+          "story_focus": "daily code practice habit",
+          "pitch": {
+            "benefit": "Turn a few minutes between jobs into repeatable NEC practice",
+            "problem": "Long study sessions are hard to start when the next exam or code question is weeks away",
+            "advantage": "Quick Session mixes short drills across the covered rooms with visible progress",
+            "header_problem": "hard-to-start study",
+            "header_advantage": "daily practice habit",
+            "search_terms": [
+              "journeyman electrician exam practice",
+              "2023 NEC practice"
+            ],
+            "proof": "The literal Quick Session screen shows a focused ten-question run with a clear prompt and progress"
+          },
+          "source": "../build/asc-screenshots/01_quick_session.png",
+          "source_evidence": "../build/asc-screenshots/01_quick_session.png",
+          "capture_flow": "repo-command",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 112,
+            "header_size": 170,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "header_margin": 42,
+            "header_bottom_padding": 28,
+            "phone_top": 500,
+            "bottom_margin": 24,
+            "phone_width": 1170
+          }
+        },
+        {
+          "filename": "05-see-your-next-practice-at-a-glance.png",
+          "header": "See your next practice at a glance",
+          "story_role": "support",
+          "story_focus": "next practice at a glance",
+          "pitch": {
+            "benefit": "Open the app and know whether to start a short session, review readiness, use a room, or check a field tool",
+            "problem": "A library of disconnected drills leaves the candidate deciding what to do before practice begins",
+            "advantage": "Home puts the next session, readiness signal, rooms, and field tools in one focused lobby",
+            "header_problem": "unclear next step",
+            "header_advantage": "practice at a glance",
+            "search_terms": [
+              "NEC electrical exam prep 2026",
+              "master electrician exam prep"
+            ],
+            "proof": "The literal Home screen shows Quick Session, Practice readiness, Field tools, rooms, and the 2023 NEC edition"
+          },
+          "source": "../build/asc-screenshots/05_home.png",
+          "source_evidence": "../build/asc-screenshots/05_home.png",
+          "capture_flow": "repo-command",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 112,
+            "header_size": 170,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "header_margin": 42,
+            "header_bottom_padding": 28,
+            "phone_top": 500,
+            "bottom_margin": 24,
+            "phone_width": 1170
+          }
+        },
+        {
+          "filename": "06-keep-the-code-path-and-tools-close.png",
+          "header": "Keep the code path and tools close",
+          "story_role": "support",
+          "story_focus": "code path and tools close",
+          "pitch": {
+            "benefit": "Build article fluency in the same app that keeps study calculators ready for field use",
+            "problem": "Exam prep usually disappears after the test, while field calculators rarely teach the code path behind the number",
+            "advantage": "Code Basics teaches how to navigate the book, and Field Tools states the assumptions behind each estimate",
+            "header_problem": "study and field tools split apart",
+            "header_advantage": "code path and tools close",
+            "search_terms": ["2023 NEC practice", "NEC ampacity practice"],
+            "proof": "The literal Code Basics room shows article navigation drills, flashcards, and a direct Which Article practice door"
+          },
+          "source": "../build/asc-screenshots/06_basics_room.png",
+          "source_evidence": "../build/asc-screenshots/06_basics_room.png",
+          "capture_flow": "repo-command",
+          "evidence_status": "canonical",
+          "device": "iphone",
+          "layout": {
+            "header_top": 112,
+            "header_size": 170,
+            "header_min_size": 140,
+            "header_max_lines": 2,
+            "header_margin": 42,
+            "header_bottom_padding": 28,
+            "phone_top": 500,
+            "bottom_margin": 24,
+            "phone_width": 1170
+          }
+        }
+      ]
+    }
+  ]
+}

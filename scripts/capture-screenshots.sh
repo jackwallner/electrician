@@ -54,7 +54,9 @@ for entry in manifest:
         src = stage / att["exportedFileName"]
         if not src.exists() or not name:
             continue
-        stem = pathlib.Path(name).stem
+        # Xcode appends `_0_<uuid>` to attachment names. Strip it so the
+        # required-set check and later ASC sync see the stable test name.
+        stem = pathlib.Path(name).stem.split("_0_")[0]
         shutil.copyfile(src, out / f"{prefix}{stem}{src.suffix}")
         copied += 1
 print(f"wrote {copied} screenshots to {out}")

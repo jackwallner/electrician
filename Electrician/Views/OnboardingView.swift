@@ -1,20 +1,13 @@
 import SwiftUI
 
-/// Onboarding: three value pages, a skill-level question, then the OT710-style
-/// trial step. The primary button keeps IDENTICAL geometry on every page (the
-/// zero-shift rule): the thumb rides Continue the whole way, and on the last
-/// page the same button becomes "Start 7-day free trial", one tap straight
-/// to Apple's confirm. No plan cards here; the full paywall is only a fallback
-/// when products failed to load.
-///
-/// After the trial decision (either way), brand-new players get the How to
-/// Play quick start FIRST, then everyone gets the feature tour, whose finale
-/// runs a real Quick Session. The primer has to come before that session:
-/// answering questions about tiles you haven't met yet is not an onboarding.
-/// Only once the tour is done does `hasOnboarded` flip and Home appear.
+/// Onboarding: three value pages, a candidate target, then the trial step.
+/// The target makes the edition and jurisdiction visible before the first
+/// answer. The trial is optional, and both exits go straight to Home so a
+/// candidate can start practicing before deciding whether to take the tour.
 struct OnboardingView: View {
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var subscriptions: SubscriptionService
+    @EnvironmentObject private var profile: CandidateProfile
     @State private var page = 0
     @State private var purchasing = false
     @State private var showPaywallFallback = false
@@ -63,7 +56,7 @@ struct OnboardingView: View {
                 infoPage(
                     icon: "checkmark.seal.fill",
                     title: "Walk in ready",
-                    body: "Know the small-conductor cap, count current-carrying conductors correctly, and stop losing points to Article 250 vocabulary. At your own pace, no timer required.",
+                    body: "Know the small-conductor cap, count current-carrying conductors correctly, and stop losing points to Article 250 vocabulary. Practice untimed first, then use the timed challenge when you want to rehearse the clock.",
                     givens: []
                 ).tag(2)
                 skillLevelPage.tag(3)
@@ -133,27 +126,35 @@ struct OnboardingView: View {
     ]
 
     private var skillLevelPage: some View {
-        VStack(spacing: 22) {
-            Spacer()
-            Text("Where are you starting from?")
-                .font(Theme.display(30))
-                .foregroundStyle(Theme.ink)
-                .multilineTextAlignment(.center)
-            Text("We'll point you at the right drills.")
-                .font(.subheadline)
-                .foregroundStyle(Theme.inkSecondary)
-            VStack(spacing: 12) {
-                ForEach(skillOptions, id: \.id) { option in
-                    skillCard(option)
+        ScrollView {
+            VStack(spacing: 18) {
+                Text("Set your exam target")
+                    .font(Theme.display(30))
+                    .foregroundStyle(Theme.ink)
+                    .multilineTextAlignment(.center)
+                Text("We will keep the edition and your weak spots visible.")
+                    .font(.subheadline)
+                    .foregroundStyle(Theme.inkSecondary)
+                    .multilineTextAlignment(.center)
+                CandidateProfileFields()
+                    .padding(14)
+                    .themedCard(corner: 18)
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Where are you starting from?")
+                        .font(.headline)
+                        .foregroundStyle(Theme.ink)
+                    ForEach(skillOptions, id: \.id) { option in
+                        skillCard(option)
+                    }
                 }
+                Text(skillLevel.isEmpty ? "Pick a level to continue." : "You can change this later in Exam Target.")
+                    .font(.footnote)
+                    .foregroundStyle(Theme.inkSecondary)
             }
-            Text(skillLevel.isEmpty ? "Pick one to continue." : " ")
-                .font(.footnote)
-                .foregroundStyle(Theme.inkSecondary)
-            Spacer()
-            Spacer()
+            .padding(.horizontal, 24)
+            .padding(.vertical, 20)
         }
-        .padding(.horizontal, 28)
+        .scrollDismissesKeyboard(.immediately)
     }
 
     private func skillCard(_ option: SkillOption) -> some View {
@@ -303,8 +304,8 @@ struct OnboardingView: View {
                 }
                 .primaryCTA()
             }
-            .disabled(purchasing || (page == skillPage && skillLevel.isEmpty))
-            .opacity(page == skillPage && skillLevel.isEmpty ? 0.5 : 1)
+            .disabled(purchasing || (page == skillPage && (!profile.canCompleteSetup || skillLevel.isEmpty)))
+            .opacity(page == skillPage && (!profile.canCompleteSetup || skillLevel.isEmpty) ? 0.5 : 1)
             // Legal footer slot, reserved on every page.
             HStack(spacing: 14) {
                 Link("Terms", destination: PaywallLinks.terms)
@@ -383,11 +384,11 @@ struct OnboardingView: View {
         }
     }
 
-    /// Both exits from the trial page land here. Brand-new players take the
-    /// primer first so the tour's closing Quick Session isn't the first time
-    /// they see a tile; everyone else goes straight to the tour.
+    /// Both exits from the trial page land on Home. The primer remains one tap
+    /// away for new candidates, while experienced candidates can answer first.
     private func startTour() {
-        stage = skillLevel == "new" ? .howToPlay : .tour
+        profile.completeSetup()
+        finish()
     }
 
     /// A successful purchase in the products-failed fallback must rejoin the
@@ -403,6 +404,7 @@ struct OnboardingView: View {
         // nothing "new" to tell them. Stamping the baseline here is what keeps
         // the update sheet off a fresh install.
         WhatsNew.markCurrentAsBaseline()
+        profile.completeSetup()
         progress.hasOnboarded = true
     }
 }

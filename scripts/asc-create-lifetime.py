@@ -26,7 +26,7 @@ PRODUCT_ID = "com.jackwallner.electrician.lifetime"
 PRICE = "89.99"
 NAME = "Pro Lifetime"
 DISPLAY_NAME = "Electrician+ Lifetime"
-DESCRIPTION = "All rooms and drills, forever"
+DESCRIPTION = "All covered rooms and drills, one-time purchase"
 
 BASE = "https://api.appstoreconnect.apple.com"
 
@@ -93,7 +93,8 @@ def main() -> None:
 
     # 2. en-US localization.
     locs = c.get(f"/v2/inAppPurchases/{iap_id}/inAppPurchaseLocalizations")["data"]
-    if not any(l["attributes"]["locale"] == "en-US" for l in locs):
+    loc = next((l for l in locs if l["attributes"]["locale"] == "en-US"), None)
+    if not loc:
         c.post("/v1/inAppPurchaseLocalizations", {
             "data": {
                 "type": "inAppPurchaseLocalizations",
@@ -108,6 +109,15 @@ def main() -> None:
             }
         })
         print("created en-US localization")
+    elif loc["attributes"].get("description") != DESCRIPTION or loc["attributes"].get("name") != DISPLAY_NAME:
+        c.request("PATCH", f"/v2/inAppPurchaseLocalizations/{loc['id']}", {
+            "data": {
+                "type": "inAppPurchaseLocalizations",
+                "id": loc["id"],
+                "attributes": {"name": DISPLAY_NAME, "description": DESCRIPTION},
+            }
+        })
+        print("updated en-US localization")
     else:
         print("localization exists")
 

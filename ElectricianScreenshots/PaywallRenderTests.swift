@@ -71,7 +71,25 @@ final class PaywallRenderTests: XCTestCase {
             guard tap("Continue") else { break }
             settle(0.8)
         }
-        // Skill page gates Continue until a level is picked.
+        // Target setup gates Continue until a level and jurisdiction are picked.
+        if !tap("Journeyman") {
+            problems.append("could not pick a license track")
+        }
+        let jurisdiction = app.textFields.firstMatch
+        if jurisdiction.waitForExistence(timeout: 4) {
+            jurisdiction.tap()
+            jurisdiction.typeText("Test State")
+            let done = app.keyboards.buttons["Done"].firstMatch
+            if done.waitForExistence(timeout: 2) {
+                done.tap()
+            } else {
+                app.keyboards.buttons["return"].firstMatch.tap()
+            }
+        } else {
+            problems.append("could not find jurisdiction field")
+        }
+        app.swipeUp()
+        settle(0.6)
         if !tap("In the apprenticeship") {
             problems.append("could not pick a skill level")
         }
@@ -95,7 +113,13 @@ final class PaywallRenderTests: XCTestCase {
             "-subscription.localProOverride", "NO",
         ]
         if onboarded {
-            app.launchArguments += ["-electrician.skillLevel", "some"]
+            app.launchArguments += [
+                "-electrician.skillLevel", "some",
+                "-candidate.licenseTrack", "journeyman",
+                "-candidate.jurisdiction", "Test State",
+                "-candidate.hasSelectedTrack", "YES",
+                "-candidate.setupComplete", "YES",
+            ]
         }
         app.launch()
         _ = app.wait(for: .runningForeground, timeout: 30)

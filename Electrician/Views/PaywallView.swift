@@ -11,7 +11,7 @@ enum PaywallPlan: String, CaseIterable {
     func ctaTitle(trial: String?) -> String {
         guard self != .lifetime else { return "Unlock \(Membership.name) Forever" }
         guard let trial else { return "Subscribe to \(Membership.name)" }
-        return "Start \(trial) Free"
+        return "Start \(trial) free"
     }
 
     var packageType: PackageType {
@@ -27,7 +27,7 @@ enum PaywallLinks {
     /// Apple's standard EULA. If the app ever ships a custom EULA, this is the
     /// one place to swap it; App Review requires a functional Terms link here.
     static let terms = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
-    static let privacy = URL(string: "https://jackwallner.github.io/electrician/privacy-policy")!
+    static let privacy = URL(string: "https://jackwallner.com/electrician/privacy-policy")!
     static let manageSubscriptions = URL(string: "https://apps.apple.com/account/subscriptions")!
 }
 
@@ -52,10 +52,11 @@ struct PaywallContent: View {
                     .foregroundStyle(Theme.inkSecondary)
                     .multilineTextAlignment(.center)
             }
-            // Leads with the endless modes on purpose. Selling "more drills"
-            // is what let a motivated player finish the membership in two
-            // sittings; what they are actually buying now is practice that
-            // does not end.
+            // Put the decision in view before the longer value explanation.
+            // The lifetime amount used to sit under the sticky purchase footer
+            // on a phone-sized sheet, which made the least obvious plan the
+            // hardest one to compare.
+            planCards
             VStack(alignment: .leading, spacing: 9) {
                 benefit("Code Minute: the shared five-question daily challenge")
                 benefit("Exam Warm-Up: a short session built around your weak spots")
@@ -69,7 +70,6 @@ struct PaywallContent: View {
                 benefit("Extra practice sets in every room, plus the worked calculations")
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            planCards
         }
     }
 

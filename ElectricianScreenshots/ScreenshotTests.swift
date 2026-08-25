@@ -29,6 +29,11 @@ final class ScreenshotTests: XCTestCase {
             "-progress.hasOnboarded", "YES",
             "-electrician.hasReadPrimer", "YES",
             "-electrician.skillLevel", "some",
+            "-candidate.licenseTrack", "journeyman",
+            "-candidate.jurisdiction", "Test State",
+            "-candidate.hasSelectedTrack", "YES",
+            "-candidate.setupComplete", "YES",
+            "-subscription.localProOverride", "YES",
         ]
         // The What's New sheet fires on the first launch after a version bump
         // and covers Home. Marking the CURRENT version as already seen is what
@@ -62,8 +67,20 @@ final class ScreenshotTests: XCTestCase {
         }
         home()
 
-        if open("Worked Calculations"), open("The Five Shapes") {
-            capture("04_worked_calc")
+        // Re-launch before the paid room so a stale NavigationStack destination
+        // cannot leave an earlier room in the accessibility tree.
+        restartAtHome()
+        app.swipeUp()
+        settle()
+
+        if open("Worked Calculations") {
+            // The room header and first grid row fill the initial viewport on
+            // smaller phones. The calculation drill is lower in the grid.
+            app.swipeUp()
+            settle()
+            if open("The Five Shapes") {
+                capture("04_worked_calc")
+            }
         }
         home()
 
@@ -93,6 +110,14 @@ final class ScreenshotTests: XCTestCase {
         guard done.waitForExistence(timeout: 3) else { return }
         done.tap()
         settle()
+    }
+
+    private func restartAtHome() {
+        app.terminate()
+        app.launch()
+        _ = app.wait(for: .runningForeground, timeout: 30)
+        settle()
+        dismissWhatsNew()
     }
 
     /// Taps the first hittable element whose label starts with `label`.
@@ -139,7 +164,11 @@ final class ScreenshotTests: XCTestCase {
     }
 
     private var atHome: Bool {
-        app.staticTexts.matching(NSPredicate(format: "label == %@", "THE ROOMS")).firstMatch.exists
+        // NavigationStack keeps parts of the previous screen in the query
+        // tree during a pop. The Home gear is the reliable visible root
+        // marker, while a room can still expose Home's section text.
+        let settings = app.buttons["Settings"].firstMatch
+        return settings.exists && settings.isHittable
     }
 
     /// Let the push transition and any entrance animation finish before the

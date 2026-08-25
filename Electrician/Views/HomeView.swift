@@ -13,6 +13,7 @@ struct HomeView: View {
     @EnvironmentObject private var subscriptions: SubscriptionService
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var profile: CandidateProfile
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @StateObject private var records = PracticeRecordStore.shared
     @StateObject private var minuteStore = CodeMinuteStore.shared
@@ -121,6 +122,8 @@ struct HomeView: View {
             VStack(spacing: 14) {
                 header
                 todaySession
+                if !profile.setupComplete { candidateTargetCard }
+                practiceReadinessCard
                 if showsPrimerCard { howToPlayCard }
                 trainingSection
                 fieldToolsSection
@@ -135,6 +138,8 @@ struct HomeView: View {
     private var todayColumn: some View {
         VStack(spacing: 14) {
             todaySession
+            if !profile.setupComplete { candidateTargetCard }
+            practiceReadinessCard
             if showsPrimerCard { howToPlayCard }
             trainingSection
             fieldToolsSection
@@ -239,7 +244,7 @@ struct HomeView: View {
                 Text("Electrician")
                     .font(Theme.display(32))
                     .foregroundStyle(Theme.ink)
-                Text("Open book. Find it fast.")
+                Text("\(NECTables.edition) navigation and calculations")
                     .font(.subheadline)
                     .foregroundStyle(Theme.inkSecondary)
             }
@@ -375,9 +380,77 @@ struct HomeView: View {
         .buttonStyle(PressableCardStyle())
     }
 
+    private var candidateTargetCard: some View {
+        NavigationLink {
+            CandidateProfileView()
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "person.text.rectangle.fill")
+                    .foregroundStyle(Theme.jade)
+                    .frame(width: 38, height: 38)
+                    .background(Theme.jade.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Set your exam target")
+                        .font(.headline)
+                        .foregroundStyle(Theme.ink)
+                    Text("Add your license level and jurisdiction for clearer progress")
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                }
+                Spacer(minLength: 4)
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(Theme.inkTertiary)
+            }
+            .padding(12)
+            .themedCard(corner: 16)
+        }
+        .buttonStyle(PressableCardStyle())
+    }
+
+    private var practiceReadinessCard: some View {
+        NavigationLink {
+            PracticeReadinessView()
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .foregroundStyle(Theme.coral)
+                    .frame(width: 38, height: 38)
+                    .background(Theme.coral.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Practice readiness")
+                        .font(.headline)
+                        .foregroundStyle(Theme.ink)
+                    Text(readinessSummary)
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                }
+                Spacer(minLength: 4)
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(Theme.inkTertiary)
+            }
+            .padding(12)
+            .themedCard(corner: 16)
+        }
+        .buttonStyle(PressableCardStyle())
+    }
+
+    private var readinessSummary: String {
+        let availableIDs = Set(DrillLibrary.rooms.filter { $0.isFree || subscriptions.isPro }.map(\.id))
+        let practiced = records.roomStats().filter { availableIDs.contains($0.id) }.count
+        let metrics = PracticeReadinessMetrics(
+            attempts: records.totalAttempts,
+            correct: records.totalCorrect,
+            practicedRooms: practiced,
+            availableRooms: availableIDs.count
+        )
+        return metrics.attempts == 0 ? "Start a 10-question baseline" : "\(metrics.title) · \(metrics.accuracyText) accuracy"
+    }
+
     private var fieldToolsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("ON THE JOB")
+            Text("FIELD TOOLS")
                 .font(.caption.weight(.heavy))
                 .kerning(1.4)
                 .foregroundStyle(Theme.inkSecondary)
@@ -395,7 +468,7 @@ struct HomeView: View {
                         Text("Field tools")
                             .font(.headline)
                             .foregroundStyle(Theme.ink)
-                        Text("Ampacity, conduit fill, voltage drop, Ohm's law")
+                        Text("Study calculators with stated assumptions")
                             .font(.caption)
                             .foregroundStyle(Theme.inkSecondary)
                     }
@@ -647,7 +720,7 @@ struct HomeView: View {
                     Text("Get \(Membership.name)")
                         .font(.headline)
                         .foregroundStyle(Theme.ink)
-                    Text("Code Minute, Exam Warm-Up, endless modes, and \(lockedDrillCount) more drills across every room")
+                    Text("Targeted review, timed practice, and \(lockedDrillCount) more drills across the focused rooms")
                         .font(.caption)
                         .foregroundStyle(Theme.inkSecondary)
                         .multilineTextAlignment(.leading)

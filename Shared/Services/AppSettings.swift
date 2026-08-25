@@ -87,13 +87,8 @@ final class AppSettings: ObservableObject {
 
     /// Confetti, the full-screen flash, and the streak banners.
     ///
-    /// On by default, because the habit loop is real and it works. Off is here
-    /// because this audience is not the audience the shell was built for: a
-    /// working electrician studying at 10pm before a 6am start does not
-    /// necessarily want the screen to flash green every time they are right,
-    /// and "this app is for kids" is a thing a professional says about a
-    /// product once and never revisits. Haptics and sound keep their own
-    /// switches; this one is only the visual celebration.
+    /// Off by default for a working electrician studying at night. Haptics and
+    /// sound keep their own switches; this one is only the visual celebration.
     @Published var celebrationsEnabled: Bool {
         didSet { defaults.set(celebrationsEnabled, forKey: Keys.celebrations) }
     }
@@ -157,7 +152,7 @@ final class AppSettings: ObservableObject {
         appearance = Appearance(rawValue: defaults.string(forKey: Keys.appearance) ?? "") ?? .light
         hapticsEnabled = defaults.object(forKey: Keys.haptics) as? Bool ?? true
         soundEnabled = defaults.object(forKey: Keys.sound) as? Bool ?? true
-        celebrationsEnabled = defaults.object(forKey: Keys.celebrations) as? Bool ?? true
+        celebrationsEnabled = defaults.object(forKey: Keys.celebrations) as? Bool ?? false
         reminderEnabled = defaults.bool(forKey: Keys.reminderEnabled)
         let hour = defaults.object(forKey: Keys.reminderHour) as? Int ?? 9
         let minute = defaults.object(forKey: Keys.reminderMinute) as? Int ?? 0

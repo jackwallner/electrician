@@ -7,6 +7,7 @@ struct ElectricianApp: App {
     @StateObject private var progress = ProgressStore.shared
     @StateObject private var settings = AppSettings.shared
     @StateObject private var router = AppRouter.shared
+    @StateObject private var candidateProfile = CandidateProfile.shared
 
     var body: some Scene {
         WindowGroup {
@@ -15,6 +16,7 @@ struct ElectricianApp: App {
                 .environmentObject(progress)
                 .environmentObject(settings)
                 .environmentObject(router)
+                .environmentObject(candidateProfile)
                 .preferredColorScheme(settings.appearance.colorScheme)
                 .onAppear {
                     subscriptions.start()

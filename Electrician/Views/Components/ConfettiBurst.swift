@@ -30,9 +30,9 @@ struct ConfettiBurst: View {
     /// Gated centrally rather than at each of the seven call sites, because a
     /// celebration that one screen forgot to check is exactly the one a reader
     /// who turned it off will find. Reads the same key `AppSettings` writes,
-    /// defaulting on, the way `Haptics` does.
+    /// defaulting off for the professional audience.
     static var celebrationsEnabled: Bool {
-        UserDefaults.standard.object(forKey: "settings.celebrations") as? Bool ?? true
+        UserDefaults.standard.object(forKey: "settings.celebrations") as? Bool ?? false
     }
 
     private static let colors: [Color] = [

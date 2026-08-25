@@ -8,7 +8,7 @@
       "internalID": "21750006",
       "localizations": [
         {
-          "description": "All rooms and drills, forever",
+          "description": "All covered rooms and drills, one-time purchase",
           "displayName": "Electrician Pro Lifetime",
           "locale": "en_US"
         }
@@ -46,7 +46,7 @@
           },
           "localizations": [
             {
-              "description": "All rooms and drills, billed monthly",
+              "description": "All covered rooms and drills, billed monthly",
               "displayName": "Electrician Pro Monthly",
               "locale": "en_US"
             }
@@ -71,7 +71,7 @@
           },
           "localizations": [
             {
-              "description": "All rooms and drills, billed yearly",
+              "description": "All covered rooms and drills, billed yearly",
               "displayName": "Electrician Pro Yearly",
               "locale": "en_US"
             }

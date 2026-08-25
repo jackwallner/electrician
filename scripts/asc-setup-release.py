@@ -26,7 +26,7 @@ SUBS = [
         "period": "ONE_MONTH",
         "price": "9.99",
         "level": 2,
-        "desc": "All rooms and drills, billed monthly.",
+        "desc": "All covered rooms and drills, billed monthly.",
         "trial": True,
     },
     {
@@ -35,11 +35,11 @@ SUBS = [
         "period": "ONE_YEAR",
         "price": "39.99",
         "level": 1,
-        "desc": "All rooms and drills, billed yearly.",
+        "desc": "All covered rooms and drills, billed yearly.",
         "trial": True,
     },
 ]
-REVIEW_NOTE = "Unlocks extra drill sets in every room, Code Minute, Exam Warm-Up, Endless Practice, timed challenge, and worked calculations. Field tools stay free."
+REVIEW_NOTE = "Unlocks the two paid rooms, extra drill sets in every covered room, Code Minute, Exam Warm-Up, Endless Practice, and the timed challenge. Field tools stay free."
 
 
 def main() -> None:
@@ -172,7 +172,8 @@ def main() -> None:
         sub_id = sub["id"]
 
         locs = c.get(f"/subscriptions/{sub_id}/subscriptionLocalizations")["data"]
-        if not any(l["attributes"]["locale"] == "en-US" for l in locs):
+        loc = next((l for l in locs if l["attributes"]["locale"] == "en-US"), None)
+        if not loc:
             c.post(
                 "/subscriptionLocalizations",
                 {
@@ -184,6 +185,18 @@ def main() -> None:
                 },
             )
             print("  localization added")
+        elif loc["attributes"].get("description") != spec["desc"] or loc["attributes"].get("name") != spec["name"]:
+            c.patch(
+                f"/subscriptionLocalizations/{loc['id']}",
+                {
+                    "data": {
+                        "type": "subscriptionLocalizations",
+                        "id": loc["id"],
+                        "attributes": {"name": spec["name"], "description": spec["desc"]},
+                    }
+                },
+            )
+            print("  localization updated")
 
         try:
             c.get(f"/subscriptions/{sub_id}/subscriptionAvailability")

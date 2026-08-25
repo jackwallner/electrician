@@ -13,7 +13,9 @@ import SwiftUI
 /// already keeping both.
 struct StatsView: View {
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var subscriptions: SubscriptionService
     @StateObject private var records = PracticeRecordStore.shared
+    @State private var showPaywall = false
 
     private var roomStats: [PracticeRecordStore.RoomStat] { records.roomStats() }
     private var skillStats: [PracticeRecordStore.RoomStat] { records.skillStats() }
@@ -43,6 +45,9 @@ struct StatsView: View {
         .background(Theme.background)
         .navigationTitle("Your Progress")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(source: "electrician_stats_mistakes")
+        }
     }
 
     // MARK: - Cards
@@ -208,6 +213,25 @@ struct StatsView: View {
                 .font(.caption2)
                 .foregroundStyle(Theme.inkTertiary)
                 .padding(.top, 2)
+            if subscriptions.isPro {
+                NavigationLink {
+                    PracticeRunView(mode: .review, items: targetedPracticeItems)
+                } label: {
+                    Label("Practice these traps now", systemImage: "play.fill")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(Theme.jade)
+                }
+                .padding(.top, 2)
+            } else {
+                Button {
+                    showPaywall = true
+                } label: {
+                    Label("Unlock targeted practice", systemImage: "lock.fill")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(Theme.jade)
+                }
+                .padding(.top, 2)
+            }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -258,5 +282,18 @@ struct StatsView: View {
         if fraction >= 0.8 { return Theme.rightGreen }
         if fraction >= 0.6 { return Theme.gold }
         return Theme.coral
+    }
+
+    private var targetedPracticeItems: [QuickItem] {
+        let due = SessionBuilder.reviewSession(
+            ids: records.reviewQueue(),
+            includePro: subscriptions.isPro
+        )
+        let patterns = records.outstandingMistakes()
+        let targeted = EndlessPractice.targetedItems(
+            for: patterns,
+            count: min(patterns.count * 2, max(0, 12 - due.count))
+        )
+        return due + targeted
     }
 }

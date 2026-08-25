@@ -6,6 +6,7 @@ struct SettingsView: View {
     @EnvironmentObject private var subscriptions: SubscriptionService
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var progress: ProgressStore
+    @EnvironmentObject private var profile: CandidateProfile
     @Environment(\.dismiss) private var dismiss
     @Environment(\.requestReview) private var requestReview
     @State private var showPaywall = false
@@ -19,6 +20,7 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 appearanceSection
+                examTargetSection
                 practiceSection
                 proSection
                 dataSection
@@ -114,6 +116,27 @@ struct SettingsView: View {
                 } label: {
                     Label("Exam Warm-Up", systemImage: "person.2.fill")
                 }
+            }
+        }
+    }
+
+    private var examTargetSection: some View {
+        Section("Exam Target") {
+            NavigationLink {
+                CandidateProfileView()
+            } label: {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(profile.targetSummary)
+                        .foregroundStyle(Theme.ink)
+                    Text("\(profile.editionSummary) study set")
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                }
+            }
+            NavigationLink {
+                PracticeReadinessView()
+            } label: {
+                Label("Practice Readiness", systemImage: "chart.line.uptrend.xyaxis")
             }
         }
     }

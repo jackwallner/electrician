@@ -112,9 +112,9 @@ struct DrillCompleteView: View {
     private var headline: String {
         guard let score else { return "Session complete" }
         let fraction = Double(score) / Double(max(total, 1))
-        if fraction >= 1 { return "Clean sweep" }
-        if fraction >= 0.7 { return "Solid run" }
-        return "Worth another pass"
+        if fraction >= 1 { return "All correct" }
+        if fraction >= 0.7 { return "Good progress" }
+        return "Review the misses"
     }
 
     private var subheadline: String {
