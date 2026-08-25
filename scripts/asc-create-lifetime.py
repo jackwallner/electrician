@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Create the Pro Lifetime non-consumable in App Store Connect.
 
-Creates com.jackwallner.electrician.lifetime, adds the en-US localization, sets a
-$29.99 USA-based price schedule (other territories auto-equalize from the base
+Creates com.jackwallner.electrician.lifetime, adds the en-US localization, sets an
+$89.99 USA-based price schedule (other territories auto-equalize from the base
 territory), and makes it available in all territories. Idempotent-ish: skips
 steps whose object already exists. Review screenshot + submission happen with
 the next app version.
@@ -23,9 +23,9 @@ import asc_lib
 
 BUNDLE = "com.jackwallner.electrician"
 PRODUCT_ID = "com.jackwallner.electrician.lifetime"
-PRICE = "49.99"
+PRICE = "89.99"
 NAME = "Pro Lifetime"
-DISPLAY_NAME = "Electrician Pro Lifetime"
+DISPLAY_NAME = "Electrician+ Lifetime"
 DESCRIPTION = "All rooms and drills, forever"
 
 BASE = "https://api.appstoreconnect.apple.com"
@@ -49,6 +49,17 @@ class Client:
 
     def get(self, path: str) -> dict:
         return self.request("GET", path)
+
+    def exists(self, path: str) -> bool:
+        """ASC answers an unset to-one relationship with a 404, not an empty
+        payload, so a missing price schedule or availability record raises
+        rather than returning {"data": None}."""
+        try:
+            return bool(self.get(path).get("data"))
+        except RuntimeError as e:
+            if "404" in str(e):
+                return False
+            raise
 
     def post(self, path: str, body: dict) -> dict:
         return self.request("POST", path, body)
@@ -101,51 +112,58 @@ def main() -> None:
         print("localization exists")
 
     # 3. Price schedule based on USA (other territories equalize).
-    points = []
-    path = f"/v2/inAppPurchases/{iap_id}/pricePoints?filter[territory]=USA&limit=200"
-    while path:
-        d = c.get(path)
-        points += d["data"]
-        nxt = d.get("links", {}).get("next")
-        path = nxt.replace(BASE, "") if nxt else None
-    point = next(p for p in points if p["attributes"]["customerPrice"] == PRICE)
-    c.post("/v1/inAppPurchasePriceSchedules", {
-        "data": {
-            "type": "inAppPurchasePriceSchedules",
-            "relationships": {
-                "inAppPurchase": {"data": {"type": "inAppPurchases", "id": iap_id}},
-                "baseTerritory": {"data": {"type": "territories", "id": "USA"}},
-                "manualPrices": {"data": [{"type": "inAppPurchasePrices", "id": "${price1}"}]},
-            },
-        },
-        "included": [{
-            "id": "${price1}",
-            "type": "inAppPurchasePrices",
-            "attributes": {"startDate": None, "endDate": None},
-            "relationships": {
-                "inAppPurchasePricePoint": {
-                    "data": {"type": "inAppPurchasePricePoints", "id": point["id"]}
+    if c.exists(f"/v2/inAppPurchases/{iap_id}/iapPriceSchedule"):
+        print("price schedule exists")
+    else:
+        points = []
+        path = f"/v2/inAppPurchases/{iap_id}/pricePoints?filter[territory]=USA&limit=200"
+        while path:
+            d = c.get(path)
+            points += d["data"]
+            nxt = d.get("links", {}).get("next")
+            path = nxt.replace(BASE, "") if nxt else None
+        point = next(p for p in points if p["attributes"]["customerPrice"] == PRICE)
+        c.post("/v1/inAppPurchasePriceSchedules", {
+            "data": {
+                "type": "inAppPurchasePriceSchedules",
+                "relationships": {
+                    "inAppPurchase": {"data": {"type": "inAppPurchases", "id": iap_id}},
+                    "baseTerritory": {"data": {"type": "territories", "id": "USA"}},
+                    "manualPrices": {"data": [{"type": "inAppPurchasePrices", "id": "${price1}"}]},
                 },
             },
-        }],
-    })
-    print(f"price schedule set: USA {PRICE}")
+            "included": [{
+                "id": "${price1}",
+                "type": "inAppPurchasePrices",
+                "attributes": {"startDate": None, "endDate": None},
+                "relationships": {
+                    "inAppPurchasePricePoint": {
+                        "data": {"type": "inAppPurchasePricePoints", "id": point["id"]}
+                    },
+                },
+            }],
+        })
+        print(f"price schedule set: USA {PRICE}")
 
     # 4. Available everywhere, including future territories.
-    terrs = asc_lib.list_all(v1, "/territories?limit=200")
-    c.post("/v1/inAppPurchaseAvailabilities", {
-        "data": {
-            "type": "inAppPurchaseAvailabilities",
-            "attributes": {"availableInNewTerritories": True},
-            "relationships": {
-                "inAppPurchase": {"data": {"type": "inAppPurchases", "id": iap_id}},
-                "availableTerritories": {
-                    "data": [{"type": "territories", "id": t["id"]} for t in terrs]
+    if c.exists(f"/v2/inAppPurchases/{iap_id}/inAppPurchaseAvailability"):
+        print("availability exists")
+    else:
+        terrs = asc_lib.list_all(v1, "/territories?limit=200")
+        c.post("/v1/inAppPurchaseAvailabilities", {
+            "data": {
+                "type": "inAppPurchaseAvailabilities",
+                "attributes": {"availableInNewTerritories": True},
+                "relationships": {
+                    "inAppPurchase": {"data": {"type": "inAppPurchases", "id": iap_id}},
+                    "availableTerritories": {
+                        "data": [{"type": "territories", "id": t["id"]} for t in terrs]
+                    },
                 },
-            },
-        }
-    })
-    print(f"availability set: {len(terrs)} territories")
+            }
+        })
+        print(f"availability set: {len(terrs)} territories")
+
     print("done — needs review screenshot + submission with next app version")
 
 

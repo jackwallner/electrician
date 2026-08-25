@@ -4,6 +4,10 @@ monthly/yearly subs with prices + 1-week free trials (all territories),
 localizations, categories, and the age-rating questionnaire.
 
 Idempotent: safe to re-run; existing pieces are skipped.
+
+This only sets the USA price row. Subscriptions do not equalize from it, so
+follow with asc-equalize-sub-prices.py and then asc-finish-products.py
+(review screenshot) before anything reaches READY_TO_SUBMIT.
 """
 from __future__ import annotations
 
@@ -18,17 +22,19 @@ GROUP_NAME = "Pro"
 SUBS = [
     {
         "productId": "com.jackwallner.electrician.monthly",
-        "name": "Electrician Pro Monthly",
+        "name": "Electrician+ Monthly",
         "period": "ONE_MONTH",
-        "price": "4.99",
+        "price": "9.99",
+        "level": 2,
         "desc": "All rooms and drills, billed monthly.",
         "trial": True,
     },
     {
         "productId": "com.jackwallner.electrician.yearly",
-        "name": "Electrician Pro Yearly",
+        "name": "Electrician+ Yearly",
         "period": "ONE_YEAR",
-        "price": "19.99",
+        "price": "39.99",
+        "level": 1,
         "desc": "All rooms and drills, billed yearly.",
         "trial": True,
     },
@@ -56,13 +62,12 @@ def main() -> None:
                     "id": info["id"],
                     "relationships": {
                         "primaryCategory": {"data": {"type": "appCategories", "id": "EDUCATION"}},
-                        "secondaryCategory": {"data": {"type": "appCategories", "id": "GAMES"}},
-                        "secondarySubcategoryOne": {"data": {"type": "appCategories", "id": "GAMES_BOARD"}},
+                        "secondaryCategory": {"data": {"type": "appCategories", "id": "REFERENCE"}},
                     },
                 }
             },
         )
-        print("categories set (EDUCATION / GAMES > BOARD)")
+        print("categories set (EDUCATION / REFERENCE)")
         decl = c.get(f"/appInfos/{info['id']}/ageRatingDeclaration")["data"]
         age_attrs = {
             "advertising": False,
@@ -154,7 +159,7 @@ def main() -> None:
                             "productId": spec["productId"],
                             "subscriptionPeriod": spec["period"],
                             "familySharable": False,
-                            "groupLevel": 1,
+                            "groupLevel": spec["level"],
                             "reviewNote": REVIEW_NOTE,
                         },
                         "relationships": {
@@ -225,7 +230,7 @@ def main() -> None:
                     }
                 },
             )
-            print(f"  price set ${spec['price']} (USA base, auto-equalized)")
+            print(f"  price set ${spec['price']} (USA only)")
 
         if spec["trial"]:
             existing_offers = asc_lib.list_all(
@@ -259,6 +264,9 @@ def main() -> None:
                 print(f"  1-week free trial added in {len(missing)} territories")
 
     print("done")
+    print("NOTE: subscription prices do NOT equalize from the USA row. Run")
+    print("      scripts/asc-equalize-sub-prices.py or both subs stay at")
+    print("      MISSING_METADATA and StoreKit never serves them.")
 
 
 if __name__ == "__main__":
