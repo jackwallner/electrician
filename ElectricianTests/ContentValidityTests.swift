@@ -413,6 +413,7 @@ final class ContentValidityTests: XCTestCase {
         }
         copy += CodeArticle.allCases.flatMap { [$0.displayName, $0.shortName, $0.howToSpot, $0.citation] }
         copy += PracticeSkill.allCases.flatMap { [$0.title, $0.subtitle] }
+        copy += ShellCopy.all
         return copy
     }
 

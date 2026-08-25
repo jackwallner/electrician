@@ -46,7 +46,7 @@ final class PaywallRenderTests: XCTestCase {
             attachTree("paywall_missing")
             return
         }
-        settle()
+        settle(2.5)
         capture("paywall_plans")
         attachTree("paywall")
     }
@@ -72,7 +72,7 @@ final class PaywallRenderTests: XCTestCase {
             settle(0.8)
         }
         // Skill page gates Continue until a level is picked.
-        if !tap("Know the basics") {
+        if !tap("In the apprenticeship") {
             problems.append("could not pick a skill level")
         }
         settle(0.5)

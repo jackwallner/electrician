@@ -168,8 +168,8 @@ final class AppSettings: ObservableObject {
         center.removePendingNotificationRequests(withIdentifiers: [Self.reminderID])
 
         let content = UNMutableNotificationContent()
-        content.title = "Time for a quick drill"
-        content.body = "Five minutes of practice keeps your Charleston calm and your rack reading sharp."
+        content.title = ShellCopy.DailyReminder.title
+        content.body = ShellCopy.DailyReminder.body
         content.sound = .default
 
         var parts = Calendar.current.dateComponents([.hour, .minute], from: reminderTime)
@@ -203,8 +203,8 @@ final class AppSettings: ObservableObject {
         center.removePendingNotificationRequests(withIdentifiers: [Self.gameNightReminderID])
 
         let content = UNMutableNotificationContent()
-        content.title = "Your warm-up is ready"
-        content.body = "Five personalized minutes now can make the table feel calmer later."
+        content.title = ShellCopy.ExamWarmupReminder.title
+        content.body = ShellCopy.ExamWarmupReminder.body
         content.sound = .default
         content.userInfo = [AppNotification.routeKey: AppNotification.gameNightPrepValue]
 

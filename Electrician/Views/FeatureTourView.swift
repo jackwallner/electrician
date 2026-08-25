@@ -111,7 +111,7 @@ struct FeatureTourView: View {
             TourPage(
                 eyebrow: "THE ROOMS",
                 title: "Four rooms, four skills",
-                body: "Home is the lobby. Each room holds its own drills: meet the tiles, read the card, run the Charleston, play the table. All four beginner rooms are free, forever.",
+                body: ShellCopy.Tour.roomsBody,
                 hero: AnyView(roomsHero)
             ),
             TourPage(
@@ -131,7 +131,7 @@ struct FeatureTourView: View {
                 : TourPage(
                     eyebrow: "BEHIND THE GOLD DOOR",
                     title: "\(Membership.name) adds more of it",
-                    body: "Code Minute gives every member the same daily challenge, Exam Warm-Up targets your weak spots before you play, and Endless Practice never runs out. Nothing you have now goes away. Unlock any time from Home or Settings.",
+                    body: ShellCopy.Tour.proLockedBody,
                     hero: AnyView(proHero(locked: true)),
                     accentGold: true
                 ),

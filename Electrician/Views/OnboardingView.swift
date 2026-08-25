@@ -209,9 +209,9 @@ struct OnboardingView: View {
                 .foregroundStyle(Theme.ink)
                 .multilineTextAlignment(.center)
             VStack(alignment: .leading, spacing: 12) {
-                trialBenefit("Every beginner room is free, forever")
+                trialBenefit(ShellCopy.Onboarding.freeRoomsBenefit)
                 trialBenefit("Code Minute and a personalized Exam Warm-Up")
-                trialBenefit("Endless Practice deals a fresh rack every time")
+                trialBenefit("Endless Practice deals a fresh problem every time")
                 trialBenefit("Fix My Mistakes brings back what you miss")
                 trialBenefit("Extra sets in all four rooms, plus the worked calculations")
             }

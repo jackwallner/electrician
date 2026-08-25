@@ -14,7 +14,7 @@ enum Theme {
     static let coral = Color(light: (0.86, 0.42, 0.31), dark: (0.94, 0.56, 0.45))
     /// Soft gold — locks, "best value", coach highlights.
     static let gold = Color(light: (0.76, 0.57, 0.18), dark: (0.88, 0.72, 0.38))
-    /// Plum — Charleston room identity.
+    /// Plum, grounding-room identity.
     static let plum = Color(light: (0.48, 0.28, 0.52), dark: (0.72, 0.53, 0.76))
 
     // MARK: Surfaces
@@ -90,8 +90,8 @@ extension Room {
     var artName: String { "room-\(id)" }
 }
 
-/// The membership brand. The RevenueCat entitlement is still `pro`; this is
-/// only what readers see.
+/// The membership brand. The RevenueCat entitlement is `electrician_pro`;
+/// this is only what readers see.
 enum Membership {
     static let name = "Electrician+"
 }

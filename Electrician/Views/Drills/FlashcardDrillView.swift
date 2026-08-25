@@ -549,9 +549,9 @@ struct FlipCardFace: View {
     }
 }
 
-/// The electricianong-card chrome both faces share: ivory surface, double frame like
-/// the printed card, corner pips, and a faint tile-glyph watermark so the
-/// open space feels designed instead of empty.
+/// Shared card chrome: ivory surface, double frame like a code-book plate,
+/// corner pips, and a faint omega watermark so the open space feels designed
+/// instead of empty.
 private struct ElectricianCardFace<Content: View>: View {
     let accent: Color
     let eyebrow: String
@@ -577,7 +577,7 @@ private struct ElectricianCardFace<Content: View>: View {
         }
         .overlay {
             // Watermark sits above the surface but below the frame.
-            Text("麻")
+            Text("Ω")
                 .font(.system(size: 190, weight: .bold))
                 .foregroundStyle(accent.opacity(0.05))
                 .rotationEffect(.degrees(-10))

@@ -53,7 +53,7 @@ struct PaywallContent: View {
             VStack(alignment: .leading, spacing: 9) {
                 benefit("Code Minute: the shared five-question daily challenge")
                 benefit("Exam Warm-Up: five minutes built around your weak spots")
-                benefit("Endless Practice: a fresh rack dealt every time")
+                benefit("Endless Practice: a fresh problem every time")
                 benefit("Fix My Mistakes: misses come back until they stick")
                 benefit("Timed Challenge: 90 seconds, chase your best")
                 benefit("Extra practice sets in every room, plus the worked calculations")

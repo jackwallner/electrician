@@ -116,8 +116,8 @@ struct DrillCompleteView: View {
 
     private var subheadline: String {
         if score == nil {
-            return "All \(total) cards down. They'll stick a little better every pass."
+            return ShellCopy.DrillComplete.flashcardsSubhead
         }
-        return "Every rack you read here is one you'll read faster at the table."
+        return ShellCopy.DrillComplete.scoredSubhead
     }
 }
