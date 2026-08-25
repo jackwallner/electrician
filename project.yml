@@ -37,6 +37,13 @@ targets:
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: Electrician/Info.plist
         TARGETED_DEVICE_FAMILY: "1,2"
+      configs:
+        # The StoreKit Testing catalog is a Debug-only prop: the paywall render
+        # test reads it so a simulator can show real prices without configuring
+        # RevenueCat. It has no business inside the App Store binary, where it
+        # would ship our price schedule as a readable JSON file.
+        Release:
+          EXCLUDED_SOURCE_FILE_NAMES: Electrician.storekit
     dependencies:
       - package: RevenueCat
 
