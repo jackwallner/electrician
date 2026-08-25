@@ -2,11 +2,10 @@ import Foundation
 import StoreKit
 
 enum AppStoreLinks {
-    /// Set this to the real App Store id once the ASC record exists. Until then
-    /// the rating route is disabled rather than pointed somewhere wrong: a
-    /// leftover id from the app this shell was ported from would send our
-    /// reviewers to someone else's listing.
-    static let appStoreID = ""
+    /// Numeric Apple ID for `com.jackwallner.electrician`. The listing is
+    /// still a draft; these URLs 404 until the app is Ready for Sale, but
+    /// they must not keep pointing at the mahj shell this was ported from.
+    static let appStoreID = "6804828725"
 
     static var isPublished: Bool { !appStoreID.isEmpty }
 
