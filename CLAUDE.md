@@ -91,11 +91,11 @@ means updating both; a test enforces that they resolve.
        -H "X-Platform: ios" \
        https://api.revenuecat.com/v1/subscribers/probe-1/offerings
   ```
-- **No GitHub remote yet.** `~/electrician` is local-only, so
-  `.github/workflows/sync-landing-page.yml` never fires, `docs/` is not served,
-  and `https://jackwallner.github.io/electrician/support` (the support URL
-  `scripts/asc-finish-submission.py` sets) 404s. Creating the public repo and
-  enabling Pages is a prerequisite for submission, not a nicety.
+- Marketing site: `docs/` is served by Pages from `main` at
+  `https://jackwallner.github.io/electrician/` (index, `privacy-policy`,
+  `support`), and mirrored to `jackwallner.com/ios/electrician/` by
+  `.github/workflows/sync-landing-page.yml`. That workflow needs the
+  `PORTFOLIO_DEPLOY_KEY` secret on this repo before it can push the mirror.
 - US-only. The 50-locale metadata machine does not apply here.
 - ASO: the category's ranking lever is the year in the app name
   (`Electrician Test Prep 2026` and friends all do it). Decide the store name
