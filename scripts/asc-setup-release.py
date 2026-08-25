@@ -33,7 +33,7 @@ SUBS = [
         "trial": True,
     },
 ]
-REVIEW_NOTE = "Unlocks the Card Room, Charleston Room, and Table Room drill packs."
+REVIEW_NOTE = "Unlocks extra drill sets in every room, Code Minute, Exam Warm-Up, Endless Practice, timed challenge, and worked calculations. Field tools stay free."
 
 
 def main() -> None:

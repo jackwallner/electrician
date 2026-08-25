@@ -69,16 +69,16 @@ def main() -> None:
         print(f"product exists: {product['id']}")
 
     entitlements = request("GET", f"/projects/{pid}/entitlements")["items"]
-    pro = next(e for e in entitlements if e["lookup_key"] == "pro")
+    pro = next(e for e in entitlements if e["lookup_key"] == "electrician_pro")
     attached = request(
         "GET", f"/projects/{pid}/entitlements/{pro['id']}/products?limit=50"
     )["items"]
     if not any(p["id"] == product["id"] for p in attached):
         request("POST", f"/projects/{pid}/entitlements/{pro['id']}/actions/attach_products",
                 {"product_ids": [product["id"]]})
-        print("attached to entitlement pro")
+        print("attached to entitlement electrician_pro")
     else:
-        print("already attached to entitlement pro")
+        print("already attached to entitlement electrician_pro")
 
     offerings = request("GET", f"/projects/{pid}/offerings")["items"]
     offering = next((o for o in offerings if o.get("is_current")), offerings[0])

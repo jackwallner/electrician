@@ -3,7 +3,7 @@
 
 Reads the raw 1320x2868 6.9" captures in scripts/screenshot_raw/, draws a
 warm cream + jade frame matching Electrician/Utilities/Theme.swift (serif
-display headline, room-accent eyebrow + rule, faint "麻" watermark), and
+display headline, room-accent eyebrow + rule, faint omega watermark), and
 writes finals to fastlane/screenshots/en-US/ at exactly 1320x2868 using
 fastlane naming (01_....png ... 06_....png).
 
@@ -42,7 +42,7 @@ NEWYORK = "/System/Library/Fonts/NewYork.ttf"
 SFNS = "/System/Library/Fonts/SFNS.ttf"
 CJK = "/System/Library/Fonts/Hiragino Sans GB.ttc"
 
-WATERMARK_GLYPH = "麻"  # same glyph ElectricianCardFace uses
+WATERMARK_GLYPH = "Ω"  # same glyph ElectricianCardFace uses
 
 
 def serif(size: int, weight: str = "Bold") -> ImageFont.FreeTypeFont:
@@ -81,28 +81,28 @@ SHOTS = [
         raw="01-quicksession.png",
         out="01_quick_session.png",
         eyebrow="GET STARTED",
-        headline="Practice between games",
+        headline="Practice between jobs",
         accent=JADE,
     ),
     Shot(
         raw="02-handmatch.png",
         out="02_hand_match.png",
-        eyebrow="THE CARD ROOM",
-        headline="Read the rack, name the section",
+        eyebrow="CODE BASICS",
+        headline="Find the article, not the page",
         accent=CORAL,
     ),
     Shot(
         raw="03-keepthrow.png",
         out="03_keep_or_throw.png",
-        eyebrow="THE TABLE ROOM",
-        headline="Make the call, learn the why",
+        eyebrow="CONDUCTORS",
+        headline="Derate it, then cap it",
         accent=GOLD,
     ),
     Shot(
         raw="04-charleston.png",
         out="04_charleston.png",
-        eyebrow="THE CHARLESTON ROOM",
-        headline="Beat Charleston nerves",
+        eyebrow="CALCULATIONS",
+        headline="Work the numbers, show the steps",
         accent=PLUM,
     ),
     Shot(
@@ -115,8 +115,8 @@ SHOTS = [
     Shot(
         raw="06-tileroom.png",
         out="06_tile_room.png",
-        eyebrow="THE TILE ROOM",
-        headline="Meet every tile",
+        eyebrow="GROUNDING",
+        headline="Know what clears a fault",
         accent=JADE,
     ),
 ]
