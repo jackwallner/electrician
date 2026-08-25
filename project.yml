@@ -18,7 +18,11 @@ targets:
     platform: iOS
     sources:
       - path: Electrician
+        excludes:
+          - Electrician.storekit
       - path: Shared
+      - path: Electrician/Electrician.storekit
+        buildPhase: resources
     settings:
       base:
         DEVELOPMENT_TEAM: YXG4MP6W39

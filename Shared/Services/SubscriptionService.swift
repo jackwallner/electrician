@@ -1,5 +1,8 @@
 import Foundation
 import RevenueCat
+#if DEBUG
+import StoreKit
+#endif
 
 enum RevenueCatConfig {
     /// The PUBLIC Apple SDK key for this app's own RevenueCat project. Public
@@ -49,6 +52,18 @@ final class SubscriptionService: NSObject, ObservableObject {
     private var isConfigured = false
     private let localOverrideKey = "subscription.localProOverride"
     private var paywallImpressionsThisSession: Set<String> = []
+    /// DEBUG StoreKit Testing catalog prices. Used when RevenueCat is not
+    /// configured (simulator / placeholder key) so the paywall can still
+    /// render the three packages without minting a production customer.
+    #if DEBUG
+    @Published private var storeKitPrices: [PaywallPlan: PaywallPrice] = [:]
+
+    private static let storeKitProductIDs: [PaywallPlan: String] = [
+        .monthly: "com.jackwallner.electrician.monthly",
+        .yearly: "com.jackwallner.electrician.yearly",
+        .lifetime: "com.jackwallner.electrician.lifetime",
+    ]
+    #endif
 
     override private init() {
         super.init()
@@ -57,8 +72,14 @@ final class SubscriptionService: NSObject, ObservableObject {
 
     func start() {
         configureIfNeeded()
-        guard isConfigured else { return }
+        #if DEBUG
+        if storeKitPrices.isEmpty {
+            storeKitPrices = Self.pricesFromStoreKitCatalog()
+        }
+        #endif
         Task {
+            await loadStoreKitPricesIfNeeded()
+            guard isConfigured else { return }
             await refreshCustomerInfo()
             await loadOfferings()
         }
@@ -120,13 +141,90 @@ final class SubscriptionService: NSObject, ObservableObject {
     }
 
     func paywallPrice(for plan: PaywallPlan) -> PaywallPrice? {
-        guard let product = package(for: plan)?.storeProduct else { return nil }
-        return PaywallPrice(
-            amount: product.price,
-            localized: product.localizedPriceString,
-            locale: product.priceFormatter?.locale ?? .current
-        )
+        if let product = package(for: plan)?.storeProduct {
+            return PaywallPrice(
+                amount: product.price,
+                localized: product.localizedPriceString,
+                locale: product.priceFormatter?.locale ?? .current
+            )
+        }
+        #if DEBUG
+        return storeKitPrices[plan]
+        #else
+        return nil
+        #endif
     }
+
+    /// Reads display prices from the bundled StoreKit Testing catalog so a
+    /// simulator UI test can render the three plan cards without configuring
+    /// the production RevenueCat key. `Product.products` is empty unless
+    /// StoreKit Testing is actually attached, which xcodebuild does not do
+    /// reliably, so the bundled `.storekit` file is the source of truth.
+    private func loadStoreKitPricesIfNeeded() async {
+        #if DEBUG
+        var next = Self.pricesFromStoreKitCatalog()
+        let ids = Array(Self.storeKitProductIDs.values)
+        if let products = try? await Product.products(for: ids), !products.isEmpty {
+            for (plan, id) in Self.storeKitProductIDs {
+                guard let product = products.first(where: { $0.id == id }) else { continue }
+                next[plan] = PaywallPrice(
+                    amount: product.price,
+                    localized: product.displayPrice,
+                    locale: Locale.current
+                )
+            }
+        }
+        storeKitPrices = next
+        #endif
+    }
+
+    #if DEBUG
+    /// Parses `Electrician.storekit` from the app bundle. Falls back to the
+    /// catalog's listed USD amounts if the file is missing at runtime.
+    private static func pricesFromStoreKitCatalog() -> [PaywallPlan: PaywallPrice] {
+        let locale = Locale(identifier: "en_US")
+        func formatted(_ amount: Decimal) -> PaywallPrice {
+            let fmt = NumberFormatter()
+            fmt.numberStyle = .currency
+            fmt.locale = locale
+            let text = fmt.string(from: amount as NSDecimalNumber) ?? "\(amount)"
+            return PaywallPrice(amount: amount, localized: text, locale: locale)
+        }
+
+        var amounts: [PaywallPlan: Decimal] = [
+            .monthly: Decimal(string: "9.99")!,
+            .yearly: Decimal(string: "39.99")!,
+            .lifetime: Decimal(string: "89.99")!,
+        ]
+
+        if let url = Bundle.main.url(forResource: "Electrician", withExtension: "storekit"),
+           let data = try? Data(contentsOf: url),
+           let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            func ingest(_ productID: String, _ displayPrice: String) {
+                guard let plan = storeKitProductIDs.first(where: { $0.value == productID })?.key,
+                      let amount = Decimal(string: displayPrice)
+                else { return }
+                amounts[plan] = amount
+            }
+            for product in json["products"] as? [[String: Any]] ?? [] {
+                if let id = product["productID"] as? String,
+                   let price = product["displayPrice"] as? String {
+                    ingest(id, price)
+                }
+            }
+            for group in json["subscriptionGroups"] as? [[String: Any]] ?? [] {
+                for sub in group["subscriptions"] as? [[String: Any]] ?? [] {
+                    if let id = sub["productID"] as? String,
+                       let price = sub["displayPrice"] as? String {
+                        ingest(id, price)
+                    }
+                }
+            }
+        }
+
+        return amounts.mapValues(formatted)
+    }
+    #endif
 
     /// Offerings can still be in flight when a player reaches the trial CTA on
     /// a cold, slow network. Give them one more chance to land before we call
