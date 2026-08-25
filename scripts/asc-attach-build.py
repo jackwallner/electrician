@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Attach the latest valid uploaded build to the editable ASC version."""
+"""Attach the requested valid uploaded build to the editable ASC version."""
 from __future__ import annotations
 
 import os
@@ -36,12 +36,18 @@ def main() -> int:
 
     version_id = version["id"]
     version_string = version["attributes"]["versionString"]
+    requested = os.environ.get("ASC_BUILD_NUMBER") or build_number_from_project()
     current = client.get(f"/appStoreVersions/{version_id}/build").get("data")
     if current:
-        print(f"build already attached: {current['id']}")
-        return 0
+        current_resource = current
+        if "attributes" not in current_resource:
+            current_resource = client.get(f"/builds/{current['id']}").get("data") or current
+        current_number = current_resource.get("attributes", {}).get("version")
+        if not requested or current_number == requested:
+            print(f"build already attached: {current['id']}")
+            return 0
+        print(f"replacing attached build {current_number or current['id']} with build {requested}")
 
-    requested = os.environ.get("ASC_BUILD_NUMBER") or build_number_from_project()
     builds = L.list_all(client, f"/builds?filter[app]={app['id']}&limit=200&sort=-version")
     candidates: list[dict] = []
     for build in builds:
