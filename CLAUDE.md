@@ -67,9 +67,11 @@ referenced by `PracticeSkill.roomID` and `Theme`'s accent map. Renaming one
 means updating both; a test enforces that they resolve.
 
 ## App-specific notes
-- **Not yet on the App Store.** `AppStoreLinks.appStoreID` is empty on purpose,
-  which disables the rating route rather than pointing it at the app this was
-  ported from. Set it when the ASC record exists.
+- **ASC record exists, not live.** Apple ID `6804828725`, bundle
+  `com.jackwallner.electrician`, draft 1.0 in `PREPARE_FOR_SUBMISSION`.
+  `AppStoreLinks.appStoreID` is set. The listing name is still
+  "Electrician Placeholder". No TestFlight build and no IAPs/subs on the
+  record yet.
 - **RevenueCat** project `projfc676ce9`, App Store app `app03a1f0929d`. The
   public `appl_` key ships in `SubscriptionService`; the `sk_` secret lives in
   `~/.electrician_credentials` and never enters source. DEBUG stays a
@@ -89,6 +91,11 @@ means updating both; a test enforces that they resolve.
        -H "X-Platform: ios" \
        https://api.revenuecat.com/v1/subscribers/probe-1/offerings
   ```
+- **No GitHub remote yet.** `~/electrician` is local-only, so
+  `.github/workflows/sync-landing-page.yml` never fires, `docs/` is not served,
+  and `https://jackwallner.github.io/electrician/support` (the support URL
+  `scripts/asc-finish-submission.py` sets) 404s. Creating the public repo and
+  enabling Pages is a prerequisite for submission, not a nicety.
 - US-only. The 50-locale metadata machine does not apply here.
 - ASO: the category's ranking lever is the year in the app name
   (`Electrician Test Prep 2026` and friends all do it). Decide the store name
