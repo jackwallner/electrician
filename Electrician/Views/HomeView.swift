@@ -123,6 +123,7 @@ struct HomeView: View {
                 todaySession
                 if showsPrimerCard { howToPlayCard }
                 trainingSection
+                fieldToolsSection
                 roomsColumn
                 if !subscriptions.isPro { upgradeCard }
                 disclaimerFooter
@@ -136,6 +137,7 @@ struct HomeView: View {
             todaySession
             if showsPrimerCard { howToPlayCard }
             trainingSection
+            fieldToolsSection
             if !subscriptions.isPro { upgradeCard }
         }
         .frame(maxWidth: .infinity, alignment: .top)
@@ -350,6 +352,42 @@ struct HomeView: View {
             .themedCard(corner: 16)
         }
         .buttonStyle(PressableCardStyle())
+    }
+
+    private var fieldToolsSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("ON THE JOB")
+                .font(.caption.weight(.heavy))
+                .kerning(1.4)
+                .foregroundStyle(Theme.inkSecondary)
+                .padding(.horizontal, 4)
+            NavigationLink {
+                FieldToolsView()
+            } label: {
+                HStack(spacing: 12) {
+                    Image(systemName: "wrench.and.screwdriver.fill")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(Theme.jade)
+                        .frame(width: 36, height: 36)
+                        .background(Theme.jade.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Field tools")
+                            .font(.headline)
+                            .foregroundStyle(Theme.ink)
+                        Text("Ampacity, conduit fill, voltage drop, Ohm's law")
+                            .font(.caption)
+                            .foregroundStyle(Theme.inkSecondary)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(Theme.inkTertiary)
+                }
+                .padding(12)
+                .themedCard(corner: 16)
+            }
+            .buttonStyle(PressableCardStyle())
+        }
     }
 
     // MARK: - Training modes
