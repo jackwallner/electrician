@@ -69,9 +69,27 @@ means updating both; a test enforces that they resolve.
 ## App-specific notes
 - **ASC record exists, not live.** Apple ID `6804828725`, bundle
   `com.jackwallner.electrician`, draft 1.0 in `PREPARE_FOR_SUBMISSION`.
-  `AppStoreLinks.appStoreID` is set. The listing name is still
-  "Electrician Placeholder". No TestFlight build and no IAPs/subs on the
-  record yet.
+  `AppStoreLinks.appStoreID` is set. Builds are going to TestFlight; the
+  draft still has no build attached and has not been submitted.
+- **Store name is `Electrician Exam Practice 2026`.** The obvious
+  `Electrician Exam Prep 2026` belongs to the incumbent the research file
+  names as the SERP leader, and ASC rejects it with
+  `DUPLICATE.DIFFERENT_ACCOUNT`. Keep the year suffix in whatever replaces
+  it; that is the category's ranking lever. Name, subtitle and keywords are
+  indexed as one bag, so a word in the name does not belong in the other two.
+- **The price ladder is 9.99 monthly / 39.99 yearly / 89.99 lifetime**, matching
+  `Electrician.storekit` and the `SubscriptionService` fallback. Change one and
+  change all three or the paywall quotes a price the store will not charge. The
+  ASO research argues this vertical sustains more (incumbents run $17.99 mo /
+  $99.99 lifetime); going up is a deliberate decision, not a drift.
+- **IAP setup is three scripts in order**, and skipping one leaves every product
+  at `MISSING_METADATA`, where StoreKit never serves it and the paywall is dead
+  on device: `asc-setup-release.py` (products, USA price, trials, categories),
+  `asc-equalize-sub-prices.py` (the other 174 territories, because subscription
+  prices do NOT equalize from the USA row the way a non-consumable schedule
+  does), then `asc-finish-products.py --screenshot` (App Review screenshot).
+  Subscriptions in one group also need distinct `groupLevel`s. Capture the
+  screenshot with `scripts/capture-paywall.sh <udid> <dir>`.
 - **RevenueCat** project `projfc676ce9`, App Store app `app03a1f0929d`. The
   public `appl_` key ships in `SubscriptionService`; the `sk_` secret lives in
   `~/.electrician_credentials` and never enters source. DEBUG stays a
@@ -84,7 +102,9 @@ means updating both; a test enforces that they resolve.
   probe with the iOS platform header. The project shipped with the fleet's
   recurring empty-offering bug (Test Store products only, so iOS filtered every
   package out and the paywall was dead on device). Fixed 2026-08-24. A
-  simulator can never catch this because it never configures RevenueCat:
+  simulator can never catch this because it never configures RevenueCat (the
+  Debug paywall reads `Electrician.storekit` instead, which is excluded from
+  Release so the price catalog never ships in the binary):
 
   ```sh
   curl -s -H "Authorization: Bearer appl_JNXhRRCBfqpJqOpxFnylwNcqvby" \
