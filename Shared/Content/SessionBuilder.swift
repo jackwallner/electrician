@@ -11,6 +11,13 @@ struct QuickItem: Identifiable, Sendable {
     let choices: [String]
     let answerIndex: Int
     let explanation: String
+    /// A calculation's working, one line per step, in order. Empty for items
+    /// that are not calculations. Kept as a list rather than flattened into
+    /// `explanation` because a paragraph hides WHICH step was skipped, and a
+    /// skipped step is how almost every calculation is actually missed.
+    let steps: [String]
+    /// The article to look the answer up in, rendered under the working.
+    let citation: String?
     /// e.g. "Conductors & Ampacity", shown as a small tag above the prompt.
     let sourceLabel: String
     /// The room this item came from, for per-room accuracy stats. Generated
@@ -20,8 +27,13 @@ struct QuickItem: Identifiable, Sendable {
     /// their own id. Procedural daily items can share one bounded rollup row.
     let trackingID: String
     /// False for one-off generated prompts that can never be scheduled back
-    /// into Fix My Mistakes.
+    /// into Fix My Mistakes as the same question. Their mistake PATTERN still
+    /// comes back; see `mistakes`.
     let isReviewable: Bool
+    /// Choice label to the named mistake that produces it. A wrong pick that
+    /// appears here can be named to the reader and tallied for targeted
+    /// practice.
+    let mistakes: [String: MistakePattern]
 
     init(
         id: String,
@@ -30,10 +42,13 @@ struct QuickItem: Identifiable, Sendable {
         choices: [String],
         answerIndex: Int,
         explanation: String,
+        steps: [String] = [],
+        citation: String? = nil,
         sourceLabel: String,
         roomID: String,
         trackingID: String? = nil,
-        isReviewable: Bool = true
+        isReviewable: Bool = true,
+        mistakes: [String: MistakePattern] = [:]
     ) {
         self.id = id
         self.prompt = prompt
@@ -41,10 +56,19 @@ struct QuickItem: Identifiable, Sendable {
         self.choices = choices
         self.answerIndex = answerIndex
         self.explanation = explanation
+        self.steps = steps
+        self.citation = citation
         self.sourceLabel = sourceLabel
         self.roomID = roomID
         self.trackingID = trackingID ?? id
         self.isReviewable = isReviewable
+        self.mistakes = mistakes
+    }
+
+    /// The named mistake behind a pick, if this item knows one.
+    func mistake(forChoiceAt index: Int) -> MistakePattern? {
+        guard choices.indices.contains(index) else { return nil }
+        return mistakes[choices[index]]
     }
 }
 
@@ -68,10 +92,13 @@ enum SessionBuilder {
         kind: .flashcards([])
     )
 
-    static let gameNightPrepDrill = Drill(
+    static let examWarmUpDrill = Drill(
+        // Same rule as the notification route: this id keys completion counts
+        // already on device, so it stays put while the symbol gets the honest
+        // name.
         id: "game-night-prep",
         title: "Exam Warm-Up",
-        subtitle: "A five-minute mix before the exam",
+        subtitle: "A short targeted mix before the exam",
         kind: .flashcards([])
     )
 
@@ -109,7 +136,7 @@ enum SessionBuilder {
     /// A member's pre-game session. Due mistakes lead, then the weakest room,
     /// then unseen material. The final tier keeps the session full for a new
     /// player who has not built enough history to personalize yet.
-    static func gameNightPrep(
+    static func examWarmUp(
         count: Int = 10,
         seen: Set<String>,
         missed: Set<String>,
@@ -145,6 +172,8 @@ enum SessionBuilder {
     /// always the authored slot.
     static func prepared(_ item: QuickItem) -> QuickItem {
         let shuffled = ChoiceShuffle.shuffledChoices(labels: item.choices, answerIndex: item.answerIndex, seed: item.id)
+        // `mistakes` is keyed by choice LABEL, not by index, so it survives the
+        // shuffle untouched. Keying it by index is the bug waiting to happen.
         return QuickItem(
             id: item.id,
             prompt: item.prompt,
@@ -152,10 +181,13 @@ enum SessionBuilder {
             choices: shuffled.labels,
             answerIndex: shuffled.answerIndex,
             explanation: item.explanation,
+            steps: item.steps,
+            citation: item.citation,
             sourceLabel: item.sourceLabel,
             roomID: item.roomID,
             trackingID: item.trackingID,
-            isReviewable: item.isReviewable
+            isReviewable: item.isReviewable,
+            mistakes: item.mistakes
         )
     }
 
@@ -175,6 +207,7 @@ enum SessionBuilder {
                             choices: question.choices,
                             answerIndex: question.answerIndex,
                             explanation: question.explanation,
+                            citation: question.citation,
                             sourceLabel: room.name,
                             roomID: room.id
                         )
@@ -190,6 +223,7 @@ enum SessionBuilder {
                             choices: labels,
                             answerIndex: answerIndex,
                             explanation: question.explanation,
+                            citation: question.answer.citation,
                             sourceLabel: room.name,
                             roomID: room.id
                         )
@@ -208,6 +242,7 @@ enum SessionBuilder {
                             choices: choice.options,
                             answerIndex: choice.answerIndex,
                             explanation: card.backBody,
+                            citation: card.citation,
                             sourceLabel: room.name,
                             roomID: room.id
                         )

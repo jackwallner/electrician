@@ -80,17 +80,7 @@ enum EndlessPractice {
 
     static func items(for skill: PracticeSkill, count: Int) -> [QuickItem] {
         var rng: RandomNumberGenerator = SystemRandomNumberGenerator()
-        return (0..<count).map { _ in
-            let scenario: CalcScenario
-            switch skill {
-            case .ampacity: scenario = CalcGenerator.ampacityProblem(using: &rng)
-            case .overcurrent: scenario = CalcGenerator.ocpdProblem(using: &rng)
-            case .conduitFill: scenario = CalcGenerator.conduitFillProblem(using: &rng)
-            case .boxFill: scenario = CalcGenerator.boxFillProblem(using: &rng)
-            case .voltageDrop: scenario = CalcGenerator.voltageDropProblem(using: &rng)
-            }
-            return item(from: scenario, skill: skill)
-        }
+        return (0..<count).map { _ in item(for: skill, using: &rng) }
     }
 
     /// A mixed batch across every skill, for the timed challenge.
@@ -100,20 +90,77 @@ enum EndlessPractice {
         return skills.flatMap { items(for: $0, count: perSkill) }.shuffled().prefix(count).map { $0 }
     }
 
-    /// Flattens a generated scenario into the session runner's shape. The
-    /// worked steps become the explanation, joined into a short paragraph:
-    /// after a wrong answer the reader needs the reasoning, not just the value.
-    private static func item(from scenario: CalcScenario, skill: PracticeSkill) -> QuickItem {
+    /// Adapts a generated scenario into the session runner's shape.
+    ///
+    /// The worked steps stay a LIST. They used to be joined into one paragraph
+    /// here, which quietly threw away the thing the authored Worked
+    /// Calculations room does best: a miss is almost never bad arithmetic, it
+    /// is one skipped step, and a paragraph hides which one. The generator is
+    /// the paid tier, so it gets the better explanation, not the worse one.
+    static func item(from scenario: CalcScenario, skill: PracticeSkill, sourceLabel: String = "Endless Practice") -> QuickItem {
         QuickItem(
             id: skill.itemPrefix + UUID().uuidString,
             prompt: scenario.situation,
             givens: scenario.givens,
             choices: scenario.choices,
             answerIndex: scenario.answerIndex,
-            explanation: scenario.steps.joined(separator: " ") + "\n\nLook it up: \(scenario.citation).",
-            sourceLabel: "Endless Practice",
+            explanation: scenario.steps.first ?? "",
+            steps: scenario.steps,
+            citation: scenario.citation,
+            sourceLabel: sourceLabel,
             roomID: skill.roomID,
-            isReviewable: false
+            isReviewable: false,
+            mistakes: scenario.mistakes
         )
+    }
+
+    /// One freshly generated problem for a skill.
+    static func item(for skill: PracticeSkill, using rng: inout RandomNumberGenerator, sourceLabel: String = "Endless Practice") -> QuickItem {
+        item(from: scenario(for: skill, using: &rng), skill: skill, sourceLabel: sourceLabel)
+    }
+
+    static func scenario(for skill: PracticeSkill, using rng: inout RandomNumberGenerator) -> CalcScenario {
+        switch skill {
+        case .ampacity: return CalcGenerator.ampacityProblem(using: &rng)
+        case .overcurrent: return CalcGenerator.ocpdProblem(using: &rng)
+        case .conduitFill: return CalcGenerator.conduitFillProblem(using: &rng)
+        case .boxFill: return CalcGenerator.boxFillProblem(using: &rng)
+        case .voltageDrop: return CalcGenerator.voltageDropProblem(using: &rng)
+        }
+    }
+
+    /// Problems that set the traps this candidate keeps walking into.
+    ///
+    /// This is what makes "your misses come back" honest for generated
+    /// practice. A generated question is a one-off: its id will never be seen
+    /// again, so scheduling the ITEM for review is meaningless. The MISTAKE is
+    /// not a one-off. So instead of replaying a question whose answer they now
+    /// remember, this mints a new problem of the right shape and keeps it only
+    /// if the same named trap is actually one of its distractors.
+    ///
+    /// Rejection is bounded. A shape whose trap does not apply to the inputs it
+    /// happens to roll (a conductor with no 240.4(D) cap cannot punish missing
+    /// 240.4(D)) falls back to an untargeted problem of the same skill rather
+    /// than returning nothing, because a short Fix My Mistakes session is worse
+    /// than a slightly less pointed one.
+    static func targetedItems(for patterns: [MistakePattern], count: Int) -> [QuickItem] {
+        guard !patterns.isEmpty, count > 0 else { return [] }
+        var rng: RandomNumberGenerator = SystemRandomNumberGenerator()
+        var items: [QuickItem] = []
+
+        for index in 0..<count {
+            let pattern = patterns[index % patterns.count]
+            guard let skill = PracticeSkill(rawValue: pattern.skill) else { continue }
+
+            var made: QuickItem?
+            for _ in 0..<24 {
+                let candidate = scenario(for: skill, using: &rng)
+                guard candidate.mistakes.values.contains(pattern) else { continue }
+                made = item(from: candidate, skill: skill, sourceLabel: "Targeted Practice")
+                break
+            }
+            items.append(made ?? item(for: skill, using: &rng, sourceLabel: "Targeted Practice"))
+        }
+        return items
     }
 }

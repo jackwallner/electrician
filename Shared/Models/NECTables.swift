@@ -17,6 +17,18 @@ import Foundation
 /// examining against while the 2026 adoptions roll out.
 enum NECTables {
 
+    /// The code edition every number in this file comes from.
+    ///
+    /// Surfaced in the UI rather than kept as a comment, and that is the point.
+    /// A candidate cannot tell a 2023-cycle answer from a 2026-cycle one by
+    /// looking at it, the app name carries a year, and adoption varies by
+    /// state. Saying which edition the numbers are is the difference between a
+    /// study aid and a trap. When the tables move, move this with them and let
+    /// the content tests catch whatever drifted.
+    static let edition = "2023 NEC"
+    /// One line, for footers and result screens.
+    static let editionNote = "Values follow the \(edition). Your jurisdiction may have adopted a different edition or amended it locally."
+
     // MARK: - Conductor sizes
 
     /// Conductor sizes in the order they run, small to large. AWG sizes are

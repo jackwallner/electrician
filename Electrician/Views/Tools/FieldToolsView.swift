@@ -8,11 +8,19 @@ struct FieldToolsView: View {
     var body: some View {
         List {
             Section {
-                Text("Same tables the drills use. Cite the article, then look it up in your own book.")
-                    .font(.subheadline)
-                    .foregroundStyle(Theme.inkSecondary)
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 8, trailing: 4))
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Study estimates from the same tables the drills use. Cite the article, then look it up in your own book.")
+                        .font(.subheadline)
+                        .foregroundStyle(Theme.inkSecondary)
+                    // The supported domain, stated up front. Off-table
+                    // combinations return nothing, which is the safe behaviour,
+                    // but a blank result with no explanation reads as a bug.
+                    Text("\(NECTables.edition) values, copper and aluminum, THHN/THWN in EMT. Other raceways, coatings and local amendments are not covered.")
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkTertiary)
+                }
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 8, trailing: 4))
             }
             Section("Calculators") {
                 NavigationLink { AmpacityToolView() } label: {
@@ -22,7 +30,7 @@ struct FieldToolsView: View {
                     toolRow("circle.hexagongrid.fill", "Conduit fill", "THHN in EMT, Chapter 9")
                 }
                 NavigationLink { VoltageDropToolView() } label: {
-                    toolRow("waveform.path.ecg", "Voltage drop", "The informational-note check")
+                    toolRow("waveform.path.ecg", "Voltage drop", "Resistive estimate, informational note")
                 }
                 NavigationLink { OhmsLawToolView() } label: {
                     toolRow("plus.forwardslash.minus", "Ohm's law", "Any two of V, I, R, P")
@@ -98,7 +106,7 @@ private struct AmpacityToolView: View {
                     LabeledContent("After derate", value: "\(result.afterDerate.trimmedAmps) A")
                     LabeledContent("Allowable", value: "\(result.allowable.trimmedAmps) A")
                     LabeledContent("OCPD ceiling", value: "\(result.ocpdCeiling.trimmedAmps) A")
-                    Text(result.citation)
+                    Text("\(result.citation) · \(NECTables.edition)")
                         .font(.caption)
                         .foregroundStyle(Theme.inkSecondary)
                 }
@@ -143,8 +151,13 @@ private struct ConduitFillToolView: View {
                     if let smallest = result.smallestFitting {
                         LabeledContent("Smallest EMT", value: smallest)
                     }
-                    Text(result.citation)
+                    Text("\(result.citation) · \(NECTables.edition)")
                         .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                }
+            } else {
+                Section {
+                    Text("No Chapter 9 area is listed for that conductor size, so this combination cannot be computed.")
                         .foregroundStyle(Theme.inkSecondary)
                 }
             }
@@ -210,10 +223,20 @@ private struct VoltageDropToolView: View {
                 }
             }
             if let result {
-                Section("Result") {
+                Section("Estimate") {
                     LabeledContent("Drop", value: String(format: "%.2f V (%.2f%%)", result.volts, result.percent))
                     LabeledContent("3% note", value: result.withinThreePercent ? "Within" : "Over")
-                    Text(result.citation)
+                    Text("\(result.citation) · \(NECTables.edition)")
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                }
+                Section("What this leaves out") {
+                    ForEach(FieldCalculators.VoltageDropResult.assumptions, id: \.self) { assumption in
+                        Text(assumption)
+                            .font(.caption)
+                            .foregroundStyle(Theme.inkSecondary)
+                    }
+                    Text(FieldCalculators.VoltageDropResult.threePercentNote)
                         .font(.caption)
                         .foregroundStyle(Theme.inkSecondary)
                 }
@@ -255,6 +278,24 @@ private struct OhmsLawToolView: View {
                     LabeledContent("I", value: result.amps.trimmedAmps)
                     LabeledContent("R", value: result.ohms.trimmedAmps)
                     LabeledContent("P", value: result.watts.trimmedAmps)
+                    Text("Solved from \(result.basis).")
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                }
+                if !result.isConsistent {
+                    // The tool is allowed to solve from one pair; it is not
+                    // allowed to drop the rest silently. An answer that looks
+                    // like it validated the circuit, when half of what was
+                    // typed described a different one, is the kind of thing an
+                    // electrician finds out about at the panel.
+                    Section("Check your inputs") {
+                        Label(
+                            "\(result.conflicts.joined(separator: ", ")) \(result.conflicts.count == 1 ? "does" : "do") not agree with \(result.basis). The result above is solved from \(result.basis); clear or correct the others.",
+                            systemImage: "exclamationmark.triangle.fill"
+                        )
+                        .font(.caption)
+                        .foregroundStyle(Theme.coral)
+                    }
                 }
             } else {
                 Section {

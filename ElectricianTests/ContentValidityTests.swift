@@ -131,6 +131,31 @@ final class ContentValidityTests: XCTestCase {
         }
     }
 
+    /// The generic card-game vocabulary the shell arrived with, which the
+    /// domain-specific ban above sails straight past.
+    ///
+    /// "Deck cleared", "Perfect round" and "all the cards down" contain no
+    /// mahjong word at all, so the original check passed them, and a journeyman
+    /// candidate reading them can still tell what this app used to be. Trust in
+    /// a code-reference product is the whole asset; sounding like a card game
+    /// spends it for nothing.
+    func testNoInheritedCardGameVocabulary() {
+        // "deck" and "cards" stay legal in code and comments (the flashcard
+        // deck IS a deck, and renaming the interaction would be worse than the
+        // problem) but must not reach a reader.
+        // "hand"/"hands" are deliberately absent: "the question hands you a
+        // nameplate rating" is ordinary English, and a check that fires on it
+        // gets deleted the first time it blocks a real change.
+        let banned = ["deck", "decks", "lobby", "meld", "melds",
+                      "shuffle", "dealt", "discard", "discards"]
+        for text in allPlayerFacingCopy() {
+            let words = text.lowercased().split(whereSeparator: { !$0.isLetter })
+            for word in words where banned.contains(String(word)) {
+                XCTFail("Inherited card-game term \"\(word)\" in: \(text.prefix(70))")
+            }
+        }
+    }
+
     /// Every teaching item points somewhere the reader can verify it. This is
     /// the habit the exam rewards, and it is also the legal posture: we cite
     /// the code, we never reproduce it.
@@ -286,8 +311,11 @@ final class ContentValidityTests: XCTestCase {
                 let context = "\(name) #\(iteration)"
 
                 XCTAssertTrue(scenario.choices.indices.contains(scenario.answerIndex), context)
-                XCTAssertGreaterThanOrEqual(scenario.choices.count, 2,
-                                            "\(context) collapsed to one choice")
+                // Exactly four, not "at least two". A shape that degrades to
+                // three changes the odds of a guess and looks unfinished, and
+                // the old assertion would have shipped it silently.
+                XCTAssertEqual(scenario.choices.count, 4,
+                               "\(context) emitted \(scenario.choices.count) choices")
                 XCTAssertEqual(Set(scenario.choices).count, scenario.choices.count,
                                "\(context) shows the same value twice")
                 XCTAssertFalse(scenario.steps.isEmpty, context)
@@ -392,6 +420,143 @@ final class ContentValidityTests: XCTestCase {
         }
     }
 
+    // MARK: - Named mistakes
+
+    /// Every generated distractor that a named mistake produces must be
+    /// attached to that mistake.
+    ///
+    /// This is the invariant the whole "your misses come back" feature rests
+    /// on: without it a wrong pick is just wrong, the tally learns nothing, and
+    /// targeted practice has nothing to aim at.
+    func testGeneratedProblemsNameTheirMistakes() {
+        var rng: RandomNumberGenerator = SeededGenerator(seed: 2024)
+        let makers: [(String, (inout RandomNumberGenerator) -> CalcScenario)] = [
+            ("ampacity", CalcGenerator.ampacityProblem),
+            ("ocpd", CalcGenerator.ocpdProblem),
+            ("conduit fill", CalcGenerator.conduitFillProblem),
+            ("box fill", CalcGenerator.boxFillProblem),
+            ("voltage drop", CalcGenerator.voltageDropProblem),
+        ]
+        var namedAtLeastOnce: Set<String> = []
+
+        for (name, make) in makers {
+            var problemsWithAMistake = 0
+            for iteration in 0..<200 {
+                let scenario = make(&rng)
+                let context = "\(name) #\(iteration)"
+                let answerLabel = scenario.choices[scenario.answerIndex]
+
+                // The correct answer must never be labelled a mistake. This is
+                // the one that would actively teach the wrong thing.
+                XCTAssertNil(scenario.mistakes[answerLabel],
+                             "\(context) calls its own answer a mistake")
+
+                for (label, pattern) in scenario.mistakes {
+                    XCTAssertTrue(scenario.choices.contains(label),
+                                  "\(context) names a mistake for \(label), which is not a choice")
+                    XCTAssertNotNil(CandidateMistake.pattern(id: pattern.id),
+                                    "\(context) uses an unregistered pattern \(pattern.id)")
+                    XCTAssertNotNil(PracticeSkill(rawValue: pattern.skill),
+                                    "\(context) pattern \(pattern.id) points at unknown skill \(pattern.skill)")
+                    XCTAssertFalse(pattern.summary.isEmpty, pattern.id)
+                    XCTAssertFalse(pattern.summary.contains("—"), "Em dash in \(pattern.id)")
+                    namedAtLeastOnce.insert(pattern.id)
+                }
+                if !scenario.mistakes.isEmpty { problemsWithAMistake += 1 }
+            }
+            // Collisions with the answer are legitimate and common, but a shape
+            // that never names anything means the wiring is broken.
+            XCTAssertGreaterThan(problemsWithAMistake, 100,
+                                 "\(name) almost never names a mistake")
+        }
+
+        let unused = Set(CandidateMistake.all.map(\.id)).subtracting(namedAtLeastOnce)
+        XCTAssertTrue(unused.isEmpty, "Mistake patterns no generator ever emits: \(unused.sorted())")
+    }
+
+    func testMistakePatternIDsAreUnique() {
+        let ids = CandidateMistake.all.map(\.id)
+        XCTAssertEqual(Set(ids).count, ids.count, "Duplicate mistake pattern ids: \(duplicates(in: ids))")
+    }
+
+    /// Targeted practice has to actually target. A pattern in, a problem out
+    /// that sets that same trap.
+    func testTargetedPracticeSetsTheRequestedTrap() {
+        for pattern in CandidateMistake.all {
+            let items = EndlessPractice.targetedItems(for: [pattern], count: 4)
+            XCTAssertEqual(items.count, 4, pattern.id)
+            let hits = items.filter { $0.mistakes.values.contains(pattern) }.count
+            // Not all four: a shape whose trap does not apply to the inputs it
+            // rolled falls back to an untargeted problem of the same skill
+            // rather than returning nothing. Most should still land.
+            XCTAssertGreaterThan(hits, 0, "\(pattern.id) never produced a problem setting its own trap")
+            for item in items {
+                XCTAssertEqual(item.roomID, PracticeSkill(rawValue: pattern.skill)?.roomID, pattern.id)
+                XCTAssertFalse(item.steps.isEmpty, "\(pattern.id) targeted item has no working")
+            }
+        }
+    }
+
+    func testTargetedPracticeIsEmptyWithoutPatterns() {
+        XCTAssertTrue(EndlessPractice.targetedItems(for: [], count: 5).isEmpty)
+        XCTAssertTrue(EndlessPractice.targetedItems(for: CandidateMistake.all, count: 0).isEmpty)
+    }
+
+    /// The generator documents five shapes and `PracticeSkill` declares five.
+    /// The doc comment said four for a while; a test is cheaper than noticing.
+    func testEveryPracticeSkillGeneratesAProblem() {
+        var rng: RandomNumberGenerator = SeededGenerator(seed: 5)
+        for skill in PracticeSkill.allCases {
+            let scenario = EndlessPractice.scenario(for: skill, using: &rng)
+            XCTAssertFalse(scenario.steps.isEmpty, skill.rawValue)
+            XCTAssertEqual(scenario.choices.count, 4, skill.rawValue)
+        }
+    }
+
+    /// Generated practice must keep its working as a LIST. Flattening it into a
+    /// paragraph is what made the paid tier explain a miss worse than the free
+    /// authored room did.
+    func testGeneratedItemsKeepTheirNumberedWorking() {
+        for skill in PracticeSkill.allCases {
+            for item in EndlessPractice.items(for: skill, count: 5) {
+                XCTAssertGreaterThan(item.steps.count, 1, "\(skill.rawValue) flattened its working")
+                XCTAssertNotNil(item.citation, skill.rawValue)
+                XCTAssertFalse(item.isReviewable, "\(skill.rawValue) generated item claims to be reviewable")
+            }
+        }
+    }
+
+    /// `prepared` shuffles choice ORDER; the mistake map is keyed by label and
+    /// must survive that untouched. Keying it by index is the obvious bug.
+    func testShufflingChoicesPreservesTheMistakeMapping() {
+        var rng: RandomNumberGenerator = SeededGenerator(seed: 77)
+        for _ in 0..<50 {
+            let scenario = CalcGenerator.ampacityProblem(using: &rng)
+            let item = EndlessPractice.item(from: scenario, skill: .ampacity)
+            let shuffled = SessionBuilder.prepared(item)
+            XCTAssertEqual(Set(shuffled.choices), Set(item.choices))
+            XCTAssertEqual(shuffled.choices[shuffled.answerIndex], item.choices[item.answerIndex])
+            for (label, pattern) in scenario.mistakes {
+                guard let index = shuffled.choices.firstIndex(of: label) else {
+                    XCTFail("lost choice \(label)")
+                    continue
+                }
+                XCTAssertEqual(shuffled.mistake(forChoiceAt: index), pattern)
+            }
+            XCTAssertNil(shuffled.mistake(forChoiceAt: shuffled.answerIndex))
+        }
+    }
+
+    // MARK: - Edition
+
+    /// The edition is a promise made on every result screen and in the store
+    /// description. It has to be a real, non-empty value naming a cycle.
+    func testEditionIsStated() {
+        XCTAssertFalse(NECTables.edition.isEmpty)
+        XCTAssertTrue(NECTables.edition.contains("NEC"), NECTables.edition)
+        XCTAssertFalse(NECTables.editionNote.contains("—"))
+    }
+
     // MARK: - Helpers
 
     private func allPlayerFacingCopy() -> [String] {
@@ -413,6 +578,7 @@ final class ContentValidityTests: XCTestCase {
         }
         copy += CodeArticle.allCases.flatMap { [$0.displayName, $0.shortName, $0.howToSpot, $0.citation] }
         copy += PracticeSkill.allCases.flatMap { [$0.title, $0.subtitle] }
+        copy += CandidateMistake.all.map(\.summary)
         copy += ShellCopy.all
         return copy
     }

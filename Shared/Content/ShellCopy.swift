@@ -16,12 +16,12 @@ enum ShellCopy {
     }
 
     enum Tour {
-        static let roomsBody = "Home is the lobby. Each room holds its own drills: how the book is built, how to read ampacity, how to work the numbers, how grounding actually works. The two beginner rooms are free, forever."
+        static let roomsBody = "Each room holds its own drills: how the book is built, how to read ampacity, how to work the numbers, how grounding actually works. The two beginner rooms are free, forever."
         static let proLockedBody = "Code Minute gives every member the same daily challenge, Exam Warm-Up targets your weak spots before you sit, and Endless Practice never runs out. Nothing you have now goes away. Unlock any time from Home or Settings."
     }
 
     enum DrillComplete {
-        static let flashcardsSubhead = "All the cards down. They'll stick a little better every pass."
+        static let flashcardsSubhead = "Every term reviewed. They stick a little better every pass."
         static let scoredSubhead = "Every calculation you work here is one you'll work faster on the exam."
     }
 

@@ -3,13 +3,13 @@ import SwiftUI
 private enum QuickSessionPurpose {
     case quickSession(isDaily: Bool)
     case codeMinute(CodeMinuteChallenge)
-    case gameNightPrep
+    case examWarmUp
 
     var drill: Drill {
         switch self {
         case .quickSession: return SessionBuilder.sessionDrill
         case .codeMinute: return CodeMinuteContent.drill
-        case .gameNightPrep: return SessionBuilder.gameNightPrepDrill
+        case .examWarmUp: return SessionBuilder.examWarmUpDrill
         }
     }
 
@@ -53,9 +53,9 @@ struct QuickSessionView: View {
         self.onClose = onClose
     }
 
-    init(gameNightPrep items: [QuickItem], onClose: (() -> Void)? = nil) {
+    init(examWarmUp items: [QuickItem], onClose: (() -> Void)? = nil) {
         _items = State(initialValue: items)
-        purpose = .gameNightPrep
+        purpose = .examWarmUp
         self.onClose = onClose
     }
 
@@ -83,7 +83,16 @@ struct QuickSessionView: View {
     private static let streakMilestones: Set<Int> = [3, 5, 10]
 
     var body: some View {
-        if finished || items.isEmpty {
+        if items.isEmpty {
+            // An empty session is NOT a finished one. Routing it to the
+            // completion screen congratulated people on a run of zero questions,
+            // which is both a lie and a dead end.
+            SessionEmptyView(
+                title: "Nothing to practise here yet",
+                message: "This session could not find any questions. Open a room and answer a few, then try again.",
+                onDone: onClose
+            )
+        } else if finished {
             completion
         } else {
             drillBody
@@ -104,13 +113,19 @@ struct QuickSessionView: View {
 
     private var drillBody: some View {
         VStack(spacing: 16) {
-            ProgressView(value: Double(index), total: Double(items.count))
+            // Completed, not current. See CalcDrillView for the same rule.
+            ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(items.count, 1)))
                 .tint(Theme.jade)
+                .animation(.easeOut(duration: 0.3), value: answered)
             VStack(spacing: 12) {
                 QuestionPager(
                     prompt: item.prompt,
                     givens: item.givens,
                     explanation: item.explanation,
+                    steps: item.steps,
+                    citation: item.citation,
+                    missNote: missNote,
+                    reportContext: answered ? reportContext : nil,
                     answered: answered,
                     eyebrow: item.sourceLabel.uppercased()
                 ) {
@@ -131,7 +146,7 @@ struct QuickSessionView: View {
         .frame(maxWidth: .infinity)
         .background(Theme.background)
         .drillStage(answerRect: $answerRect)
-        .overlay { Theme.bamGreen.opacity(flashOpacity).allowsHitTesting(false).ignoresSafeArea() }
+        .overlay { Theme.rightGreen.opacity(flashOpacity).allowsHitTesting(false).ignoresSafeArea() }
         .overlay {
             ConfettiBurst(
                 trigger: confettiTrigger,
@@ -195,6 +210,7 @@ struct QuickSessionView: View {
             correct: correct,
             isReviewable: item.isReviewable
         )
+        recordMistakePattern(pick: pick, correct: correct)
         if correct {
             score += 1
             streak += 1
@@ -206,6 +222,36 @@ struct QuickSessionView: View {
         }
     }
 
+    /// A generated question never comes back, but the ERROR does. A wrong pick
+    /// on a distractor the generator can name banks that pattern for targeted
+    /// practice; a right answer on a problem that set the same trap works it
+    /// back off. That is what makes "your misses come back" true here without
+    /// storing a dictionary of dead question ids.
+    private func recordMistakePattern(pick: Int, correct: Bool) {
+        if correct {
+            for pattern in Set(item.mistakes.values) {
+                PracticeRecordStore.shared.resolveMistake(pattern.id)
+            }
+        } else if let pattern = item.mistake(forChoiceAt: pick) {
+            PracticeRecordStore.shared.recordMistake(pattern)
+        }
+    }
+
+    private var missNote: String? {
+        guard let pick = selection, pick != item.answerIndex else { return nil }
+        return item.mistake(forChoiceAt: pick)?.summary
+    }
+
+    private var reportContext: ContentReport.Context {
+        ContentReport.Context(
+            itemID: item.id,
+            prompt: item.prompt,
+            citation: item.citation,
+            correctAnswer: item.choices[item.answerIndex],
+            selectedAnswer: selection.flatMap { item.choices.indices.contains($0) ? item.choices[$0] : nil }
+        )
+    }
+
     /// The dopamine landing: confetti + haptic + sound every time, escalating
     /// with a full-screen glow flash and a stronger haptic + banner at streak
     /// milestones. A miss keeps the existing gentle feedback in `grade`.
@@ -215,6 +261,7 @@ struct QuickSessionView: View {
         Haptics.correctAnswer()
         SoundPlayer.play(.success)
 
+        guard ConfettiBurst.celebrationsEnabled else { return }
         flashOpacity = 0.14
         withAnimation(.easeOut(duration: 0.5)) { flashOpacity = 0 }
 
@@ -251,7 +298,7 @@ struct QuickSessionView: View {
             if isDaily { progress.markQuickSessionCompleted() }
         case .codeMinute(let challenge):
             minuteResult = minuteStore.record(challenge: challenge, answers: answers)
-        case .gameNightPrep:
+        case .examWarmUp:
             break
         }
         withAnimation(.easeInOut(duration: 0.3)) { finished = true }

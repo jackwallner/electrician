@@ -23,6 +23,8 @@ struct CodeMinuteResult: Codable, Identifiable, Sendable {
     var shareText: String {
         let grid = answers.map { $0 ? "🟩" : "⬜️" }.joined()
         let base = "Code Minute \(shortDate): \(score)/\(total)\n\(grid)"
+        // `productURL` is nil until the listing is live, so a pre-launch share
+        // is the score and the grid, not the score and a 404.
         guard let url = AppStoreLinks.productURL else { return base }
         return base + "\nCan you beat me? \(url.absoluteString)"
     }
@@ -47,7 +49,7 @@ final class CodeMinuteStore: ObservableObject {
         }
     }
 
-    func result(for day: Date, calendar: Calendar = .current) -> CodeMinuteResult? {
+    func result(for day: Date, calendar: Calendar = CodeMinuteContent.dayCalendar) -> CodeMinuteResult? {
         results[CodeMinuteContent.key(for: day, calendar: calendar)]
     }
 
@@ -78,7 +80,7 @@ final class CodeMinuteStore: ObservableObject {
         return result
     }
 
-    func completedThisWeek(now: Date = Date(), calendar: Calendar = .current) -> Int {
+    func completedThisWeek(now: Date = Date(), calendar: Calendar = CodeMinuteContent.dayCalendar) -> Int {
         guard let interval = calendar.dateInterval(of: .weekOfYear, for: now) else { return 0 }
         return results.values.filter { interval.contains($0.completedAt) }.count
     }
@@ -86,7 +88,7 @@ final class CodeMinuteStore: ObservableObject {
     func archiveDates(
         before day: Date = Date(),
         count: Int = 30,
-        calendar: Calendar = .current
+        calendar: Calendar = CodeMinuteContent.dayCalendar
     ) -> [Date] {
         (1...count).compactMap { offset in
             calendar.date(byAdding: .day, value: -offset, to: day)

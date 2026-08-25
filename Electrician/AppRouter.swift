@@ -3,12 +3,15 @@ import UIKit
 import UserNotifications
 
 enum AppDestination: Hashable {
-    case gameNightPrepSession
+    case examWarmUpSession
 }
 
 enum AppNotification {
     static let routeKey = "electrician.route"
-    static let gameNightPrepValue = "game-night-prep"
+    /// The VALUE stays as it is: notifications already scheduled on device
+    /// carry this string in their userInfo, and changing it would make every
+    /// pending reminder open Home instead of the warm-up it promised.
+    static let examWarmUpValue = "game-night-prep"
 }
 
 @MainActor
@@ -42,9 +45,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
         if response.notification.request.content.userInfo[AppNotification.routeKey] as? String
-            == AppNotification.gameNightPrepValue {
+            == AppNotification.examWarmUpValue {
             Task { @MainActor in
-                AppRouter.shared.route(to: .gameNightPrepSession)
+                AppRouter.shared.route(to: .examWarmUpSession)
             }
         }
         completionHandler()

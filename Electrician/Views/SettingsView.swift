@@ -81,7 +81,10 @@ struct SettingsView: View {
                 }
                 Button("Cancel", role: .cancel) {}
             } message: {
-                Text("Your streak, completed drills, and practice history will be cleared. Purchases are not affected.")
+                // The exact scope, because "Reset Progress" reads like a full
+                // reset and is not one. Someone troubleshooting or handing the
+                // phone to a colleague needs to know what survives.
+                Text("Clears your streak, completed drills, per-question history, tracked mistakes, and Code Minute results. Keeps your purchases, appearance, reminders, and how you answered onboarding.")
             }
         }
     }
@@ -100,13 +103,14 @@ struct SettingsView: View {
         Section("Practice") {
             Toggle("Haptics", isOn: $settings.hapticsEnabled)
             Toggle("Sound Effects", isOn: $settings.soundEnabled)
+            Toggle("Celebration Effects", isOn: $settings.celebrationsEnabled)
             Toggle("Daily Reminder", isOn: $settings.reminderEnabled)
             if settings.reminderEnabled {
                 DatePicker("Reminder Time", selection: $settings.reminderTime, displayedComponents: .hourAndMinute)
             }
             if subscriptions.isPro {
                 NavigationLink {
-                    GameNightPrepView()
+                    ExamWarmUpView()
                 } label: {
                     Label("Exam Warm-Up", systemImage: "person.2.fill")
                 }
@@ -172,10 +176,14 @@ struct SettingsView: View {
                     Label("What's New", systemImage: "sparkle")
                 }
             }
-            Button {
-                reviewPromptStep = .reviewPitch
-            } label: {
-                Label("Rate Electrician", systemImage: "star.fill")
+            // Hidden until the listing is live: the button opens an
+            // apps.apple.com URL that 404s while the record is still a draft.
+            if AppStoreLinks.isPublished {
+                Button {
+                    reviewPromptStep = .reviewPitch
+                } label: {
+                    Label("Rate Electrician", systemImage: "star.fill")
+                }
             }
             Button {
                 reviewPromptStep = .feedback
@@ -188,7 +196,11 @@ struct SettingsView: View {
     private var aboutSection: some View {
         Section("About") {
             LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0")
-            Text("Electrician is a study aid, not a code book. It is not affiliated with, endorsed by, or connected to the NFPA. It teaches concepts and calculations in original wording and cites article numbers so you can verify each one yourself. Requirements vary by the code edition your jurisdiction has adopted and by local amendments, so always check the code in force where you work.")
+            // The edition is the most important thing on this screen and it used
+            // to be buried inside a paragraph. A candidate cannot tell a
+            // 2023-cycle answer from a 2026-cycle one by looking at it.
+            LabeledContent("Code edition", value: NECTables.edition)
+            Text("Every number in this app comes from the \(NECTables.edition). Electrician is a study aid, not a code book. It is not affiliated with, endorsed by, or connected to the NFPA. It teaches concepts and calculations in original wording and cites article numbers so you can verify each one yourself. Your jurisdiction may examine against a different edition or amend it locally, so always check the code in force where you work.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }

@@ -4,8 +4,14 @@ import RevenueCat
 enum PaywallPlan: String, CaseIterable {
     case yearly, lifetime, monthly
 
-    var ctaTitle: String {
-        self == .lifetime ? "Unlock \(Membership.name) Forever" : "Start 7-Day Free Trial"
+    /// The CTA has to name what THIS Apple Account will actually get. A
+    /// returning subscriber is not eligible for the introductory offer, and
+    /// promising them a free trial is a promise the store refuses at the
+    /// confirmation sheet.
+    func ctaTitle(trial: String?) -> String {
+        guard self != .lifetime else { return "Unlock \(Membership.name) Forever" }
+        guard let trial else { return "Subscribe to \(Membership.name)" }
+        return "Start \(trial) Free"
     }
 
     var packageType: PackageType {
@@ -52,9 +58,13 @@ struct PaywallContent: View {
             // does not end.
             VStack(alignment: .leading, spacing: 9) {
                 benefit("Code Minute: the shared five-question daily challenge")
-                benefit("Exam Warm-Up: five minutes built around your weak spots")
+                benefit("Exam Warm-Up: a short session built around your weak spots")
                 benefit("Endless Practice: a fresh problem every time")
-                benefit("Fix My Mistakes: misses come back until they stick")
+                // Precise on purpose. Generated questions are one-offs and can
+                // never return as themselves; what returns is a NEW problem
+                // that sets the same trap. Saying "the exact questions come
+                // back" would describe a feature the generator cannot have.
+                benefit("Fix My Mistakes: missed questions return, and new problems target the errors you repeat")
                 benefit("Timed Challenge: 90 seconds, chase your best")
                 benefit("Extra practice sets in every room, plus the worked calculations")
             }
@@ -74,6 +84,12 @@ struct PaywallContent: View {
         }
     }
 
+    /// The trial length for a plan, or nil when this account cannot start one.
+    private func trial(_ plan: PaywallPlan) -> String? {
+        guard subscriptions.isEligibleForTrial(plan) else { return nil }
+        return subscriptions.trialLengthText(for: plan)
+    }
+
     private var planCards: some View {
         // Yearly, then monthly, then lifetime. Monthly sits DIRECTLY under yearly
         // on purpose: the yearly card's whole pitch is a discount off the monthly
@@ -84,11 +100,14 @@ struct PaywallContent: View {
             planCard(.yearly, title: "Yearly", price: PaywallPricing.priceText(subscriptions, .yearly),
                      perMonth: PaywallPricing.perMonthEquivalent(subscriptions),
                      anchor: PaywallPricing.monthlyAnchor(subscriptions),
-                     detail: "7 days free, then billed yearly. Auto-renews.",
+                     detail: trial(.yearly).map { "\($0) free, then billed yearly. Auto-renews." }
+                         ?? "Billed yearly. Auto-renews.",
                      badge: PaywallPricing.savingsBadge(subscriptions))
             planCard(.monthly, title: "Monthly", price: PaywallPricing.priceText(subscriptions, .monthly),
                      perMonth: nil, anchor: nil,
-                     detail: "7 days free, then billed monthly. Auto-renews.", badge: nil)
+                     detail: trial(.monthly).map { "\($0) free, then billed monthly. Auto-renews." }
+                         ?? "Billed monthly. Auto-renews.",
+                     badge: nil)
             planCard(.lifetime, title: "Lifetime", price: PaywallPricing.priceText(subscriptions, .lifetime),
                      perMonth: nil, anchor: nil,
                      detail: "One payment. No subscription, nothing renews.", badge: "NO SUBSCRIPTION")
@@ -239,20 +258,30 @@ enum PaywallPricing {
 
     /// One concise point-of-purchase line: price, trial, auto-renew, cancel.
     /// The full legalese lives in the EULA behind the Terms link.
+    ///
+    /// The trial half is conditional for the same reason the CTA is: an
+    /// ineligible Apple Account must be quoted the amount it will actually be
+    /// charged, on the first billing period, with no mention of a free week it
+    /// will not receive.
     static func terms(_ subscriptions: SubscriptionService, _ plan: PaywallPlan) -> String {
+        let trial = subscriptions.isEligibleForTrial(plan)
+            ? subscriptions.trialLengthText(for: plan)
+            : nil
         guard let amount = price(subscriptions, plan) else {
             switch plan {
             case .lifetime:
                 return "One-time purchase. Not a subscription, nothing renews."
             case .yearly, .monthly:
-                return "Includes 7 days free. Auto-renews until canceled."
+                guard let trial else { return "Auto-renews until canceled." }
+                return "Includes \(trial) free. Auto-renews until canceled."
             }
         }
         switch plan {
         case .lifetime:
             return "\(amount) one-time. Not a subscription, nothing renews."
         case .yearly, .monthly:
-            return "7 days free, then \(amount). Auto-renews until canceled."
+            guard let trial else { return "\(amount). Auto-renews until canceled." }
+            return "\(trial) free, then \(amount). Auto-renews until canceled."
         }
     }
 }
@@ -267,6 +296,22 @@ struct PaywallView: View {
     @State private var purchasing = false
     @State private var restoring = false
     @State private var message: String?
+    @State private var retrying = false
+
+    /// Whether there is a real, purchasable package behind the selected plan.
+    ///
+    /// Without this the Buy button stayed live under a permanent "Loading
+    /// price..." and answered a tap with a generic App Store error. Someone who
+    /// has just decided to pay reads that as a broken purchase, and the one
+    /// thing they still need, Restore, was the least prominent control on the
+    /// screen.
+    private var canPurchase: Bool {
+        PaywallPricing.price(subscriptions, selectedPlan) != nil
+    }
+
+    private var pricesUnavailable: Bool {
+        subscriptions.offeringState == .unavailable && !canPurchase
+    }
 
     var body: some View {
         NavigationStack {
@@ -279,24 +324,31 @@ struct PaywallView: View {
             .background(Theme.background)
             .safeAreaInset(edge: .bottom) {
                 VStack(spacing: 8) {
-                    Text(PaywallPricing.terms(subscriptions, selectedPlan))
-                        .font(.caption)
-                        .foregroundStyle(Theme.inkSecondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
+                    if pricesUnavailable {
+                        unavailableNotice
+                    } else {
+                        Text(PaywallPricing.terms(subscriptions, selectedPlan))
+                            .font(.caption)
+                            .foregroundStyle(Theme.inkSecondary)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                     Button {
-                        purchase()
+                        if pricesUnavailable { retry() } else { purchase() }
                     } label: {
                         Group {
-                            if purchasing {
+                            if purchasing || retrying {
                                 ProgressView().tint(.white)
+                            } else if pricesUnavailable {
+                                Text("Try Again")
                             } else {
-                                Text(selectedPlan.ctaTitle)
+                                Text(selectedPlan.ctaTitle(trial: ctaTrial))
                             }
                         }
                         .primaryCTA()
                     }
-                    .disabled(purchasing)
+                    .disabled(purchasing || retrying || (!canPurchase && !pricesUnavailable))
+                    .opacity(!canPurchase && !pricesUnavailable ? 0.5 : 1)
                     footerLinks
                 }
                 .padding()
@@ -323,6 +375,34 @@ struct PaywallView: View {
         }
     }
 
+    private var ctaTrial: String? {
+        guard subscriptions.isEligibleForTrial(selectedPlan) else { return nil }
+        return subscriptions.trialLengthText(for: selectedPlan)
+    }
+
+    /// Explicit failure beats a placeholder that never resolves. Restore stays
+    /// live beneath it, because the most likely person staring at this screen
+    /// with no prices is someone who already paid on another device.
+    private var unavailableNotice: some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: "wifi.exclamationmark")
+                .foregroundStyle(Theme.coral)
+            Text("Prices could not be loaded. Check your connection and try again. Already a member? Tap Restore.")
+                .font(.caption)
+                .foregroundStyle(Theme.inkSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func retry() {
+        retrying = true
+        Task {
+            defer { retrying = false }
+            await subscriptions.loadOfferings()
+        }
+    }
+
     private var footerLinks: some View {
         HStack(spacing: 16) {
             Button("Restore") { restore() }
@@ -339,8 +419,12 @@ struct PaywallView: View {
         Task {
             defer { purchasing = false }
             do {
-                await subscriptions.ensureOfferings()
-                let outcome = try await subscriptions.purchase(subscriptions.package(for: selectedPlan))
+                // Resolving the package separately is what lets "we could not
+                // reach the store" and "this product is misconfigured" stay
+                // different errors instead of collapsing into one sentence that
+                // fits neither.
+                let package = try await subscriptions.resolvePackage(for: selectedPlan)
+                let outcome = try await subscriptions.purchase(package)
                 guard outcome == .purchased else { return }
                 Haptics.success()
                 // The sheet dismisses itself the moment `isPro` flips. If the
@@ -350,9 +434,12 @@ struct PaywallView: View {
                 if await !subscriptions.confirmEntitlement() {
                     message = "Your purchase went through, but \(Membership.name) hasn't unlocked yet. Give it a moment, then tap Restore. You will not be charged twice."
                 }
-            } catch {
+            } catch let error as PurchaseError {
                 // A cancel never lands here (it's an outcome, not a throw), so
                 // anything that does is worth telling the player about.
+                print("[paywall] purchase blocked: \(error.diagnosticDescription)")
+                message = error.errorDescription
+            } catch {
                 message = error.localizedDescription
             }
         }

@@ -49,9 +49,29 @@ from one specific common mistake** (started the derate at 75°C, ignored
 240.4(D), used 53% fill, counted grounds individually). Keep it that way: random
 wrong numbers teach nothing.
 
-**Values follow the 2023 cycle** while the 2026 adoptions roll out. When the
-tables move, update `NECTables` and let the tests catch the authored content
-that drifted.
+Those mistakes are **named**, not just implied: `CandidateMistake` holds the
+catalogue and each generator attaches a `MistakePattern` to the distractor it
+produces. Three things depend on it, so do not let a new shape ship without
+one: a miss tells the reader what they actually did, `PracticeRecordStore`
+tallies which errors they repeat, and Fix My Mistakes generates a NEW problem
+that sets the same trap (a generated question is a one-off and can never come
+back as itself). `MistakePattern.id` is persisted, so renaming one resets that
+tally. Four choices is a hard invariant, enforced by test.
+
+Generator parameter ranges are load-bearing, not decoration. The ampacity
+shape draws ambient from 30°C up and current-carrying from 3 up **so the 75°C
+termination cap sometimes binds**; with the old 35°C/4-conductor floors the
+derated figure was always below the cap, so the app's own headline rule never
+appeared as a wrong answer. If you narrow a range, check the mistake catalogue
+still fires.
+
+**Values follow the 2023 cycle** while the 2026 adoptions roll out. The edition
+is a user-visible fact, not a comment: `NECTables.edition` is rendered on every
+citation line, in Field Tools, in Settings, on the Home footer, on the website
+and in the store description. A candidate cannot tell a 2023-cycle answer from
+a 2026-cycle one by looking at it, and the app name carries a year. When the
+tables move, update `NECTables` (including `edition`) and let the tests catch
+the authored content that drifted.
 
 ## Structure
 - `Shared/Models` — `Given` (a labelled condition chip, the equivalent of a
@@ -66,11 +86,24 @@ Room ids (`basics-room`, `conductors-room`, `calc-room`, `grounding-room`) are
 referenced by `PracticeSkill.roomID` and `Theme`'s accent map. Renaming one
 means updating both; a test enforces that they resolve.
 
+**Some strings look stale and are load-bearing.** The exam-warm-up feature was
+renamed out of its inherited `gameNight` spelling, but four UserDefaults keys
+(`settings.gameNight*`), one notification identifier
+(`electrician.gameNightReminder`), the route value `game-night-prep` and the
+drill id of the same name were deliberately left alone. They are already
+written on device: changing a key does not migrate a setting, it silently
+forgets it, and changing the route value orphans every pending notification.
+The Swift symbols are the part that was safe to rename.
+
 ## App-specific notes
 - **ASC record exists, not live.** Apple ID `6804828725`, bundle
   `com.jackwallner.electrician`, draft 1.0 in `PREPARE_FOR_SUBMISSION`.
   `AppStoreLinks.appStoreID` is set. Builds are going to TestFlight; the
   draft still has no build attached and has not been submitted.
+  **`AppStoreLinks.isListingLive` is `false` and must be flipped the day the
+  listing goes Ready for Sale.** Having an Apple ID is not having a listing:
+  while it is false there is no share URL, no Rate button and no review funnel,
+  because every `apps.apple.com/app/id...` URL built from a draft record 404s.
 - **Store name is `Electrician Exam Practice 2026`.** The obvious
   `Electrician Exam Prep 2026` belongs to the incumbent the research file
   names as the SERP leader, and ASC rejects it with

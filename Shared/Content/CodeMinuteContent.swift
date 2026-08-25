@@ -39,7 +39,7 @@ struct CodeMinuteChallenge: Identifiable, Sendable {
     var items: [QuickItem] { questions.map(\.item) }
 }
 
-/// One shared five-question set per calendar date.
+/// One shared five-question set per Code Minute day.
 ///
 /// Everyone who opens the app on the same day gets the same five, which is what
 /// makes the score shareable. Two are generated calculations seeded off the
@@ -47,6 +47,21 @@ struct CodeMinuteChallenge: Identifiable, Sendable {
 /// three are drawn from the authored pool by the same seed.
 enum CodeMinuteContent {
     static let questionCount = 5
+
+    /// The day boundary, fixed rather than local.
+    ///
+    /// "The same five questions for every member" is a promise, and
+    /// `Calendar.current` breaks it: two readers either side of midnight local
+    /// time get different sets while their share cards claim the same day. The
+    /// app is US-only, so the boundary is US Pacific: the challenge turns over
+    /// at midnight for the latest US time zone and no reader is more than three
+    /// hours from their own midnight. Change this and every stored `dayKey`
+    /// shifts, so it is effectively permanent.
+    static let dayCalendar: Calendar = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "America/Los_Angeles") ?? TimeZone(secondsFromGMT: 0)!
+        return calendar
+    }()
 
     static let drill = Drill(
         id: "code-minute",
@@ -56,7 +71,7 @@ enum CodeMinuteContent {
         isPlus: true
     )
 
-    static func challenge(for day: Date = Date(), calendar: Calendar = .current) -> CodeMinuteChallenge {
+    static func challenge(for day: Date = Date(), calendar: Calendar = dayCalendar) -> CodeMinuteChallenge {
         let dayKey = key(for: day, calendar: calendar)
         var rng = SeededGenerator(seed: seed(from: dayKey))
 
@@ -78,11 +93,14 @@ enum CodeMinuteContent {
                     givens: scenario.givens,
                     choices: scenario.choices,
                     answerIndex: scenario.answerIndex,
-                    explanation: scenario.steps.joined(separator: " ") + "\n\nLook it up: \(scenario.citation).",
+                    explanation: scenario.steps.first ?? "",
+                    steps: scenario.steps,
+                    citation: scenario.citation,
                     sourceLabel: "Code Minute",
                     roomID: shape.0 == .ampacity ? "conductors-room" : "calc-room",
                     trackingID: "code-minute-rollup",
-                    isReviewable: false
+                    isReviewable: false,
+                    mistakes: scenario.mistakes
                 )
             ))
         }
@@ -120,14 +138,19 @@ enum CodeMinuteContent {
         }
     }
 
-    static func key(for day: Date, calendar: Calendar = .current) -> String {
+    static func key(for day: Date, calendar: Calendar = dayCalendar) -> String {
         let parts = calendar.dateComponents([.year, .month, .day], from: day)
         return String(format: "%04d-%02d-%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0)
     }
 
-    private static func shortDate(for day: Date, calendar: Calendar = .current) -> String {
+    private static func shortDate(for day: Date, calendar: Calendar = dayCalendar) -> String {
         let formatter = DateFormatter()
         formatter.calendar = calendar
+        // The time zone as well as the calendar: without it the formatter falls
+        // back to the device zone and can print a different date than `dayKey`
+        // was computed from, which is exactly the bug the fixed boundary exists
+        // to prevent.
+        formatter.timeZone = calendar.timeZone
         formatter.dateFormat = "MMM d"
         return formatter.string(from: day)
     }

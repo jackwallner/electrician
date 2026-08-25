@@ -28,12 +28,51 @@ enum PurchaseOutcome: Sendable {
     case cancelled
 }
 
+/// Why a purchase could not start. These used to be one case, which meant a
+/// customer who was offline, a customer whose offering had not loaded, and a
+/// customer whose product was misconfigured in App Store Connect all saw the
+/// same sentence, and so did we in the logs. They are three different problems
+/// with three different fixes.
 enum PurchaseError: LocalizedError {
-    case productsUnavailable
+    /// RevenueCat is not configured at all (simulator, or the DEBUG placeholder
+    /// key). Only reachable in development.
+    case notConfigured
+    /// The offering never arrived: offline, or RevenueCat is unreachable.
+    case offeringsUnavailable
+    /// The offering arrived but has no package for this plan, which means the
+    /// product is missing or misconfigured rather than the network being down.
+    case packageMissing(PaywallPlan)
 
     var errorDescription: String? {
-        "The App Store isn't reachable right now. Check your connection and try again."
+        switch self {
+        case .notConfigured:
+            return "Purchases are not available in this build."
+        case .offeringsUnavailable:
+            return "The App Store isn't reachable right now. Check your connection and try again."
+        case .packageMissing:
+            return "That plan isn't available right now. Try another plan, or Restore if you have already bought it."
+        }
     }
+
+    /// Never shown to a customer; this is the half that makes a support email
+    /// answerable.
+    var diagnosticDescription: String {
+        switch self {
+        case .notConfigured: return "RevenueCat not configured"
+        case .offeringsUnavailable: return "no current offering"
+        case .packageMissing(let plan): return "offering has no \(plan.rawValue) package"
+        }
+    }
+}
+
+/// Where the price catalog is in its lifecycle. The paywall renders a different
+/// screen for each: a placeholder, the real prices, or an explicit failure with
+/// a retry, instead of a permanent "Loading price..." above a live Buy button.
+enum OfferingState: Equatable {
+    case idle
+    case loading
+    case ready
+    case unavailable
 }
 
 struct PaywallPrice {
@@ -48,6 +87,10 @@ final class SubscriptionService: NSObject, ObservableObject {
 
     @Published private(set) var isPro = false
     @Published private(set) var offerings: Offerings?
+    @Published private(set) var offeringState: OfferingState = .idle
+    /// Product identifier to whether this Apple Account may still start the
+    /// introductory offer. Empty until StoreKit answers.
+    @Published private(set) var trialEligibility: [String: Bool] = [:]
 
     private var isConfigured = false
     private let localOverrideKey = "subscription.localProOverride"
@@ -127,8 +170,97 @@ final class SubscriptionService: NSObject, ObservableObject {
     }
 
     func loadOfferings() async {
+        guard isConfigured else {
+            offeringState = .unavailable
+            return
+        }
+        offeringState = .loading
+        do {
+            let loaded = try await Purchases.shared.offerings()
+            offerings = loaded
+            offeringState = loaded.current == nil ? .unavailable : .ready
+        } catch {
+            // Keep whatever prices we already had rather than blanking a
+            // working paywall on a transient refresh failure.
+            offeringState = offerings?.current == nil ? .unavailable : .ready
+        }
+        await refreshTrialEligibility()
+    }
+
+    /// Asks StoreKit whether THIS Apple Account can still start the free trial.
+    ///
+    /// The paywall used to promise "7 days free" unconditionally, which is a
+    /// promise the store will not keep for anyone who has subscribed before.
+    /// That is a 3.1.2 problem and, worse, it is the customer finding out at
+    /// the confirmation sheet that the offer they tapped does not apply to
+    /// them.
+    private func refreshTrialEligibility() async {
         guard isConfigured else { return }
-        offerings = try? await Purchases.shared.offerings()
+        let identifiers = PaywallPlan.allCases.compactMap {
+            package(for: $0)?.storeProduct.productIdentifier
+        }
+        guard !identifiers.isEmpty else { return }
+        let results = await Purchases.shared.checkTrialOrIntroDiscountEligibility(
+            productIdentifiers: identifiers
+        )
+        var next: [String: Bool] = [:]
+        for (identifier, eligibility) in results {
+            switch eligibility.status {
+            case .eligible:
+                next[identifier] = true
+            case .ineligible, .noIntroOfferExists:
+                next[identifier] = false
+            case .unknown:
+                // Deliberately absent rather than false. `.unknown` is "could
+                // not determine", which is the common answer offline and for a
+                // brand-new install, and the overwhelming majority of those are
+                // eligible. Recording it as ineligible would hide the trial
+                // from almost everyone the moment the check hiccups. The case
+                // that actually caused harm, a returning subscriber, comes back
+                // as a definite `.ineligible`.
+                continue
+            @unknown default:
+                continue
+            }
+        }
+        trialEligibility = next
+    }
+
+    /// Whether to advertise the free trial for a plan.
+    func isEligibleForTrial(_ plan: PaywallPlan) -> Bool {
+        guard plan != .lifetime else { return false }
+        guard let product = package(for: plan)?.storeProduct else {
+            // No live product: the DEBUG StoreKit catalog stands in, and it
+            // carries the trials, so the simulator paywall reads the way the
+            // shipped one does.
+            #if DEBUG
+            return true
+            #else
+            return false
+            #endif
+        }
+        guard product.introductoryDiscount != nil else { return false }
+        return trialEligibility[product.productIdentifier] ?? true
+    }
+
+    /// The trial length as the STORE reports it, not as a constant in our copy.
+    /// If the offer in App Store Connect ever changes from one week, the paywall
+    /// follows it instead of quietly lying.
+    func trialLengthText(for plan: PaywallPlan) -> String {
+        guard let period = package(for: plan)?.storeProduct.introductoryDiscount?.subscriptionPeriod else {
+            return "7 days"
+        }
+        let value = period.value
+        let unit: String
+        switch period.unit {
+        case .day: unit = "day"
+        case .week: unit = value == 1 ? "7 days" : "week"
+        case .month: unit = "month"
+        case .year: unit = "year"
+        @unknown default: unit = "day"
+        }
+        if period.unit == .week, value == 1 { return "7 days" }
+        return "\(value) \(unit)\(value == 1 ? "" : "s")"
     }
 
     func package(for plan: PaywallPlan) -> Package? {
@@ -237,11 +369,21 @@ final class SubscriptionService: NSObject, ObservableObject {
         return offerings?.current != nil
     }
 
+    /// Loads offerings if needed, then hands back the package for the plan.
+    /// Throws the specific reason it could not, so the paywall can tell a
+    /// network problem from a misconfigured product.
+    func resolvePackage(for plan: PaywallPlan) async throws -> Package {
+        guard isConfigured else { throw PurchaseError.notConfigured }
+        guard await ensureOfferings() else { throw PurchaseError.offeringsUnavailable }
+        guard let package = package(for: plan) else { throw PurchaseError.packageMissing(plan) }
+        return package
+    }
+
     func purchase(_ package: Package?) async throws -> PurchaseOutcome {
         guard isConfigured else {
-            throw PurchaseError.productsUnavailable
+            throw PurchaseError.notConfigured
         }
-        guard let package else { throw PurchaseError.productsUnavailable }
+        guard let package else { throw PurchaseError.offeringsUnavailable }
         let result = try await Purchases.shared.purchase(package: package)
         // RevenueCat reports a user backing out of Apple's sheet as a normal
         // result, not an error. Treating it as a failure is what used to shove

@@ -42,8 +42,12 @@ struct CalcDrillView: View {
 
     private var drillBody: some View {
         VStack(spacing: 16) {
-            ProgressView(value: Double(index), total: Double(scenarios.count))
+            // Completed, not current: the bar counts an item once it has been
+            // graded, so the final answer fills it instead of leaving the run
+            // permanently one short of done.
+            ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(scenarios.count, 1)))
                 .tint(Theme.jade)
+                .animation(.easeOut(duration: 0.3), value: answered)
             VStack(spacing: 16) {
                 CenteringScrollView {
                     VStack(spacing: 18) {
@@ -62,7 +66,11 @@ struct CalcDrillView: View {
                         ) { pick in
                             select(pick)
                         }
-                        if answered { steps }
+                        if answered {
+                            if let missNote { MissNoteView(note: missNote) }
+                            WorkedStepsView(steps: scenario.steps, citation: scenario.citation)
+                            ReportIssueButton(context: reportContext)
+                        }
                     }
                     .padding(.horizontal, 4)
                 }
@@ -90,39 +98,23 @@ struct CalcDrillView: View {
         }
     }
 
-    private var steps: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("Working")
-                .font(.caption.weight(.heavy))
-                .kerning(1.2)
-                .foregroundStyle(Theme.inkTertiary)
-            ForEach(Array(scenario.steps.enumerated()), id: \.offset) { position, step in
-                HStack(alignment: .top, spacing: 10) {
-                    Text("\(position + 1)")
-                        .font(.caption.weight(.bold).monospacedDigit())
-                        .foregroundStyle(Theme.jade)
-                        .frame(width: 18, height: 18)
-                        .background(Theme.jade.opacity(0.14), in: Circle())
-                    Text(step)
-                        .font(.callout)
-                        .foregroundStyle(Theme.inkSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-            }
-            Label(scenario.citation, systemImage: "book.closed")
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(Theme.inkTertiary)
-                .padding(.top, 2)
-        }
-        .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.ivory, in: RoundedRectangle(cornerRadius: 14))
-        .overlay(
-            RoundedRectangle(cornerRadius: 14)
-                .strokeBorder(Theme.ivoryShadow, lineWidth: 1)
+    /// The named mistake behind the pick, when this scenario knows one. Only
+    /// generated scenarios carry them today; authored ones simply show nothing.
+    private var missNote: String? {
+        guard let pick = selection, pick != shuffled.answerIndex,
+              shuffled.labels.indices.contains(pick)
+        else { return nil }
+        return scenario.mistakes[shuffled.labels[pick]]?.summary
+    }
+
+    private var reportContext: ContentReport.Context {
+        ContentReport.Context(
+            itemID: scenario.id,
+            prompt: scenario.situation,
+            citation: scenario.citation,
+            correctAnswer: shuffled.labels[shuffled.answerIndex],
+            selectedAnswer: selection.flatMap { shuffled.labels.indices.contains($0) ? shuffled.labels[$0] : nil }
         )
-        .transition(.opacity.combined(with: .move(edge: .bottom)))
     }
 
     private var footer: some View {

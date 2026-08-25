@@ -29,7 +29,7 @@ final class AppSettings: ObservableObject {
         }
     }
 
-    enum GameNightDay: Int, CaseIterable, Identifiable {
+    enum ExamWarmUpDay: Int, CaseIterable, Identifiable {
         case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
 
         var id: Int { rawValue }
@@ -51,17 +51,27 @@ final class AppSettings: ObservableObject {
         static let appearance = "settings.appearance"
         static let haptics = "settings.haptics"
         static let sound = "settings.sound"
+        static let celebrations = "settings.celebrations"
         static let reminderEnabled = "settings.reminderEnabled"
         static let reminderHour = "settings.reminderHour"
         static let reminderMinute = "settings.reminderMinute"
-        static let gameNightReminderEnabled = "settings.gameNightReminderEnabled"
-        static let gameNightDay = "settings.gameNightDay"
-        static let gameNightHour = "settings.gameNightHour"
-        static let gameNightMinute = "settings.gameNightMinute"
+        // The `gameNight` spelling in these four VALUES is deliberate and must
+        // not be tidied to match the renamed symbols. They are the UserDefaults
+        // keys already written on every install; changing a key does not
+        // migrate a setting, it silently forgets it, so someone with a Thursday
+        // 5pm reminder would find it switched off after an update. The Swift
+        // names are the part that was safe to rename.
+        static let examWarmUpReminderEnabled = "settings.gameNightReminderEnabled"
+        static let examWarmUpDay = "settings.gameNightDay"
+        static let examWarmUpHour = "settings.gameNightHour"
+        static let examWarmUpMinute = "settings.gameNightMinute"
     }
 
     private static let reminderID = "electrician.dailyReminder"
-    private static let gameNightReminderID = "electrician.gameNightReminder"
+    /// Same rule as the keys above: this identifier matches notification
+    /// requests already scheduled on device, and renaming it would leave those
+    /// pending forever with nothing able to cancel them.
+    private static let examWarmUpReminderID = "electrician.gameNightReminder"
 
     @Published var appearance: Appearance {
         didSet { defaults.set(appearance.rawValue, forKey: Keys.appearance) }
@@ -73,6 +83,19 @@ final class AppSettings: ObservableObject {
 
     @Published var soundEnabled: Bool {
         didSet { defaults.set(soundEnabled, forKey: Keys.sound) }
+    }
+
+    /// Confetti, the full-screen flash, and the streak banners.
+    ///
+    /// On by default, because the habit loop is real and it works. Off is here
+    /// because this audience is not the audience the shell was built for: a
+    /// working electrician studying at 10pm before a 6am start does not
+    /// necessarily want the screen to flash green every time they are right,
+    /// and "this app is for kids" is a thing a professional says about a
+    /// product once and never revisits. Haptics and sound keep their own
+    /// switches; this one is only the visual celebration.
+    @Published var celebrationsEnabled: Bool {
+        didSet { defaults.set(celebrationsEnabled, forKey: Keys.celebrations) }
     }
 
     @Published var reminderEnabled: Bool {
@@ -100,30 +123,30 @@ final class AppSettings: ObservableObject {
         }
     }
 
-    @Published var gameNightReminderEnabled: Bool {
+    @Published var examWarmUpReminderEnabled: Bool {
         didSet {
-            defaults.set(gameNightReminderEnabled, forKey: Keys.gameNightReminderEnabled)
-            if gameNightReminderEnabled {
-                requestPermissionAndScheduleGameNight()
+            defaults.set(examWarmUpReminderEnabled, forKey: Keys.examWarmUpReminderEnabled)
+            if examWarmUpReminderEnabled {
+                requestPermissionAndScheduleExamWarmUp()
             } else {
-                cancelGameNightReminder()
+                cancelExamWarmUpReminder()
             }
         }
     }
 
-    @Published var gameNightDay: GameNightDay {
+    @Published var examWarmUpDay: ExamWarmUpDay {
         didSet {
-            defaults.set(gameNightDay.rawValue, forKey: Keys.gameNightDay)
-            if gameNightReminderEnabled { scheduleGameNightReminder() }
+            defaults.set(examWarmUpDay.rawValue, forKey: Keys.examWarmUpDay)
+            if examWarmUpReminderEnabled { scheduleExamWarmUpReminder() }
         }
     }
 
-    @Published var gameNightReminderTime: Date {
+    @Published var examWarmUpReminderTime: Date {
         didSet {
-            let parts = Calendar.current.dateComponents([.hour, .minute], from: gameNightReminderTime)
-            defaults.set(parts.hour ?? 17, forKey: Keys.gameNightHour)
-            defaults.set(parts.minute ?? 0, forKey: Keys.gameNightMinute)
-            if gameNightReminderEnabled { scheduleGameNightReminder() }
+            let parts = Calendar.current.dateComponents([.hour, .minute], from: examWarmUpReminderTime)
+            defaults.set(parts.hour ?? 17, forKey: Keys.examWarmUpHour)
+            defaults.set(parts.minute ?? 0, forKey: Keys.examWarmUpMinute)
+            if examWarmUpReminderEnabled { scheduleExamWarmUpReminder() }
         }
     }
 
@@ -134,17 +157,18 @@ final class AppSettings: ObservableObject {
         appearance = Appearance(rawValue: defaults.string(forKey: Keys.appearance) ?? "") ?? .light
         hapticsEnabled = defaults.object(forKey: Keys.haptics) as? Bool ?? true
         soundEnabled = defaults.object(forKey: Keys.sound) as? Bool ?? true
+        celebrationsEnabled = defaults.object(forKey: Keys.celebrations) as? Bool ?? true
         reminderEnabled = defaults.bool(forKey: Keys.reminderEnabled)
         let hour = defaults.object(forKey: Keys.reminderHour) as? Int ?? 9
         let minute = defaults.object(forKey: Keys.reminderMinute) as? Int ?? 0
         reminderTime = Calendar.current.date(from: DateComponents(hour: hour, minute: minute)) ?? Date()
-        gameNightReminderEnabled = defaults.bool(forKey: Keys.gameNightReminderEnabled)
-        let savedDay = defaults.integer(forKey: Keys.gameNightDay)
-        gameNightDay = GameNightDay(rawValue: savedDay) ?? .thursday
-        let gameHour = defaults.object(forKey: Keys.gameNightHour) as? Int ?? 17
-        let gameMinute = defaults.object(forKey: Keys.gameNightMinute) as? Int ?? 0
-        gameNightReminderTime = Calendar.current.date(
-            from: DateComponents(hour: gameHour, minute: gameMinute)
+        examWarmUpReminderEnabled = defaults.bool(forKey: Keys.examWarmUpReminderEnabled)
+        let savedDay = defaults.integer(forKey: Keys.examWarmUpDay)
+        examWarmUpDay = ExamWarmUpDay(rawValue: savedDay) ?? .thursday
+        let warmUpHour = defaults.object(forKey: Keys.examWarmUpHour) as? Int ?? 17
+        let warmUpMinute = defaults.object(forKey: Keys.examWarmUpMinute) as? Int ?? 0
+        examWarmUpReminderTime = Calendar.current.date(
+            from: DateComponents(hour: warmUpHour, minute: warmUpMinute)
         ) ?? Date()
     }
 
@@ -183,43 +207,43 @@ final class AppSettings: ObservableObject {
             .removePendingNotificationRequests(withIdentifiers: [Self.reminderID])
     }
 
-    // MARK: - Game night reminder
+    // MARK: - Exam warm-up reminder
 
-    private func requestPermissionAndScheduleGameNight() {
+    private func requestPermissionAndScheduleExamWarmUp() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             Task { @MainActor in
                 if granted {
-                    self.scheduleGameNightReminder()
+                    self.scheduleExamWarmUpReminder()
                 } else {
-                    self.gameNightReminderEnabled = false
+                    self.examWarmUpReminderEnabled = false
                     self.reminderPermissionDenied = true
                 }
             }
         }
     }
 
-    private func scheduleGameNightReminder() {
+    private func scheduleExamWarmUpReminder() {
         let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: [Self.gameNightReminderID])
+        center.removePendingNotificationRequests(withIdentifiers: [Self.examWarmUpReminderID])
 
         let content = UNMutableNotificationContent()
         content.title = ShellCopy.ExamWarmupReminder.title
         content.body = ShellCopy.ExamWarmupReminder.body
         content.sound = .default
-        content.userInfo = [AppNotification.routeKey: AppNotification.gameNightPrepValue]
+        content.userInfo = [AppNotification.routeKey: AppNotification.examWarmUpValue]
 
-        let time = Calendar.current.dateComponents([.hour, .minute], from: gameNightReminderTime)
+        let time = Calendar.current.dateComponents([.hour, .minute], from: examWarmUpReminderTime)
         var parts = DateComponents()
-        parts.weekday = gameNightDay.rawValue
+        parts.weekday = examWarmUpDay.rawValue
         parts.hour = time.hour
         parts.minute = time.minute
         parts.second = 0
         let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: true)
-        center.add(UNNotificationRequest(identifier: Self.gameNightReminderID, content: content, trigger: trigger))
+        center.add(UNNotificationRequest(identifier: Self.examWarmUpReminderID, content: content, trigger: trigger))
     }
 
-    func cancelGameNightReminder() {
+    func cancelExamWarmUpReminder() {
         UNUserNotificationCenter.current()
-            .removePendingNotificationRequests(withIdentifiers: [Self.gameNightReminderID])
+            .removePendingNotificationRequests(withIdentifiers: [Self.examWarmUpReminderID])
     }
 }

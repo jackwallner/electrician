@@ -106,7 +106,7 @@ struct FlashcardDrillView: View {
                 }
             }
             .frame(height: 8)
-            Text("\(mastered) of \(cards.count) down")
+            Text("\(mastered) of \(cards.count) reviewed")
                 .font(.footnote.weight(.medium))
                 .foregroundStyle(Theme.inkSecondary)
                 .monospacedDigit()
@@ -128,6 +128,16 @@ struct FlashcardDrillView: View {
                     onChoose: slot == 0 ? { choose($0, card: card) } : nil,
                     onAdvance: slot == 0 && choicePick != nil
                         ? { fling(direction: 1, size: size) }
+                        : nil,
+                    // Visible equivalents for the swipe. VoiceOver, Switch
+                    // Control and anyone who never discovers a horizontal
+                    // gesture had no way to grade a plain card at all; a hint
+                    // that says "swipe right" is not an action.
+                    onKnewIt: slot == 0 && card.choice == nil
+                        ? { fling(direction: 1, size: size) }
+                        : nil,
+                    onAgain: slot == 0 && card.choice == nil
+                        ? { fling(direction: -1, size: size) }
                         : nil
                 )
                 .scaleEffect(scale(forSlot: slot))
@@ -165,7 +175,7 @@ struct FlashcardDrillView: View {
         guard isFlipped else { return "Tap to reveal the answer" }
         return choiceAnswered
             ? "Tap Next to continue"
-            : "Swipe right if you knew it, left to see it again"
+            : "Use the Knew it and Again buttons, or swipe right for knew it and left to see it again"
     }
 
     /// KNEW IT / AGAIN stamps fade in with the drag so the swipe directions
@@ -409,6 +419,9 @@ struct FlipCardFace: View {
     var choicePick: Int?
     var onChoose: ((Int) -> Void)?
     var onAdvance: (() -> Void)? = nil
+    /// Visible grading, for plain cards. The swipe stays as a shortcut.
+    var onKnewIt: (() -> Void)? = nil
+    var onAgain: (() -> Void)? = nil
     /// The deck grades by swipe; the mixed session grades with buttons.
     var showsSwipeHints = true
 
@@ -421,8 +434,11 @@ struct FlipCardFace: View {
             back
         }
         .shine(trigger: shineTrigger, corner: Theme.deckCorner)
-        .accessibilityElement(children: isFlipped && onAdvance == nil ? .combine : .contain)
-        .accessibilityLabel(isFlipped ? "\(card.backTitle). \(card.backBody)" : card.frontTitle)
+        // `.contain` once the back carries its own controls, so the grading
+        // buttons and the citation stay reachable instead of being folded into
+        // one unactionable label.
+        .accessibilityElement(children: isFlipped && backHasControls ? .contain : .combine)
+        .accessibilityLabel(isFlipped ? backAccessibilityLabel : card.frontTitle)
         .task(id: isFlipped) {
             // A correct call earns the slot-machine gleam once the flip lands.
             guard isFlipped, verdict?.correct == true else { return }
@@ -479,12 +495,21 @@ struct FlipCardFace: View {
                     .foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
+                // The whole product promise is navigation: know the fact AND
+                // know where to verify it. The card stored this all along and
+                // never showed it, which quietly made the fact cards the one
+                // place in the app that teaches without a citation.
+                if let citation = card.citation {
+                    CitationLabel(citation)
+                }
                 Spacer(minLength: 0)
                 if showsSwipeHints {
                     if let onAdvance {
                         Button(action: onAdvance) {
                             Text("Next").primaryCTA(color: accent)
                         }
+                    } else if onKnewIt != nil || onAgain != nil {
+                        gradingButtons
                     } else {
                         Label("Knew it? Swipe right · Again? Swipe left", systemImage: "hand.draw.fill")
                             .font(.caption.weight(.semibold))
@@ -493,6 +518,53 @@ struct FlipCardFace: View {
                 }
             }
         }
+    }
+
+    private var backHasControls: Bool {
+        onAdvance != nil || onKnewIt != nil || onAgain != nil
+    }
+
+    private var backAccessibilityLabel: String {
+        var parts = ["\(card.backTitle). \(card.backBody)"]
+        if let citation = card.citation {
+            parts.append("Look it up: \(citation), \(NECTables.edition).")
+        }
+        return parts.joined(separator: " ")
+    }
+
+    /// Swipe stays available and stays faster; these are the equivalent, not a
+    /// replacement. Same two words as the stamps and the hint, so the app has
+    /// one grading vocabulary.
+    private var gradingButtons: some View {
+        HStack(spacing: 10) {
+            if let onAgain {
+                Button(action: onAgain) {
+                    gradeLabel("Again", systemImage: "arrow.uturn.left", color: Theme.coral)
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Brings this card back later in the session")
+            }
+            if let onKnewIt {
+                Button(action: onKnewIt) {
+                    gradeLabel("Knew it", systemImage: "checkmark", color: Theme.jade)
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Removes this card from the session")
+            }
+        }
+    }
+
+    private func gradeLabel(_ title: String, systemImage: String, color: Color) -> some View {
+        Label(title, systemImage: systemImage)
+            .font(.subheadline.weight(.semibold))
+            .foregroundStyle(color)
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 44)
+            .background(color.opacity(0.10), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    .strokeBorder(color.opacity(0.45), lineWidth: 1.5)
+            )
     }
 
     private var verdict: (text: String, correct: Bool)? {

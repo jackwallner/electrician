@@ -31,12 +31,12 @@ struct GivenChipView: View {
         .padding(.vertical, 7 * scale)
         .background(
             RoundedRectangle(cornerRadius: 9 * scale)
-                .fill(Theme.ivory)
+                .fill(Theme.parchment)
                 .shadow(color: .black.opacity(0.12), radius: 1.5, y: 1)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 9 * scale)
-                .strokeBorder(Theme.ivoryShadow, lineWidth: 1)
+                .strokeBorder(Theme.parchmentEdge, lineWidth: 1)
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel(given.spokenLabel)

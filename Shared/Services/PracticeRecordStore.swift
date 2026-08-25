@@ -31,13 +31,33 @@ struct PracticeRecord: Codable, Sendable {
     var needsReview: Bool { reviewSuppressed != true && attempts > correct && streak < 2 }
 }
 
+/// A running count of one named mistake.
+///
+/// Separate from `PracticeRecord` on purpose. A record is about an ITEM, and a
+/// generated item is a one-off whose id will never be seen again. A mistake is
+/// about a HABIT, and habits are exactly what a candidate needs to unlearn
+/// before an exam. Storing the pattern rather than the question is what lets
+/// "your misses come back" be true for generated practice without an unbounded
+/// dictionary of dead question ids.
+struct MistakeTally: Codable, Sendable {
+    var pattern: MistakePattern
+    /// Outstanding misses. A correct answer on a targeted follow-up works it
+    /// back down; at zero the pattern is considered fixed and is dropped.
+    var outstanding: Int
+    var totalMisses: Int
+    var lastMissed: Date
+}
+
 /// Per-item practice history, the spaced-repetition queue built on top of it,
-/// and the room-level rollups the stats screen reads.
+/// the mistake-pattern tallies behind targeted practice, and the room-level
+/// rollups the stats screen reads.
 @MainActor
 final class PracticeRecordStore: ObservableObject {
     static let shared = PracticeRecordStore()
 
     @Published private(set) var records: [String: PracticeRecord]
+    /// Named mistakes still outstanding, keyed by `MistakePattern.id`.
+    @Published private(set) var mistakes: [String: MistakeTally]
     /// Best timed-challenge score, kept separately because it is a high score
     /// rather than a per-item fact.
     @Published private(set) var bestChallengeScore: Int
@@ -46,6 +66,7 @@ final class PracticeRecordStore: ObservableObject {
 
     private enum Keys {
         static let records = "practice.records"
+        static let mistakes = "practice.mistakePatterns"
         static let bestChallenge = "practice.bestChallengeScore"
     }
 
@@ -58,6 +79,66 @@ final class PracticeRecordStore: ObservableObject {
         } else {
             records = [:]
         }
+        if let data = defaults.data(forKey: Keys.mistakes),
+           let decoded = try? JSONDecoder().decode([String: MistakeTally].self, from: data) {
+            mistakes = decoded
+        } else {
+            mistakes = [:]
+        }
+    }
+
+    // MARK: - Mistake patterns
+
+    /// How many outstanding misses a single pattern may bank. Without a cap a
+    /// bad afternoon on one shape crowds every other pattern out of targeted
+    /// practice for days.
+    static let maxOutstandingPerPattern = 5
+
+    func recordMistake(_ pattern: MistakePattern, now: Date = Date()) {
+        var tally = mistakes[pattern.id] ?? MistakeTally(
+            pattern: pattern, outstanding: 0, totalMisses: 0, lastMissed: now
+        )
+        // Rewritten rather than kept: the summary copy can improve between
+        // releases and the stored one should not be the stale version.
+        tally.pattern = pattern
+        tally.outstanding = min(tally.outstanding + 1, Self.maxOutstandingPerPattern)
+        tally.totalMisses += 1
+        tally.lastMissed = now
+        mistakes[pattern.id] = tally
+        persistMistakes()
+    }
+
+    /// A correct answer on a problem that set this trap. Works the pattern off
+    /// one at a time so a single lucky pick does not clear a habit.
+    func resolveMistake(_ patternID: String) {
+        guard var tally = mistakes[patternID] else { return }
+        tally.outstanding -= 1
+        if tally.outstanding <= 0 {
+            mistakes.removeValue(forKey: patternID)
+        } else {
+            mistakes[patternID] = tally
+        }
+        persistMistakes()
+    }
+
+    /// The patterns targeted practice should aim at, worst first.
+    func outstandingMistakes(limit: Int = 4) -> [MistakePattern] {
+        mistakes.values
+            .sorted { lhs, rhs in
+                if lhs.outstanding != rhs.outstanding { return lhs.outstanding > rhs.outstanding }
+                return lhs.lastMissed > rhs.lastMissed
+            }
+            .prefix(limit)
+            .map(\.pattern)
+    }
+
+    var outstandingMistakeCount: Int {
+        mistakes.values.reduce(0) { $0 + $1.outstanding }
+    }
+
+    private func persistMistakes() {
+        guard let data = try? JSONEncoder().encode(mistakes) else { return }
+        defaults.set(data, forKey: Keys.mistakes)
     }
 
     // MARK: - Recording
@@ -140,10 +221,15 @@ final class PracticeRecordStore: ObservableObject {
             .map(\.key)
     }
 
-    /// How many items are waiting, for the Home card's badge.
+    /// Authored items waiting for another look.
     var dueCount: Int {
         records.filter { $0.value.needsReview && $0.value.isDue && PracticeSkill(rawValue: $0.key) == nil }.count
     }
+
+    /// Everything Fix My Mistakes has to work with: the authored questions the
+    /// scheduler says are due, plus the outstanding generated mistake patterns
+    /// it can mint a fresh targeted problem for.
+    var fixableCount: Int { dueCount + outstandingMistakeCount }
 
     // MARK: - Stats
 
@@ -176,6 +262,22 @@ final class PracticeRecordStore: ObservableObject {
         }
     }
 
+    /// Accuracy per generated skill. Generated answers all collapse onto one
+    /// row per skill, so this is the finest breakdown the store can honestly
+    /// report for them: "you are 58% on derating" is actionable in a way that
+    /// "you are 71% in Conductors & Ampacity" is not.
+    func skillStats() -> [RoomStat] {
+        PracticeSkill.allCases.compactMap { skill in
+            guard let record = records[skill.rawValue], record.attempts > 0 else { return nil }
+            return RoomStat(
+                id: skill.rawValue,
+                name: skill.title,
+                attempts: record.attempts,
+                correct: record.correct
+            )
+        }
+    }
+
     /// The room a player is worst at, once there is enough data to mean it.
     func weakestRoom() -> RoomStat? {
         roomStats().filter { $0.attempts >= 5 }.min { $0.accuracy < $1.accuracy }
@@ -183,8 +285,10 @@ final class PracticeRecordStore: ObservableObject {
 
     func resetAll() {
         records = [:]
+        mistakes = [:]
         bestChallengeScore = 0
         defaults.removeObject(forKey: Keys.records)
+        defaults.removeObject(forKey: Keys.mistakes)
         defaults.removeObject(forKey: Keys.bestChallenge)
     }
 }

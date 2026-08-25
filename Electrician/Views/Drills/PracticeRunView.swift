@@ -70,7 +70,17 @@ struct PracticeRunView: View {
     }
 
     var body: some View {
-        if finished || items.isEmpty {
+        if items.isEmpty {
+            // Only review can legitimately arrive empty (a stale queue, a
+            // filtered-out locked item, a deep link that outlived its items).
+            // Sending it to the completion screen faked a finished session.
+            SessionEmptyView(
+                title: mode == .review ? "Nothing due right now" : "Nothing to practise yet",
+                message: mode == .review
+                    ? "You have no mistakes waiting. Answer a few questions and anything you miss will show up here."
+                    : "This run could not build any questions. Try again in a moment."
+            )
+        } else if finished {
             DrillCompleteView(drill: completedDrill, score: score, total: gradedTotal)
         } else {
             runBody
@@ -109,6 +119,10 @@ struct PracticeRunView: View {
                     prompt: item.prompt,
                     givens: item.givens,
                     explanation: item.explanation,
+                    steps: item.steps,
+                    citation: item.citation,
+                    missNote: missNote,
+                    reportContext: answered ? reportContext : nil,
                     answered: answered,
                     eyebrow: item.sourceLabel.uppercased()
                 ) {
@@ -129,7 +143,7 @@ struct PracticeRunView: View {
         .frame(maxWidth: .infinity)
         .background(Theme.background)
         .drillStage(answerRect: $answerRect)
-        .overlay { Theme.bamGreen.opacity(flashOpacity).allowsHitTesting(false).ignoresSafeArea() }
+        .overlay { Theme.rightGreen.opacity(flashOpacity).allowsHitTesting(false).ignoresSafeArea() }
         .overlay {
             ConfettiBurst(
                 trigger: confettiTrigger,
@@ -171,8 +185,10 @@ struct PracticeRunView: View {
             }
             .padding(.horizontal, 4)
         case .review:
-            ProgressView(value: Double(index), total: Double(max(items.count, 1)))
+            // Completed, not current. See CalcDrillView for the same rule.
+            ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(items.count, 1)))
                 .tint(Theme.jade)
+                .animation(.easeOut(duration: 0.3), value: answered)
         case .endless:
             HStack {
                 Text("\(score) of \(attempted) correct")
@@ -240,7 +256,16 @@ struct PracticeRunView: View {
         selection = pick
         attempted += 1
         let correct = pick == item.answerIndex
-        records.record(itemID: item.id, roomID: item.roomID, correct: correct)
+        records.record(itemID: item.id, roomID: item.roomID, correct: correct, isReviewable: item.isReviewable)
+        // See QuickSessionView: a generated question is a one-off, its mistake
+        // is not, so the PATTERN is what gets banked and worked back off.
+        if correct {
+            for pattern in Set(item.mistakes.values) {
+                records.resolveMistake(pattern.id)
+            }
+        } else if let pattern = item.mistake(forChoiceAt: pick) {
+            records.recordMistake(pattern)
+        }
         // Generated ids are unique per question, so feeding them to the
         // seen/missed sets would grow those sets forever and teach the daily
         // mix nothing. Authored items still feed it.
@@ -258,11 +283,27 @@ struct PracticeRunView: View {
         }
     }
 
+    private var missNote: String? {
+        guard let pick = selection, pick != item.answerIndex else { return nil }
+        return item.mistake(forChoiceAt: pick)?.summary
+    }
+
+    private var reportContext: ContentReport.Context {
+        ContentReport.Context(
+            itemID: item.id,
+            prompt: item.prompt,
+            citation: item.citation,
+            correctAnswer: item.choices[item.answerIndex],
+            selectedAnswer: selection.flatMap { item.choices.indices.contains($0) ? item.choices[$0] : nil }
+        )
+    }
+
     private func landCorrect() {
         confettiParticleCount = particleCount(forStreak: streak)
         confettiTrigger += 1
         Haptics.correctAnswer()
         SoundPlayer.play(.success)
+        guard ConfettiBurst.celebrationsEnabled else { return }
         flashOpacity = 0.14
         withAnimation(.easeOut(duration: 0.5)) { flashOpacity = 0 }
     }

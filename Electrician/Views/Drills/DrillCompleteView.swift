@@ -106,12 +106,15 @@ struct DrillCompleteView: View {
         requestReview()
     }
 
+    /// Plain professional language. "Deck cleared" and "Perfect round" are
+    /// card-game vocabulary inherited from the app this shell was ported from,
+    /// and a journeyman candidate reading them can tell.
     private var headline: String {
-        guard let score else { return "Deck cleared!" }
+        guard let score else { return "Session complete" }
         let fraction = Double(score) / Double(max(total, 1))
-        if fraction >= 1 { return "Perfect round!" }
-        if fraction >= 0.7 { return "Nice work!" }
-        return "Good practice!"
+        if fraction >= 1 { return "Clean sweep" }
+        if fraction >= 0.7 { return "Solid run" }
+        return "Worth another pass"
     }
 
     private var subheadline: String {

@@ -140,7 +140,7 @@ struct FeatureTourView: View {
             TourPage(
                 eyebrow: "YOUR TURN",
                 title: "Let's try a real one",
-                body: "Get Started builds this same five-minute mix any time from Home: exactly what you need next, misses first. Let's run your first one now.",
+                body: "Get Started builds this same short mix any time from Home: exactly what you need next, misses first. Let's run your first one now.",
                 hero: AnyView(getStartedHero)
             ),
         ]
@@ -160,7 +160,7 @@ struct FeatureTourView: View {
                     Text("Get Started")
                         .font(Theme.display(20))
                         .foregroundStyle(.white)
-                    Text("A five-minute mix of what you need next")
+                    Text("A short mix of what you need next")
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.85))
                 }

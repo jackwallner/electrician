@@ -74,6 +74,18 @@ enum HowToPlayContent {
             body: "Derating, breaker sizing, conduit fill, box fill and voltage drop are pure calculations: same inputs, same answer, every time. That means they can be generated endlessly instead of shipped as a fixed question bank you memorise the shape of. Every wrong choice you see is the number you get from one specific, common mistake.",
             tip: "Read the steps after a miss. The step you skipped is the one that will cost you again."
         ),
+        HowToPlayPage(
+            id: "htp-coverage",
+            icon: "checklist",
+            title: "What this app covers today",
+            // The page before this one describes the whole code book, which is
+            // an easy thing to mistake for a claim about the app. It is not.
+            // Saying where the drills actually go is more useful than implying
+            // a curriculum that does not exist yet, and a candidate who finds
+            // the gap themselves after paying is right to be annoyed.
+            body: "Four rooms: how the book is organized and how to find an article, conductors and ampacity, the worked calculations, and grounding with motors. On top of those the generator runs five calculation shapes without limit. That is the whole of it right now, and it is deliberately the part of the exam that is pure calculation and pure navigation.",
+            tip: "Services, feeders, load calculations, wiring methods and the special occupancy chapters are not covered yet. Keep studying those from your own book."
+        ),
     ]
 }
 

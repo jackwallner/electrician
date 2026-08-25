@@ -6,19 +6,23 @@ final class PracticeRecordStoreTests: XCTestCase {
     private var defaults: UserDefaults!
     private var store: PracticeRecordStore!
 
-    override func setUp() {
-        super.setUp()
+    // The async overrides are deliberate. XCTest's synchronous setUp/tearDown
+    // are nonisolated, so overriding them from a @MainActor test case is an
+    // isolation mismatch Swift 6 rejects; the async pair inherits the class's
+    // isolation, which is what the main-actor store fixtures below need.
+    override func setUp() async throws {
+        try await super.setUp()
         defaults = UserDefaults(suiteName: "PracticeRecordStoreTests")!
         defaults.removePersistentDomain(forName: "PracticeRecordStoreTests")
         store = PracticeRecordStore(defaults: defaults)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         defaults.removePersistentDomain(forName: "PracticeRecordStoreTests")
-        super.tearDown()
+        try await super.tearDown()
     }
 
-    private let room = "tile-room"
+    private let room = "basics-room"
 
     func testRecordsAccuracy() {
         store.record(itemID: "q1", roomID: room, correct: true)
@@ -107,6 +111,90 @@ final class PracticeRecordStoreTests: XCTestCase {
         XCTAssertTrue(store.records.isEmpty)
         XCTAssertEqual(store.bestChallengeScore, 0)
         XCTAssertTrue(PracticeRecordStore(defaults: defaults).records.isEmpty)
+    }
+
+    // MARK: - Mistake patterns
+
+    private var derateFrom75: MistakePattern { CandidateMistake.derateFrom75 }
+
+    func testRecordingAMistakeMakesItOutstanding() {
+        store.recordMistake(derateFrom75)
+        XCTAssertEqual(store.outstandingMistakeCount, 1)
+        XCTAssertEqual(store.outstandingMistakes().first, derateFrom75)
+    }
+
+    /// Two right answers, two patterns worked off. A single lucky pick must not
+    /// clear a habit the reader repeated four times.
+    func testResolvingWorksAMistakeOffOneAtATime() {
+        store.recordMistake(derateFrom75)
+        store.recordMistake(derateFrom75)
+        XCTAssertEqual(store.outstandingMistakeCount, 2)
+
+        store.resolveMistake(derateFrom75.id)
+        XCTAssertEqual(store.outstandingMistakeCount, 1)
+
+        store.resolveMistake(derateFrom75.id)
+        XCTAssertEqual(store.outstandingMistakeCount, 0)
+        XCTAssertTrue(store.outstandingMistakes().isEmpty)
+    }
+
+    func testResolvingAnUntrackedMistakeIsHarmless() {
+        store.resolveMistake("never-recorded")
+        XCTAssertEqual(store.outstandingMistakeCount, 0)
+    }
+
+    /// One bad afternoon on derating must not crowd every other pattern out of
+    /// targeted practice for a week.
+    func testOutstandingMistakesAreCapped() {
+        for _ in 0..<20 { store.recordMistake(derateFrom75) }
+        XCTAssertEqual(store.outstandingMistakeCount, PracticeRecordStore.maxOutstandingPerPattern)
+    }
+
+    func testWorstMistakeLeadsTheQueue() {
+        store.recordMistake(CandidateMistake.ignoredBundling)
+        for _ in 0..<3 { store.recordMistake(derateFrom75) }
+        XCTAssertEqual(store.outstandingMistakes().first, derateFrom75)
+    }
+
+    func testMistakesPersistAcrossLaunches() {
+        store.recordMistake(derateFrom75)
+        let reloaded = PracticeRecordStore(defaults: defaults)
+        XCTAssertEqual(reloaded.outstandingMistakes().first, derateFrom75)
+    }
+
+    /// The stored summary is refreshed on every miss, so improving the wording
+    /// of a mistake in a later release reaches people who already banked it.
+    func testRecordingRefreshesTheStoredSummary() {
+        let stale = MistakePattern(id: derateFrom75.id, skill: derateFrom75.skill, summary: "old wording")
+        store.recordMistake(stale)
+        store.recordMistake(derateFrom75)
+        XCTAssertEqual(store.outstandingMistakes().first?.summary, derateFrom75.summary)
+    }
+
+    func testResetClearsMistakes() {
+        store.recordMistake(derateFrom75)
+        store.resetAll()
+        XCTAssertEqual(store.outstandingMistakeCount, 0)
+    }
+
+    /// The Home badge counts both halves: authored questions the scheduler owes
+    /// the reader, and generated mistake patterns it can build a problem for.
+    func testFixableCountCoversBothHalves() {
+        store.record(itemID: "q-fix", roomID: room, correct: false)
+        store.recordMistake(derateFrom75)
+        XCTAssertEqual(store.fixableCount, store.dueCount + 1)
+        XCTAssertGreaterThan(store.fixableCount, 1)
+    }
+
+    /// Generated rows collapse per skill; the stats screen reads them by title.
+    func testSkillStatsReportGeneratedRows() {
+        store.record(itemID: PracticeSkill.ampacity.itemPrefix + "abc", roomID: "conductors-room", correct: true)
+        store.record(itemID: PracticeSkill.ampacity.itemPrefix + "def", roomID: "conductors-room", correct: false)
+        let stats = store.skillStats()
+        XCTAssertEqual(stats.count, 1)
+        XCTAssertEqual(stats.first?.name, PracticeSkill.ampacity.title)
+        XCTAssertEqual(stats.first?.attempts, 2)
+        XCTAssertEqual(stats.first?.correct, 1)
     }
 }
 

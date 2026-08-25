@@ -27,8 +27,16 @@ struct ConfettiBurst: View {
     /// and the burst should keep the geometry it launched with.
     @State private var launchRect: CGRect?
 
+    /// Gated centrally rather than at each of the seven call sites, because a
+    /// celebration that one screen forgot to check is exactly the one a reader
+    /// who turned it off will find. Reads the same key `AppSettings` writes,
+    /// defaulting on, the way `Haptics` does.
+    static var celebrationsEnabled: Bool {
+        UserDefaults.standard.object(forKey: "settings.celebrations") as? Bool ?? true
+    }
+
     private static let colors: [Color] = [
-        Theme.jade, Theme.coral, Theme.gold, Theme.plum, Theme.bamGreen, Theme.tileIvory,
+        Theme.jade, Theme.coral, Theme.gold, Theme.plum, Theme.rightGreen, Theme.parchment,
     ]
     private static let duration: Double = 2.0
     /// Air drag. Higher = the initial burst dies back faster into the drift.
@@ -49,7 +57,7 @@ struct ConfettiBurst: View {
         }
         .allowsHitTesting(false)
         .onChange(of: trigger) { _, _ in
-            guard trigger > 0 else { return }
+            guard trigger > 0, Self.celebrationsEnabled else { return }
             seed = trigger
             launchRect = sourceRect
             firedAt = Date()

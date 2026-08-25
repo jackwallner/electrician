@@ -15,8 +15,13 @@ against the drag and silently never fires. Don't "simplify" it back to
 Flip gotcha: the whole card must rotate as ONE unit — `FlipRotation` is
 `Animatable` and swaps faces exactly at 90° while the card is edge-on. Never
 rotate the text faces inside a static card background; that's what made text
-detach from the card. `ElectricianCardFace` carries the card chrome (ivory
-surface, double frame, eyebrow, watermark) — both faces use it.
+detach from the card. `ElectricianCardFace` carries the card chrome (parchment
+surface, double frame, eyebrow, watermark) - both faces use it. The back also
+renders the card's `citation`: every fact card has to say where to verify it.
+
+Plain cards (no `CardChoice`) show visible Knew it / Again buttons on the back
+as well as the swipe. The swipe is the shortcut, not the only way in - a hint
+that says "swipe right" is not an action for VoiceOver or Switch Control.
 
 `CalcDrillView` is deliberately NOT a flashcard: a worked calculation needs its
 steps visible after the answer, so it has its own runner.

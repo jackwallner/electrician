@@ -1,13 +1,13 @@
 import SwiftUI
 import UIKit
 
-struct GameNightPrepView: View {
+struct ExamWarmUpView: View {
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var progress: ProgressStore
     @StateObject private var records = PracticeRecordStore.shared
 
     private var sessionItems: [QuickItem] {
-        SessionBuilder.gameNightPrep(
+        SessionBuilder.examWarmUp(
             seen: progress.seenItems,
             missed: progress.missedItems,
             dueIDs: records.reviewQueue(),
@@ -22,9 +22,9 @@ struct GameNightPrepView: View {
                 scheduleCard
                 personalizedCard
                 NavigationLink {
-                    QuickSessionView(gameNightPrep: sessionItems)
+                    QuickSessionView(examWarmUp: sessionItems)
                 } label: {
-                    Text("Start My Five-Minute Prep").primaryCTA(color: Theme.plum)
+                    Text("Start My Warm-Up").primaryCTA(color: Theme.plum)
                 }
             }
             .padding()
@@ -75,26 +75,26 @@ struct GameNightPrepView: View {
                         .font(.caption.weight(.heavy))
                         .kerning(1.4)
                         .foregroundStyle(Theme.inkSecondary)
-                    Text(settings.gameNightReminderEnabled ? "Prep is scheduled" : "Choose your study day")
+                    Text(settings.examWarmUpReminderEnabled ? "Prep is scheduled" : "Choose your study day")
                         .font(.headline)
                         .foregroundStyle(Theme.ink)
                 }
                 Spacer()
-                Toggle("Weekly study reminder", isOn: $settings.gameNightReminderEnabled)
+                Toggle("Weekly study reminder", isOn: $settings.examWarmUpReminderEnabled)
                     .labelsHidden()
             }
             Divider().overlay(Theme.rule)
-            Picker("Study day", selection: $settings.gameNightDay) {
-                ForEach(AppSettings.GameNightDay.allCases) { day in
+            Picker("Study day", selection: $settings.examWarmUpDay) {
+                ForEach(AppSettings.ExamWarmUpDay.allCases) { day in
                     Text(day.displayName).tag(day)
                 }
             }
             DatePicker(
                 "Prep Reminder",
-                selection: $settings.gameNightReminderTime,
+                selection: $settings.examWarmUpReminderTime,
                 displayedComponents: .hourAndMinute
             )
-            Text("At that time each \(settings.gameNightDay.displayName), the notification opens directly into your personalized practice session.")
+            Text("At that time each \(settings.examWarmUpDay.displayName), the notification opens directly into your personalized practice session.")
                 .font(.caption)
                 .foregroundStyle(Theme.inkSecondary)
                 .fixedSize(horizontal: false, vertical: true)

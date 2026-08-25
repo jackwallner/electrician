@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Where the correct answer row sits, published up to whichever drill is
 /// hosting it, so a celebration can fire FROM the thing that was right instead
@@ -37,6 +38,18 @@ struct QuestionPager<Choices: View>: View {
     let prompt: String
     let givens: [Given]
     let explanation: String
+    /// A calculation's working. When present it replaces the explanation
+    /// paragraph with numbered steps, because a paragraph hides which step was
+    /// skipped and a skipped step is how these are actually missed.
+    var steps: [String] = []
+    var citation: String? = nil
+    /// The named mistake behind the reader's wrong pick, when the item knows
+    /// one. Shown FIRST: "here is what you did" lands better than "here is the
+    /// right method", and it is the whole reason the distractors are built the
+    /// way they are.
+    var missNote: String? = nil
+    /// Non-nil once the question has been graded and can be reported.
+    var reportContext: ContentReport.Context? = nil
     let answered: Bool
     /// The room/source eyebrow. It belongs INSIDE the pager so it centres with
     /// the question: pinned above it on an iPad, the eyebrow sat alone at the
@@ -68,16 +81,32 @@ struct QuestionPager<Choices: View>: View {
                 }
                 choices()
                 if answered {
-                    HStack(alignment: .top, spacing: 10) {
-                        Image(systemName: "lightbulb.fill")
-                            .foregroundStyle(Theme.gold)
-                        Text(explanation)
-                            .font(.subheadline)
-                            .fixedSize(horizontal: false, vertical: true)
+                    VStack(spacing: 12) {
+                        if let missNote {
+                            MissNoteView(note: missNote)
+                        }
+                        if steps.isEmpty {
+                            HStack(alignment: .top, spacing: 10) {
+                                Image(systemName: "lightbulb.fill")
+                                    .foregroundStyle(Theme.gold)
+                                Text(explanation)
+                                    .font(.subheadline)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            .padding(14)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Theme.gold.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
+                            if let citation {
+                                CitationLabel(citation)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        } else {
+                            WorkedStepsView(steps: steps, citation: citation)
+                        }
+                        if let reportContext {
+                            ReportIssueButton(context: reportContext)
+                        }
                     }
-                    .padding(14)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Theme.gold.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
                     .id(questionExplanationID)
                 }
             }
@@ -166,10 +195,10 @@ struct ChoiceList: View {
                     if isAnswer {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.body.weight(.bold))
-                            .foregroundStyle(Theme.bamGreen)
+                            .foregroundStyle(Theme.rightGreen)
                             .scaleEffect(landed ? 1.2 : 0.4)
                     } else if isMiss {
-                        Image(systemName: "xmark.circle.fill").foregroundStyle(Theme.crakRed)
+                        Image(systemName: "xmark.circle.fill").foregroundStyle(Theme.wrongRed)
                     }
                 }
             }
@@ -192,7 +221,7 @@ struct ChoiceList: View {
                 }
             }
             .shine(trigger: answered && isAnswer ? shineTrigger : 0)
-            .winGlow(Theme.bamGreen, active: answered && isAnswer && landed)
+            .winGlow(Theme.rightGreen, active: answered && isAnswer && landed)
             .scaleEffect(answered && isAnswer && landed ? 1.035 : 1)
             .modifier(ShakeEffect(travels: isMiss ? shakes : 0))
             .opacity(recedes ? 0.72 : 1)
@@ -204,15 +233,167 @@ struct ChoiceList: View {
 
     private func background(_ index: Int) -> Color {
         guard answered else { return Theme.card }
-        if index == answerIndex { return Theme.bamGreen.opacity(0.18) }
-        if index == selection { return Theme.crakRed.opacity(0.15) }
+        if index == answerIndex { return Theme.rightGreen.opacity(0.18) }
+        if index == selection { return Theme.wrongRed.opacity(0.15) }
         return Theme.card
     }
 
     private func border(_ index: Int) -> Color {
         guard answered else { return Theme.rule }
-        if index == answerIndex { return Theme.bamGreen.opacity(0.6) }
-        if index == selection { return Theme.crakRed.opacity(0.5) }
+        if index == answerIndex { return Theme.rightGreen.opacity(0.6) }
+        if index == selection { return Theme.wrongRed.opacity(0.5) }
         return Theme.rule
+    }
+}
+
+
+// MARK: - After the answer
+
+/// "Here is the mistake you made", named, before any method is re-explained.
+///
+/// The generator's whole design is that every wrong choice is the number one
+/// specific error produces. That is worth nothing if the reader is never told
+/// which error they just made, which is what a generic explanation does.
+struct MissNoteView: View {
+    let note: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(Theme.coral)
+            VStack(alignment: .leading, spacing: 3) {
+                Text("WHAT HAPPENED")
+                    .font(.caption2.weight(.heavy))
+                    .kerning(1.2)
+                    .foregroundStyle(Theme.coral)
+                Text(note)
+                    .font(.subheadline)
+                    .foregroundStyle(Theme.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.coral.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("What happened. \(note)")
+    }
+}
+
+/// The numbered working, and the article to check it against.
+///
+/// Shared by `CalcDrillView` and every generated calculation in a session, so
+/// the authored room and the paid generator explain a miss the same way. They
+/// used to differ: the generator flattened its steps into one paragraph.
+struct WorkedStepsView: View {
+    let steps: [String]
+    var citation: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Working")
+                .font(.caption.weight(.heavy))
+                .kerning(1.2)
+                .foregroundStyle(Theme.inkTertiary)
+            ForEach(Array(steps.enumerated()), id: \.offset) { position, step in
+                HStack(alignment: .top, spacing: 10) {
+                    Text("\(position + 1)")
+                        .font(.caption.weight(.bold).monospacedDigit())
+                        .foregroundStyle(Theme.jade)
+                        .frame(width: 18, height: 18)
+                        .background(Theme.jade.opacity(0.14), in: Circle())
+                        .accessibilityHidden(true)
+                    Text(step)
+                        .font(.callout)
+                        .foregroundStyle(Theme.inkSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Step \(position + 1). \(step)")
+            }
+            if let citation {
+                CitationLabel(citation)
+                    .padding(.top, 2)
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.parchment, in: RoundedRectangle(cornerRadius: 14))
+        .overlay(
+            RoundedRectangle(cornerRadius: 14)
+                .strokeBorder(Theme.parchmentEdge, lineWidth: 1)
+        )
+        .transition(.opacity.combined(with: .move(edge: .bottom)))
+    }
+}
+
+/// Where to verify this, and against which edition. The edition is not
+/// decoration: the same article number resolves to different numbers across
+/// cycles, and the reader is being sent to their own book to check.
+struct CitationLabel: View {
+    let citation: String
+
+    init(_ citation: String) { self.citation = citation }
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+            Image(systemName: "book.closed")
+            Text("\(citation) · \(NECTables.edition)")
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .font(.caption.weight(.semibold))
+        .foregroundStyle(Theme.inkTertiary)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Look it up: \(citation), \(NECTables.edition)")
+    }
+}
+
+/// The escape hatch for "this number is wrong".
+struct ReportIssueButton: View {
+    let context: ContentReport.Context
+
+    @State private var showingCategories = false
+    @State private var mailFailed = false
+
+    var body: some View {
+        Button {
+            showingCategories = true
+        } label: {
+            Label("Report a possible issue", systemImage: "flag")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(Theme.inkTertiary)
+        }
+        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .confirmationDialog("Report a possible issue", isPresented: $showingCategories, titleVisibility: .visible) {
+            ForEach(ContentReport.Category.allCases) { category in
+                Button(category.displayName) { report(category) }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Opens a mail draft with this question's details already filled in.")
+        }
+        .alert("Your mail app didn't open", isPresented: $mailFailed) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Email \(AppStoreLinks.feedbackEmail) and mention item \(context.itemID).")
+        }
+    }
+
+    private func report(_ category: ContentReport.Category) {
+        guard let url = ContentReport.mailURL(
+            context: context,
+            category: category,
+            appVersion: ContentReport.appVersion
+        ) else {
+            mailFailed = true
+            return
+        }
+        UIApplication.shared.open(url, options: [:]) { opened in
+            Task { @MainActor in
+                if !opened { mailFailed = true }
+            }
+        }
     }
 }

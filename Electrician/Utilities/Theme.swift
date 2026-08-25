@@ -41,22 +41,17 @@ enum Theme {
     /// 4.6:1 light / 6.0:1 dark.
     static let inkTertiary = Color(light: (0.46, 0.42, 0.38), dark: (0.62, 0.59, 0.55))
 
-    // MARK: Tiles
+    // MARK: Paper and grading
 
-    static let tileIvory = Color(light: (0.985, 0.965, 0.915), dark: (0.93, 0.90, 0.83))
-    static let tileEdge = Color(light: (0.84, 0.79, 0.68), dark: (0.70, 0.65, 0.54))
-    static let crakRed = Color(red: 0.72, green: 0.17, blue: 0.16)
-    static let bamGreen = Color(red: 0.12, green: 0.47, blue: 0.29)
-    static let dotBlue = Color(red: 0.15, green: 0.32, blue: 0.60)
-    static let jokerPurple = Color(red: 0.45, green: 0.25, blue: 0.60)
-    static let flowerPink = Color(red: 0.80, green: 0.33, blue: 0.47)
-
-    // MARK: Legacy aliases (kept so tile faces read as one system)
-
-    static var felt: Color { jade }
-    static var cardBackground: Color { card }
-    static var ivory: Color { tileIvory }
-    static var ivoryShadow: Color { tileEdge }
+    /// The card/working-panel paper, a shade warmer than `card`. Used for the
+    /// faces of flashcards and for the numbered working panel, so both read as
+    /// a page out of a code book rather than another app surface.
+    static let parchment = Color(light: (0.985, 0.965, 0.915), dark: (0.93, 0.90, 0.83))
+    static let parchmentEdge = Color(light: (0.84, 0.79, 0.68), dark: (0.70, 0.65, 0.54))
+    /// Grading colors. Deliberately not `jade`/`coral`: right and wrong have to
+    /// read as a verdict, not as brand accents used elsewhere on the screen.
+    static let rightGreen = Color(red: 0.12, green: 0.47, blue: 0.29)
+    static let wrongRed = Color(red: 0.72, green: 0.17, blue: 0.16)
 
     // MARK: Type
 
@@ -84,10 +79,6 @@ extension Room {
         default: return Theme.gold
         }
     }
-
-    /// Bundled room illustration (see `scripts/generate_room_art.py`). Purely
-    /// decorative: never carries information a player has to read.
-    var artName: String { "room-\(id)" }
 }
 
 /// The membership brand. The RevenueCat entitlement is `electrician_pro`;
@@ -160,6 +151,11 @@ struct PressableCardStyle: ButtonStyle {
 
 // MARK: - Haptics
 
+/// Main-actor isolated on purpose: `UIFeedbackGenerator` and its subclasses are
+/// main-actor types, and every caller here is a SwiftUI view already on the main
+/// actor. Leaving these nonisolated is what produced the Swift 6 actor-isolation
+/// warnings, and the warnings were right.
+@MainActor
 enum Haptics {
     enum Impact { case soft, light, rigid, heavy }
 

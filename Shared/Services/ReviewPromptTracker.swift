@@ -2,12 +2,24 @@ import Foundation
 import StoreKit
 
 enum AppStoreLinks {
-    /// Numeric Apple ID for `com.jackwallner.electrician`. The listing is
-    /// still a draft; these URLs 404 until the app is Ready for Sale, but
-    /// they must not keep pointing at the mahj shell this was ported from.
+    /// Numeric Apple ID for `com.jackwallner.electrician`.
     static let appStoreID = "6804828725"
 
-    static var isPublished: Bool { !appStoreID.isEmpty }
+    /// FLIP THIS THE DAY THE LISTING GOES READY FOR SALE, and not before.
+    ///
+    /// Having an Apple ID is not the same as having a listing. The ASC record
+    /// has existed since long before there was anything to link to, and while
+    /// it sits in PREPARE_FOR_SUBMISSION every `apps.apple.com/app/id...` URL
+    /// built from it is a 404. Treating a non-empty id as "published" meant the
+    /// share sheet handed TestFlight testers a dead link and the review funnel
+    /// offered to open a store page that does not exist, which is the single
+    /// worst first impression a funnel can make.
+    ///
+    /// While this is false: no share URL, no Rate button, no review funnel. The
+    /// feedback path still works, and that is the one that matters pre-launch.
+    static let isListingLive = false
+
+    static var isPublished: Bool { isListingLive && !appStoreID.isEmpty }
 
     static var productURL: URL? {
         guard isPublished else { return nil }
@@ -29,7 +41,10 @@ enum AppStoreLinks {
 /// retires the prompt for good: we asked, they acted, we stop asking.
 enum ReviewPromptOutcome: String, Sendable {
     case openedWriteReview
-    case submittedFeedback
+    /// A mail draft OPENED. The app cannot know whether it was ever sent, and
+    /// the old name (`submittedFeedback`) claimed more than that. The raw value
+    /// is unchanged because it is already persisted on device.
+    case openedFeedbackDraft = "submittedFeedback"
 }
 
 /// The review funnel's memory: when we last asked, what happened, and whether
@@ -101,7 +116,18 @@ enum ReviewPromptTracker {
     }
 
     /// Eligibility for the enjoyment gate after a finished drill.
-    static func shouldShowAfterPositiveMoment(now: Date = Date()) -> Bool {
+    ///
+    /// `listingIsLive` is a parameter only so the gating rules stay testable
+    /// while `AppStoreLinks.isListingLive` is false; production always passes
+    /// the real value.
+    static func shouldShowAfterPositiveMoment(
+        now: Date = Date(),
+        listingIsLive: Bool = AppStoreLinks.isPublished
+    ) -> Bool {
+        // Pre-launch the funnel's happy path leads to a store page that 404s,
+        // so it does not run at all. Spending a first-time reader's goodwill on
+        // a dead link also burns the one ask we get.
+        guard listingIsLive else { return false }
         guard outcome == nil else { return false }
         guard positiveMomentCount >= minimumPositiveMoments else { return false }
         guard launchCount >= minimumLaunchCount else { return false }
@@ -127,8 +153,10 @@ enum ReviewPromptTracker {
         markShown()
     }
 
-    static func markFeedbackSubmitted() {
-        outcome = .submittedFeedback
+    /// Retires the prompt once a draft has opened. Named for what actually
+    /// happened rather than for what we hope happened.
+    static func markFeedbackDraftOpened() {
+        outcome = .openedFeedbackDraft
         markShown()
     }
 

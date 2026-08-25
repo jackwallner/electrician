@@ -109,14 +109,22 @@ struct ReviewPromptSheet: View {
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
             VStack(spacing: 10) {
-                Button {
-                    ReviewPromptTracker.markOpenedWriteReview()
-                    if let url = AppStoreLinks.writeReviewURL {
-                        UIApplication.shared.open(url)
+                if let writeReviewURL = AppStoreLinks.writeReviewURL {
+                    Button {
+                        ReviewPromptTracker.markOpenedWriteReview()
+                        UIApplication.shared.open(writeReviewURL)
+                        finish(.openedWriteReview)
+                    } label: {
+                        Text("Rate on the App Store").primaryCTA()
                     }
-                    finish(.openedWriteReview)
-                } label: {
-                    Text("Rate on the App Store").primaryCTA()
+                } else {
+                    // No live listing to send anyone to. Ask for the thing that
+                    // is actually useful before launch instead of opening a 404.
+                    Button {
+                        step = .feedback
+                    } label: {
+                        Text("Tell us what's working").primaryCTA()
+                    }
                 }
                 Button {
                     ReviewPromptTracker.markSoftDeferred()
@@ -193,7 +201,9 @@ struct ReviewPromptSheet: View {
         feedbackText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    /// Only claim the feedback was sent if a mail app actually opened.
+    /// Only retire the prompt if a mail app actually opened. Even then all we
+    /// know is that a draft appeared; whether it was sent is not observable, so
+    /// the copy below says "opens a draft" rather than claiming delivery.
     private func sendFeedback() {
         guard !trimmedFeedback.isEmpty, let url = Self.feedbackMailURL(body: trimmedFeedback) else { return }
         UIApplication.shared.open(url, options: [:]) { opened in
@@ -202,7 +212,7 @@ struct ReviewPromptSheet: View {
                     mailFailed = true
                     return
                 }
-                ReviewPromptTracker.markFeedbackSubmitted()
+                ReviewPromptTracker.markFeedbackDraftOpened()
                 finish(.feedbackSubmitted)
             }
         }

@@ -77,4 +77,61 @@ final class FieldCalculatorTests: XCTestCase {
         XCTAssertNil(FieldCalculators.ohmsLaw(volts: 120, amps: nil, ohms: nil, watts: nil))
         XCTAssertNil(FieldCalculators.ohmsLaw(volts: 0, amps: 10, ohms: nil, watts: nil))
     }
+
+    /// A consistent over-specified circuit is not a conflict. Someone who fills
+    /// in all four correct values should not be told they got something wrong.
+    func testOhmsLawAcceptsConsistentExtraInputs() throws {
+        let all = try XCTUnwrap(FieldCalculators.ohmsLaw(volts: 120, amps: 10, ohms: 12, watts: 1200))
+        XCTAssertTrue(all.isConsistent, "reported \(all.conflicts)")
+        XCTAssertEqual(all.basis, "V and I")
+    }
+
+    /// The one the tool used to get wrong: extra values that describe a
+    /// DIFFERENT circuit were silently discarded, and the answer came back
+    /// looking like the app had checked the work.
+    func testOhmsLawReportsContradictoryInputs() throws {
+        let conflicting = try XCTUnwrap(FieldCalculators.ohmsLaw(volts: 120, amps: 10, ohms: 5, watts: nil))
+        XCTAssertEqual(conflicting.basis, "V and I")
+        XCTAssertEqual(conflicting.ohms, 12, accuracy: 0.0001)
+        XCTAssertEqual(conflicting.conflicts, ["R"])
+
+        let twoWrong = try XCTUnwrap(FieldCalculators.ohmsLaw(volts: 120, amps: 10, ohms: 5, watts: 500))
+        XCTAssertEqual(Set(twoWrong.conflicts), ["R", "P"])
+    }
+
+    /// Rounding is not a conflict. 12.0 Ω typed against a computed 11.999 Ω has
+    /// to pass, or the warning fires constantly and gets ignored.
+    func testOhmsLawToleratesRounding() throws {
+        let rounded = try XCTUnwrap(FieldCalculators.ohmsLaw(volts: 120, amps: 10, ohms: 11.95, watts: nil))
+        XCTAssertTrue(rounded.isConsistent, "reported \(rounded.conflicts)")
+    }
+
+    /// Each remaining pair solves the same circuit, and reports which pair it
+    /// used. The `basis` string is shown to the reader, so it has to be right.
+    func testOhmsLawNamesThePairItSolvedFrom() throws {
+        XCTAssertEqual(try XCTUnwrap(FieldCalculators.ohmsLaw(volts: nil, amps: 10, ohms: 12, watts: nil)).basis, "I and R")
+        XCTAssertEqual(try XCTUnwrap(FieldCalculators.ohmsLaw(volts: 120, amps: nil, ohms: nil, watts: 1200)).basis, "V and P")
+        XCTAssertEqual(try XCTUnwrap(FieldCalculators.ohmsLaw(volts: nil, amps: 10, ohms: nil, watts: 1200)).basis, "I and P")
+        XCTAssertEqual(try XCTUnwrap(FieldCalculators.ohmsLaw(volts: nil, amps: nil, ohms: 12, watts: 1200)).basis, "R and P")
+
+        // V and P solves R the long way round; make sure it lands on the same
+        // circuit the other pairs describe.
+        let vp = try XCTUnwrap(FieldCalculators.ohmsLaw(volts: 120, amps: nil, ohms: nil, watts: 1200))
+        XCTAssertEqual(vp.ohms, 12, accuracy: 0.0001)
+        XCTAssertEqual(vp.amps, 10, accuracy: 0.0001)
+
+        let ip = try XCTUnwrap(FieldCalculators.ohmsLaw(volts: nil, amps: 10, ohms: nil, watts: 1200))
+        XCTAssertEqual(ip.ohms, 12, accuracy: 0.0001)
+        XCTAssertEqual(ip.volts, 120, accuracy: 0.0001)
+    }
+
+    /// The assumptions are shown beside the voltage-drop result, and the 3%
+    /// figure has to keep being described as a recommendation.
+    func testVoltageDropStatesItsAssumptions() {
+        XCTAssertFalse(FieldCalculators.VoltageDropResult.assumptions.isEmpty)
+        for assumption in FieldCalculators.VoltageDropResult.assumptions {
+            XCTAssertFalse(assumption.contains("—"), assumption)
+        }
+        XCTAssertTrue(FieldCalculators.VoltageDropResult.threePercentNote.contains("recommendation"))
+    }
 }

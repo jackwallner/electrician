@@ -58,4 +58,23 @@ for entry in manifest:
         shutil.copyfile(src, out / f"{prefix}{stem}{src.suffix}")
         copied += 1
 print(f"wrote {copied} screenshots to {out}")
+
+# The test deliberately never fails hard on a missing element, because a slow
+# XCTFail turns every navigation typo into a ten-minute diagnostic collection.
+# That resilience is right for development and wrong for a release: it will
+# happily export three shots and exit 0, and an App Store listing missing half
+# its screenshots is not the kind of thing anyone catches before review.
+REQUIRED = [
+    "01_quick_session", "02_article_match", "03_ampacity_quiz",
+    "04_worked_calc", "05_home", "06_basics_room",
+]
+captured = {
+    path.stem[len(prefix):] if prefix and path.stem.startswith(prefix) else path.stem
+    for path in out.glob("*.png")
+}
+missing = [name for name in REQUIRED if name not in captured]
+if missing:
+    print("MISSING required screenshots: " + ", ".join(missing), file=sys.stderr)
+    print("See the 'problems' attachment in build/screenshots.xcresult.", file=sys.stderr)
+    sys.exit(1)
 PY

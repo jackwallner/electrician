@@ -6,22 +6,26 @@ final class ProgressStoreTests: XCTestCase {
     private var defaults: UserDefaults!
     private var store: ProgressStore!
 
-    override func setUp() {
-        super.setUp()
+    // The async overrides are deliberate. XCTest's synchronous setUp/tearDown
+    // are nonisolated, so overriding them from a @MainActor test case is an
+    // isolation mismatch Swift 6 rejects; the async pair inherits the class's
+    // isolation, which is what the main-actor store fixtures below need.
+    override func setUp() async throws {
+        try await super.setUp()
         defaults = UserDefaults(suiteName: "ProgressStoreTests")
         defaults.removePersistentDomain(forName: "ProgressStoreTests")
         store = ProgressStore(defaults: defaults)
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         defaults.removePersistentDomain(forName: "ProgressStoreTests")
-        super.tearDown()
+        try await super.tearDown()
     }
 
     func testRecordSessionIncrementsCounts() {
-        store.recordSession(drillID: "meet-tiles")
-        store.recordSession(drillID: "meet-tiles")
-        XCTAssertEqual(store.completions(for: "meet-tiles"), 2)
+        store.recordSession(drillID: "meet-the-book")
+        store.recordSession(drillID: "meet-the-book")
+        XCTAssertEqual(store.completions(for: "meet-the-book"), 2)
         XCTAssertEqual(store.totalSessions, 2)
     }
 

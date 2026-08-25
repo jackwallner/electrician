@@ -108,6 +108,22 @@ enum FieldCalculators {
         let percent: Double
         let withinThreePercent: Bool
         let citation: String
+        /// What this estimate leaves out, in the reader's own units.
+        ///
+        /// The formula is the resistive K/cmil approximation every exam asks
+        /// for, and it is genuinely useful, but it is not a complete field
+        /// sizing answer and the screen used to present it as one. Naming the
+        /// omissions is the difference between a study estimate and a number
+        /// someone pulls wire against.
+        static let assumptions = [
+            "Resistive only: reactance and power factor are not included.",
+            "Conductor at its table resistance, not at operating temperature.",
+            "Uncoated conductor in a non-magnetic raceway.",
+            "One-way length doubled (or × 1.732) by the phase factor, not a measured circuit path.",
+        ]
+        /// The 3% figure is an informational note, not a general mandate, and
+        /// reading it as an enforceable limit is a common exam-day error.
+        static let threePercentNote = "3% is the figure the informational note suggests for a branch circuit. It is a recommendation, not a general requirement, though some jurisdictions do enforce it."
     }
 
     static func voltageDrop(
@@ -139,10 +155,25 @@ enum FieldCalculators {
         let amps: Double
         let ohms: Double
         let watts: Double
+        /// The two inputs the answer was actually computed from, e.g. "V and I".
+        /// Stated because the tool no longer silently picks a pair.
+        let basis: String
+        /// Supplied values that do not agree with the computed circuit, named.
+        /// Empty when everything the user typed is consistent.
+        let conflicts: [String]
+
+        var isConsistent: Bool { conflicts.isEmpty }
     }
 
     /// Any two of V, I, R, P determine the other two. Zero or a single input
     /// is not a circuit.
+    ///
+    /// The tool used to take the first matching pair and quietly ignore
+    /// everything else, so typing 120 V, 10 A and 5 Ω returned a confident
+    /// answer computed from the first two with no hint that the third value
+    /// described a different circuit. For an electrician audience that is worse
+    /// than an error: it looks like the app checked the work. Extra inputs are
+    /// now checked against the result and reported by name.
     static func ohmsLaw(volts: Double?, amps: Double?, ohms: Double?, watts: Double?) -> OhmsLawResult? {
         func valid(_ value: Double?) -> Double? {
             guard let value, value > 0, value.isFinite else { return nil }
@@ -153,24 +184,45 @@ enum FieldCalculators {
         let r = valid(ohms)
         let p = valid(watts)
 
+        let solved: (volts: Double, amps: Double, ohms: Double, watts: Double, basis: String)
         switch (v, i, r, p) {
         case let (v?, i?, _, _):
-            return OhmsLawResult(volts: v, amps: i, ohms: v / i, watts: v * i)
+            solved = (v, i, v / i, v * i, "V and I")
         case let (v?, _, r?, _):
-            return OhmsLawResult(volts: v, amps: v / r, ohms: r, watts: v * v / r)
+            solved = (v, v / r, r, v * v / r, "V and R")
         case let (_, i?, r?, _):
-            return OhmsLawResult(volts: i * r, amps: i, ohms: r, watts: i * i * r)
+            solved = (i * r, i, r, i * i * r, "I and R")
         case let (v?, _, _, p?):
-            let i = p / v
-            return OhmsLawResult(volts: v, amps: i, ohms: v / i, watts: p)
+            solved = (v, p / v, v * v / p, p, "V and P")
         case let (_, i?, _, p?):
-            let v = p / i
-            return OhmsLawResult(volts: v, amps: i, ohms: v / i, watts: p)
+            solved = (p / i, i, p / (i * i), p, "I and P")
         case let (_, _, r?, p?):
-            let v = sqrt(p * r)
-            return OhmsLawResult(volts: v, amps: v / r, ohms: r, watts: p)
+            let volts = sqrt(p * r)
+            solved = (volts, volts / r, r, p, "R and P")
         default:
             return nil
         }
+
+        // 1% covers rounding and the two-decimal values people actually type
+        // without waving through a genuinely different circuit.
+        func disagrees(_ supplied: Double?, _ computed: Double) -> Bool {
+            guard let supplied, computed > 0 else { return false }
+            return abs(supplied - computed) / computed > 0.01
+        }
+
+        var conflicts: [String] = []
+        if disagrees(v, solved.volts) { conflicts.append("V") }
+        if disagrees(i, solved.amps) { conflicts.append("I") }
+        if disagrees(r, solved.ohms) { conflicts.append("R") }
+        if disagrees(p, solved.watts) { conflicts.append("P") }
+
+        return OhmsLawResult(
+            volts: solved.volts,
+            amps: solved.amps,
+            ohms: solved.ohms,
+            watts: solved.watts,
+            basis: solved.basis,
+            conflicts: conflicts
+        )
     }
 }

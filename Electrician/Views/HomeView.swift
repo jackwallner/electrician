@@ -63,8 +63,8 @@ struct HomeView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
             .navigationDestination(for: AppDestination.self) { destination in
                 switch destination {
-                case .gameNightPrepSession:
-                    QuickSessionView(gameNightPrep: gameNightPrepItems)
+                case .examWarmUpSession:
+                    QuickSessionView(examWarmUp: examWarmUpItems)
                 }
             }
             .sheet(isPresented: $showPaywall) { PaywallView(source: "electrician_home_sheet") }
@@ -92,8 +92,8 @@ struct HomeView: View {
                     } else {
                         consumePendingDestination()
                     }
-                } else if settings.gameNightReminderEnabled {
-                    settings.gameNightReminderEnabled = false
+                } else if settings.examWarmUpReminderEnabled {
+                    settings.examWarmUpReminderEnabled = false
                 }
             }
             .onChange(of: showPaywall) { _, isShowing in
@@ -162,13 +162,34 @@ struct HomeView: View {
         }
     }
 
-    private var gameNightPrepItems: [QuickItem] {
-        SessionBuilder.gameNightPrep(
+    private var examWarmUpItems: [QuickItem] {
+        SessionBuilder.examWarmUp(
             seen: progress.seenItems,
             missed: progress.missedItems,
             dueIDs: records.reviewQueue(),
             weakestRoomID: records.weakestRoom()?.id
         )
+    }
+
+    /// The review session: the authored questions the scheduler says are due,
+    /// then a freshly generated problem for each mistake PATTERN still
+    /// outstanding.
+    ///
+    /// The second half is what makes the promise honest for generated practice.
+    /// A generated question is a one-off, so it can never come back as itself;
+    /// what comes back is the trap. Replaying a remembered question would teach
+    /// less than a new one that punishes the same error.
+    private var fixMyMistakesItems: [QuickItem] {
+        let due = SessionBuilder.reviewSession(
+            ids: records.reviewQueue(),
+            includePro: subscriptions.isPro
+        )
+        let patterns = records.outstandingMistakes()
+        let targeted = EndlessPractice.targetedItems(
+            for: patterns,
+            count: min(patterns.count * 2, max(0, 12 - due.count))
+        )
+        return due + targeted
     }
 
     private func consumePendingDestination() {
@@ -218,7 +239,7 @@ struct HomeView: View {
                 Text("Electrician")
                     .font(Theme.display(32))
                     .foregroundStyle(Theme.ink)
-                Text("Open book. Beat the clock.")
+                Text("Open book. Find it fast.")
                     .font(.subheadline)
                     .foregroundStyle(Theme.inkSecondary)
             }
@@ -274,7 +295,7 @@ struct HomeView: View {
                     Text("Get Started")
                         .font(Theme.display(24))
                         .foregroundStyle(.white)
-                    Text("A five-minute mix of what you need next")
+                    Text("A short mix of what you need next")
                         .font(.subheadline)
                         .foregroundStyle(.white.opacity(0.85))
                 }
@@ -435,7 +456,7 @@ struct HomeView: View {
             EndlessPickerView()
         }
         trainingTile(
-            title: "Electrician\nMinute",
+            title: "Code\nMinute",
             icon: "calendar.badge.clock",
             color: Theme.coral,
             badge: minuteStore.result(for: Date()).map { "\($0.score)/\($0.total) today" } ?? "Daily"
@@ -446,9 +467,9 @@ struct HomeView: View {
             title: "Exam\nWarm-Up",
             icon: "person.2.fill",
             color: Theme.plum,
-            badge: settings.gameNightReminderEnabled ? settings.gameNightDay.displayName : "Weekly"
+            badge: settings.examWarmUpReminderEnabled ? settings.examWarmUpDay.displayName : "Weekly"
         ) {
-            GameNightPrepView()
+            ExamWarmUpView()
         }
         trainingTile(
             title: "Timed\nChallenge",
@@ -460,20 +481,21 @@ struct HomeView: View {
         }
         // Only offered when there is something to fix. An empty review
         // session is a dead end dressed up as a feature.
-        if records.dueCount > 0 {
+        //
+        // The due COUNT is hidden from free readers on purpose. The tile is
+        // paywalled like every other training mode, and showing "4 due" on a
+        // button that answers with a paywall is the worst possible moment to
+        // ask for money: they just missed something and came here to fix it.
+        // Locked, it advertises what the mode is instead of what they cannot
+        // have.
+        if records.fixableCount > 0 {
             trainingTile(
                 title: "Fix My\nMistakes",
                 icon: "arrow.trianglehead.counterclockwise",
                 color: Theme.plum,
-                badge: "\(records.dueCount) due"
+                badge: subscriptions.isPro ? "\(records.fixableCount) to fix" : "Unlock"
             ) {
-                PracticeRunView(
-                    mode: .review,
-                    items: SessionBuilder.reviewSession(
-                        ids: records.reviewQueue(),
-                        includePro: subscriptions.isPro
-                    )
-                )
+                PracticeRunView(mode: .review, items: fixMyMistakesItems)
             }
         }
     }
@@ -651,7 +673,7 @@ struct HomeView: View {
     }
 
     private var disclaimerFooter: some View {
-        Text("A study aid, not a code book. Not affiliated with or endorsed by the NFPA. Concepts and calculations in original wording, with article numbers so you can verify each one in the code in force where you work.")
+        Text("\(NECTables.edition) values. A study aid, not a code book. Not affiliated with or endorsed by the NFPA. Concepts and calculations in original wording, with article numbers so you can verify each one in the code in force where you work.")
             .font(.caption2)
             .foregroundStyle(Theme.inkTertiary)
             .multilineTextAlignment(.center)

@@ -204,7 +204,7 @@ struct OnboardingView: View {
                 .foregroundStyle(Theme.gold)
                 .frame(width: 92, height: 92)
                 .background(Theme.gold.opacity(0.14), in: Circle())
-            Text("Try \(Membership.name) free")
+            Text(trialLength == nil ? "Get \(Membership.name)" : "Try \(Membership.name) free")
                 .font(Theme.display(30))
                 .foregroundStyle(Theme.ink)
                 .multilineTextAlignment(.center)
@@ -212,7 +212,7 @@ struct OnboardingView: View {
                 trialBenefit(ShellCopy.Onboarding.freeRoomsBenefit)
                 trialBenefit("Code Minute and a personalized Exam Warm-Up")
                 trialBenefit("Endless Practice deals a fresh problem every time")
-                trialBenefit("Fix My Mistakes brings back what you miss")
+                trialBenefit("Fix My Mistakes targets the errors you repeat")
                 trialBenefit("Extra sets in all four rooms, plus the worked calculations")
             }
             Spacer()
@@ -239,11 +239,26 @@ struct OnboardingView: View {
     /// (see `primaryAction`), so quoting a yearly amount here would misstate
     /// what the player is charged, which is a 3.1.2 problem and a refund magnet.
     /// If the product has not loaded, drop the amount rather than invent one.
+    /// The trial length this Apple Account can actually start, or nil when it
+    /// cannot start one. A returning subscriber gets the price, not an offer the
+    /// store will refuse at the confirmation sheet.
+    private var trialLength: String? {
+        guard subscriptions.isEligibleForTrial(.monthly) else { return nil }
+        return subscriptions.trialLengthText(for: .monthly)
+    }
+
     private var trialDisclosure: String {
         guard let price = PaywallPricing.price(subscriptions, .monthly) else {
-            return "Includes 7 days free. Auto-renews until canceled."
+            guard let trialLength else { return "Auto-renews until canceled." }
+            return "Includes \(trialLength) free. Auto-renews until canceled."
         }
-        return "7 days free, then \(price). Auto-renews until canceled."
+        guard let trialLength else { return "\(price). Auto-renews until canceled." }
+        return "\(trialLength) free, then \(price). Auto-renews until canceled."
+    }
+
+    private var trialCTATitle: String {
+        guard let trialLength else { return "Subscribe to \(Membership.name)" }
+        return "Start \(trialLength) free"
     }
 
     // MARK: - Footer (identical geometry on every page: zero-shift CTA)
@@ -283,7 +298,7 @@ struct OnboardingView: View {
                     if purchasing {
                         ProgressView().tint(.white)
                     } else {
-                        Text(onTrialPage ? "Start 7-day free trial" : "Continue")
+                        Text(onTrialPage ? trialCTATitle : "Continue")
                     }
                 }
                 .primaryCTA()
@@ -344,17 +359,23 @@ struct OnboardingView: View {
             // app is worth something. The paywall still leads with yearly. Here
             // the smaller recurring figure is what gets the trial started, and
             // `trialDisclosure` above must keep naming this same plan.
-            guard let monthly = subscriptions.package(for: .monthly) else {
-                showPaywallFallback = true
-                return
-            }
             do {
+                let monthly = try await subscriptions.resolvePackage(for: .monthly)
                 let outcome = try await subscriptions.purchase(monthly)
                 switch outcome {
                 case .purchased:
                     startTour()
                 case .cancelled:
                     break // They said no to Apple, not to the app. Stay put.
+                }
+            } catch let error as PurchaseError {
+                // Products that genuinely failed to load get the plan-picker
+                // fallback, which is the surface designed for it. A real
+                // purchase failure gets an explanation instead.
+                print("[onboarding] purchase blocked: \(error.diagnosticDescription)")
+                switch error {
+                case .notConfigured, .offeringsUnavailable, .packageMissing:
+                    showPaywallFallback = true
                 }
             } catch {
                 purchaseError = error.localizedDescription

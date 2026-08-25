@@ -118,4 +118,39 @@ final class CodeMinuteTests: XCTestCase {
         XCTAssertEqual(a, b)
         XCTAssertNotEqual(a, c)
     }
+
+    /// The day boundary is FIXED, not local.
+    ///
+    /// "The same five questions for every member" is the whole feature, and
+    /// `Calendar.current` broke it: two readers either side of local midnight
+    /// got different sets while their share cards claimed the same date.
+    func testDayBoundaryIsFixedRatherThanLocal() {
+        XCTAssertEqual(CodeMinuteContent.dayCalendar.timeZone.identifier, "America/Los_Angeles")
+
+        // 05:00 UTC on the 25th is 22:00 the previous evening in Pacific time,
+        // so a reader in London opening the app before breakfast gets the same
+        // challenge as a reader in California still up the night before.
+        var utc = Calendar(identifier: .gregorian)
+        utc.timeZone = TimeZone(identifier: "UTC")!
+        let earlyUTC = utc.date(from: DateComponents(year: 2026, month: 8, day: 25, hour: 5))!
+        XCTAssertEqual(CodeMinuteContent.key(for: earlyUTC), "2026-08-24")
+
+        var tokyo = Calendar(identifier: .gregorian)
+        tokyo.timeZone = TimeZone(identifier: "Asia/Tokyo")!
+        let tokyoEvening = tokyo.date(from: DateComponents(year: 2026, month: 8, day: 25, hour: 17))!
+        let losAngeles = CodeMinuteContent.key(for: tokyoEvening)
+        XCTAssertEqual(losAngeles, CodeMinuteContent.key(for: tokyoEvening, calendar: CodeMinuteContent.dayCalendar))
+    }
+
+    /// The daily calculations keep their numbered working, the same as every
+    /// other generated question.
+    func testDailyGeneratedItemsCarryTheirWorking() {
+        let challenge = CodeMinuteContent.challenge(for: day(2026, 8, 24))
+        let generated = challenge.items.filter { $0.id.contains("-gen-") }
+        XCTAssertFalse(generated.isEmpty)
+        for item in generated {
+            XCTAssertGreaterThan(item.steps.count, 1, item.id)
+            XCTAssertNotNil(item.citation, item.id)
+        }
+    }
 }

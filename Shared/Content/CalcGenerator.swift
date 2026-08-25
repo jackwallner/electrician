@@ -8,16 +8,123 @@ import Foundation
 /// exhausted, and unlike a shuffled question bank it is not the same fifty
 /// questions in a new order.
 ///
-/// The four shapes are the four that candidates actually fail: derating a
+/// The five shapes are the five that candidates actually fail: derating a
 /// conductor for heat and bundling, sizing overcurrent protection when the
-/// small-conductor rule overrides the table, filling a raceway, and filling a
-/// box. Each one has a worked-steps explanation, because a candidate who gets
-/// the order of operations wrong gets every problem of that shape wrong.
+/// small-conductor rule overrides the table, filling a raceway, filling a box,
+/// and voltage drop. They are exactly the cases of `PracticeSkill`, and a test
+/// holds the two lists together. Each one has a worked-steps explanation,
+/// because a candidate who gets the order of operations wrong gets every
+/// problem of that shape wrong.
 ///
 /// Distractors are the other half of the job. A multiple choice question whose
 /// wrong answers are random numbers teaches nothing. Every distractor below is
 /// the number you land on by making a specific, common mistake, so a wrong pick
 /// tells the reader which mistake they made.
+
+/// The named mistakes the generator can set a trap for.
+///
+/// Each one is attached to the distractor it produces, so a wrong pick is
+/// diagnostic rather than just wrong: the reader is told what they did, the
+/// tally in `PracticeRecordStore` learns which errors they repeat, and Fix My
+/// Mistakes can mint a fresh problem that sets the same trap again.
+///
+/// `id` values are persisted. Renaming one silently resets that candidate's
+/// tally, so treat them the way you would a UserDefaults key.
+enum CandidateMistake {
+    static let derateFrom75 = MistakePattern(
+        id: "ampacity-derate-from-75",
+        skill: PracticeSkill.ampacity.rawValue,
+        summary: "You derated from the 75°C column. Corrections and adjustments start in the conductor's own insulation column, and 75°C only comes back at the end as the termination cap."
+    )
+    static let ignoredBundling = MistakePattern(
+        id: "ampacity-ignored-bundling",
+        skill: PracticeSkill.ampacity.rawValue,
+        summary: "You applied the ambient correction but not the bundling adjustment. Four or more current-carrying conductors derate again, and the two factors multiply."
+    )
+    static let ignoredTerminationCap = MistakePattern(
+        id: "ampacity-ignored-termination",
+        skill: PracticeSkill.ampacity.rawValue,
+        summary: "You derated correctly and then stopped. The result still has to be capped at the termination column, which is usually 75°C."
+    )
+
+    static let ignoredSmallConductorCap = MistakePattern(
+        id: "ocpd-ignored-240-4-d",
+        skill: PracticeSkill.overcurrent.rawValue,
+        summary: "You protected at the ampacity table value and missed 240.4(D). For 14, 12 and 10 AWG the small-conductor ceiling overrides the table."
+    )
+    static let roundedOCPDUp = MistakePattern(
+        id: "ocpd-rounded-up",
+        skill: PracticeSkill.overcurrent.rawValue,
+        summary: "You rounded up to the next standard rating. Without a next-size-up allowance the protection goes to the largest standard rating at or BELOW the conductor's usable ampacity."
+    )
+    static let sizedOCPDFrom90 = MistakePattern(
+        id: "ocpd-from-90",
+        skill: PracticeSkill.overcurrent.rawValue,
+        summary: "You sized from the 90°C column. The 90°C value is a starting point for derating, never the number equipment terminations let you protect at."
+    )
+
+    static let usedFiftyThreePercentFill = MistakePattern(
+        id: "fill-used-53-percent",
+        skill: PracticeSkill.conduitFill.rawValue,
+        summary: "You used 53% fill. That is the allowance for ONE conductor. Over two conductors the allowance is 40%."
+    )
+    static let racewayTooSmall = MistakePattern(
+        id: "fill-raceway-too-small",
+        skill: PracticeSkill.conduitFill.rawValue,
+        summary: "That raceway does not hold the bundle. Compare the bundle area against the allowance for the trade size, not against the raceway's full interior area."
+    )
+    static let racewayOversized = MistakePattern(
+        id: "fill-raceway-oversized",
+        skill: PracticeSkill.conduitFill.rawValue,
+        summary: "That size works but it is not the smallest that works. The question asks for the smallest trade size the bundle fits in."
+    )
+
+    static let countedGroundsIndividually = MistakePattern(
+        id: "boxfill-counted-grounds-individually",
+        skill: PracticeSkill.boxFill.rawValue,
+        summary: "You counted each equipment ground separately. All the grounds in a box together are ONE allowance, however many there are."
+    )
+    static let forgotDeviceYokes = MistakePattern(
+        id: "boxfill-forgot-yokes",
+        skill: PracticeSkill.boxFill.rawValue,
+        summary: "You left the devices out. Each device yoke takes volume in the box."
+    )
+    static let countedYokeAsOne = MistakePattern(
+        id: "boxfill-yoke-as-one",
+        skill: PracticeSkill.boxFill.rawValue,
+        summary: "You counted each yoke as one allowance. A device yoke counts as TWO."
+    )
+
+    static let wrongPhaseFactor = MistakePattern(
+        id: "vdrop-wrong-phase-factor",
+        skill: PracticeSkill.voltageDrop.rawValue,
+        summary: "You used the other phase's factor. Single-phase uses 2 because the current goes out and back; three-phase uses 1.732."
+    )
+    static let forgotPhaseFactor = MistakePattern(
+        id: "vdrop-forgot-phase-factor",
+        skill: PracticeSkill.voltageDrop.rawValue,
+        summary: "You left the phase factor out entirely, so the drop is only the one-way figure."
+    )
+    static let wrongMaterialK = MistakePattern(
+        id: "vdrop-wrong-material-k",
+        skill: PracticeSkill.voltageDrop.rawValue,
+        summary: "You used the other metal's K. Copper and aluminum have different resistivity constants and swapping them moves the answer by about 60%."
+    )
+
+    /// Every pattern, for the tests and for the targeted-practice lookup.
+    static let all: [MistakePattern] = [
+        derateFrom75, ignoredBundling, ignoredTerminationCap,
+        ignoredSmallConductorCap, roundedOCPDUp, sizedOCPDFrom90,
+        usedFiftyThreePercentFill, racewayTooSmall, racewayOversized,
+        countedGroundsIndividually, forgotDeviceYokes, countedYokeAsOne,
+        wrongPhaseFactor, forgotPhaseFactor, wrongMaterialK,
+    ]
+
+    static func pattern(id: String) -> MistakePattern? {
+        all.first { $0.id == id }
+    }
+}
+
 enum CalcGenerator {
 
     // MARK: - Ampacity after correction and adjustment
@@ -35,8 +142,19 @@ enum CalcGenerator {
         let sizes = ["12 AWG", "10 AWG", "8 AWG", "6 AWG", "4 AWG", "2 AWG", "1/0 AWG", "3/0 AWG"]
         let size = sizes.randomElement(using: &rng)!
         let material = ConductorMaterial.allCases.randomElement(using: &rng)!
-        let ambient = [35, 40, 45, 50, 55].randomElement(using: &rng)!
-        let ccc = [4, 5, 6, 7, 8, 10, 12].randomElement(using: &rng)!
+        // 30°C and three conductors are in these lists on purpose, and they are
+        // the whole reason the termination cap is worth drilling.
+        //
+        // With the old ranges (ambient 35+, four or more conductors) the
+        // combined correction and adjustment never rose above about 0.77, and
+        // the 90°C column only runs about 12% above the 75°C column, so the
+        // derated figure was ALWAYS below the termination limit. The cap could
+        // not bind, "forgot to cap at the terminals" could not be a wrong
+        // answer, and the single most-tested consequence of 110.14(C) never
+        // appeared in a question. Keeping an undated 30°C or an unadjusted
+        // three-conductor case in the mix is what makes the last step matter.
+        let ambient = [30, 35, 40, 45, 50, 55].randomElement(using: &rng)!
+        let ccc = [3, 4, 5, 6, 7, 8, 10, 12].randomElement(using: &rng)!
 
         let base = Double(NECTables.ampacity(size: size, material: material, column: .c90) ?? 0)
         let correction = NECTables.ambientCorrection(celsius: ambient, column: .c90) ?? 1.0
@@ -70,6 +188,13 @@ enum CalcGenerator {
             steps.append("That is still under the \(Int(terminalLimit)) A termination limit, so the derated value stands: \(answer.roundedAmpsText) A.")
         }
 
+        let amps: (Double) -> String = { "\($0.roundedAmpsText) A" }
+        let mistakes = mistakeMap(answerLabel: amps(answer), [
+            (amps(startedAt75), CandidateMistake.derateFrom75),
+            (amps(forgotBundling), CandidateMistake.ignoredBundling),
+            (amps(forgotTerminals), CandidateMistake.ignoredTerminationCap),
+        ])
+
         return CalcScenario(
             id: "gen-ampacity-\(UUID().uuidString)",
             situation: "Find the allowable ampacity of this conductor as installed.",
@@ -83,7 +208,8 @@ enum CalcGenerator {
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "310.16, 310.15(B)(1), 310.15(C)(1), 110.14(C)"
+            citation: "310.16, 310.15(B)(1), 310.15(C)(1), 110.14(C)",
+            mistakes: mistakes
         )
     }
 
@@ -139,9 +265,21 @@ enum CalcGenerator {
         }
         steps.append("The largest standard rating in 240.6(A) at or below \(Int(usable)) A is \(Int(answer)) A.")
 
+        let ocpdLabel: (Double) -> String = { "\(Int($0)) A" }
+        let mistakes = mistakeMap(answerLabel: ocpdLabel(answer), [
+            (ocpdLabel(ignoredCeiling), CandidateMistake.ignoredSmallConductorCap),
+            (ocpdLabel(roundedUp), CandidateMistake.roundedOCPDUp),
+            (ocpdLabel(usedNinety), CandidateMistake.sizedOCPDFrom90),
+        ])
+
         return CalcScenario(
             id: "gen-ocpd-\(UUID().uuidString)",
-            situation: "Size the overcurrent protection for this conductor. It supplies a continuous-duty general load with no next-size-up allowance.",
+            // Deliberately framed as conductor protection rather than "what
+            // breaker goes on this circuit". Real breaker selection also needs
+            // the load calculation, the continuous-load multiplier and the
+            // equipment's own marked limits; teaching this lookup as if it were
+            // the whole workflow would train an incomplete mental model.
+            situation: "Conductor protection only: the load is already settled and no next-size-up allowance applies. What is the largest standard overcurrent device this conductor may be protected at?",
             givens: [
                 .conductor(size, "THWN-2"),
                 .material(material),
@@ -150,7 +288,8 @@ enum CalcGenerator {
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "240.4, 240.4(D), 240.6(A), 110.14(C)"
+            citation: "240.4, 240.4(D), 240.6(A), 110.14(C)",
+            mistakes: mistakes
         )
     }
 
@@ -201,6 +340,11 @@ enum CalcGenerator {
         ) { $0 }
 
         let allowance = (NECTables.emtArea[answerTrade] ?? 0) * percent
+        let mistakes = mistakeMap(answerLabel: answerTrade, [
+            (usedFiftyThree, CandidateMistake.usedFiftyThreePercentFill),
+            (oneSmaller, CandidateMistake.racewayTooSmall),
+            (oneBigger, CandidateMistake.racewayOversized),
+        ])
 
         return CalcScenario(
             id: "gen-conduitfill-\(UUID().uuidString)",
@@ -218,7 +362,8 @@ enum CalcGenerator {
                 "\(answerTrade) EMT is \((NECTables.emtArea[answerTrade] ?? 0).areaText) in² interior, and \(Int(percent * 100))% of that is \(allowance.areaText) in².",
                 "\(allowance.areaText) in² covers the \(bundle.areaText) in² bundle, and the next size down does not, so \(answerTrade) is the answer.",
             ],
-            citation: "Ch. 9 Table 1, Table 4, Table 5"
+            citation: "Ch. 9 Table 1, Table 4, Table 5",
+            mistakes: mistakes
         )
     }
 
@@ -277,6 +422,13 @@ enum CalcGenerator {
         steps.append("Each device yoke counts as two, so \(devices) yoke\(devices == 1 ? "" : "s") is \(deviceUnits).")
         steps.append("\(totalUnits) allowances × \(volume.volumeText) in³ = \(required.volumeText) in³.")
 
+        let volumeLabel: (Double) -> String = { "\($0.volumeText) in³" }
+        let mistakes = mistakeMap(answerLabel: volumeLabel(required), [
+            (volumeLabel(countedGroundsIndividually), CandidateMistake.countedGroundsIndividually),
+            (volumeLabel(forgotDevices), CandidateMistake.forgotDeviceYokes),
+            (volumeLabel(countedYokeAsOne), CandidateMistake.countedYokeAsOne),
+        ])
+
         return CalcScenario(
             id: "gen-boxfill-\(UUID().uuidString)",
             situation: "Find the minimum box volume required.",
@@ -284,7 +436,8 @@ enum CalcGenerator {
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "314.16(B)"
+            citation: "314.16(B)",
+            mistakes: mistakes
         )
     }
 
@@ -324,6 +477,12 @@ enum CalcGenerator {
         ) { "\($0.voltsText) V" }
 
         let percent = drop / Double(volts) * 100
+        let voltsLabel: (Double) -> String = { "\($0.voltsText) V" }
+        let mistakes = mistakeMap(answerLabel: voltsLabel(drop), [
+            (voltsLabel(usedWrongFactor), CandidateMistake.wrongPhaseFactor),
+            (voltsLabel(forgotFactor), CandidateMistake.forgotPhaseFactor),
+            (voltsLabel(usedOtherMetal), CandidateMistake.wrongMaterialK),
+        ])
 
         return CalcScenario(
             id: "gen-vdrop-\(UUID().uuidString)",
@@ -343,8 +502,30 @@ enum CalcGenerator {
                 "VD = \(phase.voltageDropFactor.factorText) × \(k.factorText) × \(amps.trimmedAmps) A × \(feet) ft ÷ \(Int(cm)) cmil = \(drop.voltsText) V.",
                 "That is \(percent.voltsText)% of \(volts) V, so it is \(percent <= 3 ? "within" : "past") the 3% figure the informational note suggests for a branch circuit.",
             ],
-            citation: "210.19(A) Informational Note, Ch. 9 Table 8"
+            citation: "210.19(A) Informational Note, Ch. 9 Table 8",
+            mistakes: mistakes
         )
+    }
+
+    // MARK: - Naming the mistakes
+
+    /// Builds the choice-label to mistake map.
+    ///
+    /// A named distractor only earns an entry when it actually differs from the
+    /// answer. Distractors collide with the answer all the time (a conductor
+    /// with no 240.4(D) cap makes "ignored the cap" the right number), and
+    /// labelling the correct answer as a mistake would be worse than saying
+    /// nothing. First writer wins, so the most specific mistake listed for a
+    /// value is the one the reader is told about.
+    private static func mistakeMap(
+        answerLabel: String,
+        _ entries: [(String, MistakePattern)]
+    ) -> [String: MistakePattern] {
+        var map: [String: MistakePattern] = [:]
+        for (label, pattern) in entries where label != answerLabel {
+            if map[label] == nil { map[label] = pattern }
+        }
+        return map
     }
 
     // MARK: - Choice assembly
@@ -369,9 +550,15 @@ enum CalcGenerator {
     /// 240.4(D) cap, for instance, makes three of the four mistake-distractors
     /// identical to the answer, which would ship a question with one option.
     /// `pad` generates further plausible neighbours from an existing value
-    /// until there are enough. It gets a bounded number of attempts so a
-    /// generator that cannot produce a distinct neighbour degrades to a shorter
-    /// list rather than spinning forever.
+    /// until there are enough. Four choices is a product invariant, not a
+    /// target: a three-option question changes the odds and looks unfinished,
+    /// and `testGeneratorAlwaysEmitsFourChoices` fails the build if any shape
+    /// falls short. The attempt budget is generous rather than tight because
+    /// every `pad` here walks a finite domain (standard OCPD ratings, EMT trade
+    /// sizes, volume steps) where four distinct values always exist and only a
+    /// run of unlucky draws can miss them. It stays bounded so a genuinely
+    /// broken `pad` cannot spin forever; if that ever happens, the fix is the
+    /// generator, not a lower `choiceCount`.
     /// `pad` and `format` are non-escaping on purpose: every caller closes over
     /// its `inout` generator, and an Optional closure parameter is implicitly
     /// escaping, which the compiler rightly rejects.
@@ -393,7 +580,7 @@ enum CalcGenerator {
         }
 
         var attempts = 0
-        while labels.count < choiceCount, attempts < 40 {
+        while labels.count < choiceCount, attempts < 400 {
             attempts += 1
             let seed = values.randomElement(using: &rng) ?? answer
             let candidate = pad(seed)

@@ -69,6 +69,26 @@ struct ArticleMatchQuestion: Identifiable, Sendable {
     let explanation: String
 }
 
+/// A named candidate mistake: the reasoning error that produces one specific
+/// wrong number.
+///
+/// Every distractor the generator emits is already the answer you get from one
+/// common mistake. This is that mistake, written down, so three things become
+/// possible that a bare wrong answer cannot do: the explanation can name what
+/// the reader actually did, the app can count which errors a candidate keeps
+/// making, and Fix My Mistakes can generate a NEW problem that sets the same
+/// trap instead of replaying a question they now remember the answer to.
+struct MistakePattern: Hashable, Codable, Sendable {
+    /// Stable key. Persisted, so renaming one resets that tally.
+    let id: String
+    /// `PracticeSkill.rawValue` this pattern belongs to, so a targeted follow-up
+    /// problem can be generated from the right shape.
+    let skill: String
+    /// Second person, past tense, no scolding: "You started the derate in the
+    /// 75°C column." This is read immediately after a miss.
+    let summary: String
+}
+
 /// A worked calculation: conditions in, one number out, and the steps that got
 /// there. The steps matter as much as the answer, because a candidate who
 /// misses the order of operations misses every problem of that shape.
@@ -82,6 +102,10 @@ struct CalcScenario: Identifiable, Sendable {
     /// Each step as one line of reasoning, in order.
     let steps: [String]
     let citation: String
+    /// Choice label to the mistake that produces it. Distractors only; a label
+    /// absent from this map is either the answer or a padded neighbour that no
+    /// named mistake happens to land on.
+    var mistakes: [String: MistakePattern] = [:]
 }
 
 enum DrillKind: Sendable {

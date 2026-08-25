@@ -1,14 +1,23 @@
 import SwiftUI
 
-/// Practice history: overall accuracy, a bar per room, and the weak spot worth
-/// working on next. Free for everyone. Stats about your own effort are not a
-/// feature to sell back to you, and a free player who can see they are 58% in
-/// the Auction Room has a reason to care about the drills that would fix it.
+/// Practice history: overall accuracy, a bar per room, a bar per calculation
+/// skill, and the specific errors still outstanding.
+///
+/// Free for everyone. Stats about your own effort are not a feature to sell
+/// back to you, and a reader who can see they are 58% on derating has a reason
+/// to care about the drills that would fix it.
+///
+/// Room accuracy alone was too coarse to study from: "71% in Conductors &
+/// Ampacity" does not tell anyone what to do next. The skill rows and the
+/// mistake list do, and they cost nothing extra because the record store was
+/// already keeping both.
 struct StatsView: View {
     @EnvironmentObject private var progress: ProgressStore
     @StateObject private var records = PracticeRecordStore.shared
 
     private var roomStats: [PracticeRecordStore.RoomStat] { records.roomStats() }
+    private var skillStats: [PracticeRecordStore.RoomStat] { records.skillStats() }
+    private var outstandingMistakes: [MistakePattern] { records.outstandingMistakes(limit: 5) }
 
     var body: some View {
         ScrollView {
@@ -21,6 +30,8 @@ struct StatsView: View {
                         weakSpotCard(weakest)
                     }
                     roomBreakdown
+                    if !skillStats.isEmpty { skillBreakdown }
+                    if !outstandingMistakes.isEmpty { mistakeBreakdown }
                 }
                 streakCard
             }
@@ -141,6 +152,68 @@ struct StatsView: View {
         .themedCard()
     }
 
+    private var skillBreakdown: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("BY CALCULATION")
+                .font(.caption.weight(.heavy))
+                .kerning(1.4)
+                .foregroundStyle(Theme.inkSecondary)
+            ForEach(skillStats) { stat in
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Text(stat.name)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(Theme.ink)
+                        Spacer()
+                        Text(percent(stat.accuracy))
+                            .font(.subheadline.weight(.bold))
+                            .foregroundStyle(barColor(stat.accuracy))
+                            .monospacedDigit()
+                    }
+                    accuracyBar(stat.accuracy)
+                    Text("\(stat.correct) of \(stat.attempts) right")
+                        .font(.caption2)
+                        .foregroundStyle(Theme.inkTertiary)
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .themedCard()
+    }
+
+    /// The actual errors, named. This is the most useful screen in the app for
+    /// someone with an exam date: not "you are 64%", but "you keep starting the
+    /// derate in the wrong column".
+    private var mistakeBreakdown: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("WHAT KEEPS CATCHING YOU")
+                .font(.caption.weight(.heavy))
+                .kerning(1.4)
+                .foregroundStyle(Theme.inkSecondary)
+            ForEach(outstandingMistakes, id: \.id) { pattern in
+                HStack(alignment: .top, spacing: 10) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.caption)
+                        .foregroundStyle(Theme.coral)
+                        .padding(.top, 2)
+                    Text(pattern.summary)
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .accessibilityElement(children: .combine)
+            }
+            Text("Fix My Mistakes builds fresh problems that set these same traps.")
+                .font(.caption2)
+                .foregroundStyle(Theme.inkTertiary)
+                .padding(.top, 2)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .themedCard()
+    }
+
     private func accuracyBar(_ fraction: Double) -> some View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
@@ -182,7 +255,7 @@ struct StatsView: View {
     }
 
     private func barColor(_ fraction: Double) -> Color {
-        if fraction >= 0.8 { return Theme.bamGreen }
+        if fraction >= 0.8 { return Theme.rightGreen }
         if fraction >= 0.6 { return Theme.gold }
         return Theme.coral
     }

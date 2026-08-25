@@ -33,13 +33,17 @@ struct QuizDrillView: View {
 
     private var drillBody: some View {
         VStack(spacing: 16) {
-            ProgressView(value: Double(index), total: Double(questions.count))
+            // Completed, not current. See CalcDrillView for the same rule.
+            ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(questions.count, 1)))
                 .tint(Theme.jade)
+                .animation(.easeOut(duration: 0.3), value: answered)
             VStack(spacing: 16) {
                 QuestionPager(
                     prompt: question.prompt,
                     givens: question.givens,
                     explanation: question.explanation,
+                    citation: question.citation,
+                    reportContext: answered ? reportContext : nil,
                     answered: answered
                 ) {
                     ChoiceList(labels: shuffled.labels, selection: selection, answerIndex: shuffled.answerIndex) { pick in
@@ -85,6 +89,16 @@ struct QuizDrillView: View {
                     .frame(height: 54)
             }
         }
+    }
+
+    private var reportContext: ContentReport.Context {
+        ContentReport.Context(
+            itemID: question.id,
+            prompt: question.prompt,
+            citation: question.citation,
+            correctAnswer: shuffled.labels[shuffled.answerIndex],
+            selectedAnswer: selection.flatMap { shuffled.labels.indices.contains($0) ? shuffled.labels[$0] : nil }
+        )
     }
 
     private func select(_ choiceIndex: Int) {
