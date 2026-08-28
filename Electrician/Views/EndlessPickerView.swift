@@ -32,7 +32,7 @@ struct EndlessPickerView: View {
     private var intro: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "infinity")
-                .foregroundStyle(Theme.jade)
+                .foregroundStyle(Theme.voltage)
             Text("Every problem here is generated the moment you see it, so you can practise for as long as you like without repeating a question.")
                 .font(.subheadline)
                 .foregroundStyle(Theme.inkSecondary)
@@ -40,7 +40,7 @@ struct EndlessPickerView: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.jade.opacity(0.10), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(Theme.voltage.opacity(0.10), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .padding(.top, 12)
     }
 
@@ -49,9 +49,9 @@ struct EndlessPickerView: View {
         return HStack(spacing: 14) {
             Image(systemName: skill.icon)
                 .font(.title3.weight(.semibold))
-                .foregroundStyle(Theme.jade)
+                .foregroundStyle(Theme.voltage)
                 .frame(width: 48, height: 48)
-                .background(Theme.jade.opacity(0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
                 Text(skill.title)
                     .font(.headline)

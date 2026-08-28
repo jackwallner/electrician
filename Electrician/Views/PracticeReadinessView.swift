@@ -61,9 +61,9 @@ struct PracticeReadinessView: View {
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: "person.text.rectangle.fill")
-                    .foregroundStyle(Theme.jade)
+                    .foregroundStyle(Theme.voltage)
                     .frame(width: 38, height: 38)
-                    .background(Theme.jade.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+                    .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
                 VStack(alignment: .leading, spacing: 3) {
                     Text(profile.targetSummary)
                         .font(.headline)
@@ -121,19 +121,19 @@ struct PracticeReadinessView: View {
                 Spacer()
                 Text(value)
                     .font(.subheadline.weight(.bold))
-                    .foregroundStyle(Theme.jade)
+                    .foregroundStyle(Theme.voltage)
                     .monospacedDigit()
             }
             ProgressView(value: progress)
-                .tint(Theme.jade)
+                .tint(Theme.voltage)
         }
     }
 
     private var readinessColor: Color {
         switch metrics.level {
-        case .notStarted: return Theme.gold
-        case .building: return Theme.coral
-        case .consistent: return Theme.jade
+        case .notStarted: return Theme.brass
+        case .building: return Theme.copper
+        case .consistent: return Theme.voltage
         }
     }
 }

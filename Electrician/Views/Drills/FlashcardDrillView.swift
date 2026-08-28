@@ -9,7 +9,7 @@ import SwiftUI
 struct FlashcardDrillView: View {
     let drill: Drill
     let cards: [Flashcard]
-    var accent: Color = Theme.jade
+    var accent: Color = Theme.voltage
 
     @EnvironmentObject private var progress: ProgressStore
 
@@ -184,10 +184,10 @@ struct FlashcardDrillView: View {
     private var verdictStamps: some View {
         ZStack {
             if !choiceAnswered {
-                stamp("KNEW IT", color: Theme.jade, angle: -12)
+                stamp("KNEW IT", color: Theme.voltage, angle: -12)
                     .opacity(isFlipped ? stampOpacity(forDirection: 1) : 0)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                stamp("AGAIN", color: Theme.coral, angle: 12)
+                stamp("AGAIN", color: Theme.copper, angle: 12)
                     .opacity(isFlipped ? stampOpacity(forDirection: -1) : 0)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
@@ -415,7 +415,7 @@ struct FlashcardDrillView: View {
 struct FlipCardFace: View {
     let card: Flashcard
     let isFlipped: Bool
-    var accent: Color = Theme.jade
+    var accent: Color = Theme.voltage
     var choicePick: Int?
     var onChoose: ((Int) -> Void)?
     var onAdvance: (() -> Void)? = nil
@@ -539,14 +539,14 @@ struct FlipCardFace: View {
         HStack(spacing: 10) {
             if let onAgain {
                 Button(action: onAgain) {
-                    gradeLabel("Again", systemImage: "arrow.uturn.left", color: Theme.coral)
+                    gradeLabel("Again", systemImage: "arrow.uturn.left", color: Theme.copper)
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Brings this card back later in the session")
             }
             if let onKnewIt {
                 Button(action: onKnewIt) {
-                    gradeLabel("Knew it", systemImage: "checkmark", color: Theme.jade)
+                    gradeLabel("Knew it", systemImage: "checkmark", color: Theme.voltage)
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Removes this card from the session")
@@ -579,10 +579,10 @@ struct FlipCardFace: View {
             Text(verdict.correct ? "\(verdict.text). Right!" : "\(verdict.text). Not this time.")
                 .font(.footnote.weight(.semibold))
         }
-        .foregroundStyle(verdict.correct ? Theme.jade : Theme.coral)
+        .foregroundStyle(verdict.correct ? Theme.voltage : Theme.copper)
         .padding(.horizontal, 12)
         .padding(.vertical, 7)
-        .background((verdict.correct ? Theme.jade : Theme.coral).opacity(0.13), in: Capsule())
+        .background((verdict.correct ? Theme.voltage : Theme.copper).opacity(0.13), in: Capsule())
     }
 
     /// Displays the two options in a deterministic, per-card shuffled order

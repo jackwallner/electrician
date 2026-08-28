@@ -31,7 +31,7 @@ struct FeatureTourView: View {
             HStack(spacing: 6) {
                 ForEach(pages.indices, id: \.self) { dot in
                     Capsule()
-                        .fill(dot == index ? Theme.jade : Theme.jade.opacity(0.22))
+                        .fill(dot == index ? Theme.voltage : Theme.voltage.opacity(0.22))
                         .frame(width: dot == index ? 20 : 7, height: 7)
                         .animation(.snappy(duration: 0.22), value: index)
                 }
@@ -42,7 +42,7 @@ struct FeatureTourView: View {
                 Text(page.eyebrow)
                     .font(.caption.weight(.heavy))
                     .kerning(2)
-                    .foregroundStyle(page.accentGold ? Theme.gold : Theme.jade)
+                    .foregroundStyle(page.accentGold ? Theme.brass : Theme.voltage)
                 page.hero
                 Text(page.title)
                     .font(Theme.display(27))
@@ -172,7 +172,7 @@ struct FeatureTourView: View {
             .padding(16)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
-                LinearGradient(colors: [Theme.jade, Theme.jade.opacity(0.82)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                LinearGradient(colors: [Theme.voltageFill, Theme.voltageFill.opacity(0.82)], startPoint: .topLeading, endPoint: .bottomTrailing),
                 in: RoundedRectangle(cornerRadius: 16, style: .continuous)
             )
             .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
@@ -182,10 +182,10 @@ struct FeatureTourView: View {
 
     private var roomsHero: some View {
         HStack(spacing: 10) {
-            roomChip("square.grid.3x3.fill", Theme.jade)
-            roomChip("menucard.fill", Theme.coral)
-            roomChip("arrow.left.arrow.right", Theme.plum)
-            roomChip("person.3.fill", Theme.gold)
+            roomChip("square.grid.3x3.fill", Theme.voltage)
+            roomChip("menucard.fill", Theme.copper)
+            roomChip("arrow.left.arrow.right", Theme.conduit)
+            roomChip("person.3.fill", Theme.brass)
         }
     }
 
@@ -201,29 +201,29 @@ struct FeatureTourView: View {
         HStack(spacing: 8) {
             Image(systemName: "flame.fill")
                 .font(.system(size: 30))
-                .foregroundStyle(Theme.coral)
+                .foregroundStyle(Theme.copper)
             Text("7-day streak")
                 .font(Theme.display(20))
                 .foregroundStyle(Theme.ink)
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 12)
-        .background(Theme.coral.opacity(0.10), in: Capsule())
+        .background(Theme.copper.opacity(0.10), in: Capsule())
     }
 
     private func proHero(locked: Bool) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: locked ? "lock.fill" : "sparkles")
-                    .foregroundStyle(Theme.gold)
+                    .foregroundStyle(Theme.brass)
                 Text(Membership.name.uppercased())
                     .font(.caption.weight(.heavy))
                     .kerning(1.6)
-                    .foregroundStyle(Theme.gold)
+                    .foregroundStyle(Theme.brass)
                 Spacer()
                 if !locked {
                     Image(systemName: "checkmark.seal.fill")
-                        .foregroundStyle(Theme.jade)
+                        .foregroundStyle(Theme.voltage)
                 }
             }
             // The same three modes the paywall leads with. Extra sets and the
@@ -233,7 +233,7 @@ struct FeatureTourView: View {
                 HStack(spacing: 8) {
                     Image(systemName: locked ? "sparkles" : "checkmark.circle.fill")
                         .font(.footnote)
-                        .foregroundStyle(locked ? Theme.gold : Theme.jade)
+                        .foregroundStyle(locked ? Theme.brass : Theme.voltage)
                     Text(line)
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(Theme.ink)
@@ -242,10 +242,10 @@ struct FeatureTourView: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.gold.opacity(0.10), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(Theme.brass.opacity(0.10), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(Theme.gold.opacity(0.4), lineWidth: 1.5)
+                .strokeBorder(Theme.brass.opacity(0.4), lineWidth: 1.5)
         )
     }
 

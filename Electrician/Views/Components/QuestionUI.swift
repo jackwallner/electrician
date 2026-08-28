@@ -88,14 +88,14 @@ struct QuestionPager<Choices: View>: View {
                         if steps.isEmpty {
                             HStack(alignment: .top, spacing: 10) {
                                 Image(systemName: "lightbulb.fill")
-                                    .foregroundStyle(Theme.gold)
+                                    .foregroundStyle(Theme.brass)
                                 Text(explanation)
                                     .font(.subheadline)
                                     .fixedSize(horizontal: false, vertical: true)
                             }
                             .padding(14)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(Theme.gold.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
+                            .background(Theme.brass.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
                             if let citation {
                                 CitationLabel(citation)
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -187,7 +187,7 @@ struct ChoiceList: View {
         } label: {
             HStack {
                 Text(labels[index])
-                    .font(.body.weight(answered && isAnswer ? .semibold : .medium))
+                    .font(.body.weight(answered && isAnswer ? .semibold : .medium).monospacedDigit())
                     .foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.leading)
                 Spacer()
@@ -260,12 +260,12 @@ struct MissNoteView: View {
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .foregroundStyle(Theme.coral)
+                .foregroundStyle(Theme.copper)
             VStack(alignment: .leading, spacing: 3) {
                 Text("WHAT HAPPENED")
                     .font(.caption2.weight(.heavy))
                     .kerning(1.2)
-                    .foregroundStyle(Theme.coral)
+                    .foregroundStyle(Theme.copper)
                 Text(note)
                     .font(.subheadline)
                     .foregroundStyle(Theme.ink)
@@ -274,7 +274,7 @@ struct MissNoteView: View {
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.coral.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
+        .background(Theme.copper.opacity(0.12), in: RoundedRectangle(cornerRadius: 14))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("What happened. \(note)")
     }
@@ -294,18 +294,18 @@ struct WorkedStepsView: View {
             Text("Working")
                 .font(.caption.weight(.heavy))
                 .kerning(1.2)
-                .foregroundStyle(Theme.inkTertiary)
+                .foregroundStyle(Theme.worksheetInkTertiary)
             ForEach(Array(steps.enumerated()), id: \.offset) { position, step in
                 HStack(alignment: .top, spacing: 10) {
                     Text("\(position + 1)")
                         .font(.caption.weight(.bold).monospacedDigit())
-                        .foregroundStyle(Theme.jade)
+                        .foregroundStyle(Theme.worksheetAccent)
                         .frame(width: 18, height: 18)
-                        .background(Theme.jade.opacity(0.14), in: Circle())
+                        .background(Theme.worksheetAccent.opacity(0.14), in: Circle())
                         .accessibilityHidden(true)
                     Text(step)
                         .font(.callout)
-                        .foregroundStyle(Theme.inkSecondary)
+                        .foregroundStyle(Theme.worksheetInkSecondary)
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -313,16 +313,17 @@ struct WorkedStepsView: View {
                 .accessibilityLabel("Step \(position + 1). \(step)")
             }
             if let citation {
-                CitationLabel(citation)
+                CitationLabel(citation, onWorksheet: true)
                     .padding(.top, 2)
             }
         }
         .padding(14)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Theme.parchment, in: RoundedRectangle(cornerRadius: 14))
+        .background(Theme.worksheet, in: RoundedRectangle(cornerRadius: 14))
+        .blueprintGrid(corner: 14, spacing: 16, opacity: 0.06)
         .overlay(
             RoundedRectangle(cornerRadius: 14)
-                .strokeBorder(Theme.parchmentEdge, lineWidth: 1)
+                .strokeBorder(Theme.worksheetEdge, lineWidth: 1)
         )
         .transition(.opacity.combined(with: .move(edge: .bottom)))
     }
@@ -333,8 +334,14 @@ struct WorkedStepsView: View {
 /// cycles, and the reader is being sent to their own book to check.
 struct CitationLabel: View {
     let citation: String
+    /// Set on the light worksheet stock, which does not invert in dark mode
+    /// and therefore needs ink that does not either.
+    var onWorksheet = false
 
-    init(_ citation: String) { self.citation = citation }
+    init(_ citation: String, onWorksheet: Bool = false) {
+        self.citation = citation
+        self.onWorksheet = onWorksheet
+    }
 
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 6) {
@@ -343,7 +350,7 @@ struct CitationLabel: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .font(.caption.weight(.semibold))
-        .foregroundStyle(Theme.inkTertiary)
+        .foregroundStyle(onWorksheet ? Theme.worksheetInkTertiary : Theme.inkTertiary)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Look it up: \(citation), \(NECTables.edition)")
     }

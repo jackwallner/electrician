@@ -43,7 +43,7 @@ struct WhatsNewSheet: View {
             }
             .navigationBarTitleDisplayMode(.inline)
         }
-        .tint(Theme.jade)
+        .tint(Theme.voltage)
     }
 
     private var header: some View {
@@ -68,10 +68,10 @@ struct WhatsNewSheet: View {
         return HStack(alignment: .top, spacing: 14) {
             Image(systemName: item.icon)
                 .font(.body.weight(.semibold))
-                .foregroundStyle(locked ? Theme.gold : Theme.jade)
+                .foregroundStyle(locked ? Theme.brass : Theme.voltage)
                 .frame(width: 42, height: 42)
                 .background(
-                    (locked ? Theme.gold : Theme.jade).opacity(0.13),
+                    (locked ? Theme.brass : Theme.voltage).opacity(0.13),
                     in: RoundedRectangle(cornerRadius: 13, style: .continuous)
                 )
             VStack(alignment: .leading, spacing: 4) {
@@ -101,7 +101,7 @@ struct WhatsNewSheet: View {
                     WhatsNew.markSeen()
                     onUpgrade()
                 } label: {
-                    Text("Unlock with \(Membership.name)").primaryCTA(color: Theme.gold)
+                    Text("Unlock with \(Membership.name)").primaryCTA(color: Theme.brass)
                 }
             }
             Button {
@@ -113,7 +113,7 @@ struct WhatsNewSheet: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: lockedItems.isEmpty ? 56 : 44)
                     .background(
-                        lockedItems.isEmpty ? Theme.jade : .clear,
+                        lockedItems.isEmpty ? Theme.voltage : .clear,
                         in: RoundedRectangle(cornerRadius: 18, style: .continuous)
                     )
             }

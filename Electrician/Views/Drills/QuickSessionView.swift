@@ -115,7 +115,7 @@ struct QuickSessionView: View {
         VStack(spacing: 16) {
             // Completed, not current. See CalcDrillView for the same rule.
             ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(items.count, 1)))
-                .tint(Theme.jade)
+                .tint(Theme.voltage)
                 .animation(.easeOut(duration: 0.3), value: answered)
             VStack(spacing: 12) {
                 QuestionPager(
@@ -329,7 +329,7 @@ private struct StreakBanner: View {
         .foregroundStyle(.white)
         .padding(.horizontal, 16)
         .padding(.vertical, 9)
-        .background(Theme.coral, in: Capsule())
-        .shadow(color: Theme.coral.opacity(0.4), radius: 10, y: 4)
+        .background(Theme.copperFill, in: Capsule())
+        .shadow(color: Theme.copperFill.opacity(0.4), radius: 10, y: 4)
     }
 }

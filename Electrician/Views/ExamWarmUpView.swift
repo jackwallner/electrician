@@ -24,7 +24,7 @@ struct ExamWarmUpView: View {
                 NavigationLink {
                     QuickSessionView(examWarmUp: sessionItems)
                 } label: {
-                    Text("Start My Warm-Up").primaryCTA(color: Theme.plum)
+                    Text("Start My Warm-Up").primaryCTA(color: Theme.conduit)
                 }
             }
             .padding()
@@ -50,9 +50,9 @@ struct ExamWarmUpView: View {
         VStack(spacing: 12) {
             Image(systemName: "person.2.fill")
                 .font(.system(size: 28, weight: .semibold))
-                .foregroundStyle(Theme.plum)
+                .foregroundStyle(Theme.conduit)
                 .frame(width: 68, height: 68)
-                .background(Theme.plum.opacity(0.13), in: Circle())
+                .background(Theme.conduit.opacity(0.13), in: Circle())
             Text("Walk in ready")
                 .font(Theme.display(28))
                 .foregroundStyle(Theme.ink)
@@ -108,9 +108,9 @@ struct ExamWarmUpView: View {
         return HStack(alignment: .top, spacing: 12) {
             Image(systemName: "scope")
                 .font(.body.weight(.semibold))
-                .foregroundStyle(Theme.coral)
+                .foregroundStyle(Theme.copper)
                 .frame(width: 40, height: 40)
-                .background(Theme.coral.opacity(0.13), in: Circle())
+                .background(Theme.copper.opacity(0.13), in: Circle())
             VStack(alignment: .leading, spacing: 3) {
                 Text("What today's prep targets")
                     .font(.headline)

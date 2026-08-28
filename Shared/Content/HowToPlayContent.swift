@@ -96,11 +96,25 @@ extension HowToPlayContent {
     /// tour; they need the article that fails people.
     static func recommendedRoom(forSkillLevel skillLevel: String) -> Room {
         let roomID: String
-        switch skillLevel {
-        case "apprentice": roomID = "conductors-room"
-        case "working": roomID = "grounding-room"
-        default: roomID = "basics-room"
+        switch ExperienceLevel(rawValue: skillLevel) {
+        case .apprentice: roomID = "conductors-room"
+        case .working: roomID = "grounding-room"
+        // Been once already: the calculations are what sent them back, so
+        // that is where the primer points rather than the chapter tour.
+        case .retaking: roomID = "calc-room"
+        case .renewing: roomID = "grounding-room"
+        case .new, .none: roomID = "basics-room"
         }
         return DrillLibrary.rooms.first { $0.id == roomID } ?? DrillLibrary.rooms[0]
+    }
+
+    /// A candidate's focus picks win over the experience-level default: they
+    /// were asked the question directly and answering it should do something.
+    static func recommendedRoom(forSkillLevel skillLevel: String,
+                                focusAreas: Set<String>) -> Room {
+        if let focused = DrillLibrary.rooms.first(where: { focusAreas.contains($0.id) }) {
+            return focused
+        }
+        return recommendedRoom(forSkillLevel: skillLevel)
     }
 }

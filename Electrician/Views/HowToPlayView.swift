@@ -87,7 +87,7 @@ struct HowToPlayView: View {
         HStack(spacing: 6) {
             ForEach(pages.indices, id: \.self) { dot in
                 Capsule()
-                    .fill(dot == index ? Theme.jade : Theme.jade.opacity(0.22))
+                    .fill(dot == index ? Theme.voltage : Theme.voltage.opacity(0.22))
                     .frame(width: dot == index ? 20 : 7, height: 7)
                     .animation(.snappy(duration: 0.22), value: index)
             }
@@ -105,7 +105,7 @@ struct HowToPlayView: View {
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.headline)
-                        .foregroundStyle(isFirst ? Theme.inkTertiary : Theme.jade)
+                        .foregroundStyle(isFirst ? Theme.inkTertiary : Theme.voltage)
                         .frame(width: 56, height: 56)
                         .background(Theme.card, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
                         .overlay(
@@ -139,9 +139,9 @@ struct HowToPlayView: View {
         VStack(spacing: 16) {
             Image(systemName: page.icon)
                 .font(.system(size: 32, weight: .semibold))
-                .foregroundStyle(Theme.jade)
+                .foregroundStyle(Theme.voltage)
                 .frame(width: 76, height: 76)
-                .background(Theme.jade.opacity(0.12), in: Circle())
+                .background(Theme.voltage.opacity(0.12), in: Circle())
             Text(page.title)
                 .font(Theme.display(27))
                 .foregroundStyle(Theme.ink)
@@ -157,7 +157,7 @@ struct HowToPlayView: View {
             if let tip = page.tip {
                 HStack(alignment: .top, spacing: 8) {
                     Image(systemName: "lightbulb.fill")
-                        .foregroundStyle(Theme.gold)
+                        .foregroundStyle(Theme.brass)
                     Text(tip)
                         .font(.footnote.weight(.medium))
                         .foregroundStyle(Theme.ink)
@@ -165,7 +165,7 @@ struct HowToPlayView: View {
                 }
                 .padding(10)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Theme.gold.opacity(0.12), in: RoundedRectangle(cornerRadius: 10))
+                .background(Theme.brass.opacity(0.12), in: RoundedRectangle(cornerRadius: 10))
             }
             if isLast {
                 recommendationCard

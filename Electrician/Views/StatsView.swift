@@ -56,7 +56,7 @@ struct StatsView: View {
         VStack(spacing: 10) {
             Image(systemName: "chart.bar.fill")
                 .font(.system(size: 40))
-                .foregroundStyle(Theme.jade.opacity(0.5))
+                .foregroundStyle(Theme.voltage.opacity(0.5))
             Text("No practice yet")
                 .font(.headline)
                 .foregroundStyle(Theme.ink)
@@ -73,11 +73,11 @@ struct StatsView: View {
 
     private var summaryCard: some View {
         HStack(spacing: 0) {
-            metric(value: percent(records.overallAccuracy), caption: "accuracy", color: Theme.jade)
+            metric(value: percent(records.overallAccuracy), caption: "accuracy", color: Theme.voltage)
             divider
             metric(value: "\(records.totalAttempts)", caption: "answered", color: Theme.ink)
             divider
-            metric(value: "\(records.bestChallengeScore)", caption: "best challenge", color: Theme.coral)
+            metric(value: "\(records.bestChallengeScore)", caption: "best challenge", color: Theme.copper)
         }
         .padding(.vertical, 18)
         .frame(maxWidth: .infinity)
@@ -109,9 +109,9 @@ struct StatsView: View {
         HStack(spacing: 12) {
             Image(systemName: "target")
                 .font(.body.weight(.semibold))
-                .foregroundStyle(Theme.coral)
+                .foregroundStyle(Theme.copper)
                 .frame(width: 38, height: 38)
-                .background(Theme.coral.opacity(0.13), in: Circle())
+                .background(Theme.copper.opacity(0.13), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
                 Text("Work on \(stat.name)")
                     .font(.headline)
@@ -200,7 +200,7 @@ struct StatsView: View {
                 HStack(alignment: .top, spacing: 10) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.caption)
-                        .foregroundStyle(Theme.coral)
+                        .foregroundStyle(Theme.copper)
                         .padding(.top, 2)
                     Text(pattern.summary)
                         .font(.caption)
@@ -219,7 +219,7 @@ struct StatsView: View {
                 } label: {
                     Label("Practice these traps now", systemImage: "play.fill")
                         .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Theme.jade)
+                        .foregroundStyle(Theme.voltage)
                 }
                 .padding(.top, 2)
             } else {
@@ -228,7 +228,7 @@ struct StatsView: View {
                 } label: {
                     Label("Unlock targeted practice", systemImage: "lock.fill")
                         .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Theme.jade)
+                        .foregroundStyle(Theme.voltage)
                 }
                 .padding(.top, 2)
             }
@@ -255,9 +255,9 @@ struct StatsView: View {
         HStack(spacing: 12) {
             Image(systemName: "flame.fill")
                 .font(.body.weight(.semibold))
-                .foregroundStyle(Theme.coral)
+                .foregroundStyle(Theme.copper)
                 .frame(width: 38, height: 38)
-                .background(Theme.coral.opacity(0.13), in: Circle())
+                .background(Theme.copper.opacity(0.13), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
                 Text("\(progress.streakCount)-day streak")
                     .font(.headline)
@@ -280,8 +280,8 @@ struct StatsView: View {
 
     private func barColor(_ fraction: Double) -> Color {
         if fraction >= 0.8 { return Theme.rightGreen }
-        if fraction >= 0.6 { return Theme.gold }
-        return Theme.coral
+        if fraction >= 0.6 { return Theme.brass }
+        return Theme.copper
     }
 
     private var targetedPracticeItems: [QuickItem] {

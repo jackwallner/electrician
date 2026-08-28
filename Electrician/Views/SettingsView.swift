@@ -32,7 +32,7 @@ struct SettingsView: View {
             }
             .scrollContentBackground(.hidden)
             .background(Theme.background)
-            .tint(Theme.jade)
+            .tint(Theme.voltage)
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -161,7 +161,7 @@ struct SettingsView: View {
         Section("Membership") {
             if subscriptions.isPro {
                 Label("\(Membership.name) unlocked", systemImage: "checkmark.seal.fill")
-                    .foregroundStyle(Theme.jade)
+                    .foregroundStyle(Theme.voltage)
                 Link("Manage Subscription", destination: PaywallLinks.manageSubscriptions)
             } else {
                 Button {

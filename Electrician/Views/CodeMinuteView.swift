@@ -28,9 +28,9 @@ struct CodeMinuteView: View {
         VStack(spacing: 14) {
             Image(systemName: todayResult == nil ? "calendar.badge.clock" : "checkmark.seal.fill")
                 .font(.system(size: 28, weight: .semibold))
-                .foregroundStyle(todayResult == nil ? Theme.coral : Theme.jade)
+                .foregroundStyle(todayResult == nil ? Theme.copper : Theme.voltage)
                 .frame(width: 68, height: 68)
-                .background((todayResult == nil ? Theme.coral : Theme.jade).opacity(0.13), in: Circle())
+                .background((todayResult == nil ? Theme.copper : Theme.voltage).opacity(0.13), in: Circle())
             VStack(spacing: 5) {
                 Text("Today's Code Minute")
                     .font(Theme.display(27))
@@ -51,7 +51,7 @@ struct CodeMinuteView: View {
                 NavigationLink {
                     QuickSessionView(codeMinute: challenge)
                 } label: {
-                    Text("Start Today's Challenge").primaryCTA(color: Theme.coral)
+                    Text("Start Today's Challenge").primaryCTA(color: Theme.copper)
                 }
             }
         }
@@ -74,12 +74,12 @@ struct CodeMinuteView: View {
                 }
                 Spacer()
                 Image(systemName: completed >= 5 ? "checkmark.seal.fill" : "calendar")
-                    .foregroundStyle(completed >= 5 ? Theme.jade : Theme.coral)
+                    .foregroundStyle(completed >= 5 ? Theme.voltage : Theme.copper)
             }
             HStack(spacing: 10) {
                 ForEach(0..<5, id: \.self) { index in
                     Circle()
-                        .fill(index < completed ? Theme.coral : Theme.well)
+                        .fill(index < completed ? Theme.copperFill : Theme.well)
                         .overlay {
                             if index < completed {
                                 Image(systemName: "checkmark")
@@ -130,7 +130,7 @@ struct CodeMinuteView: View {
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: result == nil ? "play.circle" : "checkmark.circle.fill")
-                    .foregroundStyle(result == nil ? Theme.coral : Theme.jade)
+                    .foregroundStyle(result == nil ? Theme.copper : Theme.voltage)
                     .frame(width: 28)
                 Text(date, format: .dateTime.weekday(.wide).month(.abbreviated).day())
                     .font(.subheadline.weight(.medium))
@@ -138,7 +138,7 @@ struct CodeMinuteView: View {
                 Spacer()
                 Text(result.map { "\($0.score)/\($0.total)" } ?? "Play")
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(result == nil ? Theme.coral : Theme.jade)
+                    .foregroundStyle(result == nil ? Theme.copper : Theme.voltage)
                     .monospacedDigit()
                 Image(systemName: "chevron.right")
                     .font(.caption.weight(.semibold))
@@ -172,7 +172,7 @@ struct CodeMinuteResultView: View {
                 weeklyCard
                 ShareLink(item: result.shareText) {
                     Label("Share Result", systemImage: "square.and.arrow.up")
-                        .primaryCTA(color: Theme.coral)
+                        .primaryCTA(color: Theme.copper)
                 }
                 Button("Done") {
                     if let onDone { onDone() } else { dismiss() }
@@ -202,12 +202,12 @@ struct CodeMinuteResultView: View {
         VStack(spacing: 8) {
             ZStack {
                 Circle()
-                    .fill(Theme.jade.opacity(0.12))
+                    .fill(Theme.voltage.opacity(0.12))
                     .frame(width: 122, height: 122)
                 VStack(spacing: 1) {
                     Text("\(result.score)/\(result.total)")
                         .font(Theme.display(34))
-                        .foregroundStyle(Theme.jade)
+                        .foregroundStyle(Theme.voltage)
                         .monospacedDigit()
                     Text("right")
                         .font(.caption.weight(.semibold))
@@ -256,9 +256,9 @@ struct CodeMinuteResultView: View {
         let completed = min(store.completedThisWeek(), 5)
         return HStack(spacing: 12) {
             Image(systemName: completed >= 5 ? "checkmark.seal.fill" : "calendar.badge.checkmark")
-                .foregroundStyle(completed >= 5 ? Theme.jade : Theme.coral)
+                .foregroundStyle(completed >= 5 ? Theme.voltage : Theme.copper)
                 .frame(width: 38, height: 38)
-                .background((completed >= 5 ? Theme.jade : Theme.coral).opacity(0.12), in: Circle())
+                .background((completed >= 5 ? Theme.voltage : Theme.copper).opacity(0.12), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
                 Text(completed >= 5 ? "Weekly goal complete" : "\(completed) of 5 this week")
                     .font(.headline)
@@ -276,9 +276,9 @@ struct CodeMinuteResultView: View {
     private func color(for category: CodeMinuteCategory) -> Color {
         let correct = result.correct(in: category)
         let total = result.total(in: category)
-        if correct == total { return Theme.jade }
-        if correct > 0 { return Theme.gold }
-        return Theme.coral
+        if correct == total { return Theme.voltage }
+        if correct > 0 { return Theme.brass }
+        return Theme.copper
     }
 
     private func recordCompletionIfNeeded() {

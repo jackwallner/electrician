@@ -61,7 +61,7 @@ struct RoomView: View {
                 // preview, not a dead end. Say so, or the lock reads as a wall.
                 Text("Look around. Every drill here opens with \(Membership.name).")
                     .font(.caption.weight(.medium))
-                    .foregroundStyle(Theme.gold)
+                    .foregroundStyle(Theme.brass)
                     .multilineTextAlignment(.center)
             }
         }
@@ -121,7 +121,7 @@ struct RoomView: View {
             if locked {
                 Image(systemName: "lock.fill")
                     .font(.footnote)
-                    .foregroundStyle(Theme.gold)
+                    .foregroundStyle(Theme.brass)
             } else if done {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundStyle(room.accent)
@@ -146,7 +146,7 @@ struct RoomView: View {
             VStack(spacing: 8) {
                 HStack(spacing: 8) {
                     Image(systemName: "sparkles")
-                        .foregroundStyle(Theme.gold)
+                        .foregroundStyle(Theme.brass)
                     Text("\(lockedCount) more \(lockedCount == 1 ? "drill" : "drills") in this room")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(Theme.ink)
@@ -159,10 +159,10 @@ struct RoomView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(14)
-            .background(Theme.gold.opacity(0.08), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .background(Theme.brass.opacity(0.08), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(Theme.gold.opacity(0.35), lineWidth: 1)
+                    .strokeBorder(Theme.brass.opacity(0.35), lineWidth: 1)
             )
         }
         .buttonStyle(PressableCardStyle())

@@ -35,7 +35,7 @@ struct QuizDrillView: View {
         VStack(spacing: 16) {
             // Completed, not current. See CalcDrillView for the same rule.
             ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(questions.count, 1)))
-                .tint(Theme.jade)
+                .tint(Theme.voltage)
                 .animation(.easeOut(duration: 0.3), value: answered)
             VStack(spacing: 16) {
                 QuestionPager(

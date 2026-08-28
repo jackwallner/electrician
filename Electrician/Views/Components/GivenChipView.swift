@@ -15,15 +15,17 @@ struct GivenChipView: View {
             Text(given.label.uppercased())
                 .font(.system(size: 9 * scale, weight: .heavy))
                 .kerning(0.6)
-                .foregroundStyle(Theme.inkTertiary)
+                .foregroundStyle(Theme.worksheetInkTertiary)
             HStack(alignment: .firstTextBaseline, spacing: 3 * scale) {
                 Text(given.value)
-                    .font(.system(size: 15 * scale, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Theme.ink)
+                    // Monospaced, not rounded: a given is an instrument
+                    // reading, and "6 AWG" should line up under "10 AWG".
+                    .font(.system(size: 15 * scale, weight: .semibold, design: .monospaced))
+                    .foregroundStyle(Theme.worksheetInk)
                 if let unit = given.unit {
                     Text(unit)
                         .font(.system(size: 11 * scale, weight: .medium))
-                        .foregroundStyle(Theme.inkSecondary)
+                        .foregroundStyle(Theme.worksheetInkSecondary)
                 }
             }
         }
@@ -31,12 +33,12 @@ struct GivenChipView: View {
         .padding(.vertical, 7 * scale)
         .background(
             RoundedRectangle(cornerRadius: 9 * scale)
-                .fill(Theme.parchment)
+                .fill(Theme.worksheet)
                 .shadow(color: .black.opacity(0.12), radius: 1.5, y: 1)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 9 * scale)
-                .strokeBorder(Theme.parchmentEdge, lineWidth: 1)
+                .strokeBorder(Theme.worksheetEdge, lineWidth: 1)
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel(given.spokenLabel)

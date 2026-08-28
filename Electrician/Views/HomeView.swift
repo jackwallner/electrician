@@ -101,7 +101,7 @@ struct HomeView: View {
                 if !isShowing, !subscriptions.isPro { pendingAfterUpgrade = nil }
             }
         }
-        .tint(Theme.jade)
+        .tint(Theme.voltage)
     }
 
     @ViewBuilder
@@ -122,7 +122,11 @@ struct HomeView: View {
             VStack(spacing: 14) {
                 header
                 todaySession
-                if !profile.setupComplete { candidateTargetCard }
+                if !profile.setupComplete {
+                    candidateTargetCard
+                } else if profile.daysUntilExam != nil {
+                    examCountdownCard
+                }
                 practiceReadinessCard
                 if showsPrimerCard { howToPlayCard }
                 trainingSection
@@ -138,7 +142,11 @@ struct HomeView: View {
     private var todayColumn: some View {
         VStack(spacing: 14) {
             todaySession
-            if !profile.setupComplete { candidateTargetCard }
+            if !profile.setupComplete {
+                candidateTargetCard
+            } else if profile.daysUntilExam != nil {
+                examCountdownCard
+            }
             practiceReadinessCard
             if showsPrimerCard { howToPlayCard }
             trainingSection
@@ -151,7 +159,7 @@ struct HomeView: View {
     private var roomsColumn: some View {
         VStack(spacing: 14) {
             roomsHeading
-            ForEach(DrillLibrary.rooms) { room in
+            ForEach(orderedRooms) { room in
                 roomCard(room)
             }
         }
@@ -256,9 +264,9 @@ struct HomeView: View {
                 StatsView()
             } label: {
                 HStack(spacing: 8) {
-                    statChip(value: progress.streakCount, icon: "flame.fill", color: Theme.coral,
+                    statChip(value: progress.streakCount, icon: "flame.fill", color: Theme.copper,
                              label: "\(progress.streakCount) day streak")
-                    statChip(value: progress.totalSessions, icon: "checkmark.seal.fill", color: Theme.jade,
+                    statChip(value: progress.totalSessions, icon: "checkmark.seal.fill", color: Theme.voltage,
                              label: "\(progress.totalSessions) drills done")
                 }
             }
@@ -313,12 +321,12 @@ struct HomeView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 LinearGradient(
-                    colors: [Theme.jade, Theme.jade.opacity(0.82)],
+                    colors: [Theme.voltageFill, Theme.voltageFill.opacity(0.82)],
                     startPoint: .topLeading, endPoint: .bottomTrailing
                 ),
                 in: RoundedRectangle(cornerRadius: Theme.cardCorner, style: .continuous)
             )
-            .shadow(color: Theme.jade.opacity(0.3), radius: 10, y: 5)
+            .shadow(color: Theme.voltageFill.opacity(0.3), radius: 10, y: 5)
         }
         .buttonStyle(PressableCardStyle())
     }
@@ -330,9 +338,9 @@ struct HomeView: View {
         HStack(spacing: 14) {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 30))
-                .foregroundStyle(Theme.jade)
+                .foregroundStyle(Theme.voltage)
                 .frame(width: 44, height: 44)
-                .background(Theme.jade.opacity(0.12), in: Circle())
+                .background(Theme.voltage.opacity(0.12), in: Circle())
             VStack(alignment: .leading, spacing: 3) {
                 Text("Today's session is done")
                     .font(.headline)
@@ -358,9 +366,9 @@ struct HomeView: View {
             HStack(spacing: 12) {
                 Image(systemName: "book.fill")
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(Theme.gold)
+                    .foregroundStyle(Theme.brass)
                     .frame(width: 38, height: 38)
-                    .background(Theme.gold.opacity(0.13), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .background(Theme.brass.opacity(0.13), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     Text("How the Exam Works")
                         .font(.headline)
@@ -380,15 +388,63 @@ struct HomeView: View {
         .buttonStyle(PressableCardStyle())
     }
 
+    /// Focus picks from onboarding float to the top. Nothing is hidden: the
+    /// question was "what do you want to hit hardest", not "what should we
+    /// take away", so this is an ordering, not a filter.
+    private var orderedRooms: [Room] {
+        guard !profile.focusAreas.isEmpty else { return DrillLibrary.rooms }
+        let focused = DrillLibrary.rooms.filter { profile.focusAreas.contains($0.id) }
+        let rest = DrillLibrary.rooms.filter { !profile.focusAreas.contains($0.id) }
+        return focused + rest
+    }
+
+    /// The countdown, once there is a date to count to. It reads back the
+    /// daily number the setup promised, so the exam-date answer keeps paying
+    /// off after onboarding instead of vanishing into UserDefaults.
+    private var examCountdownCard: some View {
+        NavigationLink {
+            CandidateProfileView()
+        } label: {
+            HStack(spacing: 12) {
+                VStack(spacing: 0) {
+                    Text("\(profile.daysUntilExam ?? 0)")
+                        .font(Theme.numeric(20, weight: .bold))
+                        .foregroundStyle(Theme.voltage)
+                    Text((profile.daysUntilExam ?? 0) == 1 ? "day" : "days")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(Theme.inkTertiary)
+                }
+                .frame(width: 46, height: 46)
+                .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(profile.targetSummary)
+                        .font(.headline)
+                        .foregroundStyle(Theme.ink)
+                    Text("\(profile.editionSummary). Target \(profile.suggestedDailyQuestions) questions a day.")
+                        .font(.caption)
+                        .foregroundStyle(Theme.inkSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 4)
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(Theme.inkTertiary)
+            }
+            .padding(12)
+            .themedCard(corner: 16)
+        }
+        .buttonStyle(PressableCardStyle())
+    }
+
     private var candidateTargetCard: some View {
         NavigationLink {
             CandidateProfileView()
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: "person.text.rectangle.fill")
-                    .foregroundStyle(Theme.jade)
+                    .foregroundStyle(Theme.voltage)
                     .frame(width: 38, height: 38)
-                    .background(Theme.jade.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+                    .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Set your exam target")
                         .font(.headline)
@@ -414,9 +470,9 @@ struct HomeView: View {
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: "chart.line.uptrend.xyaxis")
-                    .foregroundStyle(Theme.coral)
+                    .foregroundStyle(Theme.copper)
                     .frame(width: 38, height: 38)
-                    .background(Theme.coral.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+                    .background(Theme.copper.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Practice readiness")
                         .font(.headline)
@@ -461,9 +517,9 @@ struct HomeView: View {
                 HStack(spacing: 12) {
                     Image(systemName: "wrench.and.screwdriver.fill")
                         .font(.body.weight(.semibold))
-                        .foregroundStyle(Theme.jade)
+                        .foregroundStyle(Theme.voltage)
                         .frame(width: 36, height: 36)
-                        .background(Theme.jade.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Field tools")
                             .font(.headline)
@@ -523,7 +579,7 @@ struct HomeView: View {
         trainingTile(
             title: "Endless\nPractice",
             icon: "infinity",
-            color: Theme.jade,
+            color: Theme.voltage,
             badge: nil
         ) {
             EndlessPickerView()
@@ -531,7 +587,7 @@ struct HomeView: View {
         trainingTile(
             title: "Code\nMinute",
             icon: "calendar.badge.clock",
-            color: Theme.coral,
+            color: Theme.copper,
             badge: minuteStore.result(for: Date()).map { "\($0.score)/\($0.total) today" } ?? "Daily"
         ) {
             CodeMinuteView()
@@ -539,7 +595,7 @@ struct HomeView: View {
         trainingTile(
             title: "Exam\nWarm-Up",
             icon: "person.2.fill",
-            color: Theme.plum,
+            color: Theme.conduit,
             badge: settings.examWarmUpReminderEnabled ? settings.examWarmUpDay.displayName : "Weekly"
         ) {
             ExamWarmUpView()
@@ -547,7 +603,7 @@ struct HomeView: View {
         trainingTile(
             title: "Timed\nChallenge",
             icon: "timer",
-            color: Theme.coral,
+            color: Theme.copper,
             badge: records.bestChallengeScore > 0 ? "Best \(records.bestChallengeScore)" : nil
         ) {
             PracticeRunView(mode: .timed)
@@ -565,7 +621,7 @@ struct HomeView: View {
             trainingTile(
                 title: "Fix My\nMistakes",
                 icon: "arrow.trianglehead.counterclockwise",
-                color: Theme.plum,
+                color: Theme.conduit,
                 badge: subscriptions.isPro ? "\(records.fixableCount) to fix" : "Unlock"
             ) {
                 PracticeRunView(mode: .review, items: fixMyMistakesItems)
@@ -608,7 +664,7 @@ struct HomeView: View {
                 if locked {
                     Image(systemName: "lock.fill")
                         .font(.caption2)
-                        .foregroundStyle(Theme.gold)
+                        .foregroundStyle(Theme.brass)
                 }
             }
             Spacer(minLength: 0)
@@ -624,7 +680,7 @@ struct HomeView: View {
             } else {
                 Text(locked ? Membership.name : " ")
                     .font(.caption2.weight(.semibold))
-                    .foregroundStyle(Theme.gold)
+                    .foregroundStyle(Theme.brass)
             }
         }
         .padding(12)
@@ -686,7 +742,7 @@ struct HomeView: View {
                 if locked {
                     Image(systemName: "lock.fill")
                         .font(.footnote)
-                        .foregroundStyle(Theme.gold)
+                        .foregroundStyle(Theme.brass)
                 } else {
                     ProgressRing(done: done, total: total, color: room.accent)
                 }
@@ -713,9 +769,9 @@ struct HomeView: View {
             HStack(spacing: 12) {
                 Image(systemName: "sparkles")
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(Theme.gold)
+                    .foregroundStyle(Theme.brass)
                     .frame(width: 38, height: 38)
-                    .background(Theme.gold.opacity(0.14), in: Circle())
+                    .background(Theme.brass.opacity(0.14), in: Circle())
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Get \(Membership.name)")
                         .font(.headline)
@@ -734,7 +790,7 @@ struct HomeView: View {
             .themedCard(corner: 16)
             .overlay(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(Theme.gold.opacity(0.35), lineWidth: 1)
+                    .strokeBorder(Theme.brass.opacity(0.35), lineWidth: 1)
             )
         }
         .buttonStyle(PressableCardStyle())

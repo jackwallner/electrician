@@ -76,7 +76,7 @@ struct PaywallContent: View {
     private func benefit(_ text: String) -> some View {
         HStack(spacing: 10) {
             Image(systemName: "checkmark.circle.fill")
-                .foregroundStyle(Theme.jade)
+                .foregroundStyle(Theme.voltage)
             Text(text)
                 .font(.subheadline)
                 .foregroundStyle(Theme.ink)
@@ -132,8 +132,8 @@ struct PaywallContent: View {
                                 .font(.caption2.bold())
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
-                                .background(Theme.gold.opacity(0.18), in: Capsule())
-                                .foregroundStyle(Theme.gold)
+                                .background(Theme.brass.opacity(0.18), in: Capsule())
+                                .foregroundStyle(Theme.brass)
                         }
                     }
                     Text(detail)
@@ -167,12 +167,12 @@ struct PaywallContent: View {
             }
             .padding(14)
             .background(
-                isSelected ? Theme.jade.opacity(0.08) : Theme.card,
+                isSelected ? Theme.voltage.opacity(0.08) : Theme.card,
                 in: RoundedRectangle(cornerRadius: 14, style: .continuous)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .strokeBorder(isSelected ? Theme.jade : Theme.rule, lineWidth: isSelected ? 2 : 1)
+                    .strokeBorder(isSelected ? Theme.voltage : Theme.rule, lineWidth: isSelected ? 2 : 1)
             )
         }
         .buttonStyle(.plain)
@@ -386,7 +386,7 @@ struct PaywallView: View {
     private var unavailableNotice: some View {
         HStack(alignment: .top, spacing: 8) {
             Image(systemName: "wifi.exclamationmark")
-                .foregroundStyle(Theme.coral)
+                .foregroundStyle(Theme.copper)
             Text("Prices could not be loaded. Check your connection and try again. Already a member? Tap Restore.")
                 .font(.caption)
                 .foregroundStyle(Theme.inkSecondary)

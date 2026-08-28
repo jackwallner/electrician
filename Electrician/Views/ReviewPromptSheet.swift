@@ -73,7 +73,7 @@ struct ReviewPromptSheet: View {
 
     private var enjoymentContent: some View {
         VStack(spacing: 20) {
-            icon("checkmark.seal.fill", Theme.jade)
+            icon("checkmark.seal.fill", Theme.voltage)
             Text("You've finished \(ReviewPromptTracker.positiveMomentCount) drills. If Electrician is helping the code stick, a quick rating helps other candidates find it.")
                 .font(.subheadline)
                 .foregroundStyle(Theme.inkSecondary)
@@ -97,7 +97,7 @@ struct ReviewPromptSheet: View {
 
     private var reviewPitchContent: some View {
         VStack(spacing: 18) {
-            icon("star.fill", Theme.gold)
+            icon("star.fill", Theme.brass)
             Text("Electrician is built by one person. No ads, no accounts, and your practice history never leaves your phone.")
                 .font(.subheadline)
                 .foregroundStyle(Theme.inkSecondary)
@@ -167,7 +167,7 @@ struct ReviewPromptSheet: View {
                     } label: {
                         Label("Copy \(AppStoreLinks.feedbackEmail)", systemImage: "doc.on.doc")
                             .font(.caption.weight(.semibold))
-                            .foregroundStyle(Theme.jade)
+                            .foregroundStyle(Theme.voltage)
                     }
                 }
             } else {

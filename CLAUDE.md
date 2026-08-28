@@ -73,6 +73,71 @@ a 2026-cycle one by looking at it, and the app name carries a year. When the
 tables move, update `NECTables` (including `edition`) and let the tests catch
 the authored content that drifted.
 
+## Design system
+
+The palette is **not** the cream-and-jade one this shell arrived with. Cream
+paper and jade green are mahjong signals (tile faces, table felt). `Theme` now
+reads as an electrician's vocabulary and the names are semantic, so a room
+accent means something:
+
+| Token | Colour | Used for |
+|---|---|---|
+| `voltage` | line-voltage blue | primary actions, `basics-room` |
+| `copper` | copper | streaks and celebration, `conductors-room` |
+| `brass` | brass | locks, best value, `Electrician+` |
+| `conduit` | galvanized steel blue | `calc-room` |
+| `ground` | equipment-grounding green | `grounding-room`, and nothing else |
+
+Surfaces are cool drawing paper over slate, `Theme.display` is heavy condensed
+sans (panel-schedule lettering, not a members' club serif), `Theme.numeric` is
+monospaced so amps and AWG read as instrument values, and `BlueprintGrid` /
+`blueprintGrid()` rules the worksheet surfaces.
+
+**Every accent lightens in dark mode**, because most uses are ink and icons on
+a dark surface. A filled button is the opposite case: the label is always
+white, so a light accent lands near 2.3:1. `PrimaryCTAStyle` darkens its own
+fill by 0.45 in dark mode, which is measured to hold the lightest accent above
+5:1. Anything else that paints a solid accent behind white text must use
+`Theme.voltageFill` / `Theme.copperFill`, not the base token. Adding a new
+accent means adding its dark-mode check too.
+
+## Onboarding
+
+Twelve steps: three value pages, seven setup questions, a plan recap, then the
+trial. It is a **step machine, not a paged `TabView`**, and that is not a style
+choice. A page view cannot refuse a swipe, so the old version let a candidate
+swipe past a disabled Continue into the paywall with no jurisdiction set; a
+`ScrollView` with a `TextField` inside a horizontal pager fought both the swipe
+and the keyboard; and the footer reserved purchase chrome on every page. Driving
+one `step` with `canAdvance` gating it fixes all three. Do not reintroduce a
+pager here.
+
+`Jurisdictions` (all 50 states, DC, PR, plus a "Not listed" sentinel) is what
+makes **"I'm not sure" a usable answer**: it carries the commonly adopted NEC
+edition, the licensing authority, the licence route (state vs. contractor-only
+vs. local) and the exam vendor, and `CandidateProfile.resolvedEdition` falls
+back to the state's edition while the answer is `.unsure`. Adoption and vendors
+move, so every surface labels the value "commonly adopted", stamps
+`Jurisdictions.reviewed`, and names the authority to confirm with. Re-check the
+table against the NFPA adoption map when that date goes stale; it is a
+suggestion the candidate ratifies, never an assertion.
+
+**Persisted keys that must not be renamed.** `LicenseTrack.journeyman`/`.master`
+and `CandidateEdition.nec2023`/`.different` keep their original raw values
+because they are already written to `candidate.licenseTrack` and
+`candidate.edition`; the added cases are new spellings only. The three original
+`electrician.skillLevel` values (`new`, `apprentice`, `working`) are switched on
+by Home's primer card and `HowToPlayContent.recommendedRoom`. `CandidateProfile`
+resolves an ABSENT `candidate.edition` to this app's own edition, not to
+`.unsure`, because installs that answered the old two-option picker chose from a
+list whose default was that; onboarding overrides it to `.unsure` for a fresh
+install only.
+
+Setup answers have to keep paying off after onboarding or the seven questions
+are a toll booth: the exam date drives Home's countdown card and
+`suggestedDailyQuestions`, and `focusAreas` orders the rooms on Home (an
+ordering, never a filter).
+
 ## Structure
 - `Shared/Models` — `Given` (a labelled condition chip, the equivalent of a
   dealt tile), `CodeArticle`, `NECTables` (all reference data), `Drill`

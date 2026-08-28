@@ -46,7 +46,7 @@ struct CalcDrillView: View {
             // graded, so the final answer fills it instead of leaving the run
             // permanently one short of done.
             ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(scenarios.count, 1)))
-                .tint(Theme.jade)
+                .tint(Theme.voltage)
                 .animation(.easeOut(duration: 0.3), value: answered)
             VStack(spacing: 16) {
                 CenteringScrollView {

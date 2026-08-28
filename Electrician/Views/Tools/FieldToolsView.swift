@@ -47,9 +47,9 @@ struct FieldToolsView: View {
         HStack(spacing: 12) {
             Image(systemName: icon)
                 .font(.body.weight(.semibold))
-                .foregroundStyle(Theme.jade)
+                .foregroundStyle(Theme.voltage)
                 .frame(width: 36, height: 36)
-                .background(Theme.jade.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
             VStack(alignment: .leading, spacing: 2) {
                 Text(title).font(.headline).foregroundStyle(Theme.ink)
                 Text(subtitle).font(.caption).foregroundStyle(Theme.inkSecondary)
@@ -294,7 +294,7 @@ private struct OhmsLawToolView: View {
                             systemImage: "exclamationmark.triangle.fill"
                         )
                         .font(.caption)
-                        .foregroundStyle(Theme.coral)
+                        .foregroundStyle(Theme.copper)
                     }
                 }
             } else {

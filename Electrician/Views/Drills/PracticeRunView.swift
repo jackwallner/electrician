@@ -159,7 +159,7 @@ struct PracticeRunView: View {
             if mode != .timed {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(mode == .review ? "Close" : "Finish") { finish() }
-                        .foregroundStyle(Theme.jade)
+                        .foregroundStyle(Theme.voltage)
                 }
             }
         }
@@ -172,22 +172,22 @@ struct PracticeRunView: View {
         case .timed:
             HStack(spacing: 10) {
                 Image(systemName: "timer")
-                    .foregroundStyle(secondsRemaining <= 10 ? Theme.coral : Theme.inkSecondary)
+                    .foregroundStyle(secondsRemaining <= 10 ? Theme.copper : Theme.inkSecondary)
                 Text("\(secondsRemaining)s")
                     .font(.title3.weight(.bold))
                     .monospacedDigit()
-                    .foregroundStyle(secondsRemaining <= 10 ? Theme.coral : Theme.ink)
+                    .foregroundStyle(secondsRemaining <= 10 ? Theme.copper : Theme.ink)
                 Spacer()
                 Text("\(score) correct")
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Theme.jade)
+                    .foregroundStyle(Theme.voltage)
                     .monospacedDigit()
             }
             .padding(.horizontal, 4)
         case .review:
             // Completed, not current. See CalcDrillView for the same rule.
             ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(items.count, 1)))
-                .tint(Theme.jade)
+                .tint(Theme.voltage)
                 .animation(.easeOut(duration: 0.3), value: answered)
         case .endless:
             HStack {
@@ -203,7 +203,7 @@ struct PracticeRunView: View {
                             .monospacedDigit()
                     }
                     .font(.subheadline.weight(.bold))
-                    .foregroundStyle(Theme.coral)
+                    .foregroundStyle(Theme.copper)
                 }
             }
             .padding(.horizontal, 4)

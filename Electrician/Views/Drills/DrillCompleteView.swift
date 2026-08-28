@@ -22,14 +22,14 @@ struct DrillCompleteView: View {
             Spacer()
             ZStack {
                 Circle()
-                    .fill(Theme.jade.opacity(0.12))
+                    .fill(Theme.voltage.opacity(0.12))
                     .frame(width: 132, height: 132)
                     .scaleEffect(celebrate ? 1 : 0.6)
                 if let score {
                     VStack(spacing: 2) {
                         Text("\(score)/\(total)")
                             .font(Theme.display(34))
-                            .foregroundStyle(Theme.jade)
+                            .foregroundStyle(Theme.voltage)
                             .monospacedDigit()
                         Text("right")
                             .font(.caption.weight(.semibold))
@@ -38,7 +38,7 @@ struct DrillCompleteView: View {
                 } else {
                     Image(systemName: "checkmark.seal.fill")
                         .font(.system(size: 58))
-                        .foregroundStyle(Theme.jade)
+                        .foregroundStyle(Theme.voltage)
                 }
             }
             .animation(.spring(response: 0.5, dampingFraction: 0.6), value: celebrate)
@@ -53,7 +53,7 @@ struct DrillCompleteView: View {
             }
             HStack(spacing: 6) {
                 Image(systemName: "flame.fill")
-                    .foregroundStyle(Theme.coral)
+                    .foregroundStyle(Theme.copper)
                 Text("\(progress.streakCount)-day streak")
                     .font(.headline)
                     .foregroundStyle(Theme.ink)
