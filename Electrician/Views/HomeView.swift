@@ -127,6 +127,14 @@ struct HomeView: View {
                 } else if profile.daysUntilExam != nil {
                     examCountdownCard
                 }
+                if profile.pace.isUrgent {
+                    // Only while it is urgent. A standing plan card is a
+                    // permanent tax on the rooms below it; a card that appears
+                    // two weeks out and disappears after the exam is advice.
+                    StudyPaceCard(pace: profile.pace,
+                                  daily: profile.suggestedDailyQuestions,
+                                  maximumPriorities: 3)
+                }
                 practiceReadinessCard
                 if showsPrimerCard { howToPlayCard }
                 trainingSection
@@ -146,6 +154,11 @@ struct HomeView: View {
                 candidateTargetCard
             } else if profile.daysUntilExam != nil {
                 examCountdownCard
+            }
+            if profile.pace.isUrgent {
+                StudyPaceCard(pace: profile.pace,
+                              daily: profile.suggestedDailyQuestions,
+                              maximumPriorities: 3)
             }
             practiceReadinessCard
             if showsPrimerCard { howToPlayCard }
@@ -235,12 +248,12 @@ struct HomeView: View {
         guard DrillLibrary.rooms.contains(where: { $0.id == roomID }) else { return }
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 400_000_000)
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
+            withAnimation(Theme.Motion.screen) {
                 proxy.scrollTo(roomID, anchor: .center)
                 highlightedRoomID = roomID
             }
             try? await Task.sleep(nanoseconds: 2_200_000_000)
-            withAnimation(.easeOut(duration: 0.4)) { highlightedRoomID = nil }
+            withAnimation(Theme.Motion.reveal) { highlightedRoomID = nil }
         }
     }
 
@@ -249,12 +262,13 @@ struct HomeView: View {
     private var header: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Electrician")
-                    .font(Theme.display(32))
+                Text(headerTitle)
+                    .font(Theme.screenTitle)
                     .foregroundStyle(Theme.ink)
-                Text("\(NECTables.edition) navigation and calculations")
+                Text(headerSubtitle)
                     .font(.subheadline)
                     .foregroundStyle(Theme.inkSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 8)
             // The chips were already the honest summary of practice, so they
@@ -277,15 +291,35 @@ struct HomeView: View {
         .padding(.top, 2)
     }
 
+    /// Home's title is what this screen IS, not what the app is called.
+    ///
+    /// It used to say "Electrician", which is the name on the icon the reader
+    /// just tapped and tells them nothing they did not already know. Worse, it
+    /// is a job title rather than a task: a screen headed with the reader's own
+    /// occupation reads like a profile page. The licence track they picked in
+    /// setup turns it into a statement of what they are here to do, and it is
+    /// another place the setup answers keep paying off.
+    private var headerTitle: String {
+        guard profile.setupComplete, profile.hasSelectedTrack else { return "Exam Prep" }
+        return "\(profile.licenseTrack.displayName) Prep"
+    }
+
+    private var headerSubtitle: String {
+        let place = profile.trimmedJurisdiction
+        guard profile.setupComplete, !place.isEmpty, place != Jurisdictions.other.name else {
+            return "Code navigation and calculations"
+        }
+        return "\(profile.editionShortSummary) · \(place)"
+    }
+
     private func statChip(value: Int, icon: String, color: Color, label: String) -> some View {
         HStack(spacing: 5) {
             Image(systemName: icon)
                 .font(.caption)
                 .foregroundStyle(color)
             Text("\(value)")
-                .font(.subheadline.weight(.bold))
+                .font(Theme.numeric(.subheadline, weight: .bold))
                 .foregroundStyle(Theme.ink)
-                .monospacedDigit()
         }
         .padding(.horizontal, 9)
         .padding(.vertical, 6)
@@ -306,7 +340,7 @@ struct HomeView: View {
             HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Get Started")
-                        .font(Theme.display(24))
+                        .font(Theme.sectionTitle)
                         .foregroundStyle(.white)
                     Text("A short mix of what you need next")
                         .font(.subheadline)
@@ -343,7 +377,7 @@ struct HomeView: View {
                 .background(Theme.voltage.opacity(0.12), in: Circle())
             VStack(alignment: .leading, spacing: 3) {
                 Text("Today's session is done")
-                    .font(.headline)
+                    .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
                 Text("A fresh mix lands tomorrow. Keep going in any room below.")
                     .font(.subheadline)
@@ -371,7 +405,7 @@ struct HomeView: View {
                     .background(Theme.brass.opacity(0.13), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     Text("How the Exam Works")
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                     Text("New here? Start with the five-minute primer")
                         .font(.caption)
@@ -408,7 +442,7 @@ struct HomeView: View {
             HStack(spacing: 12) {
                 VStack(spacing: 0) {
                     Text("\(profile.daysUntilExam ?? 0)")
-                        .font(Theme.numeric(20, weight: .bold))
+                        .font(Theme.numeric(.title3, weight: .bold))
                         .foregroundStyle(Theme.voltage)
                     Text((profile.daysUntilExam ?? 0) == 1 ? "day" : "days")
                         .font(.caption2.weight(.semibold))
@@ -418,9 +452,9 @@ struct HomeView: View {
                 .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(profile.targetSummary)
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
-                    Text("\(profile.editionSummary). Target \(profile.suggestedDailyQuestions) questions a day.")
+                    Text("\(profile.editionShortSummary) · \(profile.pace.title). Target \(profile.suggestedDailyQuestions) questions a day.")
                         .font(.caption)
                         .foregroundStyle(Theme.inkSecondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -447,7 +481,7 @@ struct HomeView: View {
                     .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Set your exam target")
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                     Text("Add your license level and jurisdiction for clearer progress")
                         .font(.caption)
@@ -475,7 +509,7 @@ struct HomeView: View {
                     .background(Theme.copper.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Practice readiness")
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                     Text(readinessSummary)
                         .font(.caption)
@@ -507,8 +541,8 @@ struct HomeView: View {
     private var fieldToolsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("FIELD TOOLS")
-                .font(.caption.weight(.heavy))
-                .kerning(1.4)
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
                 .foregroundStyle(Theme.inkSecondary)
                 .padding(.horizontal, 4)
             NavigationLink {
@@ -522,7 +556,7 @@ struct HomeView: View {
                         .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Field tools")
-                            .font(.headline)
+                            .font(Theme.cardTitle)
                             .foregroundStyle(Theme.ink)
                         Text("Study calculators with stated assumptions")
                             .font(.caption)
@@ -551,8 +585,8 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("TRAINING")
-                    .font(.caption.weight(.heavy))
-                    .kerning(1.4)
+                    .font(Theme.eyebrow)
+                    .kerning(Theme.eyebrowKerning)
                     .foregroundStyle(Theme.inkSecondary)
                 Spacer()
             }
@@ -669,7 +703,7 @@ struct HomeView: View {
             }
             Spacer(minLength: 0)
             Text(title)
-                .font(.subheadline.weight(.bold))
+                .font(Theme.cardTitle)
                 .foregroundStyle(Theme.ink)
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
@@ -694,8 +728,8 @@ struct HomeView: View {
     private var roomsHeading: some View {
         HStack {
             Text("THE ROOMS")
-                .font(.caption.weight(.heavy))
-                .kerning(1.4)
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
                 .foregroundStyle(Theme.inkSecondary)
             Spacer()
         }
@@ -726,7 +760,7 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 6) {
                         Text(room.name)
-                            .font(.headline)
+                            .font(Theme.cardTitle)
                             .foregroundStyle(Theme.ink)
                         if locked {
                             PlusBadge()
@@ -774,9 +808,9 @@ struct HomeView: View {
                     .background(Theme.brass.opacity(0.14), in: Circle())
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Get \(Membership.name)")
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
-                    Text("Targeted review, timed practice, and \(lockedDrillCount) more drills across the focused rooms")
+                    Text("Endless generated calculations, targeted review of the errors you repeat, and \(DrillLibrary.membershipItemCount) more authored questions")
                         .font(.caption)
                         .foregroundStyle(Theme.inkSecondary)
                         .multilineTextAlignment(.leading)
@@ -797,12 +831,8 @@ struct HomeView: View {
         .padding(.top, 2)
     }
 
-    private var lockedDrillCount: Int {
-        DrillLibrary.rooms.reduce(0) { $0 + $1.plusDrillCount }
-    }
-
     private var disclaimerFooter: some View {
-        Text("\(NECTables.edition) values. A study aid, not a code book. Not affiliated with or endorsed by the NFPA. Concepts and calculations in original wording, with article numbers so you can verify each one in the code in force where you work.")
+        Text("Built on the \(NECTables.edition), and every table here is unchanged across the \(NECTables.coverageLabel). A study aid, not a code book. Not affiliated with or endorsed by the NFPA. Concepts and calculations in original wording, with article numbers so you can verify each one in the code in force where you work.")
             .font(.caption2)
             .foregroundStyle(Theme.inkTertiary)
             .multilineTextAlignment(.center)
@@ -830,16 +860,15 @@ struct ProgressRing: View {
                 .trim(from: 0, to: fraction)
                 .stroke(color, style: StrokeStyle(lineWidth: 3, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-                .animation(.spring(response: 0.5, dampingFraction: 0.8), value: fraction)
+                .animation(Theme.Motion.meter, value: fraction)
             if done == total, total > 0 {
                 Image(systemName: "checkmark")
                     .font(.caption2.weight(.black))
                     .foregroundStyle(color)
             } else {
                 Text("\(done)/\(total)")
-                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .font(Theme.numeric(10, weight: .bold))
                     .foregroundStyle(Theme.inkSecondary)
-                    .monospacedDigit()
             }
         }
         .frame(width: 32, height: 32)

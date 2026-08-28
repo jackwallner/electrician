@@ -130,3 +130,16 @@ extension Double {
         return String(format: "%.1f", self)
     }
 }
+
+
+extension String {
+    /// Uppercases the first character only, leaving the rest alone.
+    ///
+    /// `capitalized` is wrong here: it would turn "12 days out" into
+    /// "12 Days Out". This is for a phrase built in the middle of a sentence
+    /// that then has to start one.
+    var capitalizedFirst: String {
+        guard let first else { return self }
+        return String(first).uppercased() + dropFirst()
+    }
+}

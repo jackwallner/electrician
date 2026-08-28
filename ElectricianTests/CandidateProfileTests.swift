@@ -100,18 +100,41 @@ final class CandidateProfileTests: XCTestCase {
 
     // MARK: - Exam date
 
-    func testDailySuggestionIsClampedAtBothEnds() {
+    /// The daily number is set by the PACE, not by dividing a fixed total by
+    /// the days left. The old formula told a candidate with four hundred days
+    /// to do ten a day, which is a target that reads as "this does not matter",
+    /// and it told a candidate with one day to do six hundred.
+    func testDailySuggestionFollowsThePace() {
         let profile = CandidateProfile(defaults: defaults)
 
         profile.examDate = Calendar.current.date(byAdding: .day, value: 2, to: Date())
+        XCTAssertEqual(profile.pace, .cram)
         XCTAssertEqual(profile.suggestedDailyQuestions, 60)
 
+        profile.examDate = Calendar.current.date(byAdding: .day, value: 10, to: Date())
+        XCTAssertEqual(profile.pace, .sprint)
+        XCTAssertEqual(profile.suggestedDailyQuestions, 40)
+
         profile.examDate = Calendar.current.date(byAdding: .day, value: 400, to: Date())
-        XCTAssertEqual(profile.suggestedDailyQuestions, 10)
+        XCTAssertEqual(profile.pace, .foundation)
+        XCTAssertEqual(profile.suggestedDailyQuestions, 15)
 
         profile.examDate = nil
+        XCTAssertEqual(profile.pace, .undated)
         XCTAssertEqual(profile.suggestedDailyQuestions, 15)
         XCTAssertNil(profile.examCountdownSummary)
+    }
+
+    /// The exam is today. Not a countdown that has run out, and not a division
+    /// by zero: still a real plan, with a number smaller than yesterday's.
+    func testExamDayStillGetsAPlan() {
+        let profile = CandidateProfile(defaults: defaults)
+        profile.examDate = Date()
+
+        XCTAssertEqual(profile.daysUntilExam, 0)
+        XCTAssertEqual(profile.examCountdownSummary, "Exam today")
+        XCTAssertEqual(profile.pace, .cram)
+        XCTAssertGreaterThan(profile.suggestedDailyQuestions, 0)
     }
 
     func testCountdownCountsWholeDays() {

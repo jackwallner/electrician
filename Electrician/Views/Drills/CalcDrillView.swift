@@ -47,12 +47,12 @@ struct CalcDrillView: View {
             // permanently one short of done.
             ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(scenarios.count, 1)))
                 .tint(Theme.voltage)
-                .animation(.easeOut(duration: 0.3), value: answered)
+                .animation(Theme.Motion.meter, value: answered)
             VStack(spacing: 16) {
                 CenteringScrollView {
                     VStack(spacing: 18) {
                         Text(scenario.situation)
-                            .font(Theme.display(21))
+                            .font(Theme.questionTitle)
                             .foregroundStyle(Theme.ink)
                             .multilineTextAlignment(.center)
                         if !scenario.givens.isEmpty {
@@ -129,7 +129,7 @@ struct CalcDrillView: View {
 
     private func select(_ pick: Int) {
         guard selection == nil else { return }
-        withAnimation(.easeOut(duration: 0.25)) { selection = pick }
+        withAnimation(Theme.Motion.reveal) { selection = pick }
         let correct = pick == shuffled.answerIndex
         if correct {
             score += 1
@@ -150,7 +150,7 @@ struct CalcDrillView: View {
         if index == scenarios.count - 1 {
             finished = true
         } else {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+            withAnimation(Theme.Motion.screen) {
                 index += 1
                 selection = nil
             }

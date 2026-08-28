@@ -8,13 +8,21 @@ import Foundation
 /// exhausted, and unlike a shuffled question bank it is not the same fifty
 /// questions in a new order.
 ///
-/// The five shapes are the five that candidates actually fail: derating a
-/// conductor for heat and bundling, sizing overcurrent protection when the
-/// small-conductor rule overrides the table, filling a raceway, filling a box,
-/// and voltage drop. They are exactly the cases of `PracticeSkill`, and a test
-/// holds the two lists together. Each one has a worked-steps explanation,
-/// because a candidate who gets the order of operations wrong gets every
-/// problem of that shape wrong.
+/// The shapes are the ones candidates actually fail: derating a conductor for
+/// heat and bundling, sizing overcurrent protection when the small-conductor
+/// rule overrides the table, filling a raceway, filling a box, voltage drop,
+/// sizing both grounding conductors from the two tables people confuse, feeding
+/// and protecting a motor from the table rather than the nameplate, and the
+/// whole dwelling service calculation. They are exactly the cases of
+/// `PracticeSkill`, and the generator suites iterate that enum so a new shape
+/// cannot ship untested. Each one has a worked-steps explanation, because a
+/// candidate who gets the order of operations wrong gets every problem of that
+/// shape wrong.
+///
+/// The later shapes live in `CalcGeneratorGrounding`, `CalcGeneratorMotors` and
+/// `CalcGeneratorLoads`. Same generator, split for readability; they use the
+/// choice-assembly and mistake-mapping helpers at the bottom of this file, and
+/// they must keep using them rather than rolling their own.
 ///
 /// Distractors are the other half of the job. A multiple choice question whose
 /// wrong answers are random numbers teaches nothing. Every distractor below is
@@ -112,12 +120,27 @@ enum CandidateMistake {
     )
 
     /// Every pattern, for the tests and for the targeted-practice lookup.
+    ///
+    /// The later blocks are declared in `CalcGeneratorGrounding`,
+    /// `CalcGeneratorMotors` and `CalcGeneratorLoads`, alongside the shapes
+    /// that set them. They are listed here because this is the registry
+    /// `PracticeRecordStore` and Fix My Mistakes look patterns up in, and a
+    /// pattern missing from it is a mistake the app can name once and then
+    /// never practise again.
     static let all: [MistakePattern] = [
         derateFrom75, ignoredBundling, ignoredTerminationCap,
         ignoredSmallConductorCap, roundedOCPDUp, sizedOCPDFrom90,
         usedFiftyThreePercentFill, racewayTooSmall, racewayOversized,
         countedGroundsIndividually, forgotDeviceYokes, countedYokeAsOne,
         wrongPhaseFactor, forgotPhaseFactor, wrongMaterialK,
+        usedGECTableForEGC, egcWrongMaterialColumn, egcReadRowBelow,
+        egcUsedCircuitConductor,
+        usedEGCTableForGEC, gecIgnoredElectrodeCeiling, gecWrongServiceColumn,
+        gecMissedParallelSet,
+        motorUsedNameplateForConductors, motorForgot125, motorWrongVoltageRow,
+        motorRoundedOCPDDown, motorWrongDevicePercent, motorUsedOverloadPercent,
+        loadForgotLightingDemand, loadForgotSmallAppliance, loadUsedRangeNameplate,
+        loadAddedHeatAndCooling, loadForgotApplianceDemand,
     ]
 
     static func pattern(id: String) -> MistakePattern? {
@@ -511,13 +534,18 @@ enum CalcGenerator {
 
     /// Builds the choice-label to mistake map.
     ///
+    /// Internal rather than private because the generator's shapes now span
+    /// more than one file. `CalcGenerator+Grounding` and friends are the same
+    /// generator, split for readability, and they must assemble choices and
+    /// name mistakes exactly the way the shapes here do.
+    ///
     /// A named distractor only earns an entry when it actually differs from the
     /// answer. Distractors collide with the answer all the time (a conductor
     /// with no 240.4(D) cap makes "ignored the cap" the right number), and
     /// labelling the correct answer as a mistake would be worse than saying
     /// nothing. First writer wins, so the most specific mistake listed for a
     /// value is the one the reader is told about.
-    private static func mistakeMap(
+    static func mistakeMap(
         answerLabel: String,
         _ entries: [(String, MistakePattern)]
     ) -> [String: MistakePattern] {
@@ -528,15 +556,31 @@ enum CalcGenerator {
         return map
     }
 
+    /// The same, filtered to the choices that actually shipped.
+    ///
+    /// A shape with more named mistakes than it has room for (four choices, one
+    /// of which is the answer) offers every distractor it can compute and lets
+    /// `uniqueChoices` pick which ones fit. Without this filter the leftovers
+    /// stay in the map, pointing at labels no one can tap, and
+    /// `testGeneratedProblemsNameTheirMistakes` rightly fails the build for it.
+    static func mistakeMap(
+        answerLabel: String,
+        choices: [String],
+        _ entries: [(String, MistakePattern)]
+    ) -> [String: MistakePattern] {
+        let shown = Set(choices)
+        return mistakeMap(answerLabel: answerLabel, entries.filter { shown.contains($0.0) })
+    }
+
     // MARK: - Choice assembly
 
-    private struct Choices {
+    struct Choices {
         let labels: [String]
         let answerIndex: Int
     }
 
     /// How many options every generated question shows.
-    private static let choiceCount = 4
+    static let choiceCount = 4
 
     /// Formats candidate values into a de-duplicated, shuffled choice list of
     /// exactly `choiceCount` options, and reports where the correct one landed.
@@ -562,7 +606,7 @@ enum CalcGenerator {
     /// `pad` and `format` are non-escaping on purpose: every caller closes over
     /// its `inout` generator, and an Optional closure parameter is implicitly
     /// escaping, which the compiler rightly rejects.
-    private static func uniqueChoices<T>(from candidates: [T], answer: T,
+    static func uniqueChoices<T>(from candidates: [T], answer: T,
                                          using rng: inout RandomNumberGenerator,
                                          pad: (T) -> T,
                                          format: (T) -> String) -> Choices {
@@ -619,4 +663,22 @@ extension Double {
             .replacingOccurrences(of: "0$", with: "", options: .regularExpression)
     }
     var voltsText: String { String(format: "%.1f", self) }
+}
+
+extension Int {
+    /// Thousands separated, so a five-digit volt-ampere total reads as a number
+    /// rather than as a string of digits. Grouped by hand rather than through a
+    /// `NumberFormatter` because these strings are compared against each other
+    /// for de-duplication and are asserted on in tests: a locale that groups
+    /// with a space or a full stop would make the same value format two ways
+    /// and quietly break the choice list.
+    var groupedText: String {
+        let digits = String(abs(self))
+        var grouped = ""
+        for (offset, character) in digits.reversed().enumerated() {
+            if offset > 0, offset % 3 == 0 { grouped.append(",") }
+            grouped.append(character)
+        }
+        return (self < 0 ? "-" : "") + String(grouped.reversed())
+    }
 }

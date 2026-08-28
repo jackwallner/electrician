@@ -167,6 +167,87 @@ enum ExperienceLevel: String, CaseIterable, Identifiable, Sendable {
     }
 }
 
+/// What the remaining time before the exam means for how a candidate should
+/// use the app. Derived, never stored: the exam date is the only fact, and a
+/// stored pace would go stale every night at midnight.
+enum StudyPace: String, CaseIterable, Identifiable, Sendable {
+    /// Three days or fewer. Triage: calculations only, mistakes only.
+    case cram
+    /// Up to two weeks. Every shape once, then the ones being missed.
+    case sprint
+    /// Two weeks to two months. The full syllabus with room to repeat it.
+    case build
+    /// More than two months, or no date. Build the navigation habit first.
+    case foundation
+    case undated
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .cram: return "Cram plan"
+        case .sprint: return "Sprint plan"
+        case .build: return "Build plan"
+        case .foundation: return "Foundation plan"
+        case .undated: return "Steady plan"
+        }
+    }
+
+    /// One line, in the second person, that says what to do with the time left.
+    var summary: String {
+        switch self {
+        case .cram:
+            return "There is no time to cover everything, so do not try. Calculations only, then the mistakes you repeat. Navigation practice is the first thing to drop."
+        case .sprint:
+            return "Enough time to see every problem shape at least twice. Work each one until you can do it without the steps, then let Fix My Mistakes chase what is left."
+        case .build:
+            return "Enough time to cover the whole syllabus and then repeat the parts that fight back. Start with navigation, because it makes everything else faster."
+        case .foundation:
+            return "Time to build the habit properly. Learn how the book is organised first; the calculations get much easier once you can find things."
+        case .undated:
+            return "No date yet, so the goal is steady reps. Set a date whenever you book it and the plan sharpens up."
+        }
+    }
+
+    /// The order to work in, when there is not time for everything. Rendered as
+    /// a numbered list, so each line is one instruction.
+    var priorities: [String] {
+        switch self {
+        case .cram:
+            return [
+                "Derating, breaker sizing and conduit fill. These are the most-failed shapes and the most generatable, so they are where a day buys the most.",
+                "Fix My Mistakes, twice a day. It is the only thing here that gets more valuable the less time you have.",
+                "Skim the grounding vocabulary. Four terms, four meanings, and it is free points.",
+                "Do not start anything new the night before. Re-run the shapes you already got right.",
+            ]
+        case .sprint:
+            return [
+                "One pass through every problem shape in Endless Practice, so nothing on the paper is unfamiliar.",
+                "Worked Calculations for anything you missed, because a miss is almost always one skipped step.",
+                "Grounding and motors: the two articles that decide the most papers.",
+                "One timed run every few days, to rehearse the clock rather than the content.",
+            ]
+        case .build:
+            return [
+                "Code Basics first. Knowing where a question lives is worth more than knowing any single answer.",
+                "Then one room a week, all the way through.",
+                "Endless Practice daily on whichever shape you are weakest at.",
+                "Timed Challenge weekly, once the content is solid.",
+            ]
+        case .foundation, .undated:
+            return [
+                "How the book is built, then the article families. This is the part that pays off for the rest of your career, not just the exam.",
+                "One Code Minute a day. The habit matters more than the volume right now.",
+                "Add a calculation room once navigation feels quick.",
+            ]
+        }
+    }
+
+    /// True where the app should be steering toward triage rather than
+    /// coverage. Home, onboarding and the plan recap all branch on this.
+    var isUrgent: Bool { self == .cram || self == .sprint }
+}
+
 @MainActor
 final class CandidateProfile: ObservableObject {
     static let shared = CandidateProfile()
@@ -282,6 +363,17 @@ final class CandidateProfile: ObservableObject {
         return edition == .different ? "Another edition" : "Edition not set"
     }
 
+    /// The edition alone, with no "(from Georgia)" attribution.
+    ///
+    /// `editionSummary` names its SOURCE, which is right on a settings row
+    /// where the reader is deciding whether to trust a suggestion and wrong
+    /// anywhere the state is already on screen: Home's subtitle rendered
+    /// "2020 NEC (from Georgia) · Georgia".
+    var editionShortSummary: String {
+        if let resolved = resolvedEdition { return resolved.displayName }
+        return edition == .different ? "Another edition" : "Edition not set"
+    }
+
     /// True only when we know the edition AND it is the one the app's tables
     /// are built from. An unknown edition is not a match.
     var editionMatchesApp: Bool {
@@ -319,14 +411,40 @@ final class CandidateProfile: ObservableObject {
         }
     }
 
-    /// A daily target that actually reaches a useful total before the date.
-    /// Clamped so a candidate three days out is not told to do 200 a day and a
-    /// candidate a year out is not told to do two.
+    /// How the remaining time changes what the app should ask of a candidate.
+    ///
+    /// The date is not just a countdown. A candidate sitting the exam tomorrow
+    /// and a candidate sitting it in four months want opposite things, and the
+    /// old single formula served neither: 600 questions divided by the days
+    /// left told someone with three days to do 60 a day for three days, which
+    /// is 180 questions and not a plan, and it told someone with a year to do
+    /// ten a day forever with no sense of build.
+    var pace: StudyPace {
+        guard let days = daysUntilExam else { return .undated }
+        switch days {
+        case ...3: return .cram
+        case 4...14: return .sprint
+        case 15...60: return .build
+        default: return .foundation
+        }
+    }
+
+    /// A daily target the pace actually supports.
+    ///
+    /// Cramming is capped rather than computed. Dividing a fixed total by one
+    /// remaining day produces a number nobody will do, and a target nobody will
+    /// do is worse than a smaller one they will: it makes the countdown card a
+    /// reproach on the morning of the exam.
     var suggestedDailyQuestions: Int {
-        guard let days = daysUntilExam, days > 0 else { return 15 }
-        let target = 600.0
-        let raw = Int((target / Double(days)).rounded(.up))
-        return min(60, max(10, raw))
+        guard let days = daysUntilExam, days > 0 else {
+            return pace == .cram ? 40 : 15
+        }
+        switch pace {
+        case .cram: return 60
+        case .sprint: return min(50, max(25, Int((400.0 / Double(days)).rounded(.up))))
+        case .build: return min(35, max(15, Int((600.0 / Double(days)).rounded(.up))))
+        case .foundation, .undated: return 15
+        }
     }
 
     // MARK: - Mutations

@@ -26,7 +26,7 @@ struct SessionEmptyView: View {
                 .background(Theme.well, in: Circle())
             VStack(spacing: 8) {
                 Text(title)
-                    .font(Theme.display(26))
+                    .font(Theme.sectionTitle)
                     .foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.center)
                 Text(message)

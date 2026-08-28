@@ -14,6 +14,14 @@ enum PracticeSkill: String, CaseIterable, Identifiable, Sendable {
     case conduitFill
     case boxFill
     case voltageDrop
+    // Added after the first release. Raw values are persisted inside generated
+    // item ids and inside `MistakePattern.skill`, so they are keys: renaming
+    // one resets that skill's tally and orphans its mistake patterns.
+    case egcSizing
+    case gecSizing
+    case motorConductor
+    case motorProtection
+    case dwellingLoad
 
     var id: String { rawValue }
 
@@ -24,6 +32,11 @@ enum PracticeSkill: String, CaseIterable, Identifiable, Sendable {
         case .conduitFill: return "Fill the Pipe"
         case .boxFill: return "Fill the Box"
         case .voltageDrop: return "Drop the Voltage"
+        case .egcSizing: return "Size the Ground"
+        case .gecSizing: return "Reach the Electrode"
+        case .motorConductor: return "Feed the Motor"
+        case .motorProtection: return "Protect the Motor"
+        case .dwellingLoad: return "Size the Service"
         }
     }
 
@@ -34,6 +47,11 @@ enum PracticeSkill: String, CaseIterable, Identifiable, Sendable {
         case .conduitFill: return "Smallest raceway that works"
         case .boxFill: return "Counting allowances, not wires"
         case .voltageDrop: return "The field calculation, drilled"
+        case .egcSizing: return "Table 250.122, read from the breaker"
+        case .gecSizing: return "Table 250.66, and the rod's own ceiling"
+        case .motorConductor: return "Table current, never the nameplate"
+        case .motorProtection: return "The one place you round up"
+        case .dwellingLoad: return "The full dwelling calculation"
         }
     }
 
@@ -44,6 +62,11 @@ enum PracticeSkill: String, CaseIterable, Identifiable, Sendable {
         case .conduitFill: return "cylinder.fill"
         case .boxFill: return "shippingbox.fill"
         case .voltageDrop: return "chart.line.downtrend.xyaxis"
+        case .egcSizing: return "leaf.fill"
+        case .gecSizing: return "arrow.down.to.line"
+        case .motorConductor: return "fan.fill"
+        case .motorProtection: return "gearshape.2.fill"
+        case .dwellingLoad: return "house.fill"
         }
     }
 
@@ -52,6 +75,8 @@ enum PracticeSkill: String, CaseIterable, Identifiable, Sendable {
         switch self {
         case .ampacity, .overcurrent: return "conductors-room"
         case .conduitFill, .boxFill, .voltageDrop: return "calc-room"
+        case .egcSizing, .gecSizing, .motorConductor, .motorProtection: return "grounding-room"
+        case .dwellingLoad: return "loads-room"
         }
     }
 
@@ -126,6 +151,11 @@ enum EndlessPractice {
         case .conduitFill: return CalcGenerator.conduitFillProblem(using: &rng)
         case .boxFill: return CalcGenerator.boxFillProblem(using: &rng)
         case .voltageDrop: return CalcGenerator.voltageDropProblem(using: &rng)
+        case .egcSizing: return CalcGenerator.egcProblem(using: &rng)
+        case .gecSizing: return CalcGenerator.gecProblem(using: &rng)
+        case .motorConductor: return CalcGenerator.motorConductorProblem(using: &rng)
+        case .motorProtection: return CalcGenerator.motorProtectionProblem(using: &rng)
+        case .dwellingLoad: return CalcGenerator.dwellingLoadProblem(using: &rng)
         }
     }
 

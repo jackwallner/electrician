@@ -116,7 +116,7 @@ struct QuickSessionView: View {
             // Completed, not current. See CalcDrillView for the same rule.
             ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(items.count, 1)))
                 .tint(Theme.voltage)
-                .animation(.easeOut(duration: 0.3), value: answered)
+                .animation(Theme.Motion.meter, value: answered)
             VStack(spacing: 12) {
                 QuestionPager(
                     prompt: item.prompt,
@@ -263,7 +263,7 @@ struct QuickSessionView: View {
 
         guard ConfettiBurst.celebrationsEnabled else { return }
         flashOpacity = 0.14
-        withAnimation(.easeOut(duration: 0.5)) { flashOpacity = 0 }
+        withAnimation(Theme.Motion.flash) { flashOpacity = 0 }
 
         guard Self.streakMilestones.contains(streak) else { return }
         Haptics.impact(.rigid, intensity: 1.0)
@@ -282,13 +282,13 @@ struct QuickSessionView: View {
     private func announceStreak(_ streak: Int) {
         streakBannerTrigger += 1
         let trigger = streakBannerTrigger
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+        withAnimation(Theme.Motion.celebrate) {
             streakBannerText = "\(streak) in a row!"
         }
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 1_600_000_000)
             guard trigger == streakBannerTrigger else { return }
-            withAnimation(.easeOut(duration: 0.3)) { streakBannerText = nil }
+            withAnimation(Theme.Motion.meter) { streakBannerText = nil }
         }
     }
 
@@ -301,12 +301,12 @@ struct QuickSessionView: View {
         case .examWarmUp:
             break
         }
-        withAnimation(.easeInOut(duration: 0.3)) { finished = true }
+        withAnimation(Theme.Motion.screen) { finished = true }
     }
 
     private func advance() {
         if index + 1 < items.count {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+            withAnimation(Theme.Motion.screen) {
                 selection = nil
                 index += 1
             }

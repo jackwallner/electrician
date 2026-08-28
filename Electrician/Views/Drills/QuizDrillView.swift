@@ -36,7 +36,7 @@ struct QuizDrillView: View {
             // Completed, not current. See CalcDrillView for the same rule.
             ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(questions.count, 1)))
                 .tint(Theme.voltage)
-                .animation(.easeOut(duration: 0.3), value: answered)
+                .animation(Theme.Motion.meter, value: answered)
             VStack(spacing: 16) {
                 QuestionPager(
                     prompt: question.prompt,
@@ -120,12 +120,12 @@ struct QuizDrillView: View {
 
     private func advance() {
         if index + 1 < questions.count {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+            withAnimation(Theme.Motion.screen) {
                 selection = nil
                 index += 1
             }
         } else {
-            withAnimation(.easeInOut(duration: 0.3)) { finished = true }
+            withAnimation(Theme.Motion.screen) { finished = true }
         }
     }
 }

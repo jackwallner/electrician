@@ -65,13 +65,13 @@ struct QuestionPager<Choices: View>: View {
             VStack(spacing: 20) {
                 if let eyebrow {
                     Text(eyebrow)
-                        .font(.caption2.weight(.heavy))
-                        .kerning(1.4)
+                        .font(Theme.eyebrow)
+                        .kerning(Theme.eyebrowKerning)
                         .foregroundStyle(Theme.inkTertiary)
                         .padding(.bottom, -8)
                 }
                 Text(prompt)
-                    .font(Theme.display(22))
+                    .font(Theme.questionTitle)
                     .foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.center)
                     .padding(.top, 8)
@@ -123,7 +123,7 @@ struct QuestionPager<Choices: View>: View {
                 guard isAnswered else { return }
                 // Bring the coaching note into view rather than leaving it
                 // parked below the fold behind the Next button.
-                withAnimation(.easeOut(duration: 0.35)) {
+                withAnimation(Theme.Motion.reveal) {
                     proxy.scrollTo(questionExplanationID, anchor: .bottom)
                 }
             }
@@ -165,12 +165,15 @@ struct ChoiceList: View {
                 shakes = 0
                 return
             }
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.5).delay(0.05)) {
+            withAnimation(Theme.Motion.celebrate) {
                 landed = true
             }
             shineTrigger += 1
-            if selection != answerIndex {
-                withAnimation(.linear(duration: 0.4)) { shakes = 2 }
+            // A shake is pure motion: there is no slower version of it that
+            // still communicates, so Reduce Motion skips it rather than
+            // performing a shorter one.
+            if selection != answerIndex, let shake = Theme.Motion.shake {
+                withAnimation(shake) { shakes = 2 }
             }
         }
     }
@@ -225,7 +228,7 @@ struct ChoiceList: View {
             .scaleEffect(answered && isAnswer && landed ? 1.035 : 1)
             .modifier(ShakeEffect(travels: isMiss ? shakes : 0))
             .opacity(recedes ? 0.72 : 1)
-            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: answered)
+            .animation(Theme.Motion.card, value: answered)
         }
         .buttonStyle(.plain)
         .allowsHitTesting(!answered)
@@ -263,8 +266,8 @@ struct MissNoteView: View {
                 .foregroundStyle(Theme.copper)
             VStack(alignment: .leading, spacing: 3) {
                 Text("WHAT HAPPENED")
-                    .font(.caption2.weight(.heavy))
-                    .kerning(1.2)
+                    .font(Theme.eyebrow)
+                    .kerning(Theme.eyebrowKerning)
                     .foregroundStyle(Theme.copper)
                 Text(note)
                     .font(.subheadline)
@@ -292,8 +295,8 @@ struct WorkedStepsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Working")
-                .font(.caption.weight(.heavy))
-                .kerning(1.2)
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
                 .foregroundStyle(Theme.worksheetInkTertiary)
             ForEach(Array(steps.enumerated()), id: \.offset) { position, step in
                 HStack(alignment: .top, spacing: 10) {

@@ -130,10 +130,17 @@ enum CodeMinuteContent {
         )
     }
 
+    /// Every room is listed. `install-room` and `loads-room` are the two that
+    /// would otherwise have been swept into `.navigation` by the default, and
+    /// only one of them belongs there: a dwelling service calculation is a
+    /// calculation whatever room it lives in, and mislabelling it makes the
+    /// daily result screen tell a reader they are weak at navigation when they
+    /// are weak at arithmetic.
     private static func category(forRoom roomID: String) -> CodeMinuteCategory {
         switch roomID {
         case "conductors-room": return .ampacity
-        case "calc-room": return .calculation
+        case "calc-room", "loads-room": return .calculation
+        case "basics-room", "install-room", "grounding-room": return .navigation
         default: return .navigation
         }
     }

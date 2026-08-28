@@ -39,42 +39,96 @@ enum PaywallLinks {
 /// of those lives in this file; don't trim them for layout.
 struct PaywallContent: View {
     @EnvironmentObject private var subscriptions: SubscriptionService
+    @EnvironmentObject private var profile: CandidateProfile
     @Binding var selectedPlan: PaywallPlan
 
     var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 6) {
                 Text("Get \(Membership.name)")
-                    .font(Theme.display(28))
+                    .font(Theme.screenTitle)
                     .foregroundStyle(Theme.ink)
-                Text("Everything you have stays free. \(Membership.name) adds a smarter practice rhythm that never runs out.")
+                Text(subhead)
                     .font(.subheadline)
                     .foregroundStyle(Theme.inkSecondary)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
+            // The argument goes ABOVE the prices, not below them. A reader
+            // deciding between three amounts has already been told what the
+            // app is; what they have not been told is why the free half will
+            // not carry them to the exam, and that is the only thing on this
+            // screen that can change the answer.
+            runsOutNotice
             // Put the decision in view before the longer value explanation.
             // The lifetime amount used to sit under the sticky purchase footer
             // on a phone-sized sheet, which made the least obvious plan the
             // hardest one to compare.
             planCards
             VStack(alignment: .leading, spacing: 9) {
-                benefit("Code Minute: the shared five-question daily challenge")
-                benefit("Exam Warm-Up: a short session built around your weak spots")
-                benefit("Endless Practice: a fresh problem every time")
+                benefit("Endless Practice: \(PracticeSkill.allCases.count) calculation shapes generated fresh, so you learn a method instead of memorising a question")
                 // Precise on purpose. Generated questions are one-offs and can
                 // never return as themselves; what returns is a NEW problem
                 // that sets the same trap. Saying "the exact questions come
                 // back" would describe a feature the generator cannot have.
-                benefit("Fix My Mistakes: missed questions return, and new problems target the errors you repeat")
+                benefit("Fix My Mistakes: every wrong answer is a named error, and new problems set the same trap until you stop falling for it")
+                benefit("Exam Warm-Up: a short session built from your own weak spots, for the morning of")
+                benefit("\(DrillLibrary.membershipItemCount) more authored questions: the worked dwelling calculation, grounding, motors, and extra sets in every room")
+                benefit("Code Minute: the shared five-question daily challenge")
                 benefit("Timed Challenge: 90 seconds, chase your best")
-                benefit("Extra practice sets in every room, plus the worked calculations")
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 
+    private var subhead: String {
+        guard let countdown = profile.examCountdownSummary else {
+            return "Everything you have stays free. \(Membership.name) is the half that does not run out."
+        }
+        return "\(countdown). Everything you have stays free; \(Membership.name) is the half that does not run out before then."
+    }
+
+    /// The same arithmetic the onboarding trial step makes, for the reader who
+    /// skipped it and is meeting the offer here instead. Counted from the
+    /// library rather than written into a string, so it cannot go stale.
+    ///
+    /// It makes a DIFFERENT argument for a candidate sitting the exam within a
+    /// few days. Telling someone with one day left that they are about to run
+    /// out of free questions is both false (they will not get through them
+    /// either) and the wrong pitch: what decides tomorrow is not volume, it is
+    /// whether their repeated errors get named and set again.
+    private var runsOutNotice: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: profile.pace == .cram ? "scope" : "hourglass")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Theme.copper)
+            Text(runsOutText)
+                .font(.footnote)
+                .foregroundStyle(Theme.inkSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .padding(13)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.copper.opacity(0.09), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(Theme.copper.opacity(0.24), lineWidth: 1)
+        )
+    }
+
+    private var runsOutText: String {
+        let free = DrillLibrary.freeItemCount
+        let daily = profile.suggestedDailyQuestions
+        let days = max(1, Int((Double(free) / Double(max(daily, 1))).rounded(.up)))
+        if profile.pace == .cram {
+            return "More questions is not what decides an exam this close. Every wrong answer here is a named error, and \(Membership.name) builds fresh problems that set the same trap until you stop falling for it."
+        }
+        return "The free rooms hold \(free) questions. At \(daily) a day that is about \(days == 1 ? "1 day" : "\(days) days"), and after that you are re-reading answers you already remember. The generator is what makes the reps keep counting."
+    }
+
     private func benefit(_ text: String) -> some View {
-        HStack(spacing: 10) {
+        HStack(alignment: .top, spacing: 10) {
             Image(systemName: "checkmark.circle.fill")
                 .foregroundStyle(Theme.voltage)
             Text(text)
@@ -125,7 +179,7 @@ struct PaywallContent: View {
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 8) {
                         Text(title)
-                            .font(.headline)
+                            .font(Theme.cardTitle)
                             .foregroundStyle(Theme.ink)
                         if let badge {
                             Text(badge)

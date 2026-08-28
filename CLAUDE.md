@@ -41,13 +41,31 @@ termination limit, OCPD never above the 240.4(D) cap, conduit fill actually
 fits and the next size down does not. Do not weaken those tests to make a
 content change pass.
 
-**The generator is the moat.** `CalcGenerator` emits five problem shapes as
+**The generator is the moat.** `CalcGenerator` emits ten problem shapes as
 pure functions with exactly one correct answer, so the paid tier never runs
 out. Unlike mahj's `RackGenerator` there is no ambiguity-rejection loop, because
 a code calculation cannot be ambiguous. **Every distractor is the number you get
 from one specific common mistake** (started the derate at 75°C, ignored
-240.4(D), used 53% fill, counted grounds individually). Keep it that way: random
+240.4(D), used 53% fill, counted grounds individually, sized a motor off the
+nameplate, read Table 250.66 where 250.122 was wanted). Keep it that way: random
 wrong numbers teach nothing.
+
+The shapes are split across four files for readability and are one generator:
+`CalcGenerator` (ampacity, OCPD, conduit fill, box fill, voltage drop),
+`CalcGeneratorGrounding` (EGC and GEC sizing), `CalcGeneratorMotors` (motor
+conductors, motor protection) and `CalcGeneratorLoads` (the dwelling service
+calculation). The extension files must use `uniqueChoices` and `mistakeMap`
+from the base file rather than rolling their own; the filtered
+`mistakeMap(answerLabel:choices:_:)` overload exists because a shape with more
+named mistakes than choice slots would otherwise map labels nobody can tap.
+**Where a shape has more named mistakes than distractor slots, shuffle the
+distractors from the problem's own stream.** A fixed order starves the last
+ones, and a trap the generator never sets is one Fix My Mistakes can never
+re-set: `testTargetedPracticeSetsTheRequestedTrap` fails the build for it.
+
+Both generator suites iterate `PracticeSkill.allCases` through
+`EndlessPractice.scenario`, not a hand-written list of makers, so adding a case
+opts the new shape into every invariant automatically.
 
 Those mistakes are **named**, not just implied: `CandidateMistake` holds the
 catalogue and each generator attaches a `MistakePattern` to the distractor it
@@ -65,13 +83,27 @@ derated figure was always below the cap, so the app's own headline rule never
 appeared as a wrong answer. If you narrow a range, check the mistake catalogue
 still fires.
 
-**Values follow the 2023 cycle** while the 2026 adoptions roll out. The edition
-is a user-visible fact, not a comment: `NECTables.edition` is rendered on every
-citation line, in Field Tools, in Settings, on the Home footer, on the website
-and in the store description. A candidate cannot tell a 2023-cycle answer from
-a 2026-cycle one by looking at it, and the app name carries a year. When the
-tables move, update `NECTables` (including `edition`) and let the tests catch
-the authored content that drifted.
+**Values follow the 2023 cycle**, and the app now says WHY rather than just
+which. The edition is a user-visible fact, not a comment: `NECTables.edition`
+is rendered on every citation line, in Field Tools, in Settings, on the Home
+footer, on the website and in the store description, and `EditionView` is the
+screen that answers "why does an app called 2026 quote 2023?".
+
+Three constants carry that answer and they are not interchangeable.
+`NECTables.edition` is the citation basis. `stableSince` is the oldest cycle
+whose values match. **`verifiedThrough` is a claim about work someone actually
+did**, and every "covers your edition" string is derived from it, so raising it
+without checking the tables page by page against that edition's book turns the
+study aid into a trap. Lowering it is always safe.
+`testCoverageClaimIsSupportable` enforces that it is never older than
+`NECEdition.app`. **To claim the 2026 cycle: check the tables against a 2026
+book, then set `verifiedThrough = .nec2026`.** Nothing else changes; the
+coverage label, the Home footer, Field Tools and `EditionView` all recompute.
+
+What genuinely moves between cycles is coverage, not the tables, and
+`EditionView` lists both sides of that. When a table does move, update
+`NECTables` (including `edition`) and let the content tests catch the authored
+content that drifted.
 
 ## Design system
 
@@ -87,11 +119,38 @@ accent means something:
 | `brass` | brass | locks, best value, `Electrician+` |
 | `conduit` | galvanized steel blue | `calc-room` |
 | `ground` | equipment-grounding green | `grounding-room`, and nothing else |
+| `highLeg` | delta high-leg orange | `install-room` |
+| `service` | meter-can indigo | `loads-room` |
+
+`Room.accents` is an explicit map with **no `default` case**. A room that
+forgets to claim a colour used to inherit grounding green, which turned the one
+semantic colour in the palette into a fallback; `testEveryRoomClaimsAnAccent`
+now fails the build instead.
 
 Surfaces are cool drawing paper over slate, `Theme.display` is heavy condensed
 sans (panel-schedule lettering, not a members' club serif), `Theme.numeric` is
 monospaced so amps and AWG read as instrument values, and `BlueprintGrid` /
 `blueprintGrid()` rules the worksheet surfaces.
+
+**Type is split by role, never by size** (`Theme`'s type section). Condensed
+heavy is every TITLE at any size, system text is every sentence, monospace is
+every number read as an instrument value. A card title and a screen title are
+the same face; a card title and its subtitle are two faces. Titles come from
+the five semantic tokens (`displayLarge`, `screenTitle`, `sectionTitle`,
+`questionTitle`, `cardTitle`), which are built from `Font.TextStyle` so they
+scale with Dynamic Type; the `CGFloat` overload of `Theme.display` is only for
+the few places where the size IS the design. A title reaching for `.headline`
+or `.title3` is what made the app look like it had picked up a new font.
+
+**Motion has one vocabulary** (`Theme.Motion`) and every animation in the app
+comes from it: `screen`, `card`, `reveal`, `meter`, `celebrate`, `flip`,
+`fling`, `flash`, plus the `advance`/`retreat`/`riseIn` transitions. This is not
+tidiness. A screen whose header, content and footer each animate on their own
+curve does not read as one screen moving, it reads as three things arriving at
+slightly different times, which is what the "sliding into place" wobble was.
+Every token checks `Motion.reduced` in one place; `flourish` and `shake` return
+`nil` under Reduce Motion so the caller SKIPS the effect rather than performing
+a faster version of it, and `ConfettiBurst` is suppressed by it too.
 
 **Every accent lightens in dark mode**, because most uses are ink and icons on
 a dark surface. A filled button is the opposite case: the label is always
@@ -133,23 +192,54 @@ resolves an ABSENT `candidate.edition` to this app's own edition, not to
 list whose default was that; onboarding overrides it to `.unsure` for a fresh
 install only.
 
+**The exam date sets a PACE, not just a countdown.** `StudyPace` (cram, sprint,
+build, foundation, undated) is derived from `daysUntilExam`, never stored, and
+it is what makes the app useful to a candidate sitting the exam tomorrow. The
+date presets start at "Tomorrow" for that reason: the shortest option used to be
+two weeks out, so the most motivated reader the app will ever get either lied to
+the setup or skipped it. `suggestedDailyQuestions` branches on the pace rather
+than dividing a fixed total by the days left, which used to tell someone with
+one day to do 600 and someone with a year to do ten. `StudyPaceCard` renders the
+plan in onboarding, in the recap, and on Home while `pace.isUrgent`.
+
 Setup answers have to keep paying off after onboarding or the seven questions
-are a toll booth: the exam date drives Home's countdown card and
-`suggestedDailyQuestions`, and `focusAreas` orders the rooms on Home (an
-ordering, never a filter).
+are a toll booth: the exam date drives Home's countdown card, the pace and
+`suggestedDailyQuestions`; the licence track titles Home's header; and
+`focusAreas` orders the rooms on Home (an ordering, never a filter).
+
+**The `Electrician+` pitch is an argument, not a feature list.** Both purchase
+surfaces compute it from `DrillLibrary.freeItemCount` and the reader's own daily
+target: the free rooms hold N questions, at M a day that is D days, and the exam
+is further away than that. Those counters are computed from the library so the
+claim cannot rot, and `testContentCountsAreQuotable` stops a zero reaching the
+paywall. The benefit ORDER also follows the pace: "targets the errors you
+repeat" is a nice-to-have in March and the entire product on Thursday night.
 
 ## Structure
 - `Shared/Models` — `Given` (a labelled condition chip, the equivalent of a
-  dealt tile), `CodeArticle`, `NECTables` (all reference data), `Drill`
+  dealt tile), `CodeArticle`, `Drill`, and the reference data split by subject:
+  `NECTables` (conductors, ampacity, correction and adjustment, OCPD, fill),
+  `NECGroundingTables` (250.66, 250.122, bonding), `NECMotorTables`
+  (430.248/430.250 and the 430.52 percentages), `NECLoadTables` (Article 220),
+  `NECInstallTables` (314.16(A), 110.26, 300.5, support spacing, 110.14(C))
 - `Shared/Content` — `CalcGenerator` (the asset), authored content per room,
   `DrillLibrary` (rooms), `CodeMinuteContent` (seeded daily five)
 - `Electrician/Views/Drills` — `CalcDrillView` is the one genuinely new screen:
   numbered working after the answer, because a miss is almost always one skipped
   step rather than bad arithmetic
 
-Room ids (`basics-room`, `conductors-room`, `calc-room`, `grounding-room`) are
-referenced by `PracticeSkill.roomID` and `Theme`'s accent map. Renaming one
-means updating both; a test enforces that they resolve.
+Room ids (`basics-room`, `conductors-room`, `install-room`, `calc-room`,
+`loads-room`, `grounding-room`) are referenced by `PracticeSkill.roomID`,
+`Room.accents` and `CodeMinuteContent.category(forRoom:)`. Renaming one means
+updating all three; tests enforce that they resolve and that each claims an
+accent.
+
+Three rooms are free (`basics`, `conductors`, `install`) and three are paid
+(`calc`, `loads`, `grounding`). **Installation Rules is free deliberately**: it
+is the widest door in the app, because working space, burial depth, support
+spacing and receptacle placement are things an apprentice, a homeowner and a
+licensed electrician all have a reason to look up, and every one of them lands
+one tap from the paid calculations.
 
 **Some strings look stale and are load-bearing.** The exam-warm-up feature was
 renamed out of its inherited `gameNight` spelling, but four UserDefaults keys

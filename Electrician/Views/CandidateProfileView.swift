@@ -12,7 +12,7 @@ struct CandidateProfileView: View {
                 } header: {
                     Text("Your exam target")
                 } footer: {
-                    Text("Electrician uses \(NECTables.edition) values. A different edition or local amendment can change an answer, so verify against the code in force where you work.")
+                    Text("Electrician uses \(NECTables.edition) values, unchanged across the \(NECTables.coverageLabel). A different edition or local amendment can change an answer, so verify against the code in force where you work.")
                 }
 
                 if let record = profile.jurisdictionRecord {
@@ -29,10 +29,15 @@ struct CandidateProfileView: View {
                     Text(profile.editionAdvice)
                         .font(.footnote)
                         .foregroundStyle(Theme.inkSecondary)
+                    NavigationLink {
+                        EditionView()
+                    } label: {
+                        Label("What changes between editions", systemImage: "books.vertical")
+                    }
                 }
 
                 Section("What this app covers") {
-                    Text("Code navigation, conductors and ampacity, grounding and motors, and five generated calculation shapes. Services, feeders, wiring methods, and special occupancy chapters are not covered yet.")
+                    Text("Code navigation, conductors and ampacity, installation rules, grounding and motors, dwelling service and load calculations, and \(PracticeSkill.allCases.count) generated calculation shapes. Special occupancies, hazardous locations and the low-voltage chapters are not covered yet.")
                         .font(.footnote)
                         .foregroundStyle(Theme.inkSecondary)
                     Text(profile.licenseTrack.emphasis)

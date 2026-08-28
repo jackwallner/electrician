@@ -33,7 +33,7 @@ struct CodeMinuteView: View {
                 .background((todayResult == nil ? Theme.copper : Theme.voltage).opacity(0.13), in: Circle())
             VStack(spacing: 5) {
                 Text("Today's Code Minute")
-                    .font(Theme.display(27))
+                    .font(Theme.screenTitle)
                     .foregroundStyle(Theme.ink)
                 Text("The same five questions for every member: two generated calculations and three drawn from across the rooms.")
                     .font(.subheadline)
@@ -65,11 +65,11 @@ struct CodeMinuteView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("YOUR WEEK")
-                        .font(.caption.weight(.heavy))
-                        .kerning(1.4)
+                        .font(Theme.eyebrow)
+                        .kerning(Theme.eyebrowKerning)
                         .foregroundStyle(Theme.inkSecondary)
                     Text(completed >= 5 ? "Weekly goal complete" : "\(completed) of 5 practiced")
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                 }
                 Spacer()
@@ -102,8 +102,8 @@ struct CodeMinuteView: View {
         let dates = store.archiveDates()
         return VStack(alignment: .leading, spacing: 10) {
             Text("ARCHIVE")
-                .font(.caption.weight(.heavy))
-                .kerning(1.4)
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
                 .foregroundStyle(Theme.inkSecondary)
                 .padding(.horizontal, 4)
             VStack(spacing: 0) {
@@ -206,7 +206,7 @@ struct CodeMinuteResultView: View {
                     .frame(width: 122, height: 122)
                 VStack(spacing: 1) {
                     Text("\(result.score)/\(result.total)")
-                        .font(Theme.display(34))
+                        .font(Theme.displayLarge)
                         .foregroundStyle(Theme.voltage)
                         .monospacedDigit()
                     Text("right")
@@ -215,7 +215,7 @@ struct CodeMinuteResultView: View {
                 }
             }
             Text(result.score == result.total ? "Perfect minute!" : "Minute complete")
-                .font(Theme.display(28))
+                .font(Theme.screenTitle)
                 .foregroundStyle(Theme.ink)
             Text("Code Minute \(result.shortDate)")
                 .font(.subheadline)
@@ -229,8 +229,8 @@ struct CodeMinuteResultView: View {
     private var breakdown: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("BY SKILL")
-                .font(.caption.weight(.heavy))
-                .kerning(1.4)
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
                 .foregroundStyle(Theme.inkSecondary)
             ForEach(CodeMinuteCategory.allCases) { category in
                 HStack(spacing: 12) {
@@ -242,9 +242,8 @@ struct CodeMinuteResultView: View {
                         .foregroundStyle(Theme.ink)
                     Spacer()
                     Text("\(result.correct(in: category))/\(result.total(in: category))")
-                        .font(.subheadline.weight(.bold))
+                        .font(Theme.numeric(.subheadline, weight: .bold))
                         .foregroundStyle(color(for: category))
-                        .monospacedDigit()
                 }
             }
         }
@@ -261,7 +260,7 @@ struct CodeMinuteResultView: View {
                 .background((completed >= 5 ? Theme.voltage : Theme.copper).opacity(0.12), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
                 Text(completed >= 5 ? "Weekly goal complete" : "\(completed) of 5 this week")
-                    .font(.headline)
+                    .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
                 Text("Any five days keep the rhythm going.")
                     .font(.caption)

@@ -53,8 +53,12 @@ struct ShineSweep: ViewModifier {
             }
             .onChange(of: trigger) { _, _ in
                 guard trigger > 0 else { return }
+                // Pure decoration, so Reduce Motion gets none of it: a sweep
+                // with the sweep taken out is a flash, which is the effect a
+                // reader turned Reduce Motion on to avoid.
+                guard let flourish = Theme.Motion.flourish else { return }
                 phase = -1
-                withAnimation(.easeInOut(duration: 0.85)) { phase = 1.4 }
+                withAnimation(flourish) { phase = 1.4 }
             }
     }
 }

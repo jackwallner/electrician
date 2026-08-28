@@ -16,7 +16,7 @@ enum ShellCopy {
     }
 
     enum Tour {
-        static let roomsBody = "Each room holds its own drills: how the book is built, how to read ampacity, how to work the numbers, how grounding actually works. The two beginner rooms are free, forever."
+        static let roomsBody = "Each room holds its own drills: how the book is built, how to read ampacity, the installation rules you look up on site, how to work the numbers, how grounding and motors actually work. The three opening rooms are free, forever."
         static let proLockedBody = "Code Minute gives every member the same daily challenge, Exam Warm-Up targets your weak spots before you sit, and Endless Practice never runs out. Nothing you have now goes away. Unlock any time from Home or Settings."
     }
 
@@ -26,7 +26,7 @@ enum ShellCopy {
     }
 
     enum Onboarding {
-        static let freeRoomsBenefit = "Two full rooms, free forever"
+        static let freeRoomsBenefit = "Three full rooms, free forever"
     }
 
     static var all: [String] {

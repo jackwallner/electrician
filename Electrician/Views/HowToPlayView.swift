@@ -73,7 +73,7 @@ struct HowToPlayView: View {
             .onEnded { value in
                 let travel = value.translation.width
                 let flung = abs(travel) > 60 || abs(value.predictedEndTranslation.width) > 160
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { drag = 0 }
+                withAnimation(Theme.Motion.card) { drag = 0 }
                 guard flung else { return }
                 if travel < 0, !isLast {
                     advance()
@@ -89,7 +89,7 @@ struct HowToPlayView: View {
                 Capsule()
                     .fill(dot == index ? Theme.voltage : Theme.voltage.opacity(0.22))
                     .frame(width: dot == index ? 20 : 7, height: 7)
-                    .animation(.snappy(duration: 0.22), value: index)
+                    .animation(Theme.Motion.card, value: index)
             }
         }
         .padding(.top, 6)
@@ -143,7 +143,7 @@ struct HowToPlayView: View {
                 .frame(width: 76, height: 76)
                 .background(Theme.voltage.opacity(0.12), in: Circle())
             Text(page.title)
-                .font(Theme.display(27))
+                .font(Theme.screenTitle)
                 .foregroundStyle(Theme.ink)
                 .multilineTextAlignment(.center)
             if !page.givens.isEmpty {
@@ -220,7 +220,7 @@ struct HowToPlayView: View {
         guard !isFirst else { return }
         Haptics.impact(.soft, intensity: 0.5)
         goingForward = false
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+        withAnimation(Theme.Motion.screen) {
             index -= 1
         }
         fireShine()
@@ -240,7 +240,7 @@ struct HowToPlayView: View {
         }
         Haptics.impact(.soft, intensity: 0.6)
         goingForward = true
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+        withAnimation(Theme.Motion.screen) {
             index += 1
         }
         if index == pages.count - 1 {

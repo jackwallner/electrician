@@ -10,10 +10,13 @@ import Foundation
 /// written from scratch to point a reader at the right place to look.
 enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
     case definitions
+    case generalRequirements
     case branchCircuits
     case loadCalculations
     case overcurrent
     case grounding
+    case services
+    case wiringMethods
     case conductors
     case boxes
     case raceways
@@ -25,6 +28,9 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
     var citation: String {
         switch self {
         case .definitions: return "Art. 100"
+        case .generalRequirements: return "Art. 110"
+        case .services: return "Art. 230"
+        case .wiringMethods: return "Art. 300"
         case .branchCircuits: return "Art. 210"
         case .loadCalculations: return "Art. 220"
         case .overcurrent: return "Art. 240"
@@ -39,6 +45,9 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
     var displayName: String {
         switch self {
         case .definitions: return "Definitions"
+        case .generalRequirements: return "General Requirements"
+        case .services: return "Services"
+        case .wiringMethods: return "Wiring Methods"
         case .branchCircuits: return "Branch Circuits"
         case .loadCalculations: return "Load Calculations"
         case .overcurrent: return "Overcurrent Protection"
@@ -54,6 +63,9 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
     var shortName: String {
         switch self {
         case .definitions: return "100 Definitions"
+        case .generalRequirements: return "110 General"
+        case .services: return "230 Services"
+        case .wiringMethods: return "300 Wiring"
         case .branchCircuits: return "210 Branch Ckts"
         case .loadCalculations: return "220 Load Calc"
         case .overcurrent: return "240 Overcurrent"
@@ -87,6 +99,12 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
             return "How many conductors fit in a pipe. The fill percentages and the conductor and raceway area tables all live in Chapter 9, not in the raceway articles themselves, which is the part people miss."
         case .motors:
             return "Motors run on their own rules. The tables replace the nameplate for conductor sizing, the overload and short-circuit protection are separate calculations, and the numbers do not match anything in the ampacity table."
+        case .generalRequirements:
+            return "Access and clearance rather than a wiring method: how much room you must be able to stand in, how much headroom, what may be above the panel, how conductors are terminated and marked, and what temperature column a termination lets you use."
+        case .services:
+            return "Everything from the utility connection up to and including the service disconnecting means: how many disconnects, where they may be, overhead and underground clearances, and what may be connected ahead of them."
+        case .wiringMethods:
+            return "The rules that apply to EVERY method rather than to one: burial depth, protection from physical damage, conductors of different systems in the same enclosure, and sleeving through a wall. Reaching for the individual raceway article and not finding it is the tell that the answer is here."
         }
     }
 }

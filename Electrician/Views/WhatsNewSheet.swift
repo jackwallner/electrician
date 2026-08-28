@@ -49,11 +49,11 @@ struct WhatsNewSheet: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("What's New")
-                .font(.caption.weight(.heavy))
-                .kerning(1.4)
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
                 .foregroundStyle(Theme.inkSecondary)
             Text(release.headline)
-                .font(Theme.display(30))
+                .font(Theme.screenTitle)
                 .foregroundStyle(Theme.ink)
                 .fixedSize(horizontal: false, vertical: true)
             Text("Version \(release.version)")
@@ -77,7 +77,7 @@ struct WhatsNewSheet: View {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 6) {
                     Text(item.title)
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                     if locked {
                         PlusBadge()
@@ -108,7 +108,7 @@ struct WhatsNewSheet: View {
                 close()
             } label: {
                 Text(lockedItems.isEmpty ? "Start practising" : "Keep practising free")
-                    .font(.headline)
+                    .font(Theme.cardTitle)
                     .foregroundStyle(lockedItems.isEmpty ? .white : Theme.inkSecondary)
                     .frame(maxWidth: .infinity)
                     .frame(height: lockedItems.isEmpty ? 56 : 44)

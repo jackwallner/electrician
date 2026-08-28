@@ -43,6 +43,14 @@ enum Theme {
     /// Kept distinct from `rightGreen` so a room accent never reads as a mark.
     static let ground = Color(light: (0.13, 0.45, 0.24), dark: (0.42, 0.76, 0.50))
 
+    /// Delta high-leg orange, the marking 110.15 requires on the B phase of a
+    /// four-wire delta. The installation-rules room: working space, supports,
+    /// burial depths, the things that are orange tape and site signage.
+    static let highLeg = Color(light: (0.71, 0.34, 0.03), dark: (0.95, 0.60, 0.25))
+    /// Meter-can indigo. The service and load-calculation room, which is the
+    /// only place in the app where the answer is a service size.
+    static let service = Color(light: (0.29, 0.24, 0.60), dark: (0.66, 0.62, 0.95))
+
     // MARK: Surfaces
 
     /// Cool drawing-paper background in light, slate in dark
@@ -99,22 +107,175 @@ enum Theme {
     static let wrongRed = Color(red: 0.72, green: 0.17, blue: 0.16)
 
     // MARK: Type
+    //
+    // Three faces, and only three, each with one job:
+    //
+    //   condensed heavy  every TITLE, at any size (`display` and the semantic
+    //                    tokens below). Panel-schedule lettering.
+    //   system text      every sentence: body, subtitle, caption, detail.
+    //   monospaced       every NUMBER read as an instrument value.
+    //
+    // The rule that keeps them from reading as "several fonts" is that the
+    // split is by ROLE, never by size. A card title and a screen title are the
+    // same face at different sizes; a card title and its subtitle are two
+    // faces because they are two different kinds of text. Anything that is a
+    // title and reaches for `.headline` or `.title3` instead breaks that, and
+    // it is what made the app look like it had picked up a new font.
 
     /// Display type for titles. Heavy condensed sans, which is the lettering on
     /// a panel schedule, a breaker, and a code-book tab, not the serif of a
-    /// members' club. `.width` needs iOS 16; the fallback keeps the weight.
+    /// members' club.
+    ///
+    /// Prefer the `TextStyle` overload and the semantic tokens under it. A
+    /// point size does not scale with Dynamic Type, so a fixed-size title is
+    /// frozen at whatever the designer's device was set to; this overload is
+    /// for the handful of places where the size IS the design (a 190pt score,
+    /// an icon-sized glyph) and reflowing it would break the layout.
     static func display(_ size: CGFloat, weight: Font.Weight = .heavy) -> Font {
-        if #available(iOS 16.0, *) {
-            return .system(size: size, weight: weight).width(.condensed)
-        }
-        return .system(size: size, weight: weight)
+        .system(size: size, weight: weight).width(.condensed)
     }
+
+    /// The scaling version: same condensed face, sized from a text style, so it
+    /// grows and shrinks with the reader's Dynamic Type setting.
+    static func display(_ style: Font.TextStyle, weight: Font.Weight = .heavy) -> Font {
+        .system(style, design: .default, weight: weight).width(.condensed)
+    }
+
+    /// The title scale. Every title in the app comes from one of these five.
+    /// Onboarding and marketing value pages.
+    static var displayLarge: Font { display(.largeTitle) }
+    /// A screen's own name: Home's header, an onboarding step, a paywall.
+    static var screenTitle: Font { display(.title) }
+    /// The title of a full-width hero card (Get Started, a room header).
+    static var sectionTitle: Font { display(.title2, weight: .bold) }
+    /// A question prompt, and any title that carries a sentence's worth of text.
+    static var questionTitle: Font { display(.title3, weight: .bold) }
+    /// A card or list-row title. This is the one that used to be `.headline`.
+    static var cardTitle: Font { display(.headline, weight: .bold) }
+
+    /// The all-caps, letter-spaced section marker ("THE ROOMS"). One token so
+    /// the kerning cannot drift between sections.
+    static var eyebrow: Font { .caption.weight(.heavy) }
+    static let eyebrowKerning: CGFloat = 1.4
 
     /// Numbers read as instrument readings, not prose: ampacities, AWG sizes,
     /// article numbers and percentages all use this so columns line up and a
     /// value never reflows differently from the one above it.
     static func numeric(_ size: CGFloat, weight: Font.Weight = .semibold) -> Font {
         .system(size: size, weight: weight, design: .monospaced)
+    }
+
+    /// Dynamic-Type-scaling monospace, for numbers that sit in flowing layout.
+    static func numeric(_ style: Font.TextStyle, weight: Font.Weight = .semibold) -> Font {
+        .system(style, design: .monospaced, weight: weight)
+    }
+
+    // MARK: Motion
+    //
+    // One vocabulary for every animation in the app, for two reasons. The first
+    // is that a screen whose header, content and footer each animate on their
+    // own curve does not read as one screen moving; it reads as three things
+    // arriving at slightly different times, which is exactly the "sliding into
+    // place" wobble. The second is Reduce Motion: honouring it needs one place
+    // to check, not sixty.
+    //
+    // Durations are deliberately shorter than the ported defaults. The shell
+    // arrived with 0.4-0.5s springs on screen changes, which is fine for a
+    // leisurely card game and too slow for an app whose core loop is answer,
+    // grade, next, several hundred times.
+    enum Motion {
+        /// Set in iOS Settings > Accessibility > Motion. Read at view-update
+        /// time, which is when SwiftUI asks for the animation.
+        static var reduced: Bool {
+            #if canImport(UIKit)
+            UIAccessibility.isReduceMotionEnabled
+            #else
+            false
+            #endif
+        }
+
+        /// A whole screen or step changing. The one curve every page-level
+        /// change uses, so a header, its content and its footer move together.
+        static var screen: Animation {
+            reduced ? .easeOut(duration: 0.16) : .spring(response: 0.32, dampingFraction: 0.92)
+        }
+
+        /// A card or row changing state in place.
+        static var card: Animation {
+            reduced ? .easeOut(duration: 0.14) : .spring(response: 0.26, dampingFraction: 0.86)
+        }
+
+        /// Content appearing after a grade: the working, the coaching note.
+        static var reveal: Animation {
+            reduced ? .easeOut(duration: 0.12) : .easeOut(duration: 0.22)
+        }
+
+        /// A progress bar or ring moving to a new value.
+        static var meter: Animation {
+            reduced ? .easeOut(duration: 0.16) : .easeOut(duration: 0.28)
+        }
+
+        /// The one bouncy curve, reserved for a correct answer landing.
+        static var celebrate: Animation {
+            reduced ? .easeOut(duration: 0.16) : .spring(response: 0.34, dampingFraction: 0.58)
+        }
+
+        /// A flashcard turning over. Physical rather than UI, so it keeps a
+        /// little more travel than `card`, but not much: this fires several
+        /// hundred times in a study session and every extra tenth of a second
+        /// is paid on every one of them.
+        static var flip: Animation {
+            reduced ? .easeOut(duration: 0.16) : .spring(response: 0.40, dampingFraction: 0.86)
+        }
+
+        /// A card being thrown off the deck. Ease IN, because it is leaving.
+        static var fling: Animation {
+            reduced ? .easeOut(duration: 0.14) : .easeIn(duration: 0.28)
+        }
+
+        /// The full-screen tint that flashes on a correct answer, fading out.
+        static var flash: Animation {
+            reduced ? .easeOut(duration: 0.2) : .easeOut(duration: 0.45)
+        }
+
+        /// Decoration that exists only to move: the wrong-answer shake, the
+        /// shine sweep across a winning row. `nil` where Reduce Motion is on,
+        /// so the caller can skip the effect rather than animate it faster.
+        /// A shake with the motion taken out is not a gentler shake, it is a
+        /// jump, and that is worse than nothing for the reader who asked.
+        static var flourish: Animation? {
+            reduced ? nil : .easeInOut(duration: 0.7)
+        }
+
+        static var shake: Animation? {
+            reduced ? nil : .linear(duration: 0.35)
+        }
+
+        /// The horizontal advance every stepped flow shares: onboarding, the
+        /// primer, the tour, and the question runners. Reduce Motion gets a
+        /// plain crossfade, because the slide is the part that causes trouble.
+        static var advance: AnyTransition {
+            guard !reduced else { return .opacity }
+            return .asymmetric(
+                insertion: .move(edge: .trailing).combined(with: .opacity),
+                removal: .move(edge: .leading).combined(with: .opacity)
+            )
+        }
+
+        /// The same, backwards, for a Back tap.
+        static var retreat: AnyTransition {
+            guard !reduced else { return .opacity }
+            return .asymmetric(
+                insertion: .move(edge: .leading).combined(with: .opacity),
+                removal: .move(edge: .trailing).combined(with: .opacity)
+            )
+        }
+
+        /// Something arriving under what is already there.
+        static var riseIn: AnyTransition {
+            guard !reduced else { return .opacity }
+            return .opacity.combined(with: .move(edge: .bottom))
+        }
     }
 
 static let cardCorner: CGFloat = 20
@@ -128,16 +289,22 @@ static let cardCorner: CGFloat = 20
 /// Room identity: each room keeps its own accent so the four doors feel like
 /// four places, not four list rows.
 extension Room {
-    var accent: Color {
-        switch id {
-        case "basics-room": return Theme.voltage
-        case "conductors-room": return Theme.copper
-        case "calc-room": return Theme.conduit
-        // grounding-room. Green, because the equipment grounding conductor is
-        // green in every jurisdiction this app ships to.
-        default: return Theme.ground
-        }
-    }
+    /// Every room id is listed. There is no `default` accent on purpose: a new
+    /// room that forgets to claim a colour should fail the accent test rather
+    /// than quietly inherit grounding green and turn the one semantic colour in
+    /// the palette into a generic fallback.
+    static let accents: [String: Color] = [
+        "basics-room": Theme.voltage,
+        "conductors-room": Theme.copper,
+        "calc-room": Theme.conduit,
+        // Green, because the equipment grounding conductor is green in every
+        // jurisdiction this app ships to.
+        "grounding-room": Theme.ground,
+        "install-room": Theme.highLeg,
+        "loads-room": Theme.service,
+    ]
+
+    var accent: Color { Room.accents[id] ?? Theme.voltage }
 }
 
 /// The membership brand. The RevenueCat entitlement is `electrician_pro`;
@@ -301,7 +468,7 @@ struct PressableCardStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.975 : 1)
-            .animation(.spring(response: 0.28, dampingFraction: 0.7), value: configuration.isPressed)
+            .animation(Theme.Motion.card, value: configuration.isPressed)
     }
 }
 

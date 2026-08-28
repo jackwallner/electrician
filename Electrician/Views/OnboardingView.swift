@@ -30,6 +30,10 @@ struct OnboardingView: View {
     /// picked in order to read.
     @State private var pickingState = false
     @State private var editionPrefilled = false
+    /// Which way the last navigation went, so a Back tap slides back rather
+    /// than forward. A step machine that always animates forward reads as if
+    /// Back re-entered the previous screen instead of returning to it.
+    @State private var goingForward = true
     @AppStorage("electrician.skillLevel") private var skillLevel = ""
 
     private enum Stage: Equatable { case steps, tour, howToPlay }
@@ -57,13 +61,13 @@ struct OnboardingView: View {
                 // Skip lands on Home, not on the next onboarding step: the
                 // whole point of an escape hatch is that it escapes.
                 HowToPlayView(onDone: { stage = .tour }, onSkip: { finish() })
-                    .transition(.move(edge: .trailing).combined(with: .opacity))
+                    .transition(Theme.Motion.advance)
             case .tour:
                 FeatureTourView { finish() }
-                    .transition(.move(edge: .trailing).combined(with: .opacity))
+                    .transition(Theme.Motion.advance)
             }
         }
-        .animation(.spring(response: 0.45, dampingFraction: 0.85), value: stage)
+        .animation(Theme.Motion.screen, value: stage)
     }
 
     // MARK: - Shell
@@ -132,7 +136,7 @@ struct OnboardingView: View {
         .padding(.horizontal, 20)
         .padding(.top, 8)
         .padding(.bottom, 6)
-        .animation(.snappy(duration: 0.25), value: step)
+        .animation(Theme.Motion.screen, value: step)
     }
 
     private var progressFraction: Double {
@@ -161,7 +165,7 @@ struct OnboardingView: View {
                     icon: "thermometer.medium",
                     tint: Theme.copper,
                     title: "The problems that fail people",
-                    body: "Derating, breaker sizing, conduit fill, box fill. Every one is a pure calculation, so we generate them forever instead of shipping the same fifty questions.",
+                    body: "Derating, breaker sizing, conduit and box fill, grounding conductors, motor circuits, the whole dwelling service. Every one is a pure calculation, so we generate them forever instead of shipping the same fifty questions.",
                     givens: [.conductor("6 AWG", "THHN"), .ambient(45), .currentCarrying(6)]
                 )
             case .walkInReady:
@@ -169,7 +173,7 @@ struct OnboardingView: View {
                     icon: "checkmark.seal.fill",
                     tint: Theme.ground,
                     title: "Walk in ready",
-                    body: "Know the small-conductor cap, count current-carrying conductors correctly, and stop losing points to Article 250 vocabulary. Practice untimed first, then use the timed challenge when you want to rehearse the clock.",
+                    body: "Know the small-conductor cap, size a motor off the table and not the nameplate, and stop reading Table 250.66 where 250.122 was wanted. Sitting it this week? Tell us the date and we will tell you what to skip.",
                     givens: []
                 )
             case .track: trackStep
@@ -183,11 +187,8 @@ struct OnboardingView: View {
             case .trial: trialStep
             }
         }
-        .transition(.asymmetric(
-            insertion: .move(edge: .trailing).combined(with: .opacity),
-            removal: .move(edge: .leading).combined(with: .opacity)
-        ))
-        .animation(.spring(response: 0.4, dampingFraction: 0.9), value: step)
+        .transition(stepTransition)
+        .animation(Theme.Motion.screen, value: step)
     }
 
     // MARK: - Value pages
@@ -203,7 +204,7 @@ struct OnboardingView: View {
                 .background(tint.opacity(0.12), in: Circle())
                 .overlay(Circle().strokeBorder(tint.opacity(0.25), lineWidth: 1))
             Text(title)
-                .font(Theme.display(34))
+                .font(Theme.displayLarge)
                 .foregroundStyle(Theme.ink)
                 .multilineTextAlignment(.center)
             if !givens.isEmpty {
@@ -234,7 +235,7 @@ struct OnboardingView: View {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(title)
-                        .font(Theme.display(30))
+                        .font(Theme.screenTitle)
                         .foregroundStyle(Theme.ink)
                     Text(subtitle)
                         .font(.subheadline)
@@ -272,7 +273,7 @@ struct OnboardingView: View {
                 }
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                     if let detail {
                         Text(detail)
@@ -512,7 +513,7 @@ struct OnboardingView: View {
     private var examDateStep: some View {
         setupStep(
             title: "When is the exam?",
-            subtitle: "A date turns this from an app you open sometimes into a countdown with a daily number on it. You can skip it."
+            subtitle: "The date changes what we put in front of you, not just what the countdown says. Sitting it this week gets a different plan from sitting it in the spring. You can skip it."
         ) {
             VStack(spacing: 10) {
                 ForEach(datePresets, id: \.label) { preset in
@@ -551,6 +552,11 @@ struct OnboardingView: View {
                 }
                 .padding(14)
                 .themedCard(corner: 16)
+
+                // Shown the moment a date is set, not saved for the recap: the
+                // reader who just tapped "Tomorrow" is deciding right now
+                // whether this app is any use to them.
+                StudyPaceCard(pace: profile.pace, daily: profile.suggestedDailyQuestions)
             }
         }
     }
@@ -560,14 +566,36 @@ struct OnboardingView: View {
         let detail: String
         /// nil means "no date", which is a deliberate answer.
         let days: Int?
+        /// How far the real date may sit from this preset and still light it
+        /// up. Wider presets need wider tolerance; the near ones need almost
+        /// none, or "tomorrow" and "later this week" would both look selected.
+        let tolerance: Int
     }
 
+    /// The list starts the day after tomorrow and not two weeks out, and that
+    /// is the whole fix for the case this flow used to have no answer for.
+    ///
+    /// A candidate sitting the exam tomorrow is the most motivated reader this
+    /// app will ever get: they have a date, they are frightened, and they will
+    /// pay today. The old shortest option was "in about 2 weeks", so that
+    /// reader either lied to the setup and got a plan built for someone with
+    /// fourteen days, or skipped the step and got no plan at all. Both throw
+    /// away the one thing the app could have done for them, which is tell them
+    /// what to skip.
     private var datePresets: [DatePreset] {
         [
-            DatePreset(label: "In about 2 weeks", detail: "Cram window. Calculations only.", days: 14),
-            DatePreset(label: "In about a month", detail: "Enough to cover all four rooms twice.", days: 30),
-            DatePreset(label: "In about 3 months", detail: "Comfortable. Build the navigation habit first.", days: 90),
-            DatePreset(label: "No date yet", detail: "Study now, book later. Nothing is locked by this.", days: nil),
+            DatePreset(label: "Tomorrow", detail: "No time to cover everything. We will tell you what to skip.",
+                       days: 1, tolerance: 0),
+            DatePreset(label: "Later this week", detail: "Triage: calculations, then the mistakes you repeat.",
+                       days: 5, tolerance: 2),
+            DatePreset(label: "In about 2 weeks", detail: "Every problem shape twice, then the weak ones.",
+                       days: 14, tolerance: 3),
+            DatePreset(label: "In about a month", detail: "Enough to cover every room twice.",
+                       days: 30, tolerance: 5),
+            DatePreset(label: "In about 3 months", detail: "Comfortable. Build the navigation habit first.",
+                       days: 90, tolerance: 20),
+            DatePreset(label: "No date yet", detail: "Study now, book later. Nothing is locked by this.",
+                       days: nil, tolerance: 0),
         ]
     }
 
@@ -575,9 +603,11 @@ struct OnboardingView: View {
         guard let days = preset.days else { return profile.examDate == nil }
         guard let actual = profile.daysUntilExam else { return false }
         // Presets are approximate by design, so the selected state has to be
-        // approximate too or picking "about a month" then nudging the date by
-        // a day would visibly deselect the row the candidate just tapped.
-        return abs(actual - days) <= 3
+        // approximate too, or picking "about a month" then nudging the date by
+        // a day would visibly deselect the row the candidate just tapped. The
+        // tolerance is per preset rather than a flat three days: a flat three
+        // would light "later this week" up for someone sitting it tomorrow.
+        return abs(actual - days) <= preset.tolerance
     }
 
     private var countdownCaption: String {
@@ -587,7 +617,7 @@ struct OnboardingView: View {
     private func statPill(value: String, caption: String) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(value)
-                .font(Theme.numeric(19, weight: .bold))
+                .font(Theme.numeric(.title3, weight: .bold))
                 .foregroundStyle(Theme.voltage)
             Text(caption)
                 .font(.caption2)
@@ -642,7 +672,7 @@ struct OnboardingView: View {
             infoCard(
                 icon: "infinity",
                 tint: Theme.conduit,
-                text: "Whatever you pick, Endless Practice generates the five calculation shapes without limit, so no room ever runs out of questions."
+                text: "Whatever you pick, Endless Practice generates \(PracticeSkill.allCases.count) calculation shapes without limit, so no room ever runs out of questions."
             )
         }
     }
@@ -728,7 +758,7 @@ struct OnboardingView: View {
                 planDivider
                 planRow(icon: "calendar", label: "Exam date",
                         value: profile.examCountdownSummary ?? "No date set",
-                        detail: "Target \(profile.suggestedDailyQuestions) questions a day.")
+                        detail: "\(profile.pace.title): \(profile.suggestedDailyQuestions) questions a day.")
                 planDivider
                 planRow(icon: "figure.stand", label: "Starting from",
                         value: ExperienceLevel(rawValue: skillLevel)?.title ?? "Not set")
@@ -738,6 +768,10 @@ struct OnboardingView: View {
             }
             .padding(4)
             .themedCard(corner: 18)
+
+            // The plan the date implies, not just the date. This is the row a
+            // candidate screenshots.
+            StudyPaceCard(pace: profile.pace, daily: profile.suggestedDailyQuestions)
 
             infoCard(
                 icon: "shield.lefthalf.filled",
@@ -771,7 +805,7 @@ struct OnboardingView: View {
                     .foregroundStyle(Theme.inkTertiary)
                     .textCase(.uppercase)
                 Text(value)
-                    .font(.subheadline.weight(.semibold))
+                    .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
                     .fixedSize(horizontal: false, vertical: true)
                 if let detail {
@@ -806,41 +840,208 @@ struct OnboardingView: View {
         )
     }
 
-    // MARK: - Trial step (OT710: hero + bullets, zero plan cards)
+    // MARK: - Trial step
 
+    /// The membership pitch, and the one screen in the flow that has to ARGUE
+    /// rather than describe.
+    ///
+    /// What was here before was a feature list: five ticks naming five things
+    /// the app contains. A feature list answers "what do I get" and never
+    /// answers the question a reader actually has, which is "why would I need
+    /// that". So this version does three things instead.
+    ///
+    /// It states the problem with a number the reader can check. The free
+    /// rooms hold a countable number of questions; the setup they just
+    /// finished says how many they should do a day and how many days they
+    /// have. Those three facts multiply out to a date the free content runs
+    /// out, and for most candidates it is before the exam. That is the whole
+    /// pitch, and it is arithmetic rather than adjectives.
+    ///
+    /// It reads back their own answers, so the seven setup questions visibly
+    /// bought something on the screen that asks for money.
+    ///
+    /// And it leads with whichever benefit their pace makes load-bearing: a
+    /// candidate three days out does not need "extra practice sets", they need
+    /// the thing that finds their repeated errors and re-traps them.
     private var trialStep: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            Image(systemName: "bolt.fill")
-                .font(.system(size: 38, weight: .semibold))
-                .foregroundStyle(Theme.brass)
-                .frame(width: 92, height: 92)
-                .background(Theme.brass.opacity(0.14), in: Circle())
-                .overlay(Circle().strokeBorder(Theme.brass.opacity(0.28), lineWidth: 1))
-            Text(trialLength == nil ? "Get \(Membership.name)" : "Try \(Membership.name) free")
-                .font(Theme.display(30))
-                .foregroundStyle(Theme.ink)
-                .multilineTextAlignment(.center)
-            VStack(alignment: .leading, spacing: 12) {
-                trialBenefit(ShellCopy.Onboarding.freeRoomsBenefit)
-                trialBenefit("Code Minute and a personalized Exam Warm-Up")
-                trialBenefit("Endless Practice deals a fresh problem every time")
-                trialBenefit("Fix My Mistakes targets the errors you repeat")
-                trialBenefit("Extra sets in all four rooms, plus the worked calculations")
+        ScrollView {
+            VStack(spacing: 16) {
+                Image(systemName: "bolt.fill")
+                    .font(.system(size: 27, weight: .semibold))
+                    .foregroundStyle(Theme.brass)
+                    .frame(width: 64, height: 64)
+                    .background(Theme.brass.opacity(0.14), in: Circle())
+                    .overlay(Circle().strokeBorder(Theme.brass.opacity(0.28), lineWidth: 1))
+
+                Text(trialHeadline)
+                    .font(Theme.screenTitle)
+                    .foregroundStyle(Theme.ink)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                runsOutCard
+
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(trialBenefits, id: \.text) { benefit in
+                        trialBenefit(benefit)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            Spacer()
+            .padding(.horizontal, 26)
+            .padding(.top, 4)
+            .padding(.bottom, 12)
         }
-        .padding(.horizontal, 28)
     }
 
-    private func trialBenefit(_ text: String) -> some View {
+    /// Named on purpose so the headline can be personal without being creepy:
+    /// it repeats a fact the reader typed in two screens ago.
+    private var trialHeadline: String {
+        switch profile.pace {
+        case .cram:
+            return trialLength == nil
+                ? "\(profile.examCountdownSummary ?? "Exam soon"). Make it count."
+                : "\(profile.examCountdownSummary ?? "Exam soon"). Try it free."
+        case .sprint:
+            return trialLength == nil ? "Two weeks is enough, if you spend it right" : "Try \(Membership.name) free"
+        default:
+            return trialLength == nil ? "Get \(Membership.name)" : "Try \(Membership.name) free"
+        }
+    }
+
+    /// The arithmetic. Every figure here comes from the library or from the
+    /// setup answers, so it cannot drift the way a hardcoded marketing number
+    /// would, and it stays true if a room is added tomorrow.
+    private var runsOutCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: profile.pace == .cram ? "scope" : "hourglass")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(Theme.copper)
+                Text(runsOutHeadline)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Theme.ink)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+            }
+            Text(runsOutDetail)
+                .font(.footnote)
+                .foregroundStyle(Theme.inkSecondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(13)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.copper.opacity(0.09), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(Theme.copper.opacity(0.24), lineWidth: 1)
+        )
+    }
+
+    /// How many days of practice the free rooms hold at this candidate's own
+    /// daily target. At least one, because "0 days" is not a sentence.
+    private var daysOfFreeContent: Int {
+        max(1, Int((Double(DrillLibrary.freeItemCount)
+                    / Double(max(profile.suggestedDailyQuestions, 1))).rounded(.up)))
+    }
+
+    /// The argument, and it is a DIFFERENT argument for someone sitting the
+    /// exam tomorrow.
+    ///
+    /// The running-out pitch is honest for a candidate with weeks: they will
+    /// finish the free questions and then be re-reading answers they remember.
+    /// It is nonsense for a candidate with one day, who will not get through
+    /// the free rooms either. Telling them they are about to run out is both
+    /// false and the wrong thing to sell: what decides tomorrow is not volume,
+    /// it is whether the mistakes they keep making get named and set again.
+    private var runsOutHeadline: String {
+        let free = DrillLibrary.freeItemCount
+        // No day count in the cram line: the headline above already says how
+        // long is left, and repeating it two lines down reads as a template
+        // filled in twice rather than as an argument.
+        if profile.pace == .cram {
+            return "More questions is not what decides an exam this close."
+        }
+        guard let until = profile.daysUntilExam else {
+            return "The free rooms hold \(free) questions. At \(profile.suggestedDailyQuestions) a day that is about \(dayCount(daysOfFreeContent)) of practice, and then you are re-reading answers you remember."
+        }
+        if daysOfFreeContent >= until {
+            return "The free rooms hold \(free) questions, about \(dayCount(daysOfFreeContent)) at \(profile.suggestedDailyQuestions) a day. That barely covers your \(dayCount(until)), once, with nothing left to repeat."
+        }
+        return "The free rooms hold \(free) questions. At \(profile.suggestedDailyQuestions) a day you finish them in about \(dayCount(daysOfFreeContent)), with \(dayCount(until - daysOfFreeContent)) still to go."
+    }
+
+    private var runsOutDetail: String {
+        if profile.pace == .cram {
+            return "Every wrong answer here is a named error. Fix My Mistakes builds fresh problems that set the same trap until you stop falling for it, and that is what moves a score overnight."
+        }
+        return "\(Membership.name) generates the calculations instead of storing them. \(PracticeSkill.allCases.count) problem shapes, new numbers every time, so the practice cannot run out before the exam does."
+    }
+
+    /// "1 day" / "12 days". Written out rather than interpolated at each call
+    /// site, because "your 1 days" is the kind of thing that ships.
+    private func dayCount(_ days: Int) -> String {
+        days == 1 ? "1 day" : "\(days) days"
+    }
+
+    private struct TrialBenefit {
+        let icon: String
+        let text: String
+    }
+
+    /// Ordered by what this candidate's pace makes matter most. Same features,
+    /// different argument, which is the point: "targets the errors you repeat"
+    /// is a nice-to-have in March and the entire product on Thursday night.
+    private var trialBenefits: [TrialBenefit] {
+        let endless = TrialBenefit(
+            icon: "infinity",
+            text: "Endless Practice: ten calculation shapes, generated fresh, so you never memorise a question instead of a method."
+        )
+        let fix = TrialBenefit(
+            icon: "arrow.trianglehead.counterclockwise",
+            text: "Fix My Mistakes: every wrong answer is a NAMED error, and this builds new problems that set the same trap until you stop falling for it."
+        )
+        let warmUp = TrialBenefit(
+            icon: "person.2.fill",
+            text: "Exam Warm-Up: a short session built from your own weak spots, for the morning of."
+        )
+        let rooms = TrialBenefit(
+            icon: "square.grid.2x2.fill",
+            text: "\(DrillLibrary.membershipItemCount) more authored questions: the worked dwelling calculation, grounding, motors, and extra sets in every room."
+        )
+        let minute = TrialBenefit(
+            icon: "calendar.badge.clock",
+            text: "Code Minute: five questions a day, for the days you would otherwise skip."
+        )
+
+        // Four at most. This screen has a hero, an argument card, a price
+        // disclosure and two footers competing for a phone-sized viewport, and
+        // a fifth bullet is what pushes the CTA under the fold.
+        switch profile.pace {
+        case .cram:
+            // Fix My Mistakes is deliberately absent: the card above already
+            // makes that argument in full, and a bullet restating it reads as
+            // padding rather than as a second reason.
+            return [warmUp, endless, rooms, minute]
+        case .sprint:
+            return [endless, fix, warmUp, rooms]
+        default:
+            return [endless, rooms, fix, minute]
+        }
+    }
+
+    private func trialBenefit(_ benefit: TrialBenefit) -> some View {
         HStack(alignment: .top, spacing: 10) {
-            Image(systemName: "checkmark.circle.fill")
+            Image(systemName: benefit.icon)
+                .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(Theme.voltage)
-            Text(text)
+                .frame(width: 24, height: 24)
+                .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 7, style: .continuous))
+            Text(benefit.text)
                 .font(.subheadline)
                 .foregroundStyle(Theme.ink)
                 .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
         }
     }
 
@@ -939,7 +1140,7 @@ struct OnboardingView: View {
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 10)
-        .animation(.easeInOut(duration: 0.2), value: step)
+        .animation(Theme.Motion.screen, value: step)
     }
 
     private var primaryTitle: String {
@@ -973,13 +1174,19 @@ struct OnboardingView: View {
 
     // MARK: - Navigation
 
+    private var stepTransition: AnyTransition {
+        goingForward ? Theme.Motion.advance : Theme.Motion.retreat
+    }
+
     private func advance() {
         guard let next = Step(rawValue: step.rawValue + 1) else { return }
+        goingForward = true
         step = next
     }
 
     private func back() {
         guard let previous = Step(rawValue: step.rawValue - 1) else { return }
+        goingForward = false
         step = previous
     }
 
@@ -1071,7 +1278,7 @@ struct JurisdictionFactsCard: View {
                     .frame(width: 34, height: 24)
                     .background(Theme.voltageFill, in: RoundedRectangle(cornerRadius: 7, style: .continuous))
                 Text(record.name)
-                    .font(.headline)
+                    .font(Theme.cardTitle)
                     .foregroundStyle(Theme.worksheetInk)
                 Spacer()
             }

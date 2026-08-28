@@ -49,7 +49,7 @@ struct RoomView: View {
                 .frame(width: 66, height: 66)
                 .background(room.accent.opacity(0.12), in: Circle())
             Text(room.name)
-                .font(Theme.display(28))
+                .font(Theme.screenTitle)
                 .foregroundStyle(Theme.ink)
                 .multilineTextAlignment(.center)
             Text(room.tagline)
@@ -101,7 +101,7 @@ struct RoomView: View {
             VStack(alignment: .leading, spacing: 3) {
                 HStack(spacing: 6) {
                     Text(drill.title)
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                         .multilineTextAlignment(.leading)
                     if locked {

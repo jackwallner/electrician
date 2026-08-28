@@ -26,8 +26,56 @@ enum NECTables {
     /// study aid and a trap. When the tables move, move this with them and let
     /// the content tests catch whatever drifted.
     static let edition = "2023 NEC"
+
+    /// The oldest cycle whose values in this file are the same as the ones
+    /// here, and the newest cycle they have been CHECKED against.
+    ///
+    /// This pair is the honest answer to "why does a 2026 app quote 2023?".
+    /// The tables the app computes from are the most stable pages in the book:
+    /// 310.16 has not moved materially in decades, 240.6(A) and 240.4(D) are
+    /// unchanged since well before 2014, 250.122 last moved in 2014, and
+    /// 430.248/430.250 are older than most of the people sitting the exam. So
+    /// the arithmetic a candidate practises here is the same arithmetic on a
+    /// 2020, 2023 or 2026 paper. What actually moves between cycles is
+    /// COVERAGE (GFCI and AFCI scope, surge protection, emergency and
+    /// equipment disconnects, EV supply equipment), which is why those are
+    /// taught as rules to verify rather than as numbers to memorise.
+    ///
+    /// `verifiedThrough` is a claim about work that was actually done, not
+    /// about what is probably true. Raise it only after checking the tables in
+    /// this file page by page against that edition's book; every "covers your
+    /// edition" string in the app is derived from it, so raising it without
+    /// doing the check turns a study aid into a trap. Lowering it is always
+    /// safe.
+    static let stableSince = NECEdition.nec2020
+    static let verifiedThrough = NECEdition.nec2023
+
+    /// The cycles this app's numbers are asserted to be correct for.
+    static var coveredEditions: [NECEdition] {
+        NECEdition.allCases.filter { $0 >= stableSince && $0 <= verifiedThrough }
+    }
+
+    /// "2020, 2023" / "2020 through 2026". Used wherever the app makes a
+    /// coverage claim rather than citing a single edition.
+    static var coverageLabel: String {
+        let years = coveredEditions.map { String($0.year) }
+        switch years.count {
+        case 0: return edition
+        case 1: return "\(years[0]) NEC"
+        case 2: return "\(years[0]) and \(years[1]) NEC"
+        default: return "\(years[0]) through \(years[years.count - 1]) NEC"
+        }
+    }
+
     /// One line, for footers and result screens.
     static let editionNote = "Values follow the \(edition). Your jurisdiction may have adopted a different edition or amended it locally."
+
+    /// The longer version, for Settings and the edition screen. States the
+    /// coverage AND the limit of it, because the second half is what makes the
+    /// first half trustworthy.
+    static var coverageNote: String {
+        "Every table here is unchanged across the \(coverageLabel), so the calculations are the same ones your exam asks for on any of those cycles. What does change between editions is coverage: GFCI and AFCI scope, surge protection, emergency and equipment disconnects. Verify those in the book your jurisdiction has adopted."
+    }
 
     // MARK: - Conductor sizes
 

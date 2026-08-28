@@ -144,7 +144,7 @@ struct ReviewPromptSheet: View {
     private var feedbackContent: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("What would make Electrician better for you?")
-                .font(.headline)
+                .font(Theme.cardTitle)
                 .foregroundStyle(Theme.ink)
                 .fixedSize(horizontal: false, vertical: true)
             TextEditor(text: $feedbackText)

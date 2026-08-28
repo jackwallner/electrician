@@ -54,7 +54,7 @@ struct ExamWarmUpView: View {
                 .frame(width: 68, height: 68)
                 .background(Theme.conduit.opacity(0.13), in: Circle())
             Text("Walk in ready")
-                .font(Theme.display(28))
+                .font(Theme.screenTitle)
                 .foregroundStyle(Theme.ink)
             Text("Pick a day to study. The reminder opens a fresh session built from your mistakes, weakest room, and material you have not seen yet.")
                 .font(.subheadline)
@@ -72,11 +72,11 @@ struct ExamWarmUpView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("WEEKLY REMINDER")
-                        .font(.caption.weight(.heavy))
-                        .kerning(1.4)
+                        .font(Theme.eyebrow)
+                        .kerning(Theme.eyebrowKerning)
                         .foregroundStyle(Theme.inkSecondary)
                     Text(settings.examWarmUpReminderEnabled ? "Prep is scheduled" : "Choose your study day")
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                 }
                 Spacer()
@@ -113,7 +113,7 @@ struct ExamWarmUpView: View {
                 .background(Theme.copper.opacity(0.13), in: Circle())
             VStack(alignment: .leading, spacing: 3) {
                 Text("What today's prep targets")
-                    .font(.headline)
+                    .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
                 Text(personalizationCopy(weakest))
                     .font(.subheadline)

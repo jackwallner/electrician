@@ -174,8 +174,7 @@ struct PracticeRunView: View {
                 Image(systemName: "timer")
                     .foregroundStyle(secondsRemaining <= 10 ? Theme.copper : Theme.inkSecondary)
                 Text("\(secondsRemaining)s")
-                    .font(.title3.weight(.bold))
-                    .monospacedDigit()
+                    .font(Theme.numeric(.title3, weight: .bold))
                     .foregroundStyle(secondsRemaining <= 10 ? Theme.copper : Theme.ink)
                 Spacer()
                 Text("\(score) correct")
@@ -188,7 +187,7 @@ struct PracticeRunView: View {
             // Completed, not current. See CalcDrillView for the same rule.
             ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(items.count, 1)))
                 .tint(Theme.voltage)
-                .animation(.easeOut(duration: 0.3), value: answered)
+                .animation(Theme.Motion.meter, value: answered)
         case .endless:
             HStack {
                 Text("\(score) of \(attempted) correct")
@@ -305,7 +304,7 @@ struct PracticeRunView: View {
         SoundPlayer.play(.success)
         guard ConfettiBurst.celebrationsEnabled else { return }
         flashOpacity = 0.14
-        withAnimation(.easeOut(duration: 0.5)) { flashOpacity = 0 }
+        withAnimation(Theme.Motion.flash) { flashOpacity = 0 }
     }
 
     private func particleCount(forStreak streak: Int) -> Int {
@@ -323,7 +322,7 @@ struct PracticeRunView: View {
             return
         }
         topUpIfNeeded()
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+        withAnimation(Theme.Motion.screen) {
             selection = nil
             index += 1
         }
@@ -353,6 +352,6 @@ struct PracticeRunView: View {
             dismiss()
             return
         }
-        withAnimation(.easeInOut(duration: 0.3)) { finished = true }
+        withAnimation(Theme.Motion.screen) { finished = true }
     }
 }

@@ -58,7 +58,7 @@ struct StatsView: View {
                 .font(.system(size: 40))
                 .foregroundStyle(Theme.voltage.opacity(0.5))
             Text("No practice yet")
-                .font(.headline)
+                .font(Theme.cardTitle)
                 .foregroundStyle(Theme.ink)
             Text("Answer a few questions and your accuracy for every room shows up here.")
                 .font(.subheadline)
@@ -88,7 +88,7 @@ struct StatsView: View {
     private func metric(value: String, caption: String, color: Color) -> some View {
         VStack(spacing: 3) {
             Text(value)
-                .font(Theme.display(26))
+                .font(Theme.sectionTitle)
                 .foregroundStyle(color)
                 .monospacedDigit()
             Text(caption)
@@ -114,7 +114,7 @@ struct StatsView: View {
                 .background(Theme.copper.opacity(0.13), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
                 Text("Work on \(stat.name)")
-                    .font(.headline)
+                    .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
                 Text("\(percent(stat.accuracy)) right across \(stat.attempts) questions, your lowest so far.")
                     .font(.caption)
@@ -130,8 +130,8 @@ struct StatsView: View {
     private var roomBreakdown: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("BY ROOM")
-                .font(.caption.weight(.heavy))
-                .kerning(1.4)
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
                 .foregroundStyle(Theme.inkSecondary)
             ForEach(roomStats) { stat in
                 VStack(alignment: .leading, spacing: 6) {
@@ -141,9 +141,8 @@ struct StatsView: View {
                             .foregroundStyle(Theme.ink)
                         Spacer()
                         Text(percent(stat.accuracy))
-                            .font(.subheadline.weight(.bold))
+                            .font(Theme.numeric(.subheadline, weight: .bold))
                             .foregroundStyle(barColor(stat.accuracy))
-                            .monospacedDigit()
                     }
                     accuracyBar(stat.accuracy)
                     Text("\(stat.correct) of \(stat.attempts) right")
@@ -160,8 +159,8 @@ struct StatsView: View {
     private var skillBreakdown: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("BY CALCULATION")
-                .font(.caption.weight(.heavy))
-                .kerning(1.4)
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
                 .foregroundStyle(Theme.inkSecondary)
             ForEach(skillStats) { stat in
                 VStack(alignment: .leading, spacing: 6) {
@@ -171,9 +170,8 @@ struct StatsView: View {
                             .foregroundStyle(Theme.ink)
                         Spacer()
                         Text(percent(stat.accuracy))
-                            .font(.subheadline.weight(.bold))
+                            .font(Theme.numeric(.subheadline, weight: .bold))
                             .foregroundStyle(barColor(stat.accuracy))
-                            .monospacedDigit()
                     }
                     accuracyBar(stat.accuracy)
                     Text("\(stat.correct) of \(stat.attempts) right")
@@ -193,8 +191,8 @@ struct StatsView: View {
     private var mistakeBreakdown: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("WHAT KEEPS CATCHING YOU")
-                .font(.caption.weight(.heavy))
-                .kerning(1.4)
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
                 .foregroundStyle(Theme.inkSecondary)
             ForEach(outstandingMistakes, id: \.id) { pattern in
                 HStack(alignment: .top, spacing: 10) {
@@ -260,7 +258,7 @@ struct StatsView: View {
                 .background(Theme.copper.opacity(0.13), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
                 Text("\(progress.streakCount)-day streak")
-                    .font(.headline)
+                    .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
                 Text("\(progress.totalSessions) drill\(progress.totalSessions == 1 ? "" : "s") finished")
                     .font(.caption)

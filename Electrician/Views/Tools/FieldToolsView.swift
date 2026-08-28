@@ -15,23 +15,39 @@ struct FieldToolsView: View {
                     // The supported domain, stated up front. Off-table
                     // combinations return nothing, which is the safe behaviour,
                     // but a blank result with no explanation reads as a bug.
-                    Text("\(NECTables.edition) values, copper and aluminum, THHN/THWN in EMT. Other raceways, coatings and local amendments are not covered.")
+                    Text("\(NECTables.edition) values, unchanged across the \(NECTables.coverageLabel). Copper and aluminum, THHN/THWN in EMT. Other raceways and insulations, and local amendments, are not covered.")
                         .font(.caption)
                         .foregroundStyle(Theme.inkTertiary)
                 }
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 8, trailing: 4))
             }
-            Section("Calculators") {
+            Section("Conductors") {
                 NavigationLink { AmpacityToolView() } label: {
                     toolRow("bolt.fill", "Ampacity", "Derate, then cap, then 240.4(D)")
                 }
                 NavigationLink { ConduitFillToolView() } label: {
                     toolRow("circle.hexagongrid.fill", "Conduit fill", "THHN in EMT, Chapter 9")
                 }
+                NavigationLink { BoxFillToolView() } label: {
+                    toolRow("shippingbox.fill", "Box fill", "Allowances, not wires, 314.16")
+                }
                 NavigationLink { VoltageDropToolView() } label: {
                     toolRow("waveform.path.ecg", "Voltage drop", "Resistive estimate, informational note")
                 }
+            }
+            Section("Systems") {
+                NavigationLink { GroundingToolView() } label: {
+                    toolRow("leaf.fill", "Grounding", "Both conductors, and what each is sized from")
+                }
+                NavigationLink { MotorToolView() } label: {
+                    toolRow("fan.fill", "Motor circuit", "Table current in, whole circuit out")
+                }
+                NavigationLink { DwellingLoadToolView() } label: {
+                    toolRow("house.fill", "Dwelling load", "Standard method, step by step")
+                }
+            }
+            Section("Bench") {
                 NavigationLink { OhmsLawToolView() } label: {
                     toolRow("plus.forwardslash.minus", "Ohm's law", "Any two of V, I, R, P")
                 }

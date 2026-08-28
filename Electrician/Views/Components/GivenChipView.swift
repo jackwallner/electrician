@@ -12,6 +12,11 @@ struct GivenChipView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2 * scale) {
+            // Chips are the one place a fixed point size is right: they sit in
+            // a wrapping row of fixed-height tiles, and `scale` is the caller's
+            // deliberate control over that height. The FACES still come from
+            // the type system: label in the eyebrow role, value in the numeric
+            // one, unit in ordinary text.
             Text(given.label.uppercased())
                 .font(.system(size: 9 * scale, weight: .heavy))
                 .kerning(0.6)
@@ -20,7 +25,7 @@ struct GivenChipView: View {
                 Text(given.value)
                     // Monospaced, not rounded: a given is an instrument
                     // reading, and "6 AWG" should line up under "10 AWG".
-                    .font(.system(size: 15 * scale, weight: .semibold, design: .monospaced))
+                    .font(Theme.numeric(15 * scale))
                     .foregroundStyle(Theme.worksheetInk)
                 if let unit = given.unit {
                     Text(unit)

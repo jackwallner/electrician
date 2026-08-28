@@ -33,7 +33,7 @@ struct FeatureTourView: View {
                     Capsule()
                         .fill(dot == index ? Theme.voltage : Theme.voltage.opacity(0.22))
                         .frame(width: dot == index ? 20 : 7, height: 7)
-                        .animation(.snappy(duration: 0.22), value: index)
+                        .animation(Theme.Motion.card, value: index)
                 }
             }
             .padding(.top, 10)
@@ -45,7 +45,7 @@ struct FeatureTourView: View {
                     .foregroundStyle(page.accentGold ? Theme.brass : Theme.voltage)
                 page.hero
                 Text(page.title)
-                    .font(Theme.display(27))
+                    .font(Theme.screenTitle)
                     .foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.center)
                 Text(page.body)
@@ -110,7 +110,7 @@ struct FeatureTourView: View {
         [
             TourPage(
                 eyebrow: "THE ROOMS",
-                title: "Four rooms, four skills",
+                title: "Six rooms, six skills",
                 body: ShellCopy.Tour.roomsBody,
                 hero: AnyView(roomsHero)
             ),
@@ -124,7 +124,7 @@ struct FeatureTourView: View {
                 ? TourPage(
                     eyebrow: "YOURS NOW",
                     title: "\(Membership.name) is open",
-                    body: "Your trial already includes Code Minute, personalized Exam Warm-Up, Endless Practice, the timed challenge, the extra sets in every room, and the worked calculations.",
+                    body: "Your trial already includes Code Minute, personalized Exam Warm-Up, Endless Practice across all \(PracticeSkill.allCases.count) shapes, the timed challenge, the extra sets in every room, and the worked calculations.",
                     hero: AnyView(proHero(locked: false)),
                     accentGold: true
                 )
@@ -158,7 +158,7 @@ struct FeatureTourView: View {
             HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Get Started")
-                        .font(Theme.display(20))
+                        .font(Theme.cardTitle)
                         .foregroundStyle(.white)
                     Text("A short mix of what you need next")
                         .font(.caption)
@@ -180,12 +180,16 @@ struct FeatureTourView: View {
         .buttonStyle(PressableCardStyle())
     }
 
+    /// Drawn from the library rather than hardcoded, and using each room's own
+    /// icon and accent, so the tour shows the rooms that actually exist. The
+    /// old version was four fixed chips with icons and colours belonging to no
+    /// room in particular, which meant adding a room silently made the tour a
+    /// lie about the product.
     private var roomsHero: some View {
-        HStack(spacing: 10) {
-            roomChip("square.grid.3x3.fill", Theme.voltage)
-            roomChip("menucard.fill", Theme.copper)
-            roomChip("arrow.left.arrow.right", Theme.conduit)
-            roomChip("person.3.fill", Theme.brass)
+        HStack(spacing: 8) {
+            ForEach(DrillLibrary.rooms) { room in
+                roomChip(room.icon, room.accent)
+            }
         }
     }
 
@@ -193,8 +197,8 @@ struct FeatureTourView: View {
         Image(systemName: icon)
             .font(.body.weight(.semibold))
             .foregroundStyle(color)
-            .frame(width: 54, height: 54)
-            .background(color.opacity(0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .frame(width: 46, height: 46)
+            .background(color.opacity(0.12), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
     }
 
     private var streakHero: some View {
@@ -203,7 +207,7 @@ struct FeatureTourView: View {
                 .font(.system(size: 30))
                 .foregroundStyle(Theme.copper)
             Text("7-day streak")
-                .font(Theme.display(20))
+                .font(Theme.cardTitle)
                 .foregroundStyle(Theme.ink)
         }
         .padding(.horizontal, 18)
@@ -217,8 +221,8 @@ struct FeatureTourView: View {
                 Image(systemName: locked ? "lock.fill" : "sparkles")
                     .foregroundStyle(Theme.brass)
                 Text(Membership.name.uppercased())
-                    .font(.caption.weight(.heavy))
-                    .kerning(1.6)
+                    .font(Theme.eyebrow)
+                    .kerning(Theme.eyebrowKerning)
                     .foregroundStyle(Theme.brass)
                 Spacer()
                 if !locked {
@@ -265,7 +269,7 @@ struct FeatureTourView: View {
             return
         }
         Haptics.impact(.soft, intensity: 0.6)
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+        withAnimation(Theme.Motion.screen) {
             index += 1
         }
         if tourPages[index].accentGold {

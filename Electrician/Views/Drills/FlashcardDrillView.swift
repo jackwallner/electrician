@@ -102,7 +102,7 @@ struct FlashcardDrillView: View {
                     Capsule()
                         .fill(accent)
                         .frame(width: geo.size.width * CGFloat(mastered) / CGFloat(max(cards.count, 1)))
-                        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: mastered)
+                        .animation(Theme.Motion.card, value: mastered)
                 }
             }
             .frame(height: 8)
@@ -198,7 +198,7 @@ struct FlashcardDrillView: View {
 
     private func stamp(_ text: String, color: Color, angle: Double) -> some View {
         Text(text)
-            .font(Theme.display(24, weight: .black))
+            .font(Theme.sectionTitle)
             .foregroundStyle(color)
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
@@ -255,7 +255,7 @@ struct FlashcardDrillView: View {
             Haptics.wrongAnswer()
             SoundPlayer.play(.miss)
         }
-        withAnimation(.spring(response: 0.55, dampingFraction: 0.8)) {
+        withAnimation(Theme.Motion.flip) {
             isFlipped = true
         }
         maybeHintSwipe()
@@ -266,7 +266,7 @@ struct FlashcardDrillView: View {
     private func flip() {
         guard !isFlinging, !choiceAnswered else { return }
         Haptics.impact(.soft, intensity: 0.5)
-        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+        withAnimation(Theme.Motion.flip) {
             isFlipped.toggle()
         }
         if isFlipped { maybeHintSwipe() }
@@ -298,13 +298,13 @@ struct FlashcardDrillView: View {
                     return
                 }
                 guard isFlipped else {
-                    withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
+                    withAnimation(Theme.Motion.card) {
                         drag = .zero
                     }
                     return
                 }
                 guard !choiceAnswered else {
-                    withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
+                    withAnimation(Theme.Motion.card) {
                         drag = .zero
                     }
                     return
@@ -315,7 +315,7 @@ struct FlashcardDrillView: View {
                 if flung {
                     fling(direction: dx >= 0 ? 1 : -1, size: size)
                 } else {
-                    withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
+                    withAnimation(Theme.Motion.card) {
                         drag = .zero
                     }
                 }
@@ -331,7 +331,7 @@ struct FlashcardDrillView: View {
         hasSwipedDeck = true
         Haptics.impact(.rigid, intensity: 0.7)
         let exit = CGSize(width: direction * size.width * 1.5, height: drag.height * 1.1)
-        withAnimation(.easeIn(duration: 0.34)) {
+        withAnimation(Theme.Motion.fling) {
             drag = exit
             flingOpacity = 0
         } completion: {
@@ -368,7 +368,7 @@ struct FlashcardDrillView: View {
         }
         if queue.isEmpty {
             Haptics.success()
-            withAnimation(.easeInOut(duration: 0.3)) { finished = true }
+            withAnimation(Theme.Motion.screen) { finished = true }
         }
     }
 
@@ -377,7 +377,7 @@ struct FlashcardDrillView: View {
         Haptics.impact(.light)
         lastSwipe = nil
         choicePick = nil
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+        withAnimation(Theme.Motion.screen) {
             if !record.gotIt, queue.last?.id == record.card.id {
                 queue.removeLast()
             }
@@ -394,12 +394,12 @@ struct FlashcardDrillView: View {
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 700_000_000)
             guard !hasSwipedDeck, !isFlinging, drag == .zero, isFlipped else { return }
-            withAnimation(.spring(response: 0.38, dampingFraction: 0.6)) {
+            withAnimation(Theme.Motion.celebrate) {
                 drag = CGSize(width: 52, height: 0)
             }
             try? await Task.sleep(nanoseconds: 430_000_000)
             guard !isFlinging else { return }
-            withAnimation(.spring(response: 0.55, dampingFraction: 0.72)) {
+            withAnimation(Theme.Motion.flip) {
                 drag = .zero
             }
         }
@@ -452,7 +452,7 @@ struct FlipCardFace: View {
             VStack(spacing: 18) {
                 Spacer(minLength: 0)
                 Text(card.frontTitle)
-                    .font(Theme.display(25))
+                    .font(Theme.sectionTitle)
                     .foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.center)
                 if !card.givens.isEmpty {
@@ -484,7 +484,7 @@ struct FlipCardFace: View {
                 }
                 Spacer(minLength: 0)
                 Text(card.backTitle)
-                    .font(Theme.display(22))
+                    .font(Theme.questionTitle)
                     .foregroundStyle(accent)
                     .multilineTextAlignment(.center)
                 Rectangle()

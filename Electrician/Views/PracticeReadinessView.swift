@@ -66,7 +66,7 @@ struct PracticeReadinessView: View {
                     .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
                 VStack(alignment: .leading, spacing: 3) {
                     Text(profile.targetSummary)
-                        .font(.headline)
+                        .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                     Text("\(profile.editionSummary) study set")
                         .font(.caption)
@@ -89,7 +89,7 @@ struct PracticeReadinessView: View {
                 .font(.system(size: 30, weight: .semibold))
                 .foregroundStyle(readinessColor)
             Text(metrics.title)
-                .font(Theme.display(27))
+                .font(Theme.screenTitle)
                 .foregroundStyle(Theme.ink)
             Text(metrics.message)
                 .font(.subheadline)
@@ -120,9 +120,8 @@ struct PracticeReadinessView: View {
                     .foregroundStyle(Theme.ink)
                 Spacer()
                 Text(value)
-                    .font(.subheadline.weight(.bold))
+                    .font(Theme.numeric(.subheadline, weight: .bold))
                     .foregroundStyle(Theme.voltage)
-                    .monospacedDigit()
             }
             ProgressView(value: progress)
                 .tint(Theme.voltage)

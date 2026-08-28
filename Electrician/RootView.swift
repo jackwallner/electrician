@@ -16,6 +16,6 @@ struct RootView: View {
                     .transition(.asymmetric(insertion: .identity, removal: .opacity))
             }
         }
-        .animation(.easeInOut(duration: 0.35), value: hasOnboarded)
+        .animation(Theme.Motion.screen, value: hasOnboarded)
     }
 }

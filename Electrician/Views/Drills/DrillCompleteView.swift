@@ -28,7 +28,7 @@ struct DrillCompleteView: View {
                 if let score {
                     VStack(spacing: 2) {
                         Text("\(score)/\(total)")
-                            .font(Theme.display(34))
+                            .font(Theme.displayLarge)
                             .foregroundStyle(Theme.voltage)
                             .monospacedDigit()
                         Text("right")
@@ -41,10 +41,10 @@ struct DrillCompleteView: View {
                         .foregroundStyle(Theme.voltage)
                 }
             }
-            .animation(.spring(response: 0.5, dampingFraction: 0.6), value: celebrate)
+            .animation(Theme.Motion.celebrate, value: celebrate)
             VStack(spacing: 8) {
                 Text(headline)
-                    .font(Theme.display(30))
+                    .font(Theme.screenTitle)
                     .foregroundStyle(Theme.ink)
                 Text(subheadline)
                     .font(.body)
@@ -55,7 +55,7 @@ struct DrillCompleteView: View {
                 Image(systemName: "flame.fill")
                     .foregroundStyle(Theme.copper)
                 Text("\(progress.streakCount)-day streak")
-                    .font(.headline)
+                    .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
             }
             .padding(.horizontal, 18)

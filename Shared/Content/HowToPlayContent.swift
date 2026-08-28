@@ -83,7 +83,7 @@ enum HowToPlayContent {
             // Saying where the drills actually go is more useful than implying
             // a curriculum that does not exist yet, and a candidate who finds
             // the gap themselves after paying is right to be annoyed.
-            body: "Four rooms: how the book is organized and how to find an article, conductors and ampacity, the worked calculations, and grounding with motors. On top of those the generator runs five calculation shapes without limit. That is the whole of it right now, and it is deliberately the part of the exam that is pure calculation and pure navigation.",
+            body: "Six rooms: how the book is organized and how to find an article, conductors and ampacity, the installation rules you look up on site, the worked calculations, dwelling service and load calculations, and grounding with motors. On top of those the generator runs \(PracticeSkill.allCases.count) calculation shapes without limit. That is deliberately the part of the exam that is pure calculation and pure navigation.",
             tip: "Services, feeders, load calculations, wiring methods and the special occupancy chapters are not covered yet. Keep studying those from your own book."
         ),
     ]

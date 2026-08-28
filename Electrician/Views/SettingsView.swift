@@ -222,8 +222,12 @@ struct SettingsView: View {
             // The edition is the most important thing on this screen and it used
             // to be buried inside a paragraph. A candidate cannot tell a
             // 2023-cycle answer from a 2026-cycle one by looking at it.
-            LabeledContent("Code edition", value: NECTables.edition)
-            Text("Every number in this app comes from the \(NECTables.edition). Electrician is a study aid, not a code book. It is not affiliated with, endorsed by, or connected to the NFPA. It teaches concepts and calculations in original wording and cites article numbers so you can verify each one yourself. Your jurisdiction may examine against a different edition or amend it locally, so always check the code in force where you work.")
+            NavigationLink {
+                EditionView()
+            } label: {
+                LabeledContent("Code edition", value: NECTables.edition)
+            }
+            Text("Every number in this app comes from the \(NECTables.edition), and every table it computes from is unchanged across the \(NECTables.coverageLabel). Electrician is a study aid, not a code book. It is not affiliated with, endorsed by, or connected to the NFPA. It teaches concepts and calculations in original wording and cites article numbers so you can verify each one yourself. Your jurisdiction may examine against a different edition or amend it locally, so always check the code in force where you work.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }

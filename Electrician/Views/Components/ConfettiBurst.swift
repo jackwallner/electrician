@@ -31,8 +31,15 @@ struct ConfettiBurst: View {
     /// celebration that one screen forgot to check is exactly the one a reader
     /// who turned it off will find. Reads the same key `AppSettings` writes,
     /// defaulting off for the professional audience.
+    ///
+    /// Reduce Motion suppresses it too, and that is not a duplicate of the
+    /// setting: this is the single largest piece of unprompted motion in the
+    /// app, twenty-six pieces of paper tumbling across the whole screen. A
+    /// reader who has asked the system for less movement has asked for this
+    /// specifically, whether or not they have found the app's own toggle.
     static var celebrationsEnabled: Bool {
-        UserDefaults.standard.object(forKey: "settings.celebrations") as? Bool ?? false
+        guard !Theme.Motion.reduced else { return false }
+        return UserDefaults.standard.object(forKey: "settings.celebrations") as? Bool ?? false
     }
 
     private static let colors: [Color] = [
