@@ -25,6 +25,34 @@ from asc_lib import (
 )
 
 
+
+# Apple's own rule, and the reason there is no product item to add here: "The
+# first Non-Consumable In-App Purchase for this app must be submitted for review
+# at the same time that you submit an app version." A product in READY_TO_SUBMIT
+# rides along with the version item; `reviewSubmissionItems` has no
+# inAppPurchaseV2 or subscription relationship to add it with, and
+# `/inAppPurchaseSubmissions` refuses a first product outright. So this only
+# reports what is going along, which is the part worth checking before submit.
+PRODUCT_STATES_NEEDING_REVIEW = {"READY_TO_SUBMIT", "DEVELOPER_ACTION_NEEDED", "REJECTED"}
+
+
+def report_products(c: ASCClient, app_id: str) -> None:
+    riding: list[str] = []
+    for iap in list_all(c, f"/apps/{app_id}/inAppPurchasesV2?limit=200"):
+        state = iap["attributes"].get("state")
+        if state in PRODUCT_STATES_NEEDING_REVIEW:
+            riding.append(f"{iap['attributes'].get('productId')} ({state})")
+    for group in list_all(c, f"/apps/{app_id}/subscriptionGroups?limit=50"):
+        for sub in list_all(c, f"/subscriptionGroups/{group['id']}/subscriptions?limit=200"):
+            state = sub["attributes"].get("state")
+            if state in PRODUCT_STATES_NEEDING_REVIEW:
+                riding.append(f"{sub['attributes'].get('productId')} ({state})")
+    if riding:
+        print("Products submitted with this version: " + ", ".join(sorted(riding)))
+    else:
+        print("No products awaiting first review.")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
@@ -69,6 +97,7 @@ def main() -> int:
         (it.get("relationships", {}).get("appStoreVersion", {}).get("data") or {}).get("id") == vid
         for it in items
     )
+    version_ready = True
     if have:
         print("Version already an item on this submission.")
     else:
@@ -86,7 +115,14 @@ def main() -> int:
         except Exception as e:
             print("ADD ITEM FAILED (version not ready for review):")
             print(str(e)[:4000])
-            return 2
+            version_ready = False
+
+    # 2b. Report the products riding along, so a dead paywall is caught here
+    #     rather than by the first customer who taps Subscribe.
+    report_products(c, app_id)
+
+    if not version_ready:
+        return 2
 
     if args.dry_run:
         print("Dry run: prepared but NOT submitted.")

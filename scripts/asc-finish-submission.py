@@ -9,7 +9,7 @@ Fills gaps the earlier metadata/setup scripts left behind:
   - review contact email aligned with review_information/
 
 App Privacy nutrition labels still have no public ASC API — see
-docs/asc-submission-checklist.md for the answers to fill in the web UI.
+notes/asc-submission-checklist.md for the answers to fill in the web UI.
 """
 from __future__ import annotations
 
