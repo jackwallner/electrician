@@ -16,6 +16,57 @@ from asc_lib import (
 )
 
 
+
+V2 = "https://api.appstoreconnect.apple.com/v2"
+
+
+def _v2(client: ASCClient, path: str) -> dict | None:
+    """The in-app-purchase sub-resources only read back on the v2 path."""
+    import json as _json
+    import urllib.error
+    import urllib.request
+
+    req = urllib.request.Request(f"{V2}{path}", headers={"Authorization": f"Bearer {client.token}"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            return _json.loads(resp.read())
+    except urllib.error.HTTPError:
+        return None
+
+
+def check_products(client: ASCClient, app_id: str) -> None:
+    print("Products riding along with this version:")
+    ok = True
+    for iap in list_all(client, f"/apps/{app_id}/inAppPurchasesV2?limit=200"):
+        pid, iid = iap["attributes"]["productId"], iap["id"]
+        locs = (_v2(client, f"/inAppPurchases/{iid}/inAppPurchaseLocalizations") or {}).get("data") or []
+        parts = {
+            "localization": bool(locs),
+            "price": bool((_v2(client, f"/inAppPurchases/{iid}/iapPriceSchedule") or {}).get("data")),
+            "screenshot": bool((_v2(client, f"/inAppPurchases/{iid}/appStoreReviewScreenshot") or {}).get("data")),
+            "availability": bool((_v2(client, f"/inAppPurchases/{iid}/inAppPurchaseAvailability") or {}).get("data")),
+        }
+        missing = [k for k, v in parts.items() if not v]
+        ok &= not missing
+        print(f"   {pid}: {iap['attributes']['state']}" + (f"  MISSING {', '.join(missing)}" if missing else "  complete"))
+    for group in list_all(client, f"/apps/{app_id}/subscriptionGroups?limit=50"):
+        for sub in list_all(client, f"/subscriptionGroups/{group['id']}/subscriptions?limit=200"):
+            pid, sid = sub["attributes"]["productId"], sub["id"]
+            parts = {
+                "localization": bool(list_all(client, f"/subscriptions/{sid}/subscriptionLocalizations")),
+                "prices": bool(list_all(client, f"/subscriptions/{sid}/prices?limit=5")),
+                "screenshot": bool((client.get(f"/subscriptions/{sid}/appStoreReviewScreenshot") or {}).get("data")),
+                "availability": bool((client.get(f"/subscriptions/{sid}/subscriptionAvailability") or {}).get("data")),
+            }
+            missing = [k for k, v in parts.items() if not v]
+            ok &= not missing
+            level = sub["attributes"].get("groupLevel")
+            print(f"   {pid}: {sub['attributes']['state']} level={level}"
+                  + (f"  MISSING {', '.join(missing)}" if missing else "  complete"))
+    if not ok:
+        print("   ^ an incomplete product is dropped from the submission without an error")
+
+
 def main() -> int:
     key_id, issuer_id, key_path = load_credentials()
     client = ASCClient(bearer_token(key_id, issuer_id, key_path))
@@ -73,6 +124,15 @@ def main() -> int:
         print(f"Age rating declaration: {'present' if ard else 'MISSING'}")
     except Exception as e:
         print(f"Age rating declaration: error {e}")
+
+    # Products. On a FIRST submission these are not separate review items:
+    # Apple refuses a first non-consumable submitted on its own
+    # (FIRST_NON_CONSUMABLE_MUST_BE_SUBMITTED_ON_VERSION) and
+    # reviewSubmissionItems has no in-app-purchase relationship, so the version
+    # item carries them. What decides whether they actually go along is whether
+    # each one is complete, so check the four things that silently drop one:
+    # a localization, a price, an App Review screenshot and an availability.
+    check_products(client, app_id)
 
     # IAP products
     iaps = list_all(client, f"/apps/{app_id}/inAppPurchasesV2?limit=200")
