@@ -1,0 +1,28 @@
+YALNIZCA ABD ELEKTRİK YÖNETMELİĞİ
+Bu uygulamadaki tüm değerler, Amerika Birleşik Devletleri'nde geçerli olan National Electrical Code 2023 standardından gelir. Başka bir ülkenin tesisat yönetmeliği için çalışma yardımcısı değildir ve uygulama İngilizcedir.
+
+ABD elektrikçi sınavı açık kitap yapılır. Bu, kulağa geldiği kadar rahatlatıcı değildir. Süreye karşı yapılır ve aramak zorunda kaldığınız her soru, size hiç ulaşamayacağınız iki soruya mal olur.
+
+HIZLI BULUN
+Bir durumu okuyun ve hiçbir şey açmadan önce maddeyi söyleyin. Madde 310 mu, madde 240 mı. Sınav günü dakikalar kazandıran alıştırma tam olarak budur.
+
+İNSANLARI ELEYEN HESAPLAR
+Akım taşıma kapasitesi ve düzeltme katsayıları, koruma seçimi, boru doluluğu, buat doluluğu, gerilim düşümü, topraklama iletkenleri, motor devreleri ve bir konutun servis hesabı. Her soru sabit bir havuzdan tekrarlanmak yerine üretilir; böylece istediğiniz kadar çalışır ve aynı soruyu iki kez görmezsiniz.
+
+ÖĞRETEN YANLIŞ CEVAPLAR
+Her yanlış seçenek, belirli ve yaygın bir hatanın götürdüğü tam sayıdır. Birini seçtiğinizde, sadece yanıldığınızı değil, hangi hatayı yaptığınızı da öğrenirsiniz.
+
+ÇÖZÜMÜ GÖSTER
+Bir hesabı kaçırdığınızda paragraf değil, numaralandırılmış adımlar alırsınız. Neredeyse kimse aritmetikten kalmaz. Atlanan tek bir adımdan kalınır.
+
+NELER ÜCRETSİZ
+Code Basics, Conductors and Ampacity ve Installation Rules ile sekiz saha hesaplayıcısının tamamı: akım taşıma kapasitesi, boru doluluğu, buat doluluğu, gerilim düşümü, topraklama iletkenleri, motor devreleri, konut yükü ve Ohm yasası.
+
+ELECTRICIAN+
+Worked Calculations, Service and Load Calc ve Grounding and Motors bölümlerini, her bölümde ek soru setlerini, sınırsız üretilmiş alıştırmayı, süreli sınavı ve Code Minute'u açar.
+
+DENEME VE ABONELİKLER
+Uygun Apple Hesapları aylık veya yıllık abonelikte 7 gün ücretsiz kullanım alabilir. Deneme sonrasında ücret Apple Hesabınızdan tahsil edilir ve dönem bitiminden en az 24 saat önce iptal edilmedikçe abonelik otomatik yenilenir. Apple Hesabı ayarlarından yönetebilir veya iptal edebilirsiniz. Ömür boyu seçeneği tek seferlik bir satın alımdır.
+
+YÖNETMELİK HAKKINDA
+Bu uygulamanın NFPA ile bir bağlantısı yoktur ve NFPA tarafından onaylanmamıştır. Kavramları ve hesapları kendi ifadeleriyle anlatır ve her birini kendi yönetmelik kitabınızda arayabilmeniz için madde numaralarını verir. Yönetmelik metnini yeniden yayımlamaz. Her zaman çalıştığınız yerde yürürlükte olan yönetmelikle doğrulayın.

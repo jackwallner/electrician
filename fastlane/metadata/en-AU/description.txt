@@ -1,0 +1,28 @@
+UNITED STATES ELECTRICAL CODE ONLY
+Every value in this app comes from the 2023 National Electrical Code, the standard used in the United States. It is not a study aid for any other country's wiring rules, and the app is in English.
+
+The US electrician licensing exam is open book. That is not the relief it sounds like. It is timed, and every question you have to hunt for costs you two more you never reach.
+
+FIND IT FAST
+Read a scenario and name the article before you open anything. Article 310 or Article 240. This is the drill that saves minutes on exam day.
+
+THE CALCULATIONS THAT FAIL PEOPLE
+Ampacity derating, overcurrent sizing, conduit fill, box fill, voltage drop, grounding conductors, motor circuits and the dwelling service calculation. Each is generated rather than repeated from a fixed bank, so you can practise as long as you want and never see the same problem twice.
+
+WRONG ANSWERS THAT TEACH
+Every incorrect choice is the number you get from one specific, common mistake. Pick one and you learn which mistake you made, not just that you missed.
+
+SHOW THE WORKING
+Miss a calculation and you get numbered steps, not a paragraph. Almost nobody fails these on arithmetic. They fail on one skipped step.
+
+WHAT IS FREE
+Code Basics, Conductors and Ampacity, and Installation Rules, plus all eight field calculators: ampacity, conduit fill, box fill, voltage drop, grounding conductors, motor circuits, dwelling load and Ohm's law.
+
+ELECTRICIAN+
+Unlocks Worked Calculations, Service and Load Calc, and Grounding and Motors, extra sets in every room, endless generated practice, the timed challenge and Code Minute.
+
+TRIAL AND SUBSCRIPTIONS
+Eligible Apple Accounts may receive a 7-day free trial on a monthly or yearly subscription. Payment is charged to your Apple Account after the trial, and the subscription renews automatically unless canceled at least 24 hours before the period ends. Manage or cancel in Apple Account Settings. A lifetime option is a one-time purchase.
+
+A NOTE ON THE CODE
+This app is not affiliated with, endorsed by, or connected to the NFPA. It teaches concepts and calculations in original wording and cites article numbers so you can look each up in your own code book. It does not reproduce code text. Always verify against the code in force where you work.

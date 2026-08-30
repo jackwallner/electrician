@@ -1,0 +1,1 @@
+eletricista,prova,eua,nec,corrente,cabo,bitola,queda,tensao,eletroduto,aterramento,motor,licenca

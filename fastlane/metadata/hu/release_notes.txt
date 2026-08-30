@@ -1,0 +1,1 @@
+Célzott NEC 2023 gyakorlás: generált feladatok, számozott számítási lépések és a saját hibáidra irányuló ismétlés.

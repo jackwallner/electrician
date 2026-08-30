@@ -1,0 +1,28 @@
+KUN DEN AMERIKANSKE ELINSTALLATIONSKODE
+Alle værdier i denne app stammer fra National Electrical Code 2023, den standard der gælder i USA. Appen er ikke et hjælpemiddel til andre landes installationsregler, og den er på engelsk.
+
+Den amerikanske elektrikerprøve er en åben bog-prøve. Det er ikke så stor en lettelse, som det lyder. Der er tid på, og hvert spørgsmål du skal lede efter, koster dig to andre, du aldrig når.
+
+FIND DET HURTIGT
+Læs en situation og nævn artiklen, før du slår noget op. Artikel 310 eller artikel 240. Netop den øvelse sparer minutter på prøvedagen.
+
+DE BEREGNINGER FOLK DUMPER PÅ
+Strømværdi og reduktionsfaktorer, sikring, rørfyldning, dåsefyldning, spændingsfald, jordledere, motorkredse og beregningen af en boligs tilslutning. Hver opgave genereres i stedet for at blive gentaget fra en fast bank, så du kan øve så længe du vil uden at se den samme opgave to gange.
+
+FORKERTE SVAR DER LÆRER DIG NOGET
+Hvert forkert svar er præcis det tal, én bestemt og udbredt fejl giver. Vælger du et af dem, får du at vide hvilken fejl du lavede, ikke bare at du ramte forkert.
+
+VIS UDREGNINGEN
+Rammer du forkert, får du nummererede trin, ikke et afsnit. Næsten ingen dumper på selve regnestykket. Man dumper på ét oversprunget trin.
+
+HVAD ER GRATIS
+Code Basics, Conductors and Ampacity og Installation Rules samt alle otte feltberegnere: strømværdi, rørfyldning, dåsefyldning, spændingsfald, jordledere, motorkredse, boligbelastning og Ohms lov.
+
+ELECTRICIAN+
+Låser op for Worked Calculations, Service and Load Calc og Grounding and Motors, ekstra sæt i hvert område, ubegrænset genereret træning, tidsprøven og Code Minute.
+
+PRØVEPERIODE OG ABONNEMENTER
+Berettigede Apple-konti kan få 7 dage gratis på et måneds- eller årsabonnement. Efter prøveperioden trækkes beløbet på din Apple-konto, og abonnementet fornyes automatisk, medmindre det opsiges mindst 24 timer før periodens udløb. Administrer eller opsig i indstillingerne for din Apple-konto. Livstidsadgang er et engangskøb.
+
+OM KODEN
+Denne app er ikke forbundet med eller godkendt af NFPA. Den forklarer begreber og beregninger med egne ord og angiver artikelnumre, så du kan slå hver enkelt op i din egen kodebog. Den gengiver ikke lovtekst. Kontrollér altid mod de regler, der gælder dér hvor du arbejder.

@@ -1,0 +1,28 @@
+VAIN YHDYSVALTAIN SÄHKÖKOODI
+Kaikki sovelluksen arvot perustuvat National Electrical Code 2023 -standardiin, jota käytetään Yhdysvalloissa. Sovellus ei ole opiskeluapu minkään muun maan sähköasennusmääräyksiin, ja se on englanninkielinen.
+
+Yhdysvaltain sähköasentajakoe on avoin kirjakoe. Se ei ole niin suuri helpotus kuin miltä kuulostaa. Koe on aikarajattu, ja jokainen kysymys, jonka vastausta joudut etsimään, maksaa kaksi muuta, joihin et koskaan ehdi.
+
+LÖYDÄ NOPEASTI
+Lue tilanne ja nimeä artikla ennen kuin avaat mitään. Artikla 310 vai artikla 240. Juuri tämä harjoitus säästää minuutteja koepäivänä.
+
+LASKUT, JOIHIN IHMISET KAATUVAT
+Kuormitettavuus ja korjauskertoimet, ylivirtasuojan mitoitus, putken täyttöaste, rasian täyttö, jännitehäviö, suojamaadoitusjohtimet, moottoripiirit ja asunnon liittymälaskenta. Jokainen tehtävä luodaan uudelleen sen sijaan että se toistettaisiin kiinteästä tehtäväpankista, joten voit harjoitella niin kauan kuin haluat näkemättä samaa tehtävää kahdesti.
+
+VÄÄRÄT VASTAUKSET, JOTKA OPETTAVAT
+Jokainen väärä vaihtoehto on juuri se luku, joka syntyy yhdestä tietystä yleisestä virheestä. Kun valitset sellaisen, saat tietää minkä virheen teit, et vain sitä että vastasit väärin.
+
+NÄYTÄ LASKUTOIMITUS
+Jos lasket väärin, saat numeroidut vaiheet etkä kappaletta tekstiä. Lähes kukaan ei kaadu itse laskutoimitukseen. Kaadutaan yhteen ylihypättyyn vaiheeseen.
+
+MIKÄ ON ILMAISTA
+Code Basics, Conductors and Ampacity ja Installation Rules sekä kaikki kahdeksan kenttälaskuria: kuormitettavuus, putken täyttö, rasian täyttö, jännitehäviö, suojamaadoitusjohtimet, moottoripiirit, asunnon kuorma ja Ohmin laki.
+
+ELECTRICIAN+
+Avaa osiot Worked Calculations, Service and Load Calc ja Grounding and Motors, lisätehtävät jokaisessa osiossa, rajattoman generoidun harjoittelun, aikahaasteen ja Code Minuten.
+
+KOKEILU JA TILAUKSET
+Kelpoiset Apple-tilit voivat saada 7 päivää maksutta kuukausi- tai vuositilauksesta. Kokeilun jälkeen veloitus tehdään Apple-tililtäsi, ja tilaus uusiutuu automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen jakson päättymistä. Hallinnoi tai peruuta Apple-tilisi asetuksista. Elinikäinen vaihtoehto on kertaosto.
+
+HUOMAUTUS KOODISTA
+Sovellus ei ole yhteydessä NFPA:han eikä sen hyväksymä. Se opettaa käsitteet ja laskennat omin sanoin ja mainitsee artiklanumerot, jotta voit tarkistaa jokaisen omasta koodikirjastasi. Se ei toista säädöstekstiä. Tarkista aina työpaikallasi voimassa olevat määräykset.

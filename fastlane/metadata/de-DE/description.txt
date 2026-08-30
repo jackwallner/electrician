@@ -1,0 +1,28 @@
+NUR DER US-AMERIKANISCHE ELEKTROCODE
+Alle Werte in dieser App stammen aus dem National Electrical Code 2023, dem in den USA geltenden Standard. Sie ist keine Lernhilfe für die Elektroinstallationsregeln anderer Länder, und die App ist auf Englisch.
+
+Die US-Elektrikerprüfung ist eine Open-Book-Prüfung. Das ist keine so große Erleichterung, wie es klingt. Sie läuft unter Zeitdruck, und jede Frage, für die Sie lange suchen müssen, kostet Sie zwei weitere, die Sie nie erreichen.
+
+SCHNELL FINDEN
+Lesen Sie eine Situation und nennen Sie den Artikel, bevor Sie das Buch aufschlagen. Artikel 310 oder Artikel 240. Genau diese Übung spart am Prüfungstag Minuten.
+
+DIE BERECHNUNGEN, AN DENEN ES SCHEITERT
+Strombelastbarkeit und Reduktionsfaktoren, Absicherung, Rohrfüllung, Dosenfüllung, Spannungsfall, Schutzleiter, Motorstromkreise und die Hausanschlussberechnung. Jede Aufgabe wird neu erzeugt statt aus einem festen Pool wiederholt, sodass Sie beliebig lange üben können, ohne dieselbe Aufgabe zweimal zu sehen.
+
+FALSCHE ANTWORTEN, DIE ETWAS BEIBRINGEN
+Jede falsche Antwortmöglichkeit ist genau die Zahl, die aus einem bestimmten, häufigen Fehler entsteht. Wenn Sie eine davon wählen, erfahren Sie, welchen Fehler Sie gemacht haben, und nicht nur, dass Sie danebenlagen.
+
+DER RECHENWEG
+Bei einer falschen Berechnung erhalten Sie nummerierte Schritte statt eines Fließtextes. Kaum jemand scheitert hier an der Arithmetik. Man scheitert an einem übersprungenen Schritt.
+
+WAS KOSTENLOS IST
+Code Basics, Conductors and Ampacity und Installation Rules sowie alle acht Feldrechner: Strombelastbarkeit, Rohrfüllung, Dosenfüllung, Spannungsfall, Schutzleiter, Motorstromkreise, Hausanschlusslast und ohmsches Gesetz.
+
+ELECTRICIAN+
+Schaltet Worked Calculations, Service and Load Calc sowie Grounding and Motors frei, dazu Zusatzaufgaben in jedem Bereich, unbegrenzt generierte Übungen, die Zeitprüfung und Code Minute.
+
+TESTZEITRAUM UND ABONNEMENTS
+Berechtigte Apple-Accounts erhalten unter Umständen 7 Tage kostenlos bei einem Monats- oder Jahresabo. Nach dem Testzeitraum wird Ihr Apple-Account belastet, und das Abo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ablauf des Zeitraums gekündigt wird. Verwalten oder kündigen können Sie es in den Einstellungen Ihres Apple-Accounts. Die Lifetime-Option ist ein einmaliger Kauf.
+
+HINWEIS ZUM CODE
+Diese App steht in keiner Verbindung zur NFPA und wird von ihr weder unterstützt noch empfohlen. Sie vermittelt Konzepte und Berechnungen in eigenen Worten und nennt Artikelnummern, damit Sie jede Angabe in Ihrem eigenen Codebuch nachschlagen können. Sie gibt keinen Gesetzestext wieder. Prüfen Sie immer anhand der an Ihrem Arbeitsort geltenden Vorschriften.

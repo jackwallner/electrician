@@ -1,0 +1,1 @@
+villanyszerelo,vizsga,usa,nec,aram,kabel,keresztmetszet,feszultsegeses,cso,foldeles,motor

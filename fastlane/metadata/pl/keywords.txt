@@ -1,0 +1,1 @@
+elektryk,egzamin,usa,nec,prad,kabel,przekroj,spadek,napiecie,rura,uziemienie,silnik,licencja

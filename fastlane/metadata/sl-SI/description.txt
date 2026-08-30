@@ -1,0 +1,28 @@
+SAMO AMERIŠKI ELEKTROTEHNIŠKI PREDPIS
+Vse vrednosti v tej aplikaciji izhajajo iz National Electrical Code 2023, standarda, ki velja v Združenih državah. To ni učni pripomoček za predpise o inštalacijah katere koli druge države, aplikacija pa je v angleščini.
+
+Ameriški izpit za električarja se opravlja z odprto knjigo. To je manjša olajšava, kot se sliši. Izpit je časovno omejen in vsako vprašanje, ki ga moraš iskati, te stane dve nadaljnji, do katerih nikoli ne prideš.
+
+HITRO NAJDI
+Preberi situacijo in poimenuj člen, preden karkoli odpreš. Člen 310 ali člen 240. Prav ta vaja prihrani minute na dan izpita.
+
+IZRAČUNI, NA KATERIH LJUDJE PADEJO
+Tokovna obremenljivost in korekcijski faktorji, dimenzioniranje zaščite, polnjenost cevi, polnjenost doze, padec napetosti, zaščitni vodniki, motorni tokokrogi in izračun priključka stanovanjske enote. Vsaka naloga se generira, namesto da bi se ponavljala iz stalne baze, zato lahko vadiš, kolikor želiš, in iste naloge ne vidiš dvakrat.
+
+NAPAČNI ODGOVORI, KI UČIJO
+Vsak napačen odgovor je natanko tisto število, do katerega vodi ena določena, pogosta napaka. Če ga izbereš, izveš, katero napako si naredil, ne le da si zgrešil.
+
+POKAŽI POSTOPEK
+Če zgrešiš izračun, dobiš oštevilčene korake in ne odstavka besedila. Skoraj nihče ne pade zaradi računanja. Pade se zaradi enega izpuščenega koraka.
+
+KAJ JE BREZPLAČNO
+Code Basics, Conductors and Ampacity in Installation Rules ter vseh osem terenskih kalkulatorjev: obremenljivost, polnjenost cevi, polnjenost doze, padec napetosti, zaščitni vodniki, motorni tokokrogi, obremenitev stanovanja in Ohmov zakon.
+
+ELECTRICIAN+
+Odklene Worked Calculations, Service and Load Calc in Grounding and Motors, dodatne sklope v vsakem delu, neomejeno generirano vadbo, časovni izziv in Code Minute.
+
+POSKUSNO OBDOBJE IN NAROČNINE
+Upravičeni računi Apple lahko prejmejo 7 dni brezplačno pri mesečni ali letni naročnini. Po poskusnem obdobju se znesek zaračuna z vašega računa Apple, naročnina pa se samodejno podaljša, razen če je preklicana vsaj 24 ur pred koncem obdobja. Upravljajte ali prekličite jo v nastavitvah računa Apple. Doživljenjska možnost je enkratni nakup.
+
+OPOMBA O PREDPISU
+Ta aplikacija ni povezana z NFPA in je ta ne odobrava. Pojme in izračune razlaga z lastnimi besedami in navaja številke členov, da lahko vsakega preverite v svojem predpisu. Ne reproducira besedila standarda. Vedno preverite po predpisu, ki velja tam, kjer delate.

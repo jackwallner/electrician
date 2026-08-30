@@ -1,0 +1,28 @@
+CHỈ ÁP DỤNG BỘ QUY PHẠM ĐIỆN HOA KỲ
+Mọi giá trị trong ứng dụng đều lấy từ National Electrical Code 2023, tiêu chuẩn được dùng tại Hoa Kỳ. Đây không phải tài liệu ôn tập cho quy phạm lắp đặt điện của bất kỳ nước nào khác, và ứng dụng hiển thị bằng tiếng Anh.
+
+Kỳ thi thợ điện tại Hoa Kỳ được mở sách. Điều đó nhẹ nhõm ít hơn bạn tưởng. Bài thi tính giờ, và mỗi câu bạn phải lật sách tìm sẽ lấy mất hai câu khác mà bạn không bao giờ kịp làm.
+
+TÌM THẬT NHANH
+Đọc một tình huống rồi gọi tên điều khoản trước khi mở bất cứ thứ gì. Article 310 hay Article 240. Chính bài luyện này giúp bạn tiết kiệm nhiều phút trong ngày thi.
+
+NHỮNG PHÉP TÍNH ĐÁNH TRƯỢT NGƯỜI TA
+Khả năng tải dòng và hệ số hiệu chỉnh, chọn thiết bị bảo vệ, hệ số điền đầy ống luồn, thể tích hộp nối, sụt áp, dây tiếp địa, mạch động cơ và bài toán tính công suất vào nhà ở. Mỗi bài được tạo mới thay vì lặp lại từ một ngân hàng cố định, nên bạn luyện bao lâu tùy thích mà không gặp lại cùng một bài.
+
+ĐÁP ÁN SAI CÓ DẠY ĐƯỢC ĐIỀU GÌ
+Mỗi phương án sai đúng bằng con số mà một lỗi phổ biến cụ thể tạo ra. Chọn nó, bạn biết mình đã mắc lỗi nào, chứ không chỉ biết là đã sai.
+
+HIỆN RÕ CÁCH LÀM
+Làm sai một phép tính, bạn nhận được các bước có đánh số chứ không phải một đoạn văn. Gần như không ai trượt vì tính toán. Người ta trượt vì một bước bị bỏ qua.
+
+NHỮNG GÌ MIỄN PHÍ
+Code Basics, Conductors and Ampacity và Installation Rules, cùng cả tám công cụ tính tại hiện trường: khả năng tải dòng, điền đầy ống luồn, thể tích hộp nối, sụt áp, dây tiếp địa, mạch động cơ, phụ tải nhà ở và định luật Ohm.
+
+ELECTRICIAN+
+Mở khóa Worked Calculations, Service and Load Calc và Grounding and Motors, các bộ bài bổ sung trong mỗi phần, luyện tập tạo tự động không giới hạn, thử thách tính giờ và Code Minute.
+
+DÙNG THỬ VÀ ĐĂNG KÝ
+Các Tài khoản Apple đủ điều kiện có thể nhận 7 ngày miễn phí khi đăng ký theo tháng hoặc theo năm. Sau thời gian dùng thử, khoản phí sẽ được tính vào Tài khoản Apple của bạn và gói tự động gia hạn trừ khi hủy chậm nhất 24 giờ trước khi kỳ hiện tại kết thúc. Quản lý hoặc hủy trong cài đặt Tài khoản Apple. Tùy chọn trọn đời là khoản mua một lần.
+
+GHI CHÚ VỀ BỘ QUY PHẠM
+Ứng dụng không liên kết với NFPA và không được NFPA chứng thực. Ứng dụng giảng khái niệm và phép tính bằng lời của chính mình và dẫn số điều khoản để bạn tra lại từng mục trong cuốn quy phạm của mình. Ứng dụng không sao chép nguyên văn quy phạm. Luôn đối chiếu với quy phạm đang có hiệu lực tại nơi bạn làm việc.

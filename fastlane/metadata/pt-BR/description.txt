@@ -1,0 +1,28 @@
+APENAS O CÓDIGO ELÉTRICO DOS ESTADOS UNIDOS
+Todos os valores deste app vêm do National Electrical Code 2023, a norma usada nos Estados Unidos. Não é material de estudo para a NBR 5410 nem para as regras de instalação de qualquer outro país, e o app está em inglês.
+
+A prova de eletricista dos Estados Unidos é com consulta. Isso alivia menos do que parece. Ela é cronometrada, e cada questão que você precisa procurar custa outras duas que você nunca alcança.
+
+ACHE RÁPIDO
+Leia uma situação e diga qual é o artigo antes de abrir qualquer coisa. Artigo 310 ou artigo 240. É justamente esse exercício que economiza minutos no dia da prova.
+
+OS CÁLCULOS QUE REPROVAM
+Ampacidade e fatores de correção, dimensionamento da proteção, ocupação de eletroduto, volume de caixa, queda de tensão, condutores de aterramento, circuitos de motor e o cálculo de entrada de uma residência. Cada problema é gerado em vez de repetido de um banco fixo, então você pode praticar o quanto quiser sem ver o mesmo problema duas vezes.
+
+RESPOSTAS ERRADAS QUE ENSINAM
+Cada alternativa errada é exatamente o número a que leva um erro específico e comum. Se você escolher uma, descobre qual erro cometeu, não apenas que errou.
+
+MOSTRE A CONTA
+Se errar um cálculo, você recebe passos numerados, não um parágrafo. Quase ninguém reprova na aritmética. Reprova-se por um passo pulado.
+
+O QUE É GRATUITO
+Code Basics, Conductors and Ampacity e Installation Rules, além das oito calculadoras de campo: ampacidade, ocupação de eletroduto, volume de caixa, queda de tensão, condutores de aterramento, circuitos de motor, carga residencial e lei de Ohm.
+
+ELECTRICIAN+
+Libera Worked Calculations, Service and Load Calc e Grounding and Motors, séries extras em cada seção, prática gerada ilimitada, o desafio cronometrado e o Code Minute.
+
+TESTE E ASSINATURAS
+Contas Apple elegíveis podem receber 7 dias grátis em uma assinatura mensal ou anual. Após o teste, a cobrança é feita na sua conta Apple e a assinatura é renovada automaticamente, a menos que seja cancelada pelo menos 24 horas antes do fim do período. Gerencie ou cancele nos ajustes da sua conta Apple. A opção vitalícia é uma compra única.
+
+SOBRE O CÓDIGO
+Este app não é afiliado à NFPA nem endossado por ela. Ele ensina conceitos e cálculos com palavras próprias e cita números de artigo para que você possa conferir cada um no seu próprio código. Não reproduz texto normativo. Confira sempre com o código em vigor onde você trabalha.

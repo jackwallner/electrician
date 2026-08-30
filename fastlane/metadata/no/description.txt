@@ -1,0 +1,28 @@
+BARE DEN AMERIKANSKE ELKODEN
+Alle verdier i denne appen kommer fra National Electrical Code 2023, standarden som gjelder i USA. Den er ikke et studiehjelpemiddel for andre lands installasjonsregler, og appen er på engelsk.
+
+Den amerikanske elektrikerprøven er en åpen bok-prøve. Det er ikke den lettelsen det høres ut som. Den går på tid, og hvert spørsmål du må lete etter, koster deg to andre du aldri rekker.
+
+FINN DET RASKT
+Les en situasjon og nevn artikkelen før du slår opp noe. Artikkel 310 eller artikkel 240. Nettopp den øvelsen sparer minutter på prøvedagen.
+
+BEREGNINGENE FOLK STRYKER PÅ
+Strømføringsevne og reduksjonsfaktorer, vern, rørfylling, boksfylling, spenningsfall, jordledere, motorkretser og beregningen av en boligs tilknytning. Hver oppgave genereres i stedet for å gjentas fra en fast bank, så du kan øve så lenge du vil uten å se samme oppgave to ganger.
+
+GALE SVAR SOM LÆRER DEG NOE
+Hvert galt svar er nøyaktig det tallet én bestemt og vanlig feil gir. Velger du ett av dem, får du vite hvilken feil du gjorde, ikke bare at du bommet.
+
+VIS UTREGNINGEN
+Bommer du på en beregning, får du nummererte trinn, ikke et avsnitt. Nesten ingen stryker på selve regnestykket. Man stryker på ett hoppet trinn.
+
+HVA SOM ER GRATIS
+Code Basics, Conductors and Ampacity og Installation Rules, samt alle åtte feltkalkulatorer: strømføringsevne, rørfylling, boksfylling, spenningsfall, jordledere, motorkretser, boliglast og Ohms lov.
+
+ELECTRICIAN+
+Låser opp Worked Calculations, Service and Load Calc og Grounding and Motors, ekstra sett i hvert område, ubegrenset generert øving, tidsprøven og Code Minute.
+
+PRØVEPERIODE OG ABONNEMENTER
+Kvalifiserte Apple-kontoer kan få 7 dager gratis på et måneds- eller årsabonnement. Etter prøveperioden belastes Apple-kontoen din, og abonnementet fornyes automatisk med mindre det sies opp minst 24 timer før perioden er over. Administrer eller si opp i innstillingene for Apple-kontoen din. Livstidsvalget er et engangskjøp.
+
+OM KODEN
+Denne appen er ikke tilknyttet eller godkjent av NFPA. Den forklarer begreper og beregninger med egne ord og oppgir artikkelnumre slik at du kan slå opp hver enkelt i din egen kodebok. Den gjengir ikke lovtekst. Kontroller alltid mot reglene som gjelder der du arbeider.

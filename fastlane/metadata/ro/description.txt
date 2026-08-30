@@ -1,0 +1,28 @@
+DOAR CODUL ELECTRIC AL STATELOR UNITE
+Toate valorile din această aplicație provin din National Electrical Code 2023, standardul folosit în Statele Unite. Nu este un material de studiu pentru normativele de instalații ale altei țări, iar aplicația este în limba engleză.
+
+Examenul american de electrician se dă cu cartea deschisă. Este o ușurare mai mică decât pare. Este cronometrat, iar fiecare întrebare pe care trebuie să o cauți te costă alte două la care nu mai ajungi.
+
+GĂSEȘTE REPEDE
+Citește o situație și spune articolul înainte să deschizi ceva. Articolul 310 sau articolul 240. Tocmai acest exercițiu îți salvează minute în ziua examenului.
+
+CALCULELE CARE PICĂ OAMENII
+Capacitatea de curent și factorii de corecție, dimensionarea protecției, gradul de umplere a tubului, umplerea dozei, căderea de tensiune, conductoarele de împământare, circuitele de motor și calculul branșamentului unei locuințe. Fiecare problemă este generată, nu reluată dintr-o bancă fixă, așa că poți exersa oricât fără să vezi aceeași problemă de două ori.
+
+RĂSPUNSURI GREȘITE CARE TE ÎNVAȚĂ
+Fiecare variantă greșită este exact numărul la care duce o anumită greșeală frecventă. Dacă alegi una, afli ce greșeală ai făcut, nu doar că ai ratat.
+
+ARATĂ REZOLVAREA
+Dacă greșești un calcul, primești pași numerotați, nu un paragraf. Aproape nimeni nu pică din cauza aritmeticii. Se pică din cauza unui pas sărit.
+
+CE ESTE GRATUIT
+Code Basics, Conductors and Ampacity și Installation Rules, plus toate cele opt calculatoare de teren: capacitate de curent, umplere tub, umplere doză, cădere de tensiune, conductoare de împământare, circuite de motor, sarcina locuinței și legea lui Ohm.
+
+ELECTRICIAN+
+Deblochează Worked Calculations, Service and Load Calc și Grounding and Motors, seturi suplimentare în fiecare secțiune, exersare generată nelimitată, proba cronometrată și Code Minute.
+
+PERIOADĂ DE PROBĂ ȘI ABONAMENTE
+Conturile Apple eligibile pot primi 7 zile gratuite la un abonament lunar sau anual. După perioada de probă, plata se face din contul tău Apple, iar abonamentul se reînnoiește automat dacă nu este anulat cu cel puțin 24 de ore înainte de încheierea perioadei. Îl poți administra sau anula din setările contului Apple. Opțiunea pe viață este o achiziție unică.
+
+DESPRE COD
+Această aplicație nu este afiliată NFPA și nu este avizată de aceasta. Explică noțiunile și calculele cu cuvinte proprii și citează numere de articol ca să poți verifica fiecare lucru în propriul tău cod. Nu reproduce textul normativ. Verifică întotdeauna după codul în vigoare acolo unde lucrezi.

@@ -1,0 +1,1 @@
+eletricista,exame,eua,nec,corrente,cabo,seccao,queda,tensao,tubo,terra,motor,licenca,estudo

@@ -1,0 +1,28 @@
+KIZÁRÓLAG AZ EGYESÜLT ÁLLAMOK VILLAMOS ELŐÍRÁSA
+Az alkalmazás minden értéke a National Electrical Code 2023 szabványból származik, amely az Egyesült Államokban érvényes. Nem tanulási segédlet más ország szerelési előírásaihoz, és az alkalmazás angol nyelvű.
+
+Az amerikai villanyszerelő vizsga nyitott könyves. Ez kisebb megkönnyebbülés, mint amilyennek hangzik. Időre megy, és minden kérdés, amelynek utána kell néznie, két továbbiba kerül, amelyekhez soha nem jut el.
+
+TALÁLJA MEG GYORSAN
+Olvasson el egy helyzetet, és nevezze meg a cikket, mielőtt bármit kinyitna. 310-es cikk vagy 240-es cikk. Pontosan ez a gyakorlat spórol perceket a vizsga napján.
+
+A SZÁMÍTÁSOK, AMELYEKEN AZ EMBEREK ELBUKNAK
+Áramterhelhetőség és korrekciós tényezők, védelem méretezése, csőkitöltés, dobozkitöltés, feszültségesés, védővezetők, motoráramkörök és egy lakóépület bekötésének számítása. Minden feladat generálva készül, nem pedig egy rögzített feladatbankból ismétlődik, így addig gyakorolhat, ameddig akar, és ugyanazt a feladatot soha nem látja kétszer.
+
+HIBÁS VÁLASZOK, AMELYEK TANÍTANAK
+Minden hibás válaszlehetőség pontosan az a szám, amelyhez egyetlen konkrét, gyakori hiba vezet. Ha kiválasztja, megtudja, milyen hibát követett el, nem csak azt, hogy tévedett.
+
+MUTASSA A LEVEZETÉST
+Ha elront egy számítást, számozott lépéseket kap, nem egy bekezdést. Szinte senki sem bukik el a számoláson. Egyetlen kihagyott lépésen buknak el.
+
+MI INGYENES
+Code Basics, Conductors and Ampacity és Installation Rules, valamint mind a nyolc terepi kalkulátor: áramterhelhetőség, csőkitöltés, dobozkitöltés, feszültségesés, védővezetők, motoráramkörök, lakásterhelés és Ohm törvénye.
+
+ELECTRICIAN+
+Feloldja a Worked Calculations, a Service and Load Calc és a Grounding and Motors részt, minden szakaszban további feladatsorokat, korlátlan generált gyakorlást, az időre menő próbát és a Code Minute-ot.
+
+PRÓBAIDŐSZAK ÉS ELŐFIZETÉSEK
+A jogosult Apple-fiókok 7 nap ingyenes időszakot kaphatnak havi vagy éves előfizetéshez. A próbaidőszak után a díjat az Apple-fiókjáról vonjuk le, és az előfizetés automatikusan megújul, hacsak legalább 24 órával az időszak vége előtt nem mondja le. Az Apple-fiók beállításaiban kezelheti vagy mondhatja le. Az örökös változat egyszeri vásárlás.
+
+MEGJEGYZÉS AZ ELŐÍRÁSRÓL
+Ez az alkalmazás nem áll kapcsolatban az NFPA-val, és az nem hagyta jóvá. A fogalmakat és számításokat saját szavaival magyarázza, és cikkszámokat ad meg, hogy mindegyiket utánanézhesse a saját előírásában. Nem közli a szabvány szövegét. Mindig ellenőrizze a munkavégzés helyén hatályos előírás alapján.

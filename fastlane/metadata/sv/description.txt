@@ -1,0 +1,28 @@
+ENDAST DEN AMERIKANSKA ELKODEN
+Alla värden i appen kommer från National Electrical Code 2023, standarden som gäller i USA. Den är inte ett studiestöd för något annat lands installationsregler, och appen är på engelska.
+
+Det amerikanska elektrikerprovet är ett prov med öppen bok. Det är inte den lättnad det låter som. Det är tidsbegränsat, och varje fråga du måste leta efter kostar dig två till som du aldrig hinner.
+
+HITTA SNABBT
+Läs ett scenario och namnge artikeln innan du slår upp något. Artikel 310 eller artikel 240. Just den övningen sparar minuter på provdagen.
+
+BERÄKNINGARNA SOM FÄLLER FOLK
+Strömtålighet och reduktionsfaktorer, säkringsstorlek, rörfyllnad, dosfyllnad, spänningsfall, skyddsledare, motorkretsar och serviceberäkningen för en bostad. Varje uppgift genereras i stället för att upprepas ur en fast bank, så du kan öva hur länge du vill utan att se samma uppgift två gånger.
+
+FEL SVAR SOM LÄR DIG NÅGOT
+Varje felaktigt alternativ är exakt det tal som ett visst vanligt misstag ger. Väljer du ett av dem får du veta vilket misstag du gjorde, inte bara att du svarade fel.
+
+VISA UTRÄKNINGEN
+Missar du en beräkning får du numrerade steg, inte ett stycke text. Nästan ingen kuggar på aritmetiken. Man kuggar på ett överhoppat steg.
+
+VAD SOM ÄR GRATIS
+Code Basics, Conductors and Ampacity och Installation Rules, plus alla åtta fältkalkylatorer: strömtålighet, rörfyllnad, dosfyllnad, spänningsfall, skyddsledare, motorkretsar, bostadslast och Ohms lag.
+
+ELECTRICIAN+
+Låser upp Worked Calculations, Service and Load Calc och Grounding and Motors, extra uppsättningar i varje del, obegränsad genererad övning, tidsutmaningen och Code Minute.
+
+PROVPERIOD OCH PRENUMERATIONER
+Berättigade Apple-konton kan få 7 dagar gratis på en månads- eller årsprenumeration. Efter provperioden dras beloppet från ditt Apple-konto och prenumerationen förnyas automatiskt om den inte sägs upp minst 24 timmar innan perioden tar slut. Hantera eller säg upp i inställningarna för ditt Apple-konto. Livstidsalternativet är ett engångsköp.
+
+OM KODEN
+Appen har ingen koppling till NFPA och är inte godkänd av NFPA. Den förklarar begrepp och beräkningar med egna ord och anger artikelnummer så att du kan slå upp varje uppgift i din egen kodbok. Den återger inte lagtext. Kontrollera alltid mot de regler som gäller där du arbetar.

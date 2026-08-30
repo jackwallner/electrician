@@ -1,0 +1,1 @@
+elektricar,izpit,zda,nec,tok,kabel,presek,padec,napetost,cev,ozemljitev,motor,licenca

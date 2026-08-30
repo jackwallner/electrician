@@ -1,0 +1,28 @@
+SOLO EL CÓDIGO ELÉCTRICO DE ESTADOS UNIDOS
+Todos los valores de esta app proceden del National Electrical Code 2023, la norma vigente en Estados Unidos. No es material de estudio para el reglamento de instalaciones de ningún otro país, y la app está en inglés.
+
+El examen de electricista de Estados Unidos es de libro abierto. Eso alivia menos de lo que parece. Está cronometrado, y cada pregunta que tienes que buscar te cuesta otras dos a las que nunca llegas.
+
+ENCUÉNTRALO RÁPIDO
+Lee una situación y nombra el artículo antes de abrir nada. Artículo 310 o artículo 240. Justo ese ejercicio es el que ahorra minutos el día del examen.
+
+LOS CÁLCULOS QUE SUSPENDEN A LA GENTE
+Ampacidad y factores de corrección, calibre de protección, llenado de tubo, llenado de caja, caída de tensión, conductores de puesta a tierra, circuitos de motor y el cálculo de acometida de una vivienda. Cada problema se genera en lugar de repetirse de un banco fijo, así que puedes practicar todo lo que quieras sin ver el mismo problema dos veces.
+
+RESPUESTAS INCORRECTAS QUE ENSEÑAN
+Cada opción incorrecta es exactamente el número al que lleva un error concreto y habitual. Si eliges una, sabrás qué error cometiste, no solo que fallaste.
+
+MUESTRA EL DESARROLLO
+Si fallas un cálculo, obtienes pasos numerados, no un párrafo. Casi nadie suspende por la aritmética. Se suspende por un paso omitido.
+
+QUÉ ES GRATIS
+Code Basics, Conductors and Ampacity e Installation Rules, además de las ocho calculadoras de campo: ampacidad, llenado de tubo, llenado de caja, caída de tensión, conductores de tierra, circuitos de motor, carga de vivienda y ley de Ohm.
+
+ELECTRICIAN+
+Desbloquea Worked Calculations, Service and Load Calc y Grounding and Motors, series adicionales en cada sección, práctica generada ilimitada, el reto cronometrado y Code Minute.
+
+PRUEBA Y SUSCRIPCIONES
+Las cuentas de Apple que reúnan los requisitos pueden obtener 7 días gratis en una suscripción mensual o anual. Al terminar la prueba se cobra en tu cuenta de Apple y la suscripción se renueva automáticamente salvo que se cancele al menos 24 horas antes de que acabe el periodo. Gestiona o cancela en los ajustes de tu cuenta de Apple. La opción vitalicia es una compra única.
+
+NOTA SOBRE EL CÓDIGO
+Esta app no está afiliada a la NFPA ni cuenta con su respaldo. Explica conceptos y cálculos con palabras propias y cita números de artículo para que puedas consultar cada uno en tu propio código. No reproduce texto normativo. Verifica siempre con el código vigente donde trabajas.

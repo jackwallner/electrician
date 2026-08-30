@@ -1,0 +1,1 @@
+elektriker,prov,usa,nec,strom,kabel,area,spanningsfall,ror,jordning,motor,licens,studier,elteknik

@@ -1,0 +1,1 @@
+electricista,examen,eeuu,nec,corriente,cable,seccion,caida,tension,tubo,tierra,motor,licencia

@@ -1,0 +1,28 @@
+NOMÉS EL CODI ELÈCTRIC DELS ESTATS UNITS
+Tots els valors d'aquesta app provenen del National Electrical Code 2023, la norma vigent als Estats Units. No és material d'estudi per al reglament d'instal·lacions de cap altre país, i l'app és en anglès.
+
+L'examen d'electricista dels Estats Units és de llibre obert. Això alleuja menys del que sembla. Va cronometrat, i cada pregunta que has de buscar te'n costa dues més que no arribes a respondre.
+
+TROBA-HO DE PRESSA
+Llegeix una situació i digues quin article és abans d'obrir res. Article 310 o article 240. És justament aquest exercici el que t'estalvia minuts el dia de l'examen.
+
+ELS CÀLCULS QUE FAN SUSPENDRE
+Intensitat admissible i factors de correcció, calibre de la protecció, ompliment de tub, ompliment de caixa, caiguda de tensió, conductors de terra, circuits de motor i el càlcul d'escomesa d'un habitatge. Cada problema es genera en lloc de repetir-se d'un banc fix, així que pots practicar tant com vulguis sense veure mai el mateix problema dues vegades.
+
+RESPOSTES ERRÒNIES QUE ENSENYEN
+Cada opció incorrecta és exactament el número al qual porta un error concret i habitual. Si en tries una, sabràs quin error has comès, no només que has fallat.
+
+MOSTRA EL DESENVOLUPAMENT
+Si falles un càlcul, obtens passos numerats, no un paràgraf. Gairebé ningú no suspèn per l'aritmètica. Se suspèn per un pas omès.
+
+QUÈ ÉS GRATUÏT
+Code Basics, Conductors and Ampacity i Installation Rules, a més de les vuit calculadores de camp: intensitat admissible, ompliment de tub, ompliment de caixa, caiguda de tensió, conductors de terra, circuits de motor, càrrega d'habitatge i llei d'Ohm.
+
+ELECTRICIAN+
+Desbloqueja Worked Calculations, Service and Load Calc i Grounding and Motors, sèries addicionals a cada secció, pràctica generada il·limitada, el repte cronometrat i el Code Minute.
+
+PROVA I SUBSCRIPCIONS
+Els comptes d'Apple que compleixin els requisits poden obtenir 7 dies gratis en una subscripció mensual o anual. En acabar la prova es cobra al teu compte d'Apple i la subscripció es renova automàticament tret que es cancel·li com a mínim 24 hores abans que acabi el període. Gestiona-la o cancel·la-la als ajustos del teu compte d'Apple. L'opció vitalícia és una compra única.
+
+NOTA SOBRE EL CODI
+Aquesta app no està afiliada a la NFPA ni compta amb el seu suport. Explica conceptes i càlculs amb paraules pròpies i cita números d'article perquè puguis consultar-los al teu propi codi. No reprodueix text normatiu. Verifica-ho sempre amb el codi vigent allà on treballes.

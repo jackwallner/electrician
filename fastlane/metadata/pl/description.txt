@@ -1,0 +1,28 @@
+WYŁĄCZNIE AMERYKAŃSKI KODEKS ELEKTRYCZNY
+Wszystkie wartości w tej aplikacji pochodzą z National Electrical Code 2023, normy obowiązującej w Stanach Zjednoczonych. To nie jest pomoc do nauki przepisów instalacyjnych żadnego innego kraju, a aplikacja jest po angielsku.
+
+Amerykański egzamin na elektryka zdaje się z otwartą książką. To mniejsza ulga, niż się wydaje. Egzamin jest na czas, a każde pytanie, którego odpowiedzi musisz szukać, kosztuje cię dwa kolejne, do których nigdy nie dotrzesz.
+
+ZNAJDŹ SZYBKO
+Przeczytaj sytuację i wskaż artykuł, zanim cokolwiek otworzysz. Artykuł 310 czy artykuł 240. To właśnie to ćwiczenie oszczędza minuty w dniu egzaminu.
+
+OBLICZENIA, NA KTÓRYCH LUDZIE WPADAJĄ
+Obciążalność prądowa i współczynniki korekcyjne, dobór zabezpieczenia, wypełnienie rury, wypełnienie puszki, spadek napięcia, przewody ochronne, obwody silnikowe i obliczenie przyłącza budynku mieszkalnego. Każde zadanie jest generowane, a nie powtarzane ze stałej bazy, więc możesz ćwiczyć dowolnie długo i nigdy nie zobaczyć tego samego zadania dwa razy.
+
+BŁĘDNE ODPOWIEDZI, KTÓRE UCZĄ
+Każda błędna odpowiedź to dokładnie ta liczba, do której prowadzi jeden konkretny, częsty błąd. Gdy ją wybierzesz, dowiesz się, jaki błąd popełniłeś, a nie tylko że się pomyliłeś.
+
+POKAŻ OBLICZENIA
+Gdy pomylisz się w obliczeniu, dostaniesz ponumerowane kroki, a nie akapit tekstu. Prawie nikt nie oblewa przez arytmetykę. Oblewa się przez jeden pominięty krok.
+
+CO JEST ZA DARMO
+Code Basics, Conductors and Ampacity i Installation Rules oraz wszystkie osiem kalkulatorów terenowych: obciążalność, wypełnienie rury, wypełnienie puszki, spadek napięcia, przewody ochronne, obwody silnikowe, obciążenie budynku i prawo Ohma.
+
+ELECTRICIAN+
+Odblokowuje Worked Calculations, Service and Load Calc oraz Grounding and Motors, dodatkowe zestawy w każdej sekcji, nieograniczone generowane ćwiczenia, próbę na czas i Code Minute.
+
+OKRES PRÓBNY I SUBSKRYPCJE
+Uprawnione konta Apple mogą otrzymać 7 dni za darmo przy subskrypcji miesięcznej lub rocznej. Po okresie próbnym opłata jest pobierana z konta Apple, a subskrypcja odnawia się automatycznie, o ile nie zostanie anulowana co najmniej 24 godziny przed końcem okresu. Zarządzaj nią lub anuluj w ustawieniach konta Apple. Opcja dożywotnia to zakup jednorazowy.
+
+UWAGA O KODEKSIE
+Ta aplikacja nie jest powiązana z NFPA ani przez nią zatwierdzona. Objaśnia pojęcia i obliczenia własnymi słowami i podaje numery artykułów, abyś mógł sprawdzić każdy z nich we własnym kodeksie. Nie odtwarza treści przepisów. Zawsze weryfikuj z przepisami obowiązującymi w miejscu twojej pracy.

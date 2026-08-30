@@ -1,0 +1,28 @@
+HANYA KODE KELISTRIKAN AMERIKA SERIKAT
+Semua nilai dalam aplikasi ini berasal dari National Electrical Code 2023, standar yang berlaku di Amerika Serikat. Ini bukan alat belajar untuk PUIL maupun aturan instalasi negara lain, dan aplikasinya berbahasa Inggris.
+
+Ujian lisensi listrik Amerika Serikat adalah ujian buku terbuka. Itu tidak selega kedengarannya. Ujiannya dibatasi waktu, dan setiap soal yang harus kamu cari menghabiskan dua soal lain yang tidak pernah kamu capai.
+
+TEMUKAN CEPAT
+Baca sebuah situasi dan sebutkan pasalnya sebelum membuka apa pun. Article 310 atau Article 240. Latihan inilah yang menghemat menit pada hari ujian.
+
+HITUNGAN YANG MENJATUHKAN ORANG
+Kemampuan hantar arus dan faktor koreksi, ukuran pengaman, pengisian konduit, volume kotak sambung, drop tegangan, penghantar pembumian, sirkuit motor, dan perhitungan sambungan rumah tinggal. Setiap soal dibangkitkan, bukan diulang dari bank soal tetap, sehingga kamu bisa berlatih selama yang kamu mau tanpa pernah melihat soal yang sama dua kali.
+
+JAWABAN SALAH YANG MENGAJARI
+Setiap pilihan yang salah adalah persis angka yang muncul dari satu kesalahan umum tertentu. Pilih salah satunya dan kamu tahu kesalahan apa yang kamu buat, bukan sekadar tahu bahwa kamu keliru.
+
+TUNJUKKAN LANGKAHNYA
+Kalau hitunganmu meleset, kamu mendapat langkah bernomor, bukan satu paragraf. Nyaris tidak ada yang gagal karena aritmetika. Orang gagal karena satu langkah yang terlewat.
+
+APA YANG GRATIS
+Code Basics, Conductors and Ampacity, dan Installation Rules, ditambah kedelapan kalkulator lapangan: kemampuan hantar arus, pengisian konduit, volume kotak, drop tegangan, penghantar pembumian, sirkuit motor, beban rumah tinggal, dan hukum Ohm.
+
+ELECTRICIAN+
+Membuka Worked Calculations, Service and Load Calc, dan Grounding and Motors, set tambahan di setiap bagian, latihan terbangkit tanpa batas, tantangan berwaktu, dan Code Minute.
+
+UJI COBA DAN LANGGANAN
+Akun Apple yang memenuhi syarat dapat memperoleh 7 hari gratis pada langganan bulanan atau tahunan. Setelah masa uji coba, tagihan dibebankan ke Akun Apple kamu dan langganan diperpanjang otomatis kecuali dibatalkan paling lambat 24 jam sebelum periode berakhir. Kelola atau batalkan di pengaturan Akun Apple. Opsi seumur hidup adalah pembelian sekali bayar.
+
+CATATAN TENTANG KODE
+Aplikasi ini tidak berafiliasi dengan NFPA dan tidak didukung olehnya. Ia menjelaskan konsep dan perhitungan dengan kata-katanya sendiri serta menyebut nomor pasal agar kamu bisa memeriksa tiap butir di buku kodemu sendiri. Ia tidak menyalin teks kode. Selalu verifikasi dengan aturan yang berlaku di tempat kamu bekerja.

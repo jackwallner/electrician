@@ -1,0 +1,28 @@
+POUZE ELEKTROTECHNICKÝ PŘEDPIS USA
+Všechny hodnoty v této aplikaci pocházejí z National Electrical Code 2023, normy platné ve Spojených státech. Není to studijní pomůcka pro instalační předpisy jiné země a aplikace je v angličtině.
+
+Americká zkouška elektrikáře se skládá s otevřenou knihou. Není to taková úleva, jak to zní. Je na čas a každá otázka, kterou musíte hledat, vás stojí další dvě, ke kterým se už nedostanete.
+
+NAJDĚTE TO RYCHLE
+Přečtěte si situaci a pojmenujte článek dřív, než cokoli otevřete. Článek 310, nebo článek 240. Právě tohle cvičení šetří minuty v den zkoušky.
+
+VÝPOČTY, NA KTERÝCH SE PADÁ
+Proudová zatížitelnost a korekční součinitele, dimenzování jištění, plnění trubky, plnění krabice, úbytek napětí, ochranné vodiče, motorové obvody a výpočet přípojky rodinného domu. Každá úloha se generuje, místo aby se opakovala z pevné databáze, takže můžete cvičit jak dlouho chcete a stejnou úlohu neuvidíte dvakrát.
+
+ŠPATNÉ ODPOVĚDI, KTERÉ UČÍ
+Každá nesprávná možnost je přesně to číslo, ke kterému vede jedna konkrétní, běžná chyba. Když ji vyberete, dozvíte se, jakou chybu jste udělali, ne jen že jste minuli.
+
+UKAŽ POSTUP
+Když výpočet spletete, dostanete číslované kroky, ne odstavec textu. Skoro nikdo nepropadne kvůli aritmetice. Propadá se kvůli jednomu vynechanému kroku.
+
+CO JE ZDARMA
+Code Basics, Conductors and Ampacity a Installation Rules a všech osm terénních kalkulaček: zatížitelnost, plnění trubky, plnění krabice, úbytek napětí, ochranné vodiče, motorové obvody, zatížení domu a Ohmův zákon.
+
+ELECTRICIAN+
+Odemyká Worked Calculations, Service and Load Calc a Grounding and Motors, další sady v každé sekci, neomezené generované cvičení, zkoušku na čas a Code Minute.
+
+ZKUŠEBNÍ OBDOBÍ A PŘEDPLATNÉ
+Způsobilé účty Apple mohou získat 7 dní zdarma u měsíčního nebo ročního předplatného. Po zkušebním období se částka strhne z vašeho účtu Apple a předplatné se automaticky obnovuje, pokud není zrušeno nejméně 24 hodin před koncem období. Spravujte nebo zrušte je v nastavení účtu Apple. Doživotní varianta je jednorázový nákup.
+
+POZNÁMKA K PŘEDPISU
+Tato aplikace není spojena s NFPA ani jí schválena. Vysvětluje pojmy a výpočty vlastními slovy a uvádí čísla článků, abyste si každý mohli dohledat ve vlastním předpisu. Nereprodukuje text normy. Vždy si vše ověřte podle předpisu platného tam, kde pracujete.

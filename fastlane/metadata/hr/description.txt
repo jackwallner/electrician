@@ -1,0 +1,28 @@
+SAMO AMERIČKI ELEKTROTEHNIČKI PROPIS
+Sve vrijednosti u ovoj aplikaciji dolaze iz National Electrical Codea 2023, norme koja se primjenjuje u Sjedinjenim Državama. Ovo nije pomoć pri učenju propisa o instalacijama bilo koje druge zemlje, a aplikacija je na engleskom.
+
+Američki ispit za električara polaže se uz otvorenu knjigu. To je manje olakšanje nego što zvuči. Ispit je vremenski ograničen, a svako pitanje koje morate tražiti košta vas još dva do kojih nikada ne dođete.
+
+NAĐITE BRZO
+Pročitajte situaciju i imenujte članak prije nego što išta otvorite. Članak 310 ili članak 240. Upravo ta vježba štedi minute na dan ispita.
+
+IZRAČUNI NA KOJIMA LJUDI PADAJU
+Strujna opteretivost i faktori korekcije, dimenzioniranje zaštite, popunjenost cijevi, popunjenost kutije, pad napona, zaštitni vodiči, motorni krugovi i izračun priključka stambene jedinice. Svaki zadatak se generira umjesto da se ponavlja iz fiksne baze, pa možete vježbati koliko želite bez da isti zadatak vidite dvaput.
+
+NETOČNI ODGOVORI KOJI UČE
+Svaki netočan odgovor točno je onaj broj do kojeg vodi jedna određena, česta pogreška. Odaberete li ga, saznat ćete koju ste pogrešku napravili, a ne samo da ste promašili.
+
+POKAŽI POSTUPAK
+Ako promašite izračun, dobit ćete numerirane korake, a ne odlomak teksta. Gotovo nitko ne pada zbog aritmetike. Pada se zbog jednog preskočenog koraka.
+
+ŠTO JE BESPLATNO
+Code Basics, Conductors and Ampacity i Installation Rules te svih osam terenskih kalkulatora: opteretivost, popunjenost cijevi, popunjenost kutije, pad napona, zaštitni vodiči, motorni krugovi, opterećenje stambene jedinice i Ohmov zakon.
+
+ELECTRICIAN+
+Otključava Worked Calculations, Service and Load Calc i Grounding and Motors, dodatne setove u svakom dijelu, neograničenu generiranu vježbu, izazov na vrijeme i Code Minute.
+
+PROBNO RAZDOBLJE I PRETPLATE
+Prihvatljivi Apple računi mogu dobiti 7 dana besplatno uz mjesečnu ili godišnju pretplatu. Nakon probnog razdoblja iznos se naplaćuje s vašeg Apple računa, a pretplata se automatski obnavlja osim ako se otkaže najmanje 24 sata prije isteka razdoblja. Upravljajte njome ili je otkažite u postavkama Apple računa. Doživotna opcija jednokratna je kupnja.
+
+NAPOMENA O PROPISU
+Ova aplikacija nije povezana s NFPA-om niti je on odobrava. Objašnjava pojmove i izračune vlastitim riječima i navodi brojeve članaka kako biste svaki mogli provjeriti u vlastitom propisu. Ne reproducira tekst norme. Uvijek provjerite prema propisu koji vrijedi tamo gdje radite.

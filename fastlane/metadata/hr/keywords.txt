@@ -1,0 +1,1 @@
+elektricar,ispit,sad,nec,struja,kabel,presjek,pad,napon,cijev,uzemljenje,motor,licenca

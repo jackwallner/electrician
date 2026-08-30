@@ -1,0 +1,1 @@
+elektrikci,sinav,abd,nec,akim,kablo,kesit,gerilim,dusumu,boru,topraklama,motor,lisans,ehliyet
