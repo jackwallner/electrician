@@ -195,13 +195,20 @@ struct ChoiceList: View {
                     .multilineTextAlignment(.leading)
                 Spacer()
                 if answered {
+                    // The tick and cross are the whole result for a sighted
+                    // reader and were silent to VoiceOver, which left the one
+                    // fact that matters (which row is right, and whether it is
+                    // the one you picked) available only as a colour.
                     if isAnswer {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.body.weight(.bold))
                             .foregroundStyle(Theme.rightGreen)
                             .scaleEffect(landed ? 1.2 : 0.4)
+                            .accessibilityLabel("Correct answer")
                     } else if isMiss {
-                        Image(systemName: "xmark.circle.fill").foregroundStyle(Theme.wrongRed)
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(Theme.wrongRed)
+                            .accessibilityLabel("Your answer, incorrect")
                     }
                 }
             }
@@ -232,6 +239,9 @@ struct ChoiceList: View {
         }
         .buttonStyle(.plain)
         .allowsHitTesting(!answered)
+        // Stable handle for the App Store screenshot run, which has to pick a
+        // named row rather than whatever the accessibility query returns first.
+        .accessibilityIdentifier("choice.\(index)")
     }
 
     private func background(_ index: Int) -> Color {

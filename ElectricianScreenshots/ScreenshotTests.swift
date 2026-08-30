@@ -30,10 +30,21 @@ final class ScreenshotTests: XCTestCase {
             "-electrician.hasReadPrimer", "YES",
             "-electrician.skillLevel", "some",
             "-candidate.licenseTrack", "journeyman",
-            "-candidate.jurisdiction", "Test State",
+            // A real state, not "Test State": Home renders the jurisdiction
+            // next to the edition, and the edition is only resolvable from a
+            // jurisdiction the table actually knows.
+            "-candidate.jurisdiction", "Georgia",
+            "-candidate.edition", "nec2023",
             "-candidate.hasSelectedTrack", "YES",
             "-candidate.setupComplete", "YES",
             "-subscription.localProOverride", "YES",
+            // Home with every counter on zero photographs as an empty app.
+            // Seed an ordinary week of practice so the screenshot shows the
+            // return loop the store listing claims.
+            "-progress.streakCount", "6",
+            "-progress.totalSessions", "24",
+            "-progress.completions", Self.seededCompletions,
+            "-practice.records", Self.seededRecords,
         ]
         // The What's New sheet fires on the first launch after a version bump
         // and covers Home. Marking the CURRENT version as already seen is what
@@ -45,6 +56,49 @@ final class ScreenshotTests: XCTestCase {
         app.launch()
     }
 
+    // MARK: - Seeded state
+
+    /// Room progress rings, as an XML plist. The argument domain runs every
+    /// `-key value` through the property-list parser, and the OLD-style plist
+    /// syntax has no integer type: `{"meet-the-code"=2;}` decodes to
+    /// `["meet-the-code": "2"]`, which `[String: Int]` then rejects, and the
+    /// rings photograph as zero.
+    private static var seededCompletions: String {
+        let counts = [
+            ("meet-the-code", 2), ("navigation-quiz", 3), ("article-cards", 1),
+            ("ampacity-cards", 2), ("ampacity-quiz", 1),
+            ("workspace-cards", 2), ("install-quiz", 1),
+        ]
+        let body = counts
+            .map { "<key>\($0.0)</key><integer>\($0.1)</integer>" }
+            .joined()
+        return "<plist version=\"1.0\"><dict>\(body)</dict></plist>"
+    }
+
+    /// `practice.records` is stored as JSON `Data`, and the argument domain
+    /// only produces `NSData` from old-style plist hex, so the seed is encoded
+    /// as `<hex>`. Sixty attempts at 83% over five rooms is what puts the
+    /// readiness card into its "consistent practice" state.
+    private static var seededRecords: String {
+        let now = Date()
+        var entries: [String] = []
+        var hour = 0
+        for room in ["basics-room", "conductors-room", "install-room", "calc-room", "grounding-room"] {
+            for (index, correct) in [4, 3, 3].enumerated() {
+                hour += 1
+                let last = now.addingTimeInterval(-3600 * Double(hour)).timeIntervalSinceReferenceDate
+                let due = now.addingTimeInterval(86_400 * 5).timeIntervalSinceReferenceDate
+                entries.append("""
+                "\(room)-\(index)":{"attempts":4,"correct":\(correct),"streak":2,\
+                "lastAnswered":\(last),"dueDate":\(due),"intervalDays":5,"ease":2.5,\
+                "roomID":"\(room)"}
+                """)
+            }
+        }
+        let json = "{" + entries.joined(separator: ",") + "}"
+        return "<" + Data(json.utf8).map { String(format: "%02x", $0) }.joined() + ">"
+    }
+
     func testCaptureAppStoreSet() {
         _ = app.wait(for: .runningForeground, timeout: 30)
         settle()
@@ -53,6 +107,13 @@ final class ScreenshotTests: XCTestCase {
         attachTree("home")
 
         if open("Get Started") {
+            // Capture mid-session, not on question one. The first Quick
+            // Session question is the same ampacity item frame 3 uses, and two
+            // carousel frames showing one question reads as a thin app.
+            for _ in 0..<3 {
+                tapChoice(0)
+                advanceQuestion()
+            }
             capture("01_quick_session")
         }
         home()
@@ -62,7 +123,10 @@ final class ScreenshotTests: XCTestCase {
         }
         home()
 
+        // Frame 3 has to show what a MISS looks like, so it answers wrong on
+        // purpose. An unanswered question proves nothing about the feedback.
         if open("Conductors & Ampacity"), open("Ampacity Check") {
+            answerIncorrectly()
             capture("03_ampacity_quiz")
         }
         home()
@@ -79,6 +143,11 @@ final class ScreenshotTests: XCTestCase {
             app.swipeUp()
             settle()
             if open("The Five Shapes") {
+                // The numbered working only exists after an answer, and it
+                // renders BELOW the choices, so the capture has to scroll to
+                // it or the frame promises steps it does not show.
+                answerCorrectly()
+                scroll(byScreenFraction: 0.34)
                 capture("04_worked_calc")
             }
         }
@@ -95,6 +164,75 @@ final class ScreenshotTests: XCTestCase {
             add(note)
         }
     }
+
+    /// A measured drag, because `swipeUp()` is a fling: on the worked-answer
+    /// screen it throws the question off the top and lands the frame in the
+    /// middle of the choice list.
+    private func scroll(byScreenFraction fraction: CGFloat) {
+        let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+        let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8 - fraction))
+        start.press(forDuration: 0.1, thenDragTo: end)
+        settle()
+    }
+
+    // MARK: - Answering
+
+    /// Taps a choice row by its stable identifier. The label text is generated
+    /// and the row order is shuffled per item, so position is the only handle.
+    @discardableResult
+    private func tapChoice(_ index: Int) -> Bool {
+        let row = app.buttons["choice.\(index)"].firstMatch
+        guard row.waitForExistence(timeout: 6) else {
+            problems.append("no choice.\(index)")
+            return false
+        }
+        row.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        settle()
+        return true
+    }
+
+    /// After an answer the picked row carries the result in its accessibility
+    /// label, which is how the capture knows whether it got what it wanted.
+    private func rowLabel(_ index: Int) -> String {
+        app.buttons["choice.\(index)"].firstMatch.label
+    }
+
+    /// The advance button is "Next" in a calculation drill and "Next Question"
+    /// in a quiz, so match the prefix rather than one exact label.
+    @discardableResult
+    private func advanceQuestion() -> Bool {
+        let next = app.buttons
+            .matching(NSPredicate(format: "label BEGINSWITH 'Next'"))
+            .firstMatch
+        guard next.exists, next.isEnabled else { return false }
+        next.tap()
+        settle()
+        return true
+    }
+
+    /// The shuffle is seeded per item, so the test cannot know which row wins.
+    /// Tap the first row; if it was not the outcome this frame needs, move to
+    /// the next question and try again.
+    @discardableResult
+    private func answer(untilLabelContains marker: String, tries: Int = 5) -> Bool {
+        for attempt in 0..<tries {
+            // Rotate the row. Tapping row 0 every time can miss the answer for
+            // a whole five-question drill, which is how the mechanism frame
+            // ended up photographing a wrong pick.
+            let row = attempt % 4
+            guard tapChoice(row) else { return false }
+            if rowLabel(row).contains(marker) { return true }
+            guard advanceQuestion() else { break }
+        }
+        problems.append("never landed on: \(marker)")
+        return false
+    }
+
+    @discardableResult
+    private func answerCorrectly() -> Bool { answer(untilLabelContains: "Correct answer") }
+
+    @discardableResult
+    private func answerIncorrectly() -> Bool { answer(untilLabelContains: "incorrect") }
 
     // MARK: - Navigation
 

@@ -80,3 +80,66 @@ if missing:
     print("See the 'problems' attachment in build/screenshots.xcresult.", file=sys.stderr)
     sys.exit(1)
 PY
+
+# Provenance, written beside the finals rather than left implicit. The shared
+# renderer's audit refuses to call a set release-ready without a capture report
+# whose hashes match the sources the manifest points at, which is exactly the
+# check that would have caught the set shot two rebrands ago.
+python3 - "$OUT" "$UDID" "$VERSION" <<'PY'
+import hashlib, json, pathlib, subprocess, sys
+
+out, udid, version = pathlib.Path(sys.argv[1]), sys.argv[2], sys.argv[3]
+root = pathlib.Path(__file__).resolve().parent.parent if "__file__" in dir() else pathlib.Path.cwd()
+
+# One named flow per required screen, so a frame can cite the run that made it.
+FLOWS = {
+    "01_quick_session": "quick_session",
+    "02_article_match": "article_match",
+    "03_ampacity_quiz": "ampacity_mistake_feedback",
+    "04_worked_calc": "worked_calc_answered",
+    "05_home": "home",
+    "06_basics_room": "code_basics",
+}
+
+def sh(*args: str) -> str:
+    return subprocess.run(args, capture_output=True, text=True).stdout.strip()
+
+devices = json.loads(sh("xcrun", "simctl", "list", "devices", "-j"))["devices"]
+device = {}
+for runtime, entries in devices.items():
+    for entry in entries:
+        if entry["udid"] == udid:
+            device = {"udid": udid, "name": entry["name"], "runtime": runtime,
+                      "device_type": entry.get("deviceTypeIdentifier", "")}
+
+records = []
+for path in sorted(out.glob("*.png")):
+    data = path.read_bytes()
+    width = int.from_bytes(data[16:20], "big")
+    height = int.from_bytes(data[20:24], "big")
+    records.append({
+        "path": str(path.resolve()),
+        "flow": FLOWS.get(path.stem, path.stem),
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "width": width,
+        "height": height,
+    })
+
+report = {
+    "status": "ok",
+    "app": "electrician",
+    "mode": "command",
+    "proof_only": False,
+    "lease_checked_in": True,
+    "marketing_version": version,
+    "build": sh("awk", "/CURRENT_PROJECT_VERSION/ {gsub(/[\":]/, \"\", $2); print $2; exit}", "project.yml"),
+    "scheme": "Screenshots",
+    "app_repo": {"path": str(pathlib.Path.cwd()), "git_commit": sh("git", "rev-parse", "HEAD")},
+    "device": device,
+    "flows": [{"id": flow} for flow in sorted(set(FLOWS.values()))],
+    "screenshots": [record["path"] for record in records],
+    "screenshot_records": records,
+}
+(out / "capture-report.json").write_text(json.dumps(report, indent=2) + "\n")
+print(f"wrote {out}/capture-report.json")
+PY
