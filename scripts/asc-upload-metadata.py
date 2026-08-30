@@ -161,10 +161,18 @@ def main() -> None:
             attrs: dict = {}
             name = read_meta(locale, "name")
             sub = read_meta(locale, "subtitle")
+            # The privacy policy URL lives on the appInfo localization, not the
+            # version one, so it was the single field this script never touched
+            # on a locale that already existed. App Review clicks that link:
+            # en-US kept pointing at a domain that 404s long after every other
+            # URL had moved.
+            privacy = read_meta(locale, "privacy_url")
             if name:
                 attrs["name"] = name[:30]
             if sub:
                 attrs["subtitle"] = sub[:30]
+            if privacy:
+                attrs["privacyPolicyUrl"] = privacy
             if attrs:
                 try:
                     lid = info_locs[locale]["id"]
