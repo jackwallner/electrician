@@ -101,6 +101,20 @@ def main() -> int:
     # Screenshots per localization
     locs = list_all(client, f"/appStoreVersions/{vid}/appStoreVersionLocalizations")
     print(f"Version localizations: {len(locs)}")
+
+    # Terms of Use (EULA) link. Guideline 3.1.2 wants a functional one on the
+    # product page of any app selling auto-renewable subscriptions, and every
+    # locale is its own product page, so a link in en-US alone is not enough.
+    # 1.0 was rejected for this with the link in none of the 50 rows.
+    no_terms = [
+        loc["attributes"].get("locale")
+        for loc in locs
+        if "stdeula" not in (loc["attributes"].get("description") or "")
+    ]
+    if no_terms:
+        print(f"Terms of Use link: MISSING in {len(no_terms)} locale(s): {', '.join(sorted(no_terms))}")
+    else:
+        print(f"Terms of Use link: present in all {len(locs)} locale(s)")
     for loc in locs:
         if loc['attributes'].get('locale') != 'en-US':
             continue
