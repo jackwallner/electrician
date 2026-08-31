@@ -23,6 +23,8 @@ Låser upp Worked Calculations, Service and Load Calc och Grounding and Motors, 
 
 PROVPERIOD OCH PRENUMERATIONER
 Berättigade Apple-konton kan få 7 dagar gratis på en månads- eller årsprenumeration. Efter provperioden dras beloppet från ditt Apple-konto och prenumerationen förnyas automatiskt om den inte sägs upp minst 24 timmar innan perioden tar slut. Hantera eller säg upp i inställningarna för ditt Apple-konto. Livstidsalternativet är ett engångsköp.
+Användarvillkor (Apples standard-EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Integritetspolicy: https://jackwallner.github.io/electrician/privacy-policy
 
 OM KODEN
 Appen har ingen koppling till NFPA och är inte godkänd av NFPA. Den förklarar begrepp och beräkningar med egna ord och anger artikelnummer så att du kan slå upp varje uppgift i din egen kodbok. Den återger inte lagtext. Kontrollera alltid mot de regler som gäller där du arbetar.

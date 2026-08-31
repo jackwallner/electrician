@@ -23,6 +23,8 @@ Otključava Worked Calculations, Service and Load Calc i Grounding and Motors, d
 
 PROBNO RAZDOBLJE I PRETPLATE
 Prihvatljivi Apple računi mogu dobiti 7 dana besplatno uz mjesečnu ili godišnju pretplatu. Nakon probnog razdoblja iznos se naplaćuje s vašeg Apple računa, a pretplata se automatski obnavlja osim ako se otkaže najmanje 24 sata prije isteka razdoblja. Upravljajte njome ili je otkažite u postavkama Apple računa. Doživotna opcija jednokratna je kupnja.
+Uvjeti korištenja (Appleov standardni EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Pravila privatnosti: https://jackwallner.github.io/electrician/privacy-policy
 
 NAPOMENA O PROPISU
 Ova aplikacija nije povezana s NFPA-om niti je on odobrava. Objašnjava pojmove i izračune vlastitim riječima i navodi brojeve članaka kako biste svaki mogli provjeriti u vlastitom propisu. Ne reproducira tekst norme. Uvijek provjerite prema propisu koji vrijedi tamo gdje radite.

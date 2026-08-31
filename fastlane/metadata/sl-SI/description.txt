@@ -23,6 +23,8 @@ Odklene Worked Calculations, Service and Load Calc in Grounding and Motors, doda
 
 POSKUSNO OBDOBJE IN NAROČNINE
 Upravičeni računi Apple lahko prejmejo 7 dni brezplačno pri mesečni ali letni naročnini. Po poskusnem obdobju se znesek zaračuna z vašega računa Apple, naročnina pa se samodejno podaljša, razen če je preklicana vsaj 24 ur pred koncem obdobja. Upravljajte ali prekličite jo v nastavitvah računa Apple. Doživljenjska možnost je enkratni nakup.
+Pogoji uporabe (Applov standardni EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Pravilnik o zasebnosti: https://jackwallner.github.io/electrician/privacy-policy
 
 OPOMBA O PREDPISU
 Ta aplikacija ni povezana z NFPA in je ta ne odobrava. Pojme in izračune razlaga z lastnimi besedami in navaja številke členov, da lahko vsakega preverite v svojem predpisu. Ne reproducira besedila standarda. Vedno preverite po predpisu, ki velja tam, kjer delate.

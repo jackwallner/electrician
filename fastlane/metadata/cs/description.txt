@@ -23,6 +23,8 @@ Odemyká Worked Calculations, Service and Load Calc a Grounding and Motors, dal�
 
 ZKUŠEBNÍ OBDOBÍ A PŘEDPLATNÉ
 Způsobilé účty Apple mohou získat 7 dní zdarma u měsíčního nebo ročního předplatného. Po zkušebním období se částka strhne z vašeho účtu Apple a předplatné se automaticky obnovuje, pokud není zrušeno nejméně 24 hodin před koncem období. Spravujte nebo zrušte je v nastavení účtu Apple. Doživotní varianta je jednorázový nákup.
+Podmínky použití (standardní EULA Applu): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Zásady ochrany osobních údajů: https://jackwallner.github.io/electrician/privacy-policy
 
 POZNÁMKA K PŘEDPISU
 Tato aplikace není spojena s NFPA ani jí schválena. Vysvětluje pojmy a výpočty vlastními slovy a uvádí čísla článků, abyste si každý mohli dohledat ve vlastním předpisu. Nereprodukuje text normy. Vždy si vše ověřte podle předpisu platného tam, kde pracujete.

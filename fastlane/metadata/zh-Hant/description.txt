@@ -23,6 +23,8 @@ ELECTRICIAN+
 
 試用與訂閱
 符合條件的 Apple 帳戶可在按月或按年訂閱中獲得 7 天免費試用。試用結束後將從你的 Apple 帳戶扣款，除非在當期結束前至少 24 小時取消，否則訂閱將自動續訂。可在 Apple 帳戶設定中管理或取消。終身版為一次性購買。
+使用條款（Apple 標準 EULA）：https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+隱私權政策：https://jackwallner.github.io/electrician/privacy-policy
 
 關於規範的說明
 本App與 NFPA 無關，也未獲得其認可。它用自己的措辭講解概念和計算，並標註條款編號，方便你在自己的規範書中逐條查證。它不複製規範原文。實際工作中請始終以你所在地現行的規範為準。

@@ -23,6 +23,8 @@ Débloque Worked Calculations, Service and Load Calc et Grounding and Motors, de
 
 ESSAI ET ABONNEMENTS
 Les comptes Apple éligibles peuvent bénéficier de 7 jours gratuits sur un abonnement mensuel ou annuel. À la fin de l'essai, le paiement est prélevé sur votre compte Apple et l'abonnement se renouvelle automatiquement sauf résiliation au moins 24 heures avant la fin de la période. Gérez ou résiliez dans les réglages de votre compte Apple. L'option à vie est un achat unique.
+Conditions d'utilisation (CLUF standard d'Apple): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Politique de confidentialité: https://jackwallner.github.io/electrician/privacy-policy
 
 À PROPOS DU CODE
 Cette app n'est ni affiliée à la NFPA ni approuvée par elle. Elle explique les notions et les calculs avec ses propres mots et cite les numéros d'articles pour que vous puissiez vérifier chacun d'eux dans votre propre code. Elle ne reproduit aucun texte réglementaire. Vérifiez toujours par rapport au code en vigueur là où vous travaillez.

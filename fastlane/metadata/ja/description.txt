@@ -23,6 +23,8 @@ Worked Calculations、Service and Load Calc、Grounding and Motors を解放し�
 
 無料期間とサブスクリプション
 対象のApple アカウントでは、月額または年額プランで7日間の無料期間をご利用いただける場合があります。無料期間終了後はApple アカウントに課金され、期間終了の24時間以上前に解約しない限り自動更新されます。管理と解約はApple アカウントの設定から行えます。買い切りプランは一度限りのご購入です。
+利用規約（Apple標準のEULA）：https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+プライバシーポリシー：https://jackwallner.github.io/electrician/privacy-policy
 
 規程についての注記
 本アプリは NFPA と提携しておらず、NFPA の承認も受けていません。概念と計算を独自の表現で説明し、条項番号を示すので、お手元の規程で各項目を確認できます。規程の本文は転載していません。実務では必ず、その地域で施行されている規程で確認してください。

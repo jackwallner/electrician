@@ -23,6 +23,8 @@ Schaltet Worked Calculations, Service and Load Calc sowie Grounding and Motors f
 
 TESTZEITRAUM UND ABONNEMENTS
 Berechtigte Apple-Accounts erhalten unter Umständen 7 Tage kostenlos bei einem Monats- oder Jahresabo. Nach dem Testzeitraum wird Ihr Apple-Account belastet, und das Abo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ablauf des Zeitraums gekündigt wird. Verwalten oder kündigen können Sie es in den Einstellungen Ihres Apple-Accounts. Die Lifetime-Option ist ein einmaliger Kauf.
+Nutzungsbedingungen (Apples Standard-EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Datenschutzrichtlinie: https://jackwallner.github.io/electrician/privacy-policy
 
 HINWEIS ZUM CODE
 Diese App steht in keiner Verbindung zur NFPA und wird von ihr weder unterstützt noch empfohlen. Sie vermittelt Konzepte und Berechnungen in eigenen Worten und nennt Artikelnummern, damit Sie jede Angabe in Ihrem eigenen Codebuch nachschlagen können. Sie gibt keinen Gesetzestext wieder. Prüfen Sie immer anhand der an Ihrem Arbeitsort geltenden Vorschriften.

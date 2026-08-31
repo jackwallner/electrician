@@ -23,6 +23,8 @@ Avaa osiot Worked Calculations, Service and Load Calc ja Grounding and Motors, l
 
 KOKEILU JA TILAUKSET
 Kelpoiset Apple-tilit voivat saada 7 päivää maksutta kuukausi- tai vuositilauksesta. Kokeilun jälkeen veloitus tehdään Apple-tililtäsi, ja tilaus uusiutuu automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen jakson päättymistä. Hallinnoi tai peruuta Apple-tilisi asetuksista. Elinikäinen vaihtoehto on kertaosto.
+Käyttöehdot (Applen vakio-EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Tietosuojakäytäntö: https://jackwallner.github.io/electrician/privacy-policy
 
 HUOMAUTUS KOODISTA
 Sovellus ei ole yhteydessä NFPA:han eikä sen hyväksymä. Se opettaa käsitteet ja laskennat omin sanoin ja mainitsee artiklanumerot, jotta voit tarkistaa jokaisen omasta koodikirjastasi. Se ei toista säädöstekstiä. Tarkista aina työpaikallasi voimassa olevat määräykset.

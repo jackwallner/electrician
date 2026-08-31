@@ -23,6 +23,8 @@ Membuka Worked Calculations, Service and Load Calc, dan Grounding and Motors, se
 
 PERCUBAAN DAN LANGGANAN
 Akaun Apple yang layak mungkin menerima 7 hari percuma bagi langganan bulanan atau tahunan. Selepas tempoh percubaan, bayaran dikenakan pada Akaun Apple anda dan langganan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum tempoh berakhir. Urus atau batalkan dalam tetapan Akaun Apple. Pilihan seumur hidup ialah pembelian sekali sahaja.
+Syarat Penggunaan (EULA standard Apple): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Dasar Privasi: https://jackwallner.github.io/electrician/privacy-policy
 
 NOTA TENTANG KOD
 Aplikasi ini tidak bergabung dengan NFPA dan tidak disokong olehnya. Ia mengajar konsep dan pengiraan dengan perkataannya sendiri serta menyebut nombor perkara supaya anda boleh menyemak setiap satu dalam buku kod anda sendiri. Ia tidak menyalin teks kod. Sentiasa sahkan dengan kod yang berkuat kuasa di tempat anda bekerja.

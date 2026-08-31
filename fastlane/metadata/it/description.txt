@@ -23,6 +23,8 @@ Sblocca Worked Calculations, Service and Load Calc e Grounding and Motors, serie
 
 PROVA E ABBONAMENTI
 Gli account Apple idonei possono ricevere 7 giorni gratuiti su un abbonamento mensile o annuale. Al termine della prova l'addebito avviene sul tuo account Apple e l'abbonamento si rinnova automaticamente se non viene disdetto almeno 24 ore prima della fine del periodo. Gestisci o disdici nelle impostazioni del tuo account Apple. L'opzione a vita è un acquisto singolo.
+Termini d'uso (EULA standard di Apple): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Informativa sulla privacy: https://jackwallner.github.io/electrician/privacy-policy
 
 NOTA SUL CODICE
 Questa app non è affiliata alla NFPA né da essa approvata. Spiega concetti e calcoli con parole proprie e cita i numeri degli articoli, così puoi verificare ciascuno sul tuo codice. Non riproduce il testo normativo. Verifica sempre rispetto alle norme in vigore dove lavori.

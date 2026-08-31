@@ -23,6 +23,8 @@ Mở khóa Worked Calculations, Service and Load Calc và Grounding and Motors, 
 
 DÙNG THỬ VÀ ĐĂNG KÝ
 Các Tài khoản Apple đủ điều kiện có thể nhận 7 ngày miễn phí khi đăng ký theo tháng hoặc theo năm. Sau thời gian dùng thử, khoản phí sẽ được tính vào Tài khoản Apple của bạn và gói tự động gia hạn trừ khi hủy chậm nhất 24 giờ trước khi kỳ hiện tại kết thúc. Quản lý hoặc hủy trong cài đặt Tài khoản Apple. Tùy chọn trọn đời là khoản mua một lần.
+Điều khoản sử dụng (EULA tiêu chuẩn của Apple): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Chính sách quyền riêng tư: https://jackwallner.github.io/electrician/privacy-policy
 
 GHI CHÚ VỀ BỘ QUY PHẠM
 Ứng dụng không liên kết với NFPA và không được NFPA chứng thực. Ứng dụng giảng khái niệm và phép tính bằng lời của chính mình và dẫn số điều khoản để bạn tra lại từng mục trong cuốn quy phạm của mình. Ứng dụng không sao chép nguyên văn quy phạm. Luôn đối chiếu với quy phạm đang có hiệu lực tại nơi bạn làm việc.

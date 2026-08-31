@@ -23,6 +23,8 @@ Odblokowuje Worked Calculations, Service and Load Calc oraz Grounding and Motors
 
 OKRES PRÓBNY I SUBSKRYPCJE
 Uprawnione konta Apple mogą otrzymać 7 dni za darmo przy subskrypcji miesięcznej lub rocznej. Po okresie próbnym opłata jest pobierana z konta Apple, a subskrypcja odnawia się automatycznie, o ile nie zostanie anulowana co najmniej 24 godziny przed końcem okresu. Zarządzaj nią lub anuluj w ustawieniach konta Apple. Opcja dożywotnia to zakup jednorazowy.
+Warunki korzystania (standardowa umowa EULA Apple): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Polityka prywatności: https://jackwallner.github.io/electrician/privacy-policy
 
 UWAGA O KODEKSIE
 Ta aplikacja nie jest powiązana z NFPA ani przez nią zatwierdzona. Objaśnia pojęcia i obliczenia własnymi słowami i podaje numery artykułów, abyś mógł sprawdzić każdy z nich we własnym kodeksie. Nie odtwarza treści przepisów. Zawsze weryfikuj z przepisami obowiązującymi w miejscu twojej pracy.
