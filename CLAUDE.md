@@ -252,9 +252,9 @@ The Swift symbols are the part that was safe to rename.
 
 ## App-specific notes
 - **ASC record exists, not live.** Apple ID `6804828725`, bundle
-  `com.jackwallner.electrician`, draft 1.0 in `PREPARE_FOR_SUBMISSION`.
-  `AppStoreLinks.appStoreID` is set. Builds are going to TestFlight; the
-  draft still has no build attached and has not been submitted.
+  `com.jackwallner.electrician`. `AppStoreLinks.appStoreID` is set. 1.0 has
+  build 11 attached and is in `WAITING_FOR_REVIEW` (resubmitted 2026-08-31
+  after a 3.1.2 rejection for a missing Terms of Use link).
   **`AppStoreLinks.isListingLive` is `false` and must be flipped the day the
   listing goes Ready for Sale.** Having an Apple ID is not having a listing:
   while it is false there is no share URL, no Rate button and no review funnel,
@@ -304,7 +304,15 @@ The Swift symbols are the part that was safe to rename.
   `support`), and mirrored to `jackwallner.com/ios/electrician/` by
   `.github/workflows/sync-landing-page.yml`. That workflow needs the
   `PORTFOLIO_DEPLOY_KEY` secret on this repo before it can push the mirror.
-- US-only. The 50-locale metadata machine does not apply here.
+- **Localized into all 50 ASC locales**, unlike the original US-only plan.
+  Anything that touches the description touches 50 files, so change it with a
+  script and verify against ASC rather than the repo.
+- **Every localized description must carry a functional Terms of Use (EULA)
+  link and a privacy link**, not just en-US. Each locale is its own product
+  page and Apple checks each; 1.0 was rejected under 3.1.2 with the link in
+  none of the 50. `scripts/asc-readiness.py` now names any locale that lacks
+  it. en-US runs close to the 4000-character cap, so budget for those two
+  lines before adding marketing copy.
 - ASO: the category's ranking lever is the year in the app name
   (`Electrician Test Prep 2026` and friends all do it). Decide the store name
   from the research file, not from the fleet's `X Trainer` habit.
