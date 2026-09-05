@@ -32,8 +32,8 @@ targets:
         PRODUCT_MODULE_NAME: Electrician
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
-        MARKETING_VERSION: "1.0"
-        CURRENT_PROJECT_VERSION: "11"
+        MARKETING_VERSION: "1.0.1"
+        CURRENT_PROJECT_VERSION: "13"
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: Electrician/Info.plist
         TARGETED_DEVICE_FAMILY: "1,2"
@@ -74,7 +74,35 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         TEST_TARGET_NAME: Electrician
 
+  # The paywall purchase probe. Its own target and scheme: the app's own test
+  # action activates StoreKit Testing, and this has to reach RevenueCat's Test
+  # Store instead.
+  ElectricianUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: ElectricianUITests
+    dependencies:
+      - target: Electrician
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.jackwallner.electrician.uitests
+        TEST_TARGET_NAME: Electrician
+
 schemes:
+  ElectricianUITests:
+    build:
+      targets:
+        Electrician: all
+        ElectricianUITests: [test]
+    test:
+      config: Debug
+      targets:
+        - ElectricianUITests
+    run:
+      config: Debug
+
   Electrician:
     build:
       targets:
@@ -104,3 +132,4 @@ schemes:
         - path: ElectricianScreenshots/Screenshots.xctestplan
       targets:
         - ElectricianScreenshots
+
