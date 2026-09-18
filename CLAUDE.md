@@ -100,13 +100,11 @@ The Swift symbols are the part that was safe to rename.
 
 ## App-specific notes
 - **ASC record exists, not live.** Apple ID `6804828725`, bundle
-  `com.jackwallner.electrician`. `AppStoreLinks.appStoreID` is set. 1.0 has
-  build 11 attached and is in `WAITING_FOR_REVIEW` (resubmitted 2026-08-31
-  after a 3.1.2 rejection for a missing Terms of Use link).
-  **`AppStoreLinks.isListingLive` is `false` and must be flipped the day the
-  listing goes Ready for Sale.** Having an Apple ID is not having a listing:
-  while it is false there is no share URL, no Rate button and no review funnel,
-  because every `apps.apple.com/app/id...` URL built from a draft record 404s.
+  `com.jackwallner.electrician`. `AppStoreLinks.appStoreID` is set. 1.0 went
+  Ready for Sale on 2026-09-01, so `AppStoreLinks.isListingLive` is `true`
+  (flipped 2026-09-18): share URL, Rate button and review funnel are on. For a
+  new app on this shell, keep it `false` until the listing is live, since every
+  `apps.apple.com/app/id...` URL built from a draft record 404s.
 - **The price ladder is 9.99 monthly / 39.99 yearly / 89.99 lifetime**, matching
   `Electrician.storekit` and the `SubscriptionService` fallback. Change one and
   change all three or the paywall quotes a price the store will not charge. The

@@ -5,7 +5,7 @@ enum AppStoreLinks {
     /// Numeric Apple ID for `com.jackwallner.electrician`.
     static let appStoreID = "6804828725"
 
-    /// FLIP THIS THE DAY THE LISTING GOES READY FOR SALE, and not before.
+    /// True since the listing went Ready for Sale on 2026-09-01.
     ///
     /// Having an Apple ID is not the same as having a listing. The ASC record
     /// has existed since long before there was anything to link to, and while
@@ -17,7 +17,7 @@ enum AppStoreLinks {
     ///
     /// While this is false: no share URL, no Rate button, no review funnel. The
     /// feedback path still works, and that is the one that matters pre-launch.
-    static let isListingLive = false
+    static let isListingLive = true
 
     static var isPublished: Bool { isListingLive && !appStoreID.isEmpty }
 
