@@ -1,1 +1,2 @@
-Kohdennettua NEC 2023 -harjoittelua: generoituja tehtäviä, numeroidut laskuvaiheet ja omiin virheisiin kohdistuva kertaus.
+• Arvioi Electrician suoraan Asetuksista.
+• Virheenkorjauksia ja parannuksia.

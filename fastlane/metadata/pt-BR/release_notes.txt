@@ -1,1 +1,2 @@
-Prática focada no NEC 2023: problemas gerados, passos de cálculo numerados e revisão dirigida aos seus próprios erros.
+• Avalie o Electrician direto nos Ajustes.
+• Correções de bugs e melhorias.

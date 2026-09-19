@@ -1,1 +1,2 @@
-Pràctica centrada en el NEC 2023: problemes generats, passos de càlcul numerats i repàs dirigit als teus propis errors.
+• Valora Electrician directament des de Configuració.
+• Correccions d'errors i millores.

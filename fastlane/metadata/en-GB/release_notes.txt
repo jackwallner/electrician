@@ -1,1 +1,2 @@
-Focused 2023 NEC navigation and calculation practice with generated problems, numbered working, and mistake-specific review.
+• Rate Electrician right from Settings.
+• Bug fixes and improvements.

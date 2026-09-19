@@ -1,1 +1,2 @@
-Luyện tập tập trung theo NEC 2023: bài toán được tạo tự động, các bước tính có đánh số và ôn tập nhắm vào lỗi của bạn.
+• Đánh giá Electrician ngay trong Cài đặt.
+• Sửa lỗi và cải tiến.

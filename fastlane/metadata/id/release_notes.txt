@@ -1,1 +1,2 @@
-Latihan terfokus NEC 2023: soal yang dibangkitkan, langkah hitungan bernomor, dan pengulangan yang menyasar kesalahanmu.
+• Beri nilai Electrician langsung dari Pengaturan.
+• Perbaikan bug dan peningkatan.
