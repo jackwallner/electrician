@@ -9,7 +9,7 @@ paths:
 
 # Electrician: IAP setup and RevenueCat
 
-Moved verbatim from CLAUDE.md. Loads when a matching file is read; update it here.
+Moved verbatim from AGENTS.md. Loads when a matching file is read; update it here.
 
 - **IAP setup is three scripts in order**, and skipping one leaves every product
   at `MISSING_METADATA`, where StoreKit never serves it and the paywall is dead

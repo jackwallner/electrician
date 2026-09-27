@@ -12,7 +12,7 @@ paths:
 
 # Electrician: store listing, site and localization
 
-Moved verbatim from CLAUDE.md. Loads when a matching file is read; update it here.
+Moved verbatim from AGENTS.md. Loads when a matching file is read; update it here.
 
 - **Store name is `Electrician Exam Practice 2026`.** The obvious
   `Electrician Exam Prep 2026` belongs to the incumbent the research file

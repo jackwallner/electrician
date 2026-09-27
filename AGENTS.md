@@ -1,4 +1,4 @@
-# Electrician — Project Guide
+# Electrician Project Guide
 
 NEC licensing-exam practice app for journeyman and master electrician
 candidates. Drills code navigation, ampacity derating, overcurrent sizing,
@@ -52,7 +52,7 @@ Condensed from the deep notes below; the reasoning and the bugs behind each one 
 - Every localized description carries a functional Terms of Use (EULA) link and a privacy link, in all 50 locales.
 
 ## Deep notes (load on demand)
-These files load automatically when you read a file matching their `paths:`. Agents that do not auto-load rules (AGENTS.md readers) should open the file for the area they are touching. Record new area-specific learnings in the matching file, not here.
+These files load automatically when you read a file matching their `paths:`. Agents that do not auto-load rules (Codex, Cursor) should open the file for the area they are touching. Record new area-specific learnings in the matching file, not here.
 
 | File | Covers | Read when |
 |---|---|---|
@@ -64,15 +64,15 @@ These files load automatically when you read a file matching their `paths:`. Age
 | `.claude/rules/listing-and-localization.md` | Store name, marketing site, 50 locales, the EULA link, ASO | Metadata, localizations, `docs/` |
 
 ## Structure
-- `Shared/Models` — `Given` (a labelled condition chip, the equivalent of a
+- `Shared/Models`: `Given` (a labelled condition chip, the equivalent of a
   dealt tile), `CodeArticle`, `Drill`, and the reference data split by subject:
   `NECTables` (conductors, ampacity, correction and adjustment, OCPD, fill),
   `NECGroundingTables` (250.66, 250.122, bonding), `NECMotorTables`
   (430.248/430.250 and the 430.52 percentages), `NECLoadTables` (Article 220),
   `NECInstallTables` (314.16(A), 110.26, 300.5, support spacing, 110.14(C))
-- `Shared/Content` — `CalcGenerator` (the asset), authored content per room,
+- `Shared/Content`: `CalcGenerator` (the asset), authored content per room,
   `DrillLibrary` (rooms), `CodeMinuteContent` (seeded daily five)
-- `Electrician/Views/Drills` — `CalcDrillView` is the one genuinely new screen:
+- `Electrician/Views/Drills`: `CalcDrillView` is the one genuinely new screen:
   numbered working after the answer, because a miss is almost always one skipped
   step rather than bad arithmetic
 
@@ -99,7 +99,7 @@ forgets it, and changing the route value orphans every pending notification.
 The Swift symbols are the part that was safe to rename.
 
 ## App-specific notes
-- **ASC record exists, not live.** Apple ID `6804828725`, bundle
+- **Live on the App Store.** Apple ID `6804828725`, bundle
   `com.jackwallner.electrician`. `AppStoreLinks.appStoreID` is set. 1.0 went
   Ready for Sale on 2026-09-01, so `AppStoreLinks.isListingLive` is `true`
   (flipped 2026-09-18): share URL, Rate button and review funnel are on. For a
@@ -121,4 +121,4 @@ The Swift symbols are the part that was safe to rename.
 
 ---
 Shared iOS conventions (build, simulator, release/TestFlight, ASC key, signing,
-review funnel, gotchas): always-loaded global CLAUDE.md + the `ios-dev` skill.
+review funnel, gotchas): the global agent rules + the `ios-dev` skill.

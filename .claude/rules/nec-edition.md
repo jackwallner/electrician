@@ -17,7 +17,7 @@ paths:
 
 # Electrician: the NEC edition
 
-Moved verbatim from CLAUDE.md. Loads when a matching file is read; update it here.
+Moved verbatim from AGENTS.md. Loads when a matching file is read; update it here.
 
 **Values follow the 2023 cycle**, and the app now says WHY rather than just
 which. The edition is a user-visible fact, not a comment: `NECTables.edition`

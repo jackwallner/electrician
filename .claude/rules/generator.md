@@ -16,7 +16,7 @@ paths:
 
 # Electrician: the generator
 
-Moved verbatim from CLAUDE.md. Loads when a matching file is read; update it here.
+Moved verbatim from AGENTS.md. Loads when a matching file is read; update it here.
 
 **The generator is the moat.** `CalcGenerator` emits ten problem shapes as
 pure functions with exactly one correct answer, so the paid tier never runs
