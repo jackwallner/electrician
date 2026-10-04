@@ -1,1 +1,1 @@
-journeyman,master,license,code,prep,test,electrical,ampacity,derating,conduit,fill,voltage,drop,wire
+journeyman,master,license,code,prep,test,electrical,ampacity,conduit,fill,voltage,drop,wire,size,box
