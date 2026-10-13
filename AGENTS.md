@@ -6,7 +6,7 @@ raceway fill, box fill and voltage drop. XcodeGen project/scheme: `Electrician`,
 sim lease owner `electrician`. Bundle ID `com.jackwallner.electrician`.
 
 Ported from `~/mahj` (the shell: rooms, drills, generated practice, progress,
-paywall, review funnel, release scripts). The mahjong domain is gone; only the
+paywall, rating ask, release scripts). The mahjong domain is gone; only the
 shell is shared.
 
 ## Why this app exists
@@ -102,9 +102,15 @@ The Swift symbols are the part that was safe to rename.
 - **Live on the App Store.** Apple ID `6804828725`, bundle
   `com.jackwallner.electrician`. `AppStoreLinks.appStoreID` is set. 1.0 went
   Ready for Sale on 2026-09-01, so `AppStoreLinks.isListingLive` is `true`
-  (flipped 2026-09-18): share URL, Rate button and review funnel are on. For a
+  (flipped 2026-09-18): share URL, Rate row and rating prompt are on. For a
   new app on this shell, keep it `false` until the listing is live, since every
   `apps.apple.com/app/id...` URL built from a draft record 404s.
+- **Ratings: no custom rating question** (App Review 5.6.1). A finished drill
+  or Code Minute records a positive moment; `requestsReview(after:)` calls
+  Apple's prompt about 3s later if the screen is still clear. Gates: second cold
+  launch, onboarding done, 30-day cooldown, listing live. Only the Settings
+  "Rate Electrician" row ends the asks; "Send Feedback" (`FeedbackSheet`) never
+  does.
 - **The price ladder is 9.99 monthly / 39.99 yearly / 89.99 lifetime**, matching
   `Electrician.storekit` and the `SubscriptionService` fallback. Change one and
   change all three or the paywall quotes a price the store will not charge. The
@@ -121,4 +127,4 @@ The Swift symbols are the part that was safe to rename.
 
 ---
 Shared iOS conventions (build, simulator, release/TestFlight, ASC key, signing,
-review funnel, gotchas): the global agent rules + the `ios-dev` skill.
+ratings policy, gotchas): the global agent rules + the `ios-dev` skill.

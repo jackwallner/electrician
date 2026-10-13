@@ -9,6 +9,11 @@ struct ElectricianApp: App {
     @StateObject private var router = AppRouter.shared
     @StateObject private var candidateProfile = CandidateProfile.shared
 
+    init() {
+        // Once per cold launch; the rating prompt waits for the second.
+        ReviewPromptTracker.recordAppLaunch()
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -48,7 +53,6 @@ struct ElectricianApp: App {
                         }
                     }
                     #endif
-                    ReviewPromptTracker.recordAppLaunch()
                 }
         }
     }

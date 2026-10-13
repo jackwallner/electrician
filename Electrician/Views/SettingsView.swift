@@ -1,5 +1,4 @@
 import SwiftUI
-import StoreKit
 import UIKit
 
 struct SettingsView: View {
@@ -8,13 +7,11 @@ struct SettingsView: View {
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var profile: CandidateProfile
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.requestReview) private var requestReview
     @State private var showPaywall = false
     @State private var showWhatsNew = false
     @State private var showResetConfirm = false
     @State private var restoreMessage: String?
-    /// Non-nil while the review funnel is up; the value is where it opens.
-    @State private var reviewPromptStep: ReviewPromptSheet.Step?
+    @State private var showFeedback = false
 
     var body: some View {
         NavigationStack {
@@ -52,11 +49,7 @@ struct SettingsView: View {
                     }
                 }
             }
-            .sheet(item: $reviewPromptStep) { step in
-                ReviewPromptSheet(initialStep: step) { outcome in
-                    if outcome == .enjoyedMaybeLater { requestReview() }
-                }
-            }
+            .sheet(isPresented: $showFeedback) { FeedbackSheet() }
             .alert("Restore", isPresented: .init(
                 get: { restoreMessage != nil },
                 set: { if !$0 { restoreMessage = nil } }
@@ -201,15 +194,16 @@ struct SettingsView: View {
             }
             // Hidden until the listing is live: the button opens an
             // apps.apple.com URL that 404s while the record is still a draft.
-            if AppStoreLinks.isPublished {
+            if let writeReviewURL = AppStoreLinks.writeReviewURL {
                 Button {
-                    reviewPromptStep = .reviewPitch
+                    ReviewPromptTracker.markOpenedWriteReview()
+                    UIApplication.shared.open(writeReviewURL)
                 } label: {
                     Label("Rate Electrician", systemImage: "star.fill")
                 }
             }
             Button {
-                reviewPromptStep = .feedback
+                showFeedback = true
             } label: {
                 Label("Send Feedback", systemImage: "envelope.fill")
             }

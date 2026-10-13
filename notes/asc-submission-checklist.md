@@ -76,5 +76,5 @@ monthly 2).
 ## After it goes Ready for Sale
 
 Flip `AppStoreLinks.isListingLive` to `true` and ship a build. Until then there
-is no share URL, no Rate button and no review funnel, because every
+is no share URL, no Rate row and no rating prompt, because every
 `apps.apple.com/app/id...` URL built from a draft record 404s.

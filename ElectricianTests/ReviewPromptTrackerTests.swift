@@ -1,91 +1,107 @@
 import XCTest
 @testable import Electrician
 
+/// The rating-ask rules from the fleet policy: ask from the second launch,
+/// wait out a 30-day cooldown, stop only when the reader opened the review
+/// page, and never let feedback stop the asks.
 @MainActor
 final class ReviewPromptTrackerTests: XCTestCase {
 
-    // The async overrides are deliberate. XCTest's synchronous setUp/tearDown
-    // are nonisolated, so overriding them from a @MainActor test case is an
-    // isolation mismatch Swift 6 rejects; the async pair inherits the class's
-    // isolation, which is what the main-actor store fixtures below need.
-    override func setUp() async throws {
-        try await super.setUp()
+    override func setUp() {
+        super.setUp()
         ReviewPromptTracker.resetForTesting()
     }
 
-    override func tearDown() async throws {
+    override func tearDown() {
         ReviewPromptTracker.resetForTesting()
-        try await super.tearDown()
+        super.tearDown()
     }
 
-    private func earnTheAsk() {
-        ReviewPromptTracker.recordAppLaunch()
-        ReviewPromptTracker.recordAppLaunch()
-        for _ in 0..<ReviewPromptTracker.minimumPositiveMoments {
-            ReviewPromptTracker.recordPositiveMoment()
-        }
+    private func days(_ n: Double) -> Date { Date().addingTimeInterval(n * 86_400) }
+
+    private func launch(_ times: Int) {
+        for _ in 0..<times { ReviewPromptTracker.recordAppLaunch() }
     }
 
-    func testGateStaysShutUntilThePlayerHasDoneEnough() {
-        ReviewPromptTracker.recordAppLaunch()
+    private func canAsk(setup: Bool = true, at now: Date = Date()) -> Bool {
+        ReviewPromptTracker.canRequestReview(hasCompletedSetup: setup, now: now, listingIsLive: true)
+    }
+
+    private func shouldAsk(setup: Bool = true) -> Bool {
+        ReviewPromptTracker.shouldRequestAfterPositiveMoment(hasCompletedSetup: setup, listingIsLive: true)
+    }
+
+    func testNeverAsksInTheFirstSession() {
+        launch(1)
         ReviewPromptTracker.recordPositiveMoment()
-        XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(listingIsLive: true))
-
-        earnTheAsk()
-        XCTAssertTrue(ReviewPromptTracker.shouldShowAfterPositiveMoment(listingIsLive: true))
+        XCTAssertFalse(shouldAsk())
     }
 
-    func testNotNowHoldsTheGateShutForTheCooldown() {
-        earnTheAsk()
+    func testAsksAtTheFirstPositiveMomentOfTheSecondLaunch() {
+        launch(2)
+        XCTAssertFalse(shouldAsk(), "No moment yet, so no ask")
+        ReviewPromptTracker.recordPositiveMoment()
+        XCTAssertTrue(shouldAsk())
+    }
+
+    func testRequiresFinishedOnboarding() {
+        launch(2)
+        ReviewPromptTracker.recordPositiveMoment()
+        XCTAssertFalse(shouldAsk(setup: false))
+    }
+
+    func testWaitsOutTheCooldown() {
+        launch(2)
         ReviewPromptTracker.markShown()
-
-        let day = TimeInterval(86_400)
-        XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(now: Date().addingTimeInterval(30 * day), listingIsLive: true))
-        let afterCooldown = Date().addingTimeInterval(TimeInterval(ReviewPromptTracker.cooldownDays + 1) * day)
-        XCTAssertTrue(ReviewPromptTracker.shouldShowAfterPositiveMoment(now: afterCooldown, listingIsLive: true))
+        XCTAssertFalse(canAsk(at: days(29)))
+        XCTAssertTrue(canAsk(at: days(31)))
     }
 
-    /// "Maybe later" spends only Apple's silent prompt, so it must not cost us
-    /// the full 120-day jail the way a flat "Not now" does.
-    func testMaybeLaterUsesTheShortCooldown() {
-        earnTheAsk()
-        ReviewPromptTracker.markSoftDeferred()
-
-        let day = TimeInterval(86_400)
-        XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(now: Date().addingTimeInterval(10 * day), listingIsLive: true))
-        let afterSoftCooldown = Date().addingTimeInterval(TimeInterval(ReviewPromptTracker.softDeferCooldownDays + 1) * day)
-        XCTAssertTrue(ReviewPromptTracker.shouldShowAfterPositiveMoment(now: afterSoftCooldown, listingIsLive: true))
-    }
-
-    func testRatingOrFeedbackRetiresThePromptForGood() {
-        earnTheAsk()
+    func testOpeningTheReviewPageEndsTheAsks() {
+        launch(2)
         ReviewPromptTracker.markOpenedWriteReview()
+        XCTAssertFalse(canAsk(at: days(3650)))
+    }
 
-        let inTenYears = Date().addingTimeInterval(3650 * 86_400)
-        XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(now: inTenYears, listingIsLive: true))
-        XCTAssertEqual(ReviewPromptTracker.outcome, .openedWriteReview)
-
-        ReviewPromptTracker.resetForTesting()
-        earnTheAsk()
+    func testFeedbackDoesNotStopTheAsks() {
+        launch(2)
         ReviewPromptTracker.markFeedbackDraftOpened()
-        XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(now: inTenYears, listingIsLive: true))
         XCTAssertEqual(ReviewPromptTracker.outcome, .openedFeedbackDraft)
+        XCTAssertTrue(canAsk(at: days(31)))
+    }
+
+    func testFeedbackAfterTheReviewPageKeepsTheAsksEnded() {
+        launch(2)
+        ReviewPromptTracker.markOpenedWriteReview()
+        ReviewPromptTracker.markFeedbackDraftOpened()
+        XCTAssertEqual(ReviewPromptTracker.outcome, .openedWriteReview)
+        XCTAssertFalse(canAsk(at: days(3650)))
+    }
+
+    func testBlockedAskKeepsTheMomentPending() {
+        launch(2)
+        ReviewPromptTracker.recordPositiveMoment()
+        XCTAssertTrue(shouldAsk())
+        // The screen was busy, so nothing was marked: the moment is still there.
+        XCTAssertTrue(shouldAsk())
+        ReviewPromptTracker.markShown()
+        XCTAssertFalse(shouldAsk())
+    }
+
+    /// Nothing asks while the App Store listing is a draft: there is no page
+    /// to rate until Ready for Sale.
+    func testNeverAsksUntilTheListingIsLive() {
+        launch(2)
+        ReviewPromptTracker.recordPositiveMoment()
+        XCTAssertFalse(ReviewPromptTracker.shouldRequestAfterPositiveMoment(hasCompletedSetup: true, listingIsLive: false))
     }
 
     func testFeedbackMailURLCarriesTheMessage() {
-        let url = ReviewPromptSheet.feedbackMailURL(body: "more box fill drills please")
+        let url = FeedbackSheet.feedbackMailURL(body: "more box fill drills please")
         XCTAssertNotNil(url)
         XCTAssertEqual(url?.scheme, "mailto")
         XCTAssertEqual(url?.path, AppStoreLinks.feedbackEmail)
         XCTAssertTrue(url?.query?.contains("more%20box%20fill%20drills%20please") == true)
-    }
-
-    /// The funnel must stay shut while the App Store listing is a draft: its
-    /// happy path opens an apps.apple.com URL that 404s until Ready for Sale.
-    func testFunnelStaysShutUntilTheListingIsLive() {
-        earnTheAsk()
-        XCTAssertTrue(ReviewPromptTracker.shouldShowAfterPositiveMoment(listingIsLive: true))
-        XCTAssertFalse(ReviewPromptTracker.shouldShowAfterPositiveMoment(listingIsLive: false))
     }
 
     /// The raw value is persisted, so renaming the case must not orphan an

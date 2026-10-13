@@ -13,7 +13,7 @@ import Foundation
 /// the item id, the citation, the edition the app computed against, the answer
 /// it claimed, and what they picked. Everything else is their own words.
 ///
-/// It goes out as a mailto draft for the same reason the feedback funnel does:
+/// It goes out as a mailto draft for the same reason Send Feedback does:
 /// no account, no analytics endpoint, no practice data leaving the phone.
 enum ContentReport {
 
