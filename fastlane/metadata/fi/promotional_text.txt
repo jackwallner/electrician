@@ -1,1 +1,1 @@
-Kohdennettua harjoittelua NEC 2023 -artikkelien haussa ja laskennassa Yhdysvaltain sähköasentajakoetta varten.
+Koe on avoimin kirjoin mutta ajastettu. Harjoittele oikean NEC 2023 -artiklan nopeaa löytämistä ja laskuja, jotka vievät koepäivänä eniten minuutteja.

@@ -1,1 +1,1 @@
-Ukierunkowane ćwiczenie wyszukiwania artykułów i obliczeń według NEC 2023 do amerykańskiego egzaminu na elektryka.
+Egzamin jest z otwartą książką, ale na czas. Ćwicz szybkie znajdowanie właściwego artykułu NEC 2023 i obliczenia, które w dniu egzaminu kosztują najwięcej minut.

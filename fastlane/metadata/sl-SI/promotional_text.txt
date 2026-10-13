@@ -1,1 +1,1 @@
-Usmerjena vadba iskanja členov in izračunov po NEC 2023 za ameriški izpit za električarja.
+Izpit je z odprto knjigo, a na čas. Vadi hitro iskanje pravega člena NEC 2023 in izračune, ki na dan izpita vzamejo največ minut.

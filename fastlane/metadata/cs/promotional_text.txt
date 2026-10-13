@@ -1,1 +1,1 @@
-Cílený trénink vyhledávání článků a výpočtů podle NEC 2023 pro americkou zkoušku elektrikáře.
+Zkouška je s otevřenou knihou, ale na čas. Procvič rychlé hledání správného článku NEC 2023 a výpočty, které v den zkoušky stojí nejvíc minut.

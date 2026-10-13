@@ -1,1 +1,1 @@
-Práctica enfocada en la búsqueda de artículos y los cálculos del NEC 2023 para el examen de electricista de Estados Unidos.
+El examen es a libro abierto, pero cronometrado. Practica encontrar rápido el artículo correcto del NEC 2023 y los cálculos que más minutos cuestan el día del examen.
