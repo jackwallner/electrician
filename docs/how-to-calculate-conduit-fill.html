@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="256x256" href="icon_256.png">
+<link rel="apple-touch-icon" href="icon_256.png">
+<title>How to Calculate Conduit Fill (NEC Chapter 9) | Electrician</title>
+<meta name="description" content="How to calculate conduit fill under NEC Chapter 9: Table 1 fill limits, Table 4 conduit areas, Table 5 wire areas, and four worked examples in EMT.">
+<link rel="canonical" href="https://jackwallner.com/ios/electrician/how-to-calculate-conduit-fill.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:title" content="How to Calculate Conduit Fill (NEC Chapter 9) | Electrician">
+<meta property="og:description" content="How to calculate conduit fill under NEC Chapter 9: Table 1 fill limits, Table 4 conduit areas, Table 5 wire areas, and four worked examples in EMT.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://jackwallner.com/ios/electrician/how-to-calculate-conduit-fill.html">
+<meta property="og:image" content="https://jackwallner.github.io/electrician/icon_256.png">
+<meta property="og:site_name" content="Jack Wallner">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Calculate Conduit Fill (NEC Chapter 9) | Electrician">
+<meta name="twitter:description" content="How to calculate conduit fill under NEC Chapter 9: Table 1 fill limits, Table 4 conduit areas, Table 5 wire areas, and four worked examples in EMT.">
+<meta name="twitter:image" content="https://jackwallner.github.io/electrician/icon_256.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://jackwallner.com/ios/electrician/how-to-calculate-conduit-fill.html#article",
+      "headline": "How to Calculate Conduit Fill (NEC Chapter 9)",
+      "description": "How to calculate conduit fill under NEC Chapter 9: Table 1 fill limits, Table 4 conduit areas, Table 5 wire areas, and four worked examples in EMT.",
+      "inLanguage": "en",
+      "author": {
+        "@type": "Person",
+        "name": "Jack Wallner",
+        "url": "https://jackwallner.com/"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Jack Wallner",
+        "url": "https://jackwallner.com/"
+      },
+      "datePublished": "2026-10-12",
+      "dateModified": "2026-10-12",
+      "mainEntityOfPage": "https://jackwallner.com/ios/electrician/how-to-calculate-conduit-fill.html",
+      "image": "https://jackwallner.github.io/electrician/icon_256.png",
+      "about": {
+        "@type": "Thing",
+        "name": "NEC conduit fill calculation"
+      },
+      "isPartOf": {
+        "@type": "MobileApplication",
+        "@id": "https://jackwallner.com/ios/electrician/#app",
+        "name": "Electrician Exam Practice 2026",
+        "url": "https://jackwallner.com/ios/electrician/"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the NEC conduit fill limit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Chapter 9, Table 1 of the NEC sets 53% of the conduit's interior area for one conductor, 31% for two conductors and 40% for three or more. Nipples no longer than 24 inches may go to 60%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you calculate conduit fill?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Add up the cross-sectional area of every conductor from Chapter 9, Table 5, then compare the total with the 40% area (or 31% or 53%) for the conduit in Table 4. Pick the smallest trade size whose limit is at least your total."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the ground wire count in conduit fill?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Equipment grounding conductors count when they are installed. Use the Table 5 area for an insulated ground and the Table 8 area for a bare one."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many 12 AWG wires fit in 3/4 inch EMT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sixteen THHN conductors. The 40% area of 3/4 inch EMT is 0.213 square inches, and each 12 AWG THHN is 0.0133 square inches, so 0.213 / 0.0133 = 16."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is conduit fill the same as ampacity derating?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Conduit fill is a physical space limit. Ampacity derating is a separate calculation based on the number of current-carrying conductors and the ambient temperature, so a conduit can pass the fill check and still need larger wire."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Jack Wallner",
+          "item": "https://jackwallner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "iOS apps",
+          "item": "https://jackwallner.com/ios/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Electrician Exam Practice 2026",
+          "item": "https://jackwallner.com/ios/electrician/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "How to calculate conduit fill",
+          "item": "https://jackwallner.com/ios/electrician/how-to-calculate-conduit-fill.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; color: #1d1d1f; background: #ffffff; -webkit-font-smoothing: antialiased; line-height: 1.7; }
+nav { padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.06); background: rgba(250,250,250,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; }
+nav .container { display: flex; align-items: center; justify-content: space-between; max-width: 980px; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #1d1d1f; }
+.nav-brand img { width: 32px; height: 32px; border-radius: 7px; }
+.nav-brand span { font-size: 15px; font-weight: 600; }
+.nav-link { font-size: 14px; text-decoration: none; background: #1d1d1f; color: #fff; padding: 8px 18px; border-radius: 980px; font-weight: 500; }
+.container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+article { padding: 56px 0 80px; }
+article h1 { font-size: 36px; font-weight: 700; letter-spacing: -1px; line-height: 1.15; margin-bottom: 12px; }
+article .meta { font-size: 14px; color: #86868b; margin-bottom: 28px; }
+article h2 { font-size: 24px; font-weight: 600; letter-spacing: -0.3px; line-height: 1.25; margin: 44px 0 12px; }
+article h3 { font-size: 18px; font-weight: 600; margin: 24px 0 6px; }
+article p { font-size: 17px; margin-bottom: 18px; }
+article ul, article ol { margin: 0 0 20px 24px; font-size: 17px; }
+article li { margin-bottom: 8px; }
+article a { color: #0d57a3; }
+.answer { border-left: 4px solid #0d57a3; background: #fff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin-bottom: 28px; }
+.answer p { margin-bottom: 0; }
+.hand { font-size: 17px; font-weight: 600; background: #fafafa; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: inline-block; }
+.ex { background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 14px; padding: 18px 20px 6px; margin: 0 0 22px; }
+.ex p, .ex ul { font-size: 16px; }
+table { width: 100%; border-collapse: collapse; margin: 0 0 24px; font-size: 16px; background: #fff; border-radius: 12px; overflow: hidden; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid rgba(0,0,0,0.06); vertical-align: top; }
+th { font-size: 13px; text-transform: uppercase; letter-spacing: 0.4px; color: #6e6e73; background: #f5f5f7; }
+.table-wrap { overflow-x: auto; }
+.red { color: #b3261e; }
+.cta-box { background: #f5f5f7; border-radius: 16px; padding: 28px; margin: 40px 0 8px; }
+.cta-box h2 { margin: 0 0 8px; font-size: 20px; }
+.cta-box p { font-size: 16px; color: #3a3a3c; margin-bottom: 16px; }
+.cta-box a.btn { display: inline-block; background: #1d1d1f; color: #fff; font-size: 15px; font-weight: 500; padding: 12px 28px; border-radius: 980px; text-decoration: none; }
+.sources li { font-size: 15px; }
+.note { font-size: 14px; color: #6e6e73; }
+footer { text-align: center; padding: 20px 24px; font-size: 12px; color: #86868b; border-top: 1px solid rgba(0,0,0,0.06); }
+footer a { color: #86868b; text-decoration: none; margin: 0 10px; }
+@media (max-width: 768px) { article h1 { font-size: 28px; } article { padding: 40px 0 60px; } article h2 { font-size: 21px; } }
+</style>
+</head>
+<body>
+<nav>
+<div class="container">
+<a class="nav-brand" href="./">
+<img src="icon_256.png" alt="Electrician Exam Practice 2026">
+<span>Electrician Exam Practice 2026</span>
+</a>
+<a class="nav-link" href="https://apps.apple.com/us/app/id6804828725">Download</a>
+</div>
+</nav>
+
+<article>
+<div class="container">
+<h1>How to Calculate Conduit Fill (NEC Chapter 9)</h1>
+<p class="meta">By Jack Wallner &middot; October 12, 2026 &middot; Based on the 2023 NEC</p>
+
+<div class="answer"><p>To calculate conduit fill, add the cross-sectional area of every conductor (NEC Chapter 9, Table 5) and compare the total with the allowed area for the conduit (Chapter 9, Table 4). The limit is 53% of the conduit's interior for one conductor, 31% for two, and 40% for three or more (Table 1). Choose the smallest trade size whose limit is at least the total.</p></div>
+
+
+<h2>The three-step method</h2>
+<p>Conduit fill is an area comparison. You add up the cross-section of every conductor and check that the total stays under a percentage of the conduit's interior area. Three tables in Chapter 9 of the 2023 NEC supply every number.</p>
+<ol>
+<li><strong>Find the area of each conductor.</strong> Chapter 9, Table 5 lists the cross-section of insulated conductors by size and insulation type. This includes the insulation, which is why a 12 AWG THHN wire (0.0133 sq in) is bigger than the copper alone.</li>
+<li><strong>Add them up and pick the fill limit.</strong> Chapter 9, Table 1 sets the maximum fill by conductor count: 53% for one conductor, 31% for two, and 40% for three or more.</li>
+<li><strong>Pick a conduit.</strong> Chapter 9, Table 4 gives the interior area of each conduit type and trade size, with the 53%, 31% and 40% areas already worked out. Choose the smallest size whose limit is at least your total.</li>
+</ol>
+<p>Equipment grounding conductors count toward the total when they are installed. An insulated green ground uses its Table 5 area, and a bare one uses its Table 8 area.</p>
+
+<h2>The numbers you need for EMT and THHN</h2>
+<p>Most exam and field problems use THHN/THWN-2 conductors in EMT, covered by Article 358. These values come from Table 4 and Table 5 and are facts you can check in your own code book.</p>
+<div class="table-wrap"><table>
+<tr><th>EMT trade size</th><th>Interior area (sq in)</th><th>40% limit (sq in)</th></tr>
+<tr><td>1/2 in</td><td>0.304</td><td>0.122</td></tr>
+<tr><td>3/4 in</td><td>0.533</td><td>0.213</td></tr>
+<tr><td>1 in</td><td>0.864</td><td>0.346</td></tr>
+<tr><td>1-1/4 in</td><td>1.496</td><td>0.598</td></tr>
+<tr><td>1-1/2 in</td><td>2.036</td><td>0.814</td></tr>
+<tr><td>2 in</td><td>3.356</td><td>1.342</td></tr>
+</table></div>
+<div class="table-wrap"><table>
+<tr><th>THHN/THWN-2 size</th><th>Area each (sq in)</th></tr>
+<tr><td>14 AWG</td><td>0.0097</td></tr>
+<tr><td>12 AWG</td><td>0.0133</td></tr>
+<tr><td>10 AWG</td><td>0.0211</td></tr>
+<tr><td>8 AWG</td><td>0.0366</td></tr>
+<tr><td>6 AWG</td><td>0.0507</td></tr>
+<tr><td>4 AWG</td><td>0.0824</td></tr>
+<tr><td>1/0 AWG</td><td>0.1855</td></tr>
+</table></div>
+
+<h2>Worked example 1: six 12 AWG wires</h2>
+<div class="ex">
+<p>Two circuits sharing a raceway: six 12 AWG THHN conductors, including grounds.</p>
+<ul>
+<li>Total area: 6 &times; 0.0133 = 0.0798 sq in.</li>
+<li>Six conductors means the 40% limit applies. The 1/2 in EMT limit is 0.122 sq in, which is larger than 0.0798.</li>
+</ul>
+<p><strong>Answer: 1/2 in EMT</strong>, filled to 0.0798 / 0.304 = 26.3%.</p>
+</div>
+
+<h2>Worked example 2: nine 10 AWG wires</h2>
+<div class="ex">
+<ul>
+<li>Total area: 9 &times; 0.0211 = 0.1899 sq in.</li>
+<li>1/2 in EMT allows 0.122, which is too small (the wires would fill 62.5% of the conduit).</li>
+<li>3/4 in EMT allows 0.213, which is enough.</li>
+</ul>
+<p><strong>Answer: 3/4 in EMT</strong>, at 0.1899 / 0.533 = 35.6% fill.</p>
+</div>
+
+<h2>Worked example 3: mixed sizes, and a near miss</h2>
+<div class="ex">
+<p>A feeder of three 1/0 AWG THHN conductors plus a 6 AWG THHN insulated equipment ground.</p>
+<ul>
+<li>Total area: 3 &times; 0.1855 + 0.0507 = 0.6072 sq in.</li>
+<li>1-1/4 in EMT allows 0.598 sq in. The bundle is over by 0.009, so it fails at 40.6% fill.</li>
+<li>1-1/2 in EMT allows 0.814 sq in.</li>
+</ul>
+<p><strong>Answer: 1-1/2 in EMT</strong>, at 29.8% fill. The ground wire is what pushed this past the smaller size, which is why you count it.</p>
+</div>
+
+<h2>Worked example 4: two conductors</h2>
+<div class="ex">
+<p>Two 8 AWG THHN conductors in 1/2 in EMT.</p>
+<ul>
+<li>Total area: 2 &times; 0.0366 = 0.0732 sq in.</li>
+<li>Two conductors use the 31% limit: 0.304 &times; 0.31 = 0.094 sq in.</li>
+</ul>
+<p><strong>It fits</strong>, at 24.1% fill. The lower percentage matters because two wires can sit side by side and jam, so a tight pull is more likely at this count.</p>
+</div>
+
+<h2>How many wires fit: the reverse calculation</h2>
+<p>Divide the 40% area by the area of one conductor. For 3/4 in EMT and 12 AWG THHN: 0.213 / 0.0133 = 16.0, so <strong>16 conductors</strong>. A seventeenth takes the fill to 42.4%. When the answer has a decimal of 0.8 or more, Chapter 9 Note 7 lets you round up to the next whole conductor. Annex C lists the maximum counts for same-size conductors, so you can skip the arithmetic in that case.</p>
+
+<h2>Special cases to know</h2>
+<ul>
+<li><strong>Short nipples.</strong> A raceway nipple no longer than 24 inches may be filled to 60% (Chapter 9 Note 4).</li>
+<li><strong>Mixed sizes.</strong> Annex C only works for conductors of one size and type. For anything mixed, use Tables 4 and 5 as above.</li>
+<li><strong>Other conduit types.</strong> RMC, IMC, PVC, FMC and the rest have their own interior areas in Table 4. The 40% rule is the same, but the areas are not. Each wiring method article has a number-of-conductors section that sends you to these tables, for example 358.22 for EMT.</li>
+<li><strong>Different insulation.</strong> XHHW and THW are not the same area as THHN. Use the right column of Table 5 for the wire you are pulling.</li>
+<li><strong>Conductors in a cable.</strong> A multiconductor cable is handled as one oval, not as separate wires. Check Chapter 9 Note 9.</li>
+</ul>
+
+<h2>Common mistakes</h2>
+<ul>
+<li>Leaving the ground out of the count.</li>
+<li>Using 40% for a two-conductor run.</li>
+<li>Pulling the THW area when the wire is THHN.</li>
+<li>Using the total interior area, not the 40% column, as the limit.</li>
+<li>Counting current-carrying conductors for fill, then forgetting that ampacity derating is a separate step.</li>
+</ul>
+
+<h2>How Electrician Exam Practice helps</h2>
+<p><a href="./">Electrician Exam Practice 2026</a> is an iPhone and iPad app for journeyman and master exam candidates. It generates raceway fill, ampacity, box fill and voltage drop problems that do not repeat, and every miss comes with numbered working steps. It also has free field calculators, including one for conduit fill, so the same tables are in your pocket on the job. The app uses the 2023 NEC cycle, cites article and table numbers, and does not reproduce code text.</p>
+
+
+<div class="cta-box">
+<h2>Practice raceway fill and the rest of the exam math</h2>
+<p>Electrician Exam Practice 2026 generates NEC calculation problems that do not repeat and shows numbered steps for every miss. Free to start on iPhone and iPad.</p>
+<a class="btn" href="./">See the app</a>
+</div>
+
+<h2>Questions</h2>
+<h3>What is the NEC conduit fill limit?</h3>
+<p>Chapter 9, Table 1 of the NEC sets 53% of the conduit's interior area for one conductor, 31% for two conductors and 40% for three or more. Nipples no longer than 24 inches may go to 60%.</p>
+<h3>How do you calculate conduit fill?</h3>
+<p>Add up the cross-sectional area of every conductor from Chapter 9, Table 5, then compare the total with the 40% area (or 31% or 53%) for the conduit in Table 4. Pick the smallest trade size whose limit is at least your total.</p>
+<h3>Does the ground wire count in conduit fill?</h3>
+<p>Yes. Equipment grounding conductors count when they are installed. Use the Table 5 area for an insulated ground and the Table 8 area for a bare one.</p>
+<h3>How many 12 AWG wires fit in 3/4 inch EMT?</h3>
+<p>Sixteen THHN conductors. The 40% area of 3/4 inch EMT is 0.213 square inches, and each 12 AWG THHN is 0.0133 square inches, so 0.213 / 0.0133 = 16.</p>
+<h3>Is conduit fill the same as ampacity derating?</h3>
+<p>No. Conduit fill is a physical space limit. Ampacity derating is a separate calculation based on the number of current-carrying conductors and the ambient temperature, so a conduit can pass the fill check and still need larger wire.</p>
+
+<h2>Sources</h2>
+<ul class="sources">
+<li><a href="https://www.nfpa.org/codes-and-standards/nfpa-70-standard-development/70">NFPA: NFPA 70, National Electrical Code</a></li>
+<li><a href="https://expertce.com/learn-articles/conduit-fill-calculations-nec-guide/">ExpertCE: Conduit fill calculations, a guide to NEC Chapter 9 tables</a></li>
+<li><a href="https://expertce.com/learn-articles/nec-chapter-9-table-1-conduit-fill/">ExpertCE: How to use NEC Chapter 9, Table 1 for percent conduit fill</a></li>
+<li><a href="https://engicalchub.com/guides/conduit-fill-guide/">EngiCalcsHub: Conduit fill guide</a></li>
+</ul>
+<p class="note">Values follow the 2023 NEC. Your jurisdiction may have adopted a different edition or amended it, so check the book your authority having jurisdiction enforces. This guide cites article and table numbers and does not reproduce NEC text. It is not a substitute for the code. Electrician Exam Practice 2026 is an independent app and is not affiliated with NFPA.</p>
+</div>
+</article>
+
+<footer>
+<div>&copy; 2026 Jack Wallner</div>
+<div>
+<a href="./">Home</a>
+<a href="support.html">Support</a>
+<a href="privacy-policy.html">Privacy</a>
+</div>
+</footer>
+</body>
+</html>
