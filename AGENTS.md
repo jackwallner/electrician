@@ -62,6 +62,7 @@ These files load automatically when you read a file matching their `paths:`. Age
 | `.claude/rules/onboarding-and-pitch.md` | The step machine, jurisdictions, persisted keys, study pace, the `Electrician+` pitch | Onboarding, candidate profile, Home's pace card, the paywall pitch |
 | `.claude/rules/release-and-iap.md` | IAP setup scripts, the RevenueCat probe | ASC product scripts, RevenueCat, StoreKit config |
 | `.claude/rules/listing-and-localization.md` | Store name, marketing site, 50 locales, the EULA link, ASO | Metadata, localizations, `docs/` |
+| `.claude/rules/android.md` | Native Android identifiers, content export, calculation parity and current build scope | `android/`, Android exporter scripts |
 
 ## Structure
 - `Shared/Models`: `Given` (a labelled condition chip, the equivalent of a
