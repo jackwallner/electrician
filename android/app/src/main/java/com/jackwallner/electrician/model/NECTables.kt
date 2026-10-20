@@ -110,6 +110,13 @@ object NECTables {
     fun motorFeederAmpacity(flcs: List<Double>): Double? = flcs.maxOrNull()?.let { it * motorConductorFactor + (flcs.sum() - it) }
     fun motorFeederOCPD(largestBranchOCPD: Int, otherFLCs: List<Double>): Int? = nextStandardOCPDAtMost(largestBranchOCPD + otherFLCs.sum())
 
+    // Article 220 constants, mirrored from iOS `NECLoadTables`.
+    const val dwellingLightingVAPerSqFt = 3.0
+    const val smallApplianceCircuitVA = 1500.0
+    const val minimumSmallApplianceCircuits = 2
+    const val laundryCircuitVA = 1500.0
+    const val minimumDryerVA = 5000.0
+
     fun generalLightingDemand(totalVA: Double): Double {
         var remaining = totalVA
         val first = min(remaining, 3000.0)
