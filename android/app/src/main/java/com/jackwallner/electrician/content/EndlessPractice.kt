@@ -17,23 +17,27 @@ import com.jackwallner.electrician.model.SeededGenerator
 import com.jackwallner.electrician.model.SystemRandomSource
 
 /** The generated-practice catalogue. Raw names are persisted inside item ids. */
-enum class PracticeSkill(val title: String, val subtitle: String, val roomID: String) {
-    ampacity("Derate the Conductor", "Heat and bundling, unlimited reps", "conductors-room"),
-    overcurrent("Size the Breaker", "Where 240.4(D) beats the table", "conductors-room"),
-    conduitFill("Fill the Pipe", "Smallest raceway that works", "calc-room"),
-    boxFill("Fill the Box", "Counting allowances, not wires", "calc-room"),
-    voltageDrop("Drop the Voltage", "The field calculation, drilled", "calc-room"),
-    egcSizing("Size the Ground", "Table 250.122, read from the breaker", "grounding-room"),
-    gecSizing("Reach the Electrode", "Table 250.66, and the rod's own ceiling", "grounding-room"),
-    motorConductor("Feed the Motor", "Table current, never the nameplate", "grounding-room"),
-    motorProtection("Protect the Motor", "The one place you round up", "grounding-room"),
-    dwellingLoad("Size the Service", "The full dwelling calculation", "loads-room");
+enum class PracticeSkill(val title: String, val subtitle: String, val roomID: String, val icon: String) {
+    ampacity("Derate the Conductor", "Heat and bundling, unlimited reps", "conductors-room", "thermometer.medium"),
+    overcurrent("Size the Breaker", "Where 240.4(D) beats the table", "conductors-room", "bolt.shield.fill"),
+    conduitFill("Fill the Pipe", "Smallest raceway that works", "calc-room", "cylinder.fill"),
+    boxFill("Fill the Box", "Counting allowances, not wires", "calc-room", "shippingbox.fill"),
+    voltageDrop("Drop the Voltage", "The field calculation, drilled", "calc-room", "chart.line.downtrend.xyaxis"),
+    egcSizing("Size the Ground", "Table 250.122, read from the breaker", "grounding-room", "leaf.fill"),
+    gecSizing("Reach the Electrode", "Table 250.66, and the rod's own ceiling", "grounding-room", "arrow.down.to.line"),
+    motorConductor("Feed the Motor", "Table current, never the nameplate", "grounding-room", "fan.fill"),
+    motorProtection("Protect the Motor", "The one place you round up", "grounding-room", "gearshape.2.fill"),
+    dwellingLoad("Size the Service", "The full dwelling calculation", "loads-room", "house.fill");
 
     val itemPrefix: String get() = "gen-$name-"
+    val raw: String get() = name
 
     companion object {
         fun forItemID(id: String): PracticeSkill? = entries.firstOrNull { id.startsWith(it.itemPrefix) }
         fun of(raw: String): PracticeSkill? = entries.firstOrNull { it.name == raw }
+        fun fromRaw(raw: String): PracticeSkill? = of(raw)
+        fun skill(itemID: String): PracticeSkill? = forItemID(itemID)
+        val endlessCases: List<PracticeSkill> get() = entries
     }
 }
 
@@ -54,6 +58,9 @@ data class QuickItem(
     val mistakes: Map<String, MistakePattern> = emptyMap(),
 ) {
     fun mistake(forChoiceAt: Int): MistakePattern? = choices.getOrNull(forChoiceAt)?.let { mistakes[it] }
+
+    /** What a wrong pick did, when the generator named that mistake. */
+    fun note(forPick: Int): String? = mistake(forPick)?.summary
 }
 
 object EndlessPractice {
@@ -124,6 +131,13 @@ object SessionBuilder {
         return choicePool(includePro).shuffled().groupBy(::tier).toSortedMap().values.flatten().take(count).map(::prepared)
     }
 
+    fun reviewableIDs(includePro: Boolean): Set<String> = if (includePro) memberReviewable else freeReviewable
+    private val freeReviewable by lazy { choicePool(false).map { it.id }.toSet() }
+    private val memberReviewable by lazy { choicePool(true).map { it.id }.toSet() }
+
+    fun gameNightPrep(count: Int = 10, seen: Set<String>, missed: Set<String>, dueIDs: List<String>, weakestRoomID: String?) =
+        examWarmUp(count, seen, missed, dueIDs, weakestRoomID)
+
     fun reviewSession(ids: List<String>, includePro: Boolean): List<QuickItem> {
         val pool = choicePool(includePro).associateBy { it.id }
         return ids.mapNotNull { pool[it] }.map(::prepared)
@@ -168,7 +182,10 @@ object SessionBuilder {
     }
 }
 
-enum class CodeMinuteCategory(val title: String) { navigation("Navigation"), ampacity("Ampacity"), calculation("Calculation") }
+enum class CodeMinuteCategory(val title: String, val icon: String) {
+    navigation("Navigation", "book.closed.fill"), ampacity("Ampacity", "cable.connector"), calculation("Calculation", "function");
+    val raw: String get() = name
+}
 data class CodeMinuteQuestion(val category: CodeMinuteCategory, val item: QuickItem)
 data class CodeMinuteChallenge(val dayKey: String, val shortDate: String, val questions: List<CodeMinuteQuestion>) {
     val items: List<QuickItem> get() = questions.map { it.item }
@@ -181,6 +198,10 @@ object CodeMinuteContent {
     val drill = Drill("code-minute", "Code Minute", "Today's shared five-question challenge", DrillKind.Quiz(emptyList()), isPlus = true)
 
     fun key(at: Instant): String = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.US).withZone(zone).format(at)
+    fun key(day: java.time.LocalDate): String = String.format(Locale.US, "%04d-%02d-%02d", day.year, day.monthValue, day.dayOfMonth)
+
+    /** The challenge for a Pacific calendar day (archive replays). */
+    fun challenge(day: java.time.LocalDate): CodeMinuteChallenge = challenge(day.atTime(12, 0).atZone(zone).toInstant())
 
     fun challenge(at: Instant = Instant.now()): CodeMinuteChallenge {
         val dayKey = key(at)

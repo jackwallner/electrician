@@ -1,0 +1,30 @@
+package com.jackwallner.electrician
+
+import com.jackwallner.electrician.data.PaywallPlan
+import com.jackwallner.electrician.data.PaywallPricing
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Test
+
+/** The free week is only promised when Play offers it to this account (iOS `TrialCopyTests`). */
+class TrialCopyTest {
+    @Test
+    fun termsNameTheFreeWeekOnlyWhenOffered() {
+        assertEquals(
+            "7 days free, then $9.99/month. Auto-renews until canceled in Google Play.",
+            PaywallPricing.terms("$9.99/month", PaywallPlan.MONTHLY, freeTrial = true),
+        )
+        assertEquals(
+            "$9.99/month. Auto-renews until canceled in Google Play.",
+            PaywallPricing.terms("$9.99/month", PaywallPlan.MONTHLY, freeTrial = false),
+        )
+        assertFalse(PaywallPricing.terms(null, PaywallPlan.YEARLY, freeTrial = false).contains("free", ignoreCase = true))
+    }
+
+    @Test
+    fun ctaNamesTheTrialOnlyWhenOffered() {
+        assertEquals("Start 7-Day Free Trial", PaywallPlan.MONTHLY.ctaTitle(true))
+        assertEquals("Subscribe", PaywallPlan.YEARLY.ctaTitle(false))
+        assertFalse(PaywallPlan.LIFETIME.ctaTitle(true).contains("Trial"))
+    }
+}

@@ -1,0 +1,6 @@
+<resources>
+    <!-- LaunchBackground from the iOS asset catalog, so launch never flashes white. -->
+    <color name="launch_canvas">#EFF2F5</color>
+    <color name="voltage">#0D57A3</color>
+    <color name="ic_launcher_background">#101D33</color>
+</resources>
