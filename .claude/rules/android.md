@@ -105,3 +105,13 @@ Remaining, in order, all outside agent build scope:
 6. Production review only in its pacing slot.
 
 Port status and evidence: [Android project notes](../../project-docs/android/README.md).
+
+## Play staging, 2026-10-21
+
+Play app 4976071235428841185 (Draft). vc1 1.0.3 drafts on internal and
+production; products active. RevenueCat Play app `app6a7ee048e7` in
+`projfc676ce9`, products attached to the entitlement and the three packages
+(lifetime non-consumable). App content saved except sign-in details and target
+audience, which wait for the reviewer unlock; data safety is a saved draft
+until the audience is in. Left: reviewer unlock, vc2 rebuild with the code's
+SHA, listing and graphics, Send for review in its pacing slot.
