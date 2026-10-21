@@ -79,8 +79,15 @@ crash-loops until `adb shell cmd bluetooth_manager disable`.
 No Play app exists yet (verified 2026-10-20 against the fleet rollout table).
 Remaining, in order, all outside agent build scope:
 
-1. Air release worker: upload keystore `~/.android/keystores/electrician-upload.p12`,
-   `REVENUECAT_PLAY_KEY`, signed AAB vc1 / 1.0.3, 16 KB alignment check.
+1. Air release worker: signed AAB vc1 / 1.0.3, 16 KB alignment check. The
+   upload keystore exists (2026-10-20): `~/.android/keystores/electrician-upload.p12`
+   (PKCS12, RSA 4096, alias `upload`, backup in `~/.android/keystores/backups/`),
+   password `ELECTRICIAN_PLAY_UPLOAD_PASSWORD` in `~/.electrician_credentials`.
+   `android/local.properties` on the Air has the Test Store key and `PLAY_UPLOAD_*`
+   entries. Still missing: `REVENUECAT_PLAY_KEY`. `projfc676ce9` has only the
+   App Store app `app03a1f0929d` and Test Store `appd3c90178cf`, so the Play app
+   (step 4) must exist in RevenueCat before the release build can pass
+   `validateReleaseConfiguration`. The app has no reviewer code.
 2. Play Console: create the app (package above), internal track upload.
 3. Decision needed: Play prices. The iOS ladder is 9.99 / 39.99 / 89.99
    (AGENTS.md); the fleet brief puts Android about 20% under iOS. The RevenueCat
