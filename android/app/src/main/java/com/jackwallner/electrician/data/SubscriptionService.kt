@@ -66,8 +66,9 @@ class SubscriptionService(
     private val context: Context,
     private val defaults: KeyValueStore,
     private val diagnostics: ConversionDiagnostics,
+    private val reviewAccess: ReviewAccess = ReviewAccess(defaults, BuildConfig.PLAY_REVIEW_CODE_SHA256),
 ) {
-    var isPro by mutableStateOf(BuildConfig.DEBUG && defaults.getBoolean(LOCAL_OVERRIDE))
+    var isPro by mutableStateOf(reviewAccess.isGranted || (BuildConfig.DEBUG && defaults.getBoolean(LOCAL_OVERRIDE)))
         private set
     var offering by mutableStateOf<Offering?>(null)
         private set
@@ -102,6 +103,17 @@ class SubscriptionService(
         if (!BuildConfig.DEBUG) return
         defaults.putBoolean(LOCAL_OVERRIDE, value)
         isPro = value
+    }
+
+    /**
+     * The Play reviewer code. Unlocks Electrician+ on this install only: no
+     * purchase is recorded, and a customer-info refresh does not take it back.
+     */
+    fun activateReviewAccess(code: String): Boolean {
+        if (!reviewAccess.activate(code)) return false
+        isPro = true
+        membershipResolved = true
+        return true
     }
 
     suspend fun start() {
@@ -234,7 +246,7 @@ class SubscriptionService(
         val entitlement = info.entitlements[ENTITLEMENT]
         activeProductId = entitlement?.productIdentifier?.substringBefore(":")
         val override = BuildConfig.DEBUG && defaults.getBoolean(LOCAL_OVERRIDE)
-        isPro = entitlement?.isActive == true || override
+        isPro = entitlement?.isActive == true || override || reviewAccess.isGranted
         isTrialing = entitlement?.isActive == true && entitlement.periodType == PeriodType.TRIAL
     }
 

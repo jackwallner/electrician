@@ -2,6 +2,7 @@ package com.jackwallner.electrician.ui.screens
 
 import com.jackwallner.electrician.model.NECTables
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,8 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +38,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jackwallner.electrician.BuildConfig
@@ -83,6 +90,7 @@ fun SettingsScreen(requestNotifications: (onGranted: () -> Unit) -> Unit) {
     val service = graph.subscriptions
     var restoreMessage by remember { mutableStateOf<String?>(null) }
     var confirmReset by remember { mutableStateOf(false) }
+    var reviewerCodeOpen by remember { mutableStateOf(false) }
 
     ElecScreen("Settings", onBack = { navigator.pop() }) {
         Readable(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
@@ -155,7 +163,11 @@ fun SettingsScreen(requestNotifications: (onGranted: () -> Unit) -> Unit) {
                     FormRow("Send Feedback", icon = "envelope.fill", onClick = { actions.openFeedback() })
                 }
                 FormSection("About") {
-                    FormRow("Version") { Text(BuildConfig.VERSION_NAME, style = ElecType.body, color = colors.inkSecondary) }
+                    // A long press opens the Play reviewer unlock; the row has no other action.
+                    FormRow(
+                        "Version",
+                        Modifier.testTag("version-row").combinedClickable(onClick = {}, onLongClick = { reviewerCodeOpen = true }),
+                    ) { Text(BuildConfig.VERSION_NAME, style = ElecType.body, color = colors.inkSecondary) }
                     FormDivider()
                     Text(
                         "Every number in this app comes from the ${NECTables.edition}, and every table it computes from is unchanged across the ${NECTables.coverageLabel}. Electrician is a study aid, not a code book. It is not affiliated with, endorsed by, or connected to the NFPA. It teaches concepts and calculations in original wording and cites article numbers so you can verify each one yourself. Your jurisdiction may examine against a different edition or amend it locally, so always check the code in force where you work.",
@@ -175,6 +187,7 @@ fun SettingsScreen(requestNotifications: (onGranted: () -> Unit) -> Unit) {
         }
     }
 
+    if (reviewerCodeOpen) ReviewerCodeDialog(onUnlock = service::activateReviewAccess, onClose = { reviewerCodeOpen = false })
     restoreMessage?.let { ElecAlert("Restore", it, onConfirm = { restoreMessage = null }) }
     if (confirmReset) {
         ElecAlert(
@@ -192,6 +205,44 @@ fun SettingsScreen(requestNotifications: (onGranted: () -> Unit) -> Unit) {
     }
     // The "Notifications are off" alert lives in RootScreen, next to the
     // permission request, so Exam Warm-Up gets it too.
+}
+
+@Composable
+private fun ReviewerCodeDialog(onUnlock: (String) -> Boolean, onClose: () -> Unit) {
+    val colors = Elec.colors
+    var code by remember { mutableStateOf("") }
+    var failed by remember { mutableStateOf(false) }
+    AlertDialog(
+        onDismissRequest = onClose,
+        containerColor = colors.card,
+        titleContentColor = colors.ink,
+        textContentColor = colors.inkSecondary,
+        title = { Text("Reviewer access", style = ElecType.headline) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Enter the code from the Play review instructions.", style = ElecType.subheadline)
+                OutlinedTextField(
+                    value = code,
+                    onValueChange = { code = it; failed = false },
+                    label = { Text("Reviewer code") },
+                    singleLine = true,
+                    isError = failed,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, autoCorrectEnabled = false),
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.testTag("reviewer-code"),
+                )
+                if (failed) Text("That code isn't valid.", style = ElecType.footnote, color = colors.wrongRed)
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { if (onUnlock(code)) onClose() else failed = true }) {
+                Text("Unlock", style = ElecType.headline, color = colors.voltage)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onClose) { Text("Cancel", style = ElecType.body, color = colors.inkSecondary) }
+        },
+    )
 }
 
 @Composable

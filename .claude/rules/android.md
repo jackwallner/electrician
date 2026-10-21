@@ -79,12 +79,26 @@ they were made). On `agent-emu-1`, `wm size 1080x1920` gives black captures
 from the software GPU while `1080x2160` (2:1, Play's limit) renders; changing
 `font_scale` resets SystemUI demo mode, so re-enter it before each capture.
 
+## Play reviewer unlock
+
+Long-press Settings > Version opens a masked Password-keyboard dialog (autocorrect
+off). The code's SHA-256 is compared with `PLAY_REVIEW_CODE_SHA256` (ignored
+`local.properties` into `BuildConfig`; never the plaintext). A match stores the
+digest as `reviewAccessDigest` and unlocks `electrician_pro` for that install
+only (`ReviewAccess`, applied in `SubscriptionService.apply` so a customer-info
+refresh keeps it). No purchase is written, and changing the digest revokes
+every earlier grant. `validateReleaseConfiguration` fails without a valid
+digest; generate it with `printf '%s' CODE | shasum -a 256`. Tests:
+`ReviewAccessTest` (JVM) and `ReviewerUnlockTest` (device, pass a throwaway code
+as `-Pandroid.testInstrumentationRunnerArguments.reviewCode=...` with its digest
+in `local.properties`; never a real code).
+
 ## Release preparation and Play state
 
 No Play app exists yet (verified 2026-10-20 against the fleet rollout table).
 Remaining, in order, all outside agent build scope:
 
-1. Air release worker: signed AAB vc1 / 1.0.3, 16 KB alignment check. The
+1. Air release worker: signed AAB vc2 / 1.0.3, 16 KB alignment check. The
    upload keystore exists (2026-10-20): `~/.android/keystores/electrician-upload.p12`
    (PKCS12, RSA 4096, alias `upload`, backup in `~/.android/keystores/backups/`),
    password `ELECTRICIAN_PLAY_UPLOAD_PASSWORD` in `~/.electrician_credentials`.
@@ -92,7 +106,7 @@ Remaining, in order, all outside agent build scope:
    entries. Still missing: `REVENUECAT_PLAY_KEY`. `projfc676ce9` has only the
    App Store app `app03a1f0929d` and Test Store `appd3c90178cf`, so the Play app
    (step 4) must exist in RevenueCat before the release build can pass
-   `validateReleaseConfiguration`. The app has no reviewer code.
+   `validateReleaseConfiguration`.
 2. Play Console: create the app (package above), internal track upload.
 3. Play prices (Jack left it to the agent, 2026-10-20): about 20% under the iOS
    ladder of 9.99 / 39.99 / 89.99, so Monthly 7.99, Yearly 31.99, Lifetime 71.99
