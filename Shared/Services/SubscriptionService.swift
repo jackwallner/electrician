@@ -159,7 +159,14 @@ final class SubscriptionService: NSObject, ObservableObject {
         #if DEBUG
         Purchases.logLevel = .debug
         #endif
-        Purchases.configure(withAPIKey: RevenueCatConfig.apiKey)
+        var builder = Configuration.Builder(withAPIKey: RevenueCatConfig.apiKey)
+        // Test Store runs share one tester instead of a fresh anonymous customer
+        // per install, so test installs don't inflate the live project's
+        // customer charts. Never with the App Store key.
+        if RevenueCatConfig.apiKey.hasPrefix("test_") {
+            builder = builder.with(appUserID: ProcessInfo.processInfo.environment["RC_APP_USER_ID"] ?? "qa-ios")
+        }
+        Purchases.configure(with: builder.build())
         Purchases.shared.delegate = self
         isConfigured = true
     }
