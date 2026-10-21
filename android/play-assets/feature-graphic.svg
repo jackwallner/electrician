@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#1b2a45" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="glow" cx="0.22" cy="0.5" r="0.55">
+      <stop offset="0" stop-color="#1d3157"/>
+      <stop offset="1" stop-color="#111e33" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbeedb"/>
+      <stop offset="1" stop-color="#f3dfc3"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#050a14" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+
+  <!-- Background: the icon's navy with a drawing-paper grid -->
+  <rect width="1024" height="500" fill="#111e33"/>
+  <rect width="1024" height="500" fill="url(#grid)"/>
+  <rect width="1024" height="500" fill="url(#glow)"/>
+
+  <!-- The app icon's book, drawn as vectors -->
+  <g transform="translate(108 92)" filter="url(#shadow)">
+    <rect x="6" y="250" width="220" height="62" rx="24" fill="#ddbe98"/>
+    <rect x="20" y="258" width="196" height="36" rx="14" fill="#f2e2c8"/>
+    <path d="M20 268H214M20 278H214M20 288H214" stroke="#d8bc96" stroke-width="2"/>
+    <rect x="0" y="0" width="236" height="278" rx="24" fill="url(#cover)"/>
+    <rect x="0" y="0" width="34" height="278" rx="17" fill="#f1dcbd"/>
+    <path d="M34 6V272" stroke="#d9bf9b" stroke-width="3"/>
+    <path d="M180 44H122L78 166H124L96 248L192 126H144Z" fill="#fe5f01"/>
+    <path d="M44 290H74V330L59 318L44 330Z" fill="#fe8120"/>
+  </g>
+
+  <!-- Name and one line -->
+  <g font-family="'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" fill="#f3f4f6">
+    <text x="440" y="214" font-size="66" font-weight="700" letter-spacing="-1.5">Electrician</text>
+    <text x="440" y="290" font-size="66" font-weight="700" letter-spacing="-1.5">Exam Prep<tspan fill="#fe8120">: NEC</tspan></text>
+    <rect x="442" y="322" width="72" height="5" rx="2.5" fill="#fe8120"/>
+    <text x="440" y="378" font-size="30" font-weight="400" fill="#c9d3e3">Find the article. Work the calculation.</text>
+  </g>
+</svg>

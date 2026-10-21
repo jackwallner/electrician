@@ -74,6 +74,11 @@ emulator processes; stop it with `adb -s emulator-5584 emu kill`. jmbp is a
 2-core 2015 i7: a cold boot takes minutes and the image's Bluetooth stack
 crash-loops until `adb shell cmd bluetooth_manager disable`.
 
+Play store graphics live in `android/play-assets/` (its README records how
+they were made). On `agent-emu-1`, `wm size 1080x1920` gives black captures
+from the software GPU while `1080x2160` (2:1, Play's limit) renders; changing
+`font_scale` resets SystemUI demo mode, so re-enter it before each capture.
+
 ## Release preparation and Play state
 
 No Play app exists yet (verified 2026-10-20 against the fleet rollout table).
