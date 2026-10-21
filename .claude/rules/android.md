@@ -78,6 +78,11 @@ they were made). On `agent-emu-1`, `wm size 1080x1920` gives black captures
 from the software GPU while `1080x2160` (2:1, Play's limit) renders; changing
 `font_scale` resets SystemUI demo mode, so re-enter it before each capture.
 
+Play listing copy covers 50 locales under `android/play-assets/metadata/android/`,
+built from the iOS localized descriptions. `scripts/validate-play-listing.py`
+must pass before any upload. The iOS ru and uk descriptions carry em dashes,
+so regenerating Play copy from them needs those lines rephrased.
+
 ## Play reviewer unlock
 
 Long-press Settings > Version opens a masked Password-keyboard dialog (autocorrect

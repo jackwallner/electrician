@@ -6,6 +6,7 @@
 | `metadata/android/en-US/title.txt` | App name (26 / 30) |
 | `metadata/android/en-US/short_description.txt` | Short description (80 / 80) |
 | `metadata/android/en-US/full_description.txt` | Full description (about 3,600 / 4,000) |
+| `metadata/android/<locale>/` | The other 49 locales; see `listing-en-US.md`, check with `scripts/validate-play-listing.py` |
 | `icon-512.png` | 512 x 512 app icon |
 | `feature-graphic.svg` | Editable source for the feature graphic |
 | `feature-graphic.png` | 1024 x 500 RGB feature graphic, no alpha |

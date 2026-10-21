@@ -1,0 +1,41 @@
+US ELECTRICAL CODE ONLY
+Every value here comes from the US National Electrical Code (NEC), for candidates sitting a US state or local licensing exam. It is not a study aid for the Canadian Electrical Code.
+
+The electrician licensing exam is open book. That is not the relief it sounds like. It is timed, and every question you hunt for costs you two more you never reach. Electrician Exam Prep is a focused practice companion for apprentice, journeyman, master and contractor candidates working from 2023 NEC values.
+
+It is not a complete exam blueprint. It drills the navigation and calculations it covers, and names what it does not, so you can plan the rest elsewhere.
+
+FIND IT FAST
+Read a scenario and name the article before you open anything. Article 310 or Article 240. This is the drill nobody builds, and the one that saves minutes on exam day.
+
+THE CALCULATIONS THAT FAIL PEOPLE
+Ampacity derating. Overcurrent sizing. Conduit fill. Box fill. Voltage drop. Equipment and electrode grounding conductors. Motor conductors and protection. The dwelling service calculation. Each is a pure calculation with exactly one right answer, so they are generated rather than shipped as the same fifty questions. Practice as long as you want without a repeat.
+
+WRONG ANSWERS THAT TEACH
+Every wrong choice is the number you get from one specific, common mistake: starting the derate in the 75 degree column, missing the small-conductor cap in 240.4(D), using 53 percent fill out of habit, counting each ground separately. Pick one and you learn which mistake you made, not just that you missed.
+
+SHOW THE WORKING
+Miss a calculation and you get numbered steps, not a paragraph. Almost nobody fails on arithmetic. They fail on one skipped step, and a paragraph hides it.
+
+BUILT AROUND YOUR MISTAKES
+Fix My Mistakes brings back the questions you still need and builds new problems that set the same trap. Exam Warm-Up works your weakest area.
+
+A PLAN FOR YOUR DATE
+Tell it your licence, your state and your exam date. Sitting it tomorrow gets a cram plan; sitting it in the spring gets a foundation plan, with a daily target to match. The app names your state's commonly adopted edition and the authority to confirm it with.
+
+WHAT IS COVERED
+Six rooms: how the book is organized and how to find an article, conductors and ampacity, installation rules, worked calculations, dwelling service and load calculations, and grounding with motors. Special occupancies, hazardous locations and the low-voltage chapters are not covered.
+
+WHAT IS FREE
+Code Basics, Conductors and Ampacity, and Installation Rules are free, including the working space, burial depth, support spacing and receptacle numbers you look up on site. All eight field calculators are free too: ampacity, conduit fill, box fill, voltage drop, grounding conductors, motor circuits, dwelling load, and Ohm's law. They are study estimates with stated assumptions.
+
+ELECTRICIAN+
+Unlocks Worked Calculations, Service and Load Calc, and Grounding and Motors, extra sets in every room, endless generated practice, Fix My Mistakes, the timed challenge, and Code Minute.
+
+TRIAL AND SUBSCRIPTIONS
+Eligible Google accounts may receive a 7-day free trial on a monthly or yearly subscription. After the trial the subscription starts and renews automatically each period until you cancel. Manage or cancel any time in Google Play > Payments & subscriptions. A one-time lifetime unlock is also available.
+
+A study aid, not a code book. Values follow the 2023 NEC, and every table here is unchanged across the 2020 and 2023 NEC. Not affiliated with or endorsed by the NFPA. Always check the code in force where you work.
+
+Privacy: https://jackwallner.github.io/electrician/android-privacy.html
+Terms: https://jackwallner.github.io/electrician/terms.html

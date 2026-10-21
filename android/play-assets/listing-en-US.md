@@ -57,3 +57,19 @@ Terms: https://jackwallner.github.io/electrician/terms.html
 ## Category and tags
 
 Education. Contact email jackwallner+e@gmail.com. Website https://jackwallner.github.io/electrician/.
+
+## Other locales
+
+Title, short and full description per locale live in
+`metadata/android/<play-locale>/` (fastlane supply layout). Locales (50):
+en-US (default, matches the live listing), en-GB/AU/CA/IN, de-DE, fr-FR/CA,
+es-ES/419/US, pt-BR/PT, it-IT, nl-NL, sv-SE, no-NO, da-DK, fi-FI, pl-PL, cs-CZ,
+sk, sl, hr, hu-HU, ro, el-GR, tr-TR, ru-RU, uk, ar, iw-IL, hi-IN, bn-BD, mr-IN,
+ta-IN, te-IN, kn-IN, ml-IN, id, ms, ms-MY, th, vi, ja-JP, ko-KR, zh-CN/TW/HK, ca.
+Non-English copy is the matching iOS `fastlane/metadata/<locale>/description.txt`
+with Google Play billing wording, the Android privacy and terms links, and a
+plain line saying the app is in English (the Android app is not localized).
+Titles are "Electrician:" plus the local exam or trade phrase from the iOS
+name and keywords; short descriptions open with the local "US electrician
+exam". English variants open with a US-code-only line. Check with
+`scripts/validate-play-listing.py`.
