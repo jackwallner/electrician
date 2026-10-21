@@ -60,9 +60,8 @@ verification required by `nec-edition.md`.
 
 ```sh
 cd android
-export JAVA_HOME=~/jdks/temurin-17/Contents/Home ANDROID_HOME=~/Library/Android/sdk
-./gradlew testDebugUnitTest assembleDebug lintDebug assembleQa
-ANDROID_SERIAL=emulator-5584 ./gradlew connectedDebugAndroidTest
+fm-gradle testDebugUnitTest assembleDebug lintDebug assembleQa
+ANDROID_SERIAL=emulator-5584 fm-gradle connectedDebugAndroidTest
 ```
 
 Debug uses the RevenueCat Test Store app `appd3c90178cf` (its public `test_`
@@ -95,18 +94,16 @@ in `local.properties`; never a real code).
 
 ## Release preparation and Play state
 
-No Play app exists yet (verified 2026-10-20 against the fleet rollout table).
-Remaining, in order, all outside agent build scope:
+The Play app now exists; "Play staging" below is the current state and
+`~/docs/android/fleet-rollout-2026-10-15.md` the live tracker. The steps are the
+original 2026-10-20 plan, kept for the details:
 
 1. Air release worker: signed AAB vc2 / 1.0.3, 16 KB alignment check. The
    upload keystore exists (2026-10-20): `~/.android/keystores/electrician-upload.p12`
    (PKCS12, RSA 4096, alias `upload`, backup in `~/.android/keystores/backups/`),
    password `ELECTRICIAN_PLAY_UPLOAD_PASSWORD` in `~/.electrician_credentials`.
    `android/local.properties` on the Air has the Test Store key and `PLAY_UPLOAD_*`
-   entries. Still missing: `REVENUECAT_PLAY_KEY`. `projfc676ce9` has only the
-   App Store app `app03a1f0929d` and Test Store `appd3c90178cf`, so the Play app
-   (step 4) must exist in RevenueCat before the release build can pass
-   `validateReleaseConfiguration`.
+   entries and `REVENUECAT_PLAY_KEY`.
 2. Play Console: create the app (package above), internal track upload.
 3. Play prices (Jack left it to the agent, 2026-10-20): about 20% under the iOS
    ladder of 9.99 / 39.99 / 89.99, so Monthly 7.99, Yearly 31.99, Lifetime 71.99
