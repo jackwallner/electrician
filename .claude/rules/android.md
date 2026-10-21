@@ -89,12 +89,12 @@ Remaining, in order, all outside agent build scope:
    (step 4) must exist in RevenueCat before the release build can pass
    `validateReleaseConfiguration`. The app has no reviewer code.
 2. Play Console: create the app (package above), internal track upload.
-3. Decision needed: Play prices. The iOS ladder is 9.99 / 39.99 / 89.99
-   (AGENTS.md); the fleet brief puts Android about 20% under iOS. The RevenueCat
-   Test Store products are configured at 9.99 / 79.99 / 99.99, which matches
-   neither, so the debug paywall shows Test Store prices only. Pick the Play
-   prices, then create the subscriptions (base plans `monthly`, `yearly`, trial
-   offer 7 days) and the lifetime product.
+3. Play prices (Jack left it to the agent, 2026-10-20): about 20% under the iOS
+   ladder of 9.99 / 39.99 / 89.99, so Monthly 7.99, Yearly 31.99, Lifetime 71.99
+   (USD base, Play converts the rest). Create the subscriptions (base plans
+   `monthly`, `yearly`, trial offer 7 days) and the lifetime product at those
+   prices. The RevenueCat Test Store products (9.99 / 79.99 / 99.99) are debug
+   only and stay as they are.
 4. RevenueCat: add the Play app to `projfc676ce9` (service account needs Jack's
    approval), attach Play products to `electrician_pro` and the existing
    `default` packages without touching iOS products; register in rc-clean.
