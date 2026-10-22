@@ -12,6 +12,9 @@ struct SettingsView: View {
     @State private var showResetConfirm = false
     @State private var restoreMessage: String?
     @State private var showFeedback = false
+    /// Set when Settings lives in a pane instead of a sheet (the unfolded Duo),
+    /// where `dismiss` has nothing to close.
+    var onDone: (() -> Void)?
 
     var body: some View {
         NavigationStack {
@@ -34,7 +37,9 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
+                    Button("Done") {
+                        if let onDone { onDone() } else { dismiss() }
+                    }
                 }
             }
             .sheet(isPresented: $showPaywall) { PaywallView(source: "electrician_settings_sheet") }

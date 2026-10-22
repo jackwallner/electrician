@@ -14,7 +14,7 @@ struct HomeView: View {
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var profile: CandidateProfile
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.horizontalSizeClass) private var windowSizeClass
     @StateObject private var records = PracticeRecordStore.shared
     @StateObject private var minuteStore = CodeMinuteStore.shared
     @State private var path: [AppDestination] = []
@@ -23,6 +23,14 @@ struct HomeView: View {
     @State private var showWhatsNew = false
     @State private var pendingAfterUpgrade: AppDestination?
     @State private var highlightedRoomID: String?
+    /// The container's width and fold, measured so the unfolded iPhone Duo can
+    /// put Home and Your Progress on opposite sides of the fold.
+    @State private var paneGeometry = PaneGeometry(width: 0, fold: nil)
+    /// Mounted on the first unfold and kept, so folding only hides it.
+    @State private var progressPaneMounted = false
+    #if DEBUG
+    @State var duoRoute: DuoScreenshotMode.Route?
+    #endif
     @AppStorage("electrician.skillLevel") private var skillLevel = ""
     /// Set once the primer has been read all the way through. After that it
     /// lives in Settings only; a permanent "How the Exam Works" card on Home is a
@@ -34,7 +42,82 @@ struct HomeView: View {
 
     private var showsPrimerCard: Bool { skillLevel == "new" && !hasReadPrimer }
 
+    /// Unfolded, Your Progress has its own pane beside Home.
+    var split: UnfoldedSplit? {
+        UnfoldedSplit.make(
+            width: paneGeometry.width,
+            isRegularWidth: windowSizeClass == .regular,
+            fold: paneGeometry.fold
+        )
+    }
+
+    /// Each unfolded pane is phone-width, so Home and everything pushed over
+    /// it lay out as on a phone.
+    private var horizontalSizeClass: UserInterfaceSizeClass? {
+        split == nil ? windowSizeClass : .compact
+    }
+
     var body: some View {
+        // Opening or closing the Duo only moves these frames, so neither stack
+        // is rebuilt and a drill in progress survives the fold.
+        ZStack(alignment: .topLeading) {
+            homeStack
+                .environment(\.horizontalSizeClass, horizontalSizeClass)
+                .frame(maxWidth: split?.primaryWidth ?? .infinity, maxHeight: .infinity)
+            if progressPaneMounted {
+                progressPane
+                    .environment(\.horizontalSizeClass, .compact)
+                    .frame(maxWidth: split?.secondaryWidth ?? .infinity, maxHeight: .infinity)
+                    .padding(.leading, split?.secondaryX ?? 0)
+                    .opacity(split == nil ? 0 : 1)
+                    .allowsHitTesting(split != nil)
+                    .accessibilityHidden(split == nil)
+            }
+        }
+        .background(Theme.background)
+        .onGeometryChange(for: PaneGeometry.self) { proxy in
+            PaneGeometry(width: proxy.size.width, fold: proxy.verticalFold())
+        } action: { paneGeometry = $0 }
+        .onChange(of: split != nil, initial: true) { _, isSplit in
+            if isSplit { progressPaneMounted = true }
+        }
+        .tint(Theme.voltage)
+        #if DEBUG
+        // Here, not on Home's root: a pushed route would cancel a task there.
+        .task(id: split != nil) { await runDuoTour() }
+        #endif
+    }
+
+    /// The trailing pane: the record the drills on the left are building, so
+    /// accuracy by room, the calculation skills and the mistakes still
+    /// outstanding update as each answer lands. Settings opens here too, so it
+    /// never sits across the fold as a sheet.
+    private var progressPane: some View {
+        ZStack {
+            NavigationStack {
+                StatsView()
+            }
+            .accessibilityHidden(showSettings)
+            if showSettings, split != nil {
+                SettingsView(onDone: { showSettings = false })
+                    // In from the outer edge and back out of it, never across the fold.
+                    .transition(Theme.Motion.reduced ? .opacity : .move(edge: .trailing))
+            }
+        }
+        .animation(Theme.Motion.screen, value: showSettings)
+    }
+
+    /// Folded, Settings is the usual sheet; unfolded it lives in the trailing
+    /// pane. Opening the Duo with the sheet up moves it there rather than
+    /// closing it.
+    private var settingsSheet: Binding<Bool> {
+        Binding(
+            get: { showSettings && split == nil },
+            set: { if !$0, split == nil { showSettings = false } }
+        )
+    }
+
+    private var homeStack: some View {
         NavigationStack(path: $path) {
             ScrollViewReader { proxy in
                 ScrollView {
@@ -68,8 +151,13 @@ struct HomeView: View {
                     QuickSessionView(examWarmUp: examWarmUpItems)
                 }
             }
+            #if DEBUG
+            .navigationDestination(item: $duoRoute) {
+                DuoScreenshotMode.destination($0, progress: progress, subscriptions: subscriptions)
+            }
+            #endif
             .sheet(isPresented: $showPaywall) { PaywallView(source: "electrician_home_sheet") }
-            .sheet(isPresented: $showSettings) { SettingsView() }
+            .sheet(isPresented: settingsSheet) { SettingsView() }
             .sheet(isPresented: $showWhatsNew) {
                 if let release = WhatsNew.currentRelease {
                     WhatsNewSheet(release: release) {
@@ -101,7 +189,6 @@ struct HomeView: View {
                 if !isShowing, !subscriptions.isPro { pendingAfterUpgrade = nil }
             }
         }
-        .tint(Theme.voltage)
     }
 
     @ViewBuilder
@@ -257,6 +344,13 @@ struct HomeView: View {
         }
     }
 
+    #if DEBUG
+    func setDuoSheets(settings: Bool, paywall: Bool) {
+        showSettings = settings
+        showPaywall = paywall
+    }
+    #endif
+
     // MARK: - Header (title left, stats right, one row total)
 
     private var header: some View {
@@ -285,7 +379,9 @@ struct HomeView: View {
                 }
             }
             .buttonStyle(.plain)
-            .accessibilityHint("Opens your progress breakdown")
+            // Unfolded, the breakdown is already open beside Home.
+            .allowsHitTesting(split == nil)
+            .accessibilityHint(split == nil ? "Opens your progress breakdown" : "")
             .padding(.top, 4)
         }
         .padding(.top, 2)
