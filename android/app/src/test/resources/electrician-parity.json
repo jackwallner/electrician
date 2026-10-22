@@ -63042,7 +63042,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-0-3",
@@ -63061,7 +63061,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 1-1\/2 hp at 115V 1Ø is 20 A in Table 430.248.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 20 × 2.5 = 50.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 20 × 2.5 = 50.0 A.",
             "50.0 A is itself a standard rating in 240.6(A), so 50 A is the answer with no rounding needed.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 18.2 A under 430.32."
           ]
@@ -63260,7 +63260,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-0-7",
@@ -63284,7 +63284,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 40 hp at 208V 3Ø is 114 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 114 × 2.5 = 285.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 114 × 2.5 = 285.0 A.",
             "285.0 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 300 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 100.9 A under 430.32."
           ]
@@ -63323,7 +63323,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-1-0",
@@ -63347,7 +63347,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 40 hp at 230V 3Ø is 104 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 104 × 2.5 = 260.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 104 × 2.5 = 260.0 A.",
             "260.0 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 300 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 91.3 A under 430.32."
           ]
@@ -63380,7 +63380,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-1-1",
@@ -63399,7 +63399,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 1-1\/2 hp at 208V 3Ø is 6.6 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 6.6 × 2.5 = 16.5 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 6.6 × 2.5 = 16.5 A.",
             "16.5 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 20 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 7.3 A under 430.32."
           ]
@@ -63536,7 +63536,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-1-4",
@@ -63560,7 +63560,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 2 hp at 208V 3Ø is 7.5 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 7.5 × 2.5 = 18.8 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 7.5 × 2.5 = 18.8 A.",
             "18.8 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 20 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 6 A under 430.32."
           ]
@@ -63645,7 +63645,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-1-6",
@@ -63669,7 +63669,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 15 hp at 230V 3Ø is 42 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 42 × 2.5 = 105.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 42 × 2.5 = 105.0 A.",
             "105.0 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 110 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 37.2 A under 430.32."
           ]
@@ -63702,7 +63702,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-1-7",
@@ -63721,7 +63721,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 2 hp at 115V 1Ø is 24 A in Table 430.248.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 24 × 2.5 = 60.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 24 × 2.5 = 60.0 A.",
             "60.0 A is itself a standard rating in 240.6(A), so 60 A is the answer with no rounding needed.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 28 A under 430.32."
           ]
@@ -63812,7 +63812,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-2-1",
@@ -63836,7 +63836,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 50 hp at 230V 3Ø is 130 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 130 × 2.5 = 325.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 130 × 2.5 = 325.0 A.",
             "325.0 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 350 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 152.3 A under 430.32."
           ]
@@ -63869,7 +63869,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-2-2",
@@ -63888,7 +63888,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 1-1\/2 hp at 230V 3Ø is 6 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 6 × 2.5 = 15.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 6 × 2.5 = 15.0 A.",
             "15.0 A is itself a standard rating in 240.6(A), so 15 A is the answer with no rounding needed.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 6.7 A under 430.32."
           ]
@@ -63978,7 +63978,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-2-4",
@@ -63992,7 +63992,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 3\/4 hp at 230V 3Ø is 3.2 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 3.2 × 2.5 = 8.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 3.2 × 2.5 = 8.0 A.",
             "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 2.9 A under 430.32."
           ]
@@ -64192,7 +64192,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-17-0",
@@ -64216,7 +64216,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 3 hp at 230V 1Ø is 17 A in Table 430.248.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 17 × 2.5 = 42.5 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 17 × 2.5 = 42.5 A.",
             "42.5 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 45 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 20.1 A under 430.32."
           ]
@@ -64249,7 +64249,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-17-1",
@@ -64263,7 +64263,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 1 hp at 230V 3Ø is 4.2 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 4.2 × 2.5 = 10.5 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 4.2 × 2.5 = 10.5 A.",
             "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 3.3 A under 430.32."
           ]
@@ -64452,7 +64452,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-17-5",
@@ -64471,7 +64471,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 2 hp at 230V 1Ø is 12 A in Table 430.248.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 12 × 2.5 = 30.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 12 × 2.5 = 30.0 A.",
             "30.0 A is itself a standard rating in 240.6(A), so 30 A is the answer with no rounding needed.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 13.8 A under 430.32."
           ]
@@ -64504,7 +64504,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-17-6",
@@ -64523,7 +64523,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 30 hp at 230V 3Ø is 80 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 80 × 2.5 = 200.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 80 × 2.5 = 200.0 A.",
             "200.0 A is itself a standard rating in 240.6(A), so 200 A is the answer with no rounding needed.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 95.2 A under 430.32."
           ]
@@ -64671,7 +64671,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-65535-1",
@@ -64685,7 +64685,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 1\/2 hp at 230V 3Ø is 2.2 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 2.2 × 2.5 = 5.5 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 2.2 × 2.5 = 5.5 A.",
             "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 1.8 A under 430.32."
           ]
@@ -64775,7 +64775,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-65535-3",
@@ -64789,7 +64789,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 1 hp at 230V 3Ø is 4.2 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 4.2 × 2.5 = 10.5 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 4.2 × 2.5 = 10.5 A.",
             "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 3.6 A under 430.32."
           ]
@@ -64822,7 +64822,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-65535-4",
@@ -64841,7 +64841,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 1\/4 hp at 115V 1Ø is 5.8 A in Table 430.248.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 5.8 × 2.5 = 14.5 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 5.8 × 2.5 = 14.5 A.",
             "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 7.1 A under 430.32."
           ]
@@ -64874,7 +64874,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-65535-5",
@@ -64888,7 +64888,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 3\/4 hp at 230V 3Ø is 3.2 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 3.2 × 2.5 = 8.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 3.2 × 2.5 = 8.0 A.",
             "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 3.5 A under 430.32."
           ]
@@ -65145,7 +65145,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-20261017-2",
@@ -65164,7 +65164,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 5 hp at 460V 3Ø is 7.6 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 7.6 × 2.5 = 19.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 7.6 × 2.5 = 19.0 A.",
             "19.0 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 20 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 8.9 A under 430.32."
           ]
@@ -65244,7 +65244,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-20261017-4",
@@ -65268,7 +65268,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 50 hp at 230V 3Ø is 130 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 130 × 2.5 = 325.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 130 × 2.5 = 325.0 A.",
             "325.0 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 350 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 108.8 A under 430.32."
           ]
@@ -65301,7 +65301,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-20261017-5",
@@ -65320,7 +65320,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 7-1\/2 hp at 230V 1Ø is 40 A in Table 430.248.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 40 × 2.5 = 100.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 40 × 2.5 = 100.0 A.",
             "100.0 A is itself a standard rating in 240.6(A), so 100 A is the answer with no rounding needed.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 33.1 A under 430.32."
           ]
@@ -65515,7 +65515,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-987654321-1",
@@ -65539,7 +65539,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 50 hp at 230V 3Ø is 130 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 130 × 2.5 = 325.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 130 × 2.5 = 325.0 A.",
             "325.0 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 350 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 118 A under 430.32."
           ]
@@ -65572,7 +65572,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-987654321-2",
@@ -65591,7 +65591,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 7-1\/2 hp at 230V 1Ø is 40 A in Table 430.248.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 40 × 2.5 = 100.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 40 × 2.5 = 100.0 A.",
             "100.0 A is itself a standard rating in 240.6(A), so 100 A is the answer with no rounding needed.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 48.3 A under 430.32."
           ]
@@ -65624,7 +65624,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-987654321-3",
@@ -65648,7 +65648,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 15 hp at 230V 3Ø is 42 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 42 × 2.5 = 105.0 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 42 × 2.5 = 105.0 A.",
             "105.0 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 110 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 35.7 A under 430.32."
           ]
@@ -65895,7 +65895,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-18446744073709551615-0",
@@ -65914,7 +65914,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 1-1\/2 hp at 208V 3Ø is 6.6 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 6.6 × 2.5 = 16.5 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 6.6 × 2.5 = 16.5 A.",
             "16.5 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 20 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 7.8 A under 430.32."
           ]
@@ -66061,7 +66061,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-18446744073709551615-3",
@@ -66085,7 +66085,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 75 hp at 208V 3Ø is 211 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 211 × 2.5 = 527.5 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 211 × 2.5 = 527.5 A.",
             "527.5 A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so 600 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 244.1 A under 430.32."
           ]
@@ -66227,7 +66227,7 @@
             {
               "label" : "Device",
               "unit" : null,
-              "value" : "Inverse-time breaker"
+              "value" : "Inverse-time breaker (nonadjustable)"
             }
           ],
           "id" : "fixture-motorProtection-18446744073709551615-6",
@@ -66241,7 +66241,7 @@
           "situation" : "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
           "steps" : [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: 1-1\/2 hp at 460V 3Ø is 3 A in Table 430.250.",
-            "Table 430.52(C)(1) allows a inverse-time breaker up to 250% of that: 3 × 2.5 = 7.5 A.",
+            "Table 430.52(C)(1) allows a inverse-time breaker (nonadjustable) up to 250% of that: 3 × 2.5 = 7.5 A.",
             "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.",
             "This device does not protect against overload. That is a separate device sized from the nameplate 2.4 A under 430.32."
           ]
@@ -66373,7 +66373,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -66456,7 +66456,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2000 ft² × 3 VA = 6,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,000 + 4,500 = 10,500 VA.",
@@ -66539,7 +66539,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2400 ft² × 3 VA = 7,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 7,200 + 4,500 = 11,700 VA.",
@@ -66627,7 +66627,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3800 ft² × 3 VA = 11,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 11,400 + 4,500 = 15,900 VA.",
@@ -66704,7 +66704,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 1800 ft² × 3 VA = 5,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 5,400 + 4,500 = 9,900 VA.",
@@ -66792,7 +66792,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2800 ft² × 3 VA = 8,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 8,400 + 4,500 = 12,900 VA.",
@@ -66879,7 +66879,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3800 ft² × 3 VA = 11,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 11,400 + 4,500 = 15,900 VA.",
@@ -66966,7 +66966,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3000 ft² × 3 VA = 9,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 9,000 + 4,500 = 13,500 VA.",
@@ -67049,7 +67049,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2800 ft² × 3 VA = 8,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 8,400 + 4,500 = 12,900 VA.",
@@ -67137,7 +67137,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2800 ft² × 3 VA = 8,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 8,400 + 4,500 = 12,900 VA.",
@@ -67224,7 +67224,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3000 ft² × 3 VA = 9,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 9,000 + 4,500 = 13,500 VA.",
@@ -67311,7 +67311,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3000 ft² × 3 VA = 9,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 9,000 + 4,500 = 13,500 VA.",
@@ -67393,7 +67393,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3000 ft² × 3 VA = 9,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 9,000 + 4,500 = 13,500 VA.",
@@ -67471,7 +67471,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -67559,7 +67559,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2800 ft² × 3 VA = 8,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 8,400 + 4,500 = 12,900 VA.",
@@ -67636,7 +67636,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -67725,7 +67725,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -67803,7 +67803,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2600 ft² × 3 VA = 7,800 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 7,800 + 4,500 = 12,300 VA.",
@@ -67891,7 +67891,7 @@
               "summary" : "You used the range nameplate. A household range has its own demand table: one range not over 12 kW is taken at 8 kW, however big the nameplate says it is."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2400 ft² × 3 VA = 7,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 7,200 + 4,500 = 11,700 VA.",
@@ -67978,7 +67978,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3000 ft² × 3 VA = 9,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 9,000 + 4,500 = 13,500 VA.",
@@ -68065,7 +68065,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -68152,7 +68152,7 @@
               "summary" : "You used the range nameplate. A household range has its own demand table: one range not over 12 kW is taken at 8 kW, however big the nameplate says it is."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 1800 ft² × 3 VA = 5,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 5,400 + 4,500 = 9,900 VA.",
@@ -68239,7 +68239,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -68326,7 +68326,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 1500 ft² × 3 VA = 4,500 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 4,500 + 4,500 = 9,000 VA.",
@@ -68419,7 +68419,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -68506,7 +68506,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -68593,7 +68593,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -68675,7 +68675,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3000 ft² × 3 VA = 9,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 9,000 + 4,500 = 13,500 VA.",
@@ -68758,7 +68758,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -68841,7 +68841,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3800 ft² × 3 VA = 11,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 11,400 + 4,500 = 15,900 VA.",
@@ -68929,7 +68929,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -69016,7 +69016,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -69104,7 +69104,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3000 ft² × 3 VA = 9,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 9,000 + 4,500 = 13,500 VA.",
@@ -69187,7 +69187,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -69275,7 +69275,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -69352,7 +69352,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 1500 ft² × 3 VA = 4,500 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 4,500 + 4,500 = 9,000 VA.",
@@ -69435,7 +69435,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -69523,7 +69523,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -69610,7 +69610,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -69687,7 +69687,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2600 ft² × 3 VA = 7,800 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 7,800 + 4,500 = 12,300 VA.",
@@ -69781,7 +69781,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -69858,7 +69858,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2000 ft² × 3 VA = 6,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,000 + 4,500 = 10,500 VA.",
@@ -69946,7 +69946,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3800 ft² × 3 VA = 11,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 11,400 + 4,500 = 15,900 VA.",
@@ -70028,7 +70028,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -70116,7 +70116,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3800 ft² × 3 VA = 11,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 11,400 + 4,500 = 15,900 VA.",
@@ -70198,7 +70198,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2800 ft² × 3 VA = 8,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 8,400 + 4,500 = 12,900 VA.",
@@ -70276,7 +70276,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2400 ft² × 3 VA = 7,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 7,200 + 4,500 = 11,700 VA.",
@@ -70354,7 +70354,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2800 ft² × 3 VA = 8,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 8,400 + 4,500 = 12,900 VA.",
@@ -70448,7 +70448,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2600 ft² × 3 VA = 7,800 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 7,800 + 4,500 = 12,300 VA.",
@@ -70525,7 +70525,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2000 ft² × 3 VA = 6,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,000 + 4,500 = 10,500 VA.",
@@ -70613,7 +70613,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2200 ft² × 3 VA = 6,600 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 6,600 + 4,500 = 11,100 VA.",
@@ -70700,7 +70700,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3800 ft² × 3 VA = 11,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 11,400 + 4,500 = 15,900 VA.",
@@ -70787,7 +70787,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2400 ft² × 3 VA = 7,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 7,200 + 4,500 = 11,700 VA.",
@@ -70874,7 +70874,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2800 ft² × 3 VA = 8,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 8,400 + 4,500 = 12,900 VA.",
@@ -70961,7 +70961,7 @@
               "summary" : "You used the range nameplate. A household range has its own demand table: one range not over 12 kW is taken at 8 kW, however big the nameplate says it is."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3000 ft² × 3 VA = 9,000 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 9,000 + 4,500 = 13,500 VA.",
@@ -71043,7 +71043,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -71137,7 +71137,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 2600 ft² × 3 VA = 7,800 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 7,800 + 4,500 = 12,300 VA.",
@@ -71214,7 +71214,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 2600 ft² × 3 VA = 7,800 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 7,800 + 4,500 = 12,300 VA.",
@@ -71297,7 +71297,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -71380,7 +71380,7 @@
               "summary" : "You used the range nameplate. A household range has its own demand table: one range not over 12 kW is taken at 8 kW, however big the nameplate says it is."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 1500 ft² × 3 VA = 4,500 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 4,500 + 4,500 = 9,000 VA.",
@@ -71468,7 +71468,7 @@
               "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 1500 ft² × 3 VA = 4,500 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 4,500 + 4,500 = 9,000 VA.",
@@ -71550,7 +71550,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 3400 ft² × 3 VA = 10,200 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 10,200 + 4,500 = 14,700 VA.",
@@ -71638,7 +71638,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
           "steps" : [
             "General lighting and general-use receptacles: 3800 ft² × 3 VA = 11,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 11,400 + 4,500 = 15,900 VA.",
@@ -71715,7 +71715,7 @@
               "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
             }
           },
-          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
+          "situation" : "Standard method, 120\/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?",
           "steps" : [
             "General lighting and general-use receptacles: 1800 ft² × 3 VA = 5,400 VA.",
             "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so 5,400 + 4,500 = 9,900 VA.",

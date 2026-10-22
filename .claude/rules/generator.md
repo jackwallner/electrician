@@ -71,6 +71,8 @@ The native Android generator must also retain byte-for-byte Swift parity.
 Ground fill uses one allowance through four entering grounds, then a quarter
 per additional entering ground or bonding jumper. Internal pigtails are excluded.
 Dwelling standard-method questions disclose the largest motor retained with
-heating and include its extra 25% after appliance demand. Motor standard-rating
+heating and include its extra 25% after appliance demand. They explicitly use
+Table 220.55 column C for the range; an 8 kW range otherwise also permits
+the Note 3 alternative. Motor standard-rating
 questions exclude instantaneous-trip devices, distinguish Class CC fuses and
 include the fuse-only ratings plus the small-motor 15 A breaker permission.

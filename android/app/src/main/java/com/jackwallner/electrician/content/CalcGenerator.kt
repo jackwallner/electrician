@@ -567,7 +567,7 @@ object CalcGenerator {
             format(alternatives[3]) to CandidateMistake.loadForgotApplianceDemand,
             format(alternatives[4]) to CandidateMistake.loadForgotSmallAppliance,
         ))
-        val prefix = "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat."
+        val prefix = "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat."
         return CalcScenario(newID("dwellingLoad"),
             if (asksForService) "$prefix What is the minimum standard service rating?" else "$prefix What is the calculated load?",
             listOf(

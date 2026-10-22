@@ -29,7 +29,7 @@ enum class MotorSupply(val displayName: String, val volts: Int, val phase: Phase
 }
 enum class MotorProtection(val displayName: String, val percent: Double) {
     nonTimeDelayFuse("Nontime-delay fuse", 3.0), dualElementFuse("Dual-element fuse (not Class CC)", 1.75),
-    instantaneousTrip("Instantaneous-trip breaker", 8.0), inverseTimeBreaker("Inverse-time breaker", 2.5);
+    instantaneousTrip("Instantaneous-trip breaker", 8.0), inverseTimeBreaker("Inverse-time breaker (nonadjustable)", 2.5);
     val percentLabel: String get() = "${(percent * 100).toInt()}%"
     val standardRatings: List<Int> get() = when (this) {
         nonTimeDelayFuse, dualElementFuse -> (NECTables.standardOCPD + listOf(1, 3, 6, 601)).sorted()

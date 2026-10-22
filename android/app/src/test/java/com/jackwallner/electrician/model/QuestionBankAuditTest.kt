@@ -140,13 +140,14 @@ class QuestionBankAuditTest {
             "motorConductor" -> format(flc() * 1.25, 1, "A")
             "motorProtection" -> {
                 val device = given("Device")
-                val factor = checkNotNull(mapOf("Nontime-delay fuse" to 3.0, "Dual-element fuse (not Class CC)" to 1.75, "Inverse-time breaker" to 2.5)[device])
+                val factor = checkNotNull(mapOf("Nontime-delay fuse" to 3.0, "Dual-element fuse (not Class CC)" to 1.75, "Inverse-time breaker (nonadjustable)" to 2.5)[device])
                 val fuse = "fuse" in device
                 val ratings = if (fuse) (standards() + listOf(1, 3, 6, 601)).sorted() else standards()
                 val rating = ratings.first { it >= flc() * factor - 0.0001 }
                 "${if (fuse) rating else maxOf(15, rating)} A"
             }
             "dwellingLoad" -> {
+                assertTrue(q.id, "Table 220.55 column C" in q.situation)
                 val general = number("Floor area") * 3 + 4500
                 val lighting = 3000 + (general - 3000) * 0.35
                 val range = 8000 * (1 + maxOf(0.0, number("Range") - 12) * 0.05)

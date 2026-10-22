@@ -182,13 +182,14 @@ final class QuestionBankAuditTests: XCTestCase {
             return format(try motorFLC() * 1.25, 1, "A")
         case .motorProtection:
             let device = try given("Device")
-            let factor = try XCTUnwrap(["Nontime-delay fuse": 3.0, "Dual-element fuse (not Class CC)": 1.75, "Inverse-time breaker": 2.5][device])
+            let factor = try XCTUnwrap(["Nontime-delay fuse": 3.0, "Dual-element fuse (not Class CC)": 1.75, "Inverse-time breaker (nonadjustable)": 2.5][device])
             let fuse = device.contains("fuse")
             let ratings = fuse ? (t.standardOCPD + [1, 3, 6, 601]).sorted() : t.standardOCPD
             let calculated = try motorFLC() * factor
             let rating = try XCTUnwrap(ratings.first { Double($0) >= calculated - 0.0001 })
             return "\(fuse ? rating : max(15, rating)) A"
         case .dwellingLoad:
+            XCTAssertTrue(q.situation.contains("Table 220.55 column C"), q.id)
             let general = try number("Floor area") * 3 + 4500
             let lighting = 3000 + (general - 3000) * 0.35
             let rangeKW = try number("Range")

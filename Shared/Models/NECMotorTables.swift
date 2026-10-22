@@ -163,7 +163,7 @@ extension NECTables {
             case .nonTimeDelayFuse: return "Nontime-delay fuse"
             case .dualElementFuse: return "Dual-element fuse (not Class CC)"
             case .instantaneousTrip: return "Instantaneous-trip breaker"
-            case .inverseTimeBreaker: return "Inverse-time breaker"
+            case .inverseTimeBreaker: return "Inverse-time breaker (nonadjustable)"
             }
         }
 

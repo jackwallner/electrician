@@ -170,8 +170,8 @@ extension CalcGenerator {
         return CalcScenario(
             id: "gen-dwellingLoad-\(UUID().uuidString)",
             situation: asksForService
-                ? "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?"
-                : "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+                ? "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?"
+                : "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
             givens: [
                 Given("Floor area", "\(Int(area))", unit: "ft²"),
                 Given("Range", rangeKW.factorText, unit: "kW"),
