@@ -43,13 +43,12 @@ enum DuoScreenshotMode {
         let now = Date()
 
         let profile = CandidateProfile.shared
-        profile.licenseTrack = .journeyman
+        profile.selectTrack(.journeyman)
         profile.jurisdiction = "Colorado"
         profile.edition = .nec2023
         profile.examDate = Calendar.current.startOfDay(for: now).addingTimeInterval(38 * day)
         profile.dailyGoal = 25
-        profile.hasSelectedTrack = true
-        profile.setupComplete = true
+        profile.completeSetup()
 
         // A drill or two a day for a week, so the streak and the rings agree.
         let progress = ProgressStore.shared
