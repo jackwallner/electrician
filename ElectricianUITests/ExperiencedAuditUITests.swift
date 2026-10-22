@@ -12,7 +12,7 @@ final class ExperiencedAuditUITests: XCTestCase {
     private var app: XCUIApplication!
     private var notes: [String] = []
 
-    override func setUp() {
+    override func setUp() async throws {
         continueAfterFailure = true
         app = XCUIApplication(bundleIdentifier: "com.jackwallner.electrician")
         app.launchArguments += [
@@ -25,7 +25,7 @@ final class ExperiencedAuditUITests: XCTestCase {
         dismissSheetsIfAny()
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         let attachment = XCTAttachment(string: notes.joined(separator: "\n"))
         attachment.name = "notes"
         attachment.lifetime = .keepAlways
