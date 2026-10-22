@@ -63,6 +63,7 @@ These files load automatically when you read a file matching their `paths:`. Age
 | `.claude/rules/release-and-iap.md` | IAP setup scripts, the RevenueCat probe | ASC product scripts, RevenueCat, StoreKit config |
 | `.claude/rules/listing-and-localization.md` | Store name, marketing site, 50 locales, the EULA link, ASO | Metadata, localizations, `docs/` |
 | `.claude/rules/android.md` | Native Android identifiers, content export, calculation parity and current build scope | `android/`, Android exporter scripts |
+| `.claude/rules/iphone-duo.md` | Unfolded Duo split (Home beside Your Progress), split math, DEBUG seed and capture tour | `HomeView`, `UnfoldedSplit`, `DuoScreenshotMode`, `StatsView`, `SettingsView` |
 
 ## Structure
 - `Shared/Models`: `Given` (a labelled condition chip, the equivalent of a
