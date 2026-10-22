@@ -55,14 +55,21 @@ warmup, timed, fix, tools, readiness, howto, stats, settings, paywall. The
 `stats` route pushes Your Progress on the left too, so skip it for inner shots.
 Pass `-electrician.suppressWhatsNew`.
 
+Never pass `--url` (no `noop://` padding: the app registers no URL scheme and
+`simctl openurl` on a custom scheme raises a confirmation sheet anyway). With
+no urls, gh-sim takes one folded and one unfolded shot `--wait` seconds after
+each launch, so give each launch the route it should show; the tour holds the
+last route:
+
 ```bash
-gh-sim launch --device 'iPhone Duo' --wait 6 \
-  --args "-DuoSeed -DuoTour -electrician.suppressWhatsNew -DuoTourFirst 1 -DuoTourStep 8 -DuoTourStepRegular 13 -DuoRoutes home,quick,room-calc-room" \
-  --url noop://1 ... --url noop://8
+gh-sim launch --device 'iPhone Duo' --wait 10 \
+  --args "-DuoSeed -DuoTour -electrician.suppressWhatsNew -DuoTourFirst 1 -DuoTourStep 8 -DuoTourStepRegular 8 -DuoRoutes drill-worked-examples"
 ```
 
-Keep to about 7 routes and 8 urls per launch (10 minute launch cap). Native
-video: record in a separate `gh-sim launch --record-seconds 20` with
-`-DuoTourFirst 6 -DuoTourStep 4 -DuoTourStepRegular 4` and about 3 urls;
-`gh-sim all` holds the recorder for the test step. Score with
-`fleet-record60.py verify`.
+One inner surface per job, so plan the set against the six-run cap. Native
+video: `--record-seconds` must outlast `--wait` (30 with `--wait 20`, a fast
+tour of about four routes, `-DuoTourFirst 3 -DuoTourStep 3
+-DuoTourStepRegular 4`). When the wait outlasted the recording, the
+watchdog's SIGINT and gh-sim's stop both hit the outer recorder, it never
+finalized (0-byte mp4) and the inner recorder then failed with "A recording is
+already in progress". Score with `fleet-record60.py verify`.
