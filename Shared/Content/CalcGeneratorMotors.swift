@@ -12,7 +12,7 @@ import Foundation
 ///
 /// The second reversal is rounding. Everywhere else in the book the protective
 /// device goes to the largest standard rating at or BELOW the calculated value.
-/// 430.52(C)(1) Exception 1 goes the other way: where the percentage does not
+/// 430.52(C)(1)(a) goes the other way: where the percentage does not
 /// land on a standard rating, you go up. Bringing the 240.6 habit here is the
 /// second named mistake.
 extension CandidateMistake {
@@ -35,17 +35,17 @@ extension CandidateMistake {
     static let motorRoundedOCPDDown = MistakePattern(
         id: "motor-rounded-ocpd-down",
         skill: PracticeSkill.motorProtection.rawValue,
-        summary: "You rounded down to the next standard rating. Motor branch-circuit protection is the exception: 430.52(C)(1) Exception 1 lets you go UP to the next standard size when the percentage does not land on one, because the device has to survive starting current."
+        summary: "You selected less than the permitted maximum. 430.52(C)(1)(a) allows the next standard rating above a table calculation, and it also permits a 15 A nonadjustable breaker when the next standard rating would be smaller."
     )
     static let motorWrongDevicePercent = MistakePattern(
         id: "motor-wrong-device-percent",
         skill: PracticeSkill.motorProtection.rawValue,
-        summary: "You used another device's percentage. Table 430.52 gives each type its own ceiling: 300% for a nontime-delay fuse, 175% for a dual-element fuse, 250% for an inverse-time breaker, 800% for an instantaneous-trip breaker."
+        summary: "You used another device's percentage. For these ordinary motors, Table 430.52(C)(1) uses 300% for nontime-delay fuses, 175% for dual-element fuses other than Class CC, and 250% for inverse-time breakers. Instantaneous-trip settings require the applicable motor design and listed combination controller."
     )
     static let motorUsedOverloadPercent = MistakePattern(
         id: "motor-used-overload-percent",
         skill: PracticeSkill.motorProtection.rawValue,
-        summary: "That is an overload calculation, not short-circuit protection. The two are separate devices with separate rules: overload runs at 115% or 125% of the NAMEPLATE, while the branch-circuit device runs at the Table 430.52 percentage of the TABLE current."
+        summary: "That is an overload calculation, not short-circuit protection. The two are separate devices with separate rules: overload runs at 115% or 125% of the NAMEPLATE, while the branch-circuit device runs at the Table 430.52(C)(1) percentage of the TABLE current."
     )
 }
 
@@ -121,7 +121,7 @@ extension CalcGenerator {
 
         return CalcScenario(
             id: "gen-motorConductor-\(UUID().uuidString)",
-            situation: "What minimum ampacity must the branch-circuit conductors for this single continuous-duty motor have?",
+            situation: "For this single, ordinary single-speed continuous-duty motor of usual speed and torque characteristics, what minimum branch-circuit conductor ampacity does 430.22(A) require?",
             givens: [
                 Given("Motor", motor.rating.label),
                 Given("Supply", motor.supply.displayName),
@@ -140,12 +140,17 @@ extension CalcGenerator {
     static func motorProtectionProblem(using rng: inout RandomNumberGenerator) -> CalcScenario {
         var padRNG: RandomNumberGenerator = SeededGenerator(seed: rng.next())
         guard let motor = rollMotor(using: &rng) else { return ocpdProblem(using: &rng) }
-        let protection = NECTables.MotorProtection.allCases.randomElement(using: &rng)!
+        // Instantaneous-trip devices require listed combination-controller
+        // and setting information, so this standard-rating question uses
+        // fuses and nonadjustable inverse-time breakers only.
+        let protection = NECTables.MotorProtection.allCases
+            .filter { $0 != .instantaneousTrip }.randomElement(using: &rng)!
 
         let calculated = motor.tableFLC * protection.percent
-        guard let answer = NECTables.motorBranchOCPD(flc: motor.tableFLC, protection: protection),
-              let roundedDown = NECTables.nextStandardOCPD(atMost: calculated)
+        guard let answer = NECTables.motorBranchOCPD(flc: motor.tableFLC, protection: protection)
         else { return ocpdProblem(using: &rng) }
+        let roundedDown = protection.standardRatings.last(where: { Double($0) <= calculated })
+            ?? protection.standardRatings[0]
 
         let otherDevice = NECTables.MotorProtection.allCases.first { $0 != protection }!
         let wrongPercent = NECTables.motorBranchOCPD(flc: motor.tableFLC, protection: otherDevice) ?? answer
@@ -169,10 +174,12 @@ extension CalcGenerator {
 
         var steps = [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: \(motor.rating.label) at \(motor.supply.displayName) is \(motor.tableFLC.factorText) A in Table \(motor.supply.phase == .single ? "430.248" : "430.250").",
-            "Table 430.52 allows a \(protection.displayName.lowercased()) up to \(protection.percentLabel) of that: \(motor.tableFLC.factorText) × \(protection.percent.factorText) = \(calculated.roundedAmpsText) A.",
+            "Table 430.52(C)(1) allows a \(protection.displayName.lowercased()) up to \(protection.percentLabel) of that: \(motor.tableFLC.factorText) × \(protection.percent.factorText) = \(calculated.roundedAmpsText) A.",
         ]
-        if Double(answer) > calculated {
-            steps.append("\(calculated.roundedAmpsText) A is not a standard rating. This is the one calculation in the book that rounds UP: 430.52(C)(1) Exception 1 permits the next standard size, so \(answer) A.")
+        if protection == .inverseTimeBreaker && calculated < 15 {
+            steps.append("430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.")
+        } else if Double(answer) > calculated {
+            steps.append("\(calculated.roundedAmpsText) A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so \(answer) A.")
         } else {
             steps.append("\(calculated.roundedAmpsText) A is itself a standard rating in 240.6(A), so \(answer) A is the answer with no rounding needed.")
         }
@@ -186,7 +193,7 @@ extension CalcGenerator {
 
         return CalcScenario(
             id: "gen-motorProtection-\(UUID().uuidString)",
-            situation: "What is the largest standard device permitted for branch-circuit short-circuit and ground-fault protection of this motor?",
+            situation: "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
             givens: [
                 Given("Motor", motor.rating.label),
                 Given("Supply", motor.supply.displayName),
@@ -196,7 +203,7 @@ extension CalcGenerator {
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "430.52, Table 430.52, 430.52(C)(1) Ex. 1, 240.6(A)",
+            citation: "430.52, Table 430.52(C)(1), 430.52(C)(1)(a) (Ex. 1 in 2020), 240.6(A)",
             mistakes: mistakes
         )
     }

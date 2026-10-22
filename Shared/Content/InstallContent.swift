@@ -23,7 +23,7 @@ enum InstallContent {
             id: "install-card-depth",
             frontTitle: "How deep does the working space in front of a panel have to be?",
             givens: [Given("System", "120/240V"), Given("Condition", "1")],
-            frontSubtitle: "Measured out from the live parts",
+            frontSubtitle: "From exposed live parts, or the enclosure front when enclosed",
             backTitle: "Three feet, and at 120/240 V it is three feet whatever the condition",
             backBody: "The depth table is graded by condition: nothing live or grounded facing the equipment, grounded parts facing it, or live parts on both sides. Below 151 volts to ground all three land on the same three feet, so the grading only starts to bite on a 277/480 system, where the same three conditions run three, three and a half, and four feet. Candidates memorise the 480 volt row and then apply it to a house panel, which is the wrong direction to be wrong in.",
             citation: "110.26(A)(1)",
@@ -31,8 +31,8 @@ enum InstallContent {
         ),
         Flashcard(
             id: "install-card-width",
-            frontTitle: "How wide does that space have to be?",
-            frontSubtitle: "And what decides it",
+            frontTitle: "What is the minimum working-space width for a panel 24 inches wide?",
+            frontSubtitle: "Assume its door can open at least 90 degrees",
             backTitle: "Thirty inches, or the width of the equipment, whichever is greater",
             backBody: "The thirty inches does not have to be centred on the equipment, and it may overlap the working space of adjacent equipment. What it may not do is be blocked by a door: the space has to allow any equipment door or hinged panel to open at least ninety degrees. A panel in a closet that only opens sixty degrees fails on the door, not on the thirty inches.",
             citation: "110.26(A)(2)",
@@ -42,15 +42,15 @@ enum InstallContent {
             id: "install-card-height",
             frontTitle: "How much headroom does a working space need?",
             backTitle: "Six and a half feet, or the height of the equipment where it is taller",
-            backBody: "The headroom is clear space: piping, ducts and equipment foreign to the electrical installation are not allowed in it. The common exam framing is a ceiling at six feet, which fails, or a panel that is itself seven feet tall, where the equipment height governs and the answer is seven.",
+            backBody: "The usual clear height is 6.5 feet or the equipment height if greater. Existing dwelling installations at 200 A or less have a specific exception. Dedicated space above the equipment is a separate rule; do not treat the whole room above the working space as that dedicated column.",
             citation: "110.26(A)(3), 110.26(E)"
         ),
         Flashcard(
             id: "install-card-entrances",
-            frontTitle: "When does a working space need an exit at each end?",
+            frontTitle: "What is the general two-entrance trigger for large equipment containing switching, overcurrent or control devices?",
             givens: [Given("Equipment", "1200 A"), Given("Width", "Over 6 ft")],
             backTitle: "At 1200 amperes or more, and over six feet wide",
-            backBody: "Both conditions have to be true. Big gear that is narrow, or wide gear that is small, takes one entrance. Where both apply, the space needs an entrance at each end, each at least twenty-four inches wide and six and a half feet high, so nobody is trapped past an arcing fault.",
+            backBody: "The general trigger is both 1200 A or more and over 6 feet wide, for equipment containing switching, overcurrent or control devices. Each entrance is at least 24 inches wide and 6.5 feet high. A single entrance can qualify where unobstructed egress or double working-space depth satisfies the specific alternatives in 110.26(C)(2).",
             citation: "110.26(C)(2)"
         ),
         Flashcard(
@@ -65,11 +65,11 @@ enum InstallContent {
     static let coverAndSupportCards: [Flashcard] = [
         Flashcard(
             id: "install-card-burial-direct",
-            frontTitle: "Minimum cover over a direct-buried cable in a residential yard?",
+            frontTitle: "Minimum cover for a 240 V direct-buried cable in a yard without concrete cover or vehicle traffic?",
             givens: [Given("Method", "Direct burial"), Given("Location", "Open trench")],
             backTitle: "Twenty-four inches",
             backBody: "Cover is measured from the top of the wiring method to the finished grade, not from the bottom of the trench. Twenty-four inches is the baseline for direct burial; putting the same conductors inside rigid or intermediate metal conduit drops it to six, and a nonmetallic raceway listed for the purpose sits between them at eighteen.",
-            citation: "Table 300.5",
+            citation: "Table 300.5(A) (Table 300.5 in 2020)",
             choice: CardChoice("24 in.", "18 in.", answerIndex: 0)
         ),
         Flashcard(
@@ -77,22 +77,22 @@ enum InstallContent {
             frontTitle: "The 12-inch burial row: what has to be true to use it?",
             backTitle: "Residential branch circuit, 120 volts or less, 20 amperes or less, and GFCI protected",
             backBody: "Every one of the four conditions has to hold. This is the row that lets a homeowner's yard light go in at a foot, and it is the row candidates quote for a 240 volt circuit or a 30 ampere one, where it does not apply. Miss any condition and the run goes back to its own column.",
-            citation: "Table 300.5"
+            citation: "Table 300.5(A) (Table 300.5 in 2020)"
         ),
         Flashcard(
             id: "install-card-burial-traffic",
-            frontTitle: "What happens to cover under a driveway or a parking lot?",
-            backTitle: "Everything goes to twenty-four inches",
-            backBody: "Under a street, road, alley, driveway or parking lot the whole table collapses to one number, whatever the wiring method. That is worth remembering as a rule rather than as a row: it turns a five-column lookup into a single fact, and it is the version the exam usually asks for.",
-            citation: "Table 300.5",
+            frontTitle: "Minimum cover under a public street or commercial parking lot?",
+            backTitle: "Twenty-four inches in the general vehicle-traffic row",
+            backBody: "The general streets, roads, alleys, driveways and parking-lots row requires 24 inches. One- and two-family dwelling driveways used only for dwelling purposes have a separate row: 18 inches for the ordinary cable and raceway columns, 12 inches for the qualifying GFCI residential branch circuit, and 6 inches for qualifying low-voltage lighting. Concrete-cover rows and table notes must also be checked.",
+            citation: "Table 300.5(A) (Table 300.5 in 2020)",
             choice: CardChoice("24 in.", "18 in.", answerIndex: 0)
         ),
         Flashcard(
             id: "install-card-support-emt",
-            frontTitle: "How is EMT secured and supported?",
+            frontTitle: "What is the general maximum support interval for EMT with no support exception?",
             backTitle: "Within three feet of each box, then every ten feet",
             backBody: "Raceway is measured in feet at both ends of that sentence. Cable is not: type NM is secured within twelve INCHES of a box and supported every four and a half feet. Mixing the two pairs is the most common way this question is missed, and the tell is the unit: inches means cable, feet means pipe.",
-            citation: "358.30(A)",
+            citation: "358.30(A), (B)",
             choice: CardChoice("10 ft", "8 ft", answerIndex: 0)
         ),
         Flashcard(
@@ -100,7 +100,7 @@ enum InstallContent {
             frontTitle: "How is type NM cable secured and supported?",
             backTitle: "Within twelve inches of a box, then every four and a half feet",
             backBody: "The twelve inches is measured to the cable entry and assumes the box has a clamp. A single-gang nonmetallic box without a clamp gets its own allowance: the cable is secured within eight inches of the box instead, measured along the sheath, with a length of sheath inside the box.",
-            citation: "334.30, 314.17(C)"
+            citation: "334.30, 314.17(B)(2)"
         ),
         Flashcard(
             id: "install-card-bends",
@@ -149,7 +149,7 @@ enum InstallContent {
             choices: ["6 in.", "12 in.", "18 in.", "24 in."],
             answerIndex: 0,
             explanation: "Rigid and intermediate metal conduit have their own column at six inches, because the raceway itself is the physical protection the cover would otherwise be providing. The twenty-four inch figure people quote for everything is the direct-burial column.",
-            citation: "Table 300.5"
+            citation: "Table 300.5(A) (Table 300.5 in 2020)"
         ),
         QuizQuestion(
             id: "install-quiz-cover-pvc",
@@ -158,11 +158,11 @@ enum InstallContent {
             choices: ["6 in.", "12 in.", "18 in.", "24 in."],
             answerIndex: 2,
             explanation: "Nonmetallic raceways sit between the two: eighteen inches, because the raceway resists damage but not the way a steel one does. Reading the metal-conduit six inches for PVC is the mistake this pair is here to separate.",
-            citation: "Table 300.5"
+            citation: "Table 300.5(A) (Table 300.5 in 2020)"
         ),
         QuizQuestion(
             id: "install-quiz-support-nm",
-            prompt: "Type NM cable runs from a device box along the framing. Where does the first staple go, and how often after that?",
+            prompt: "Type NM cable enters a box with an internal cable clamp and runs along framing with no support exception. What are the maximum securing distance from the box and support interval?",
             choices: [
                 "Within 12 in. of the box, then every 4.5 ft",
                 "Within 3 ft of the box, then every 10 ft",
@@ -183,10 +183,10 @@ enum InstallContent {
         ),
         QuizQuestion(
             id: "install-quiz-wall-space",
-            prompt: "What is the narrowest section of wall that counts as a wall space needing its own receptacle?",
+            prompt: "In a dwelling living room, what is the minimum width of an uninterrupted wall space that falls under the general receptacle-spacing rule?",
             choices: ["12 in.", "18 in.", "2 ft", "3 ft"],
             answerIndex: 2,
-            explanation: "Two feet or more of wall, measured horizontally and including space measured around corners, is a wall space. Fixed panels in exterior walls and the space occupied by a fixed cabinet count too. Anything narrower than two feet is not a wall space and needs nothing.",
+            explanation: "The general threshold is 2 feet, including measurements around corners. Fixed wall panels can count, while sliding panels and interruptions such as doorways, fireplaces and fixed cabinets are treated differently. A qualifying wall space needs coverage within 6 feet; it does not necessarily require a separate receptacle centered on each section.",
             citation: "210.52(A)(2)"
         ),
         QuizQuestion(
@@ -199,7 +199,7 @@ enum InstallContent {
         ),
         QuizQuestion(
             id: "install-quiz-bends",
-            prompt: "A run of EMT leaves a panel, turns twice at 90 degrees, and takes two 45-degree offsets. How many more degrees of bend are allowed before a pull point?",
+            prompt: "An EMT run between pull points contains exactly two 90-degree bends and two 45-degree bends. How many more degrees of bend are allowed?",
             givens: [Given("Bends so far", "90 + 90 + 45 + 45")],
             choices: ["0°", "90°", "180°", "270°"],
             answerIndex: 1,
@@ -208,16 +208,16 @@ enum InstallContent {
         ),
         QuizQuestion(
             id: "install-quiz-continuous",
-            prompt: "A 44 A continuous load feeds from a panel. What is the minimum branch-circuit conductor ampacity and device rating?",
+            prompt: "An ordinary branch circuit supplies only a 44 A continuous load. The listed 100%-rated assembly exception does not apply. What is the minimum standard inverse-time circuit-breaker rating?",
             givens: [Given("Load", "44", unit: "A"), Given("Duty", "Continuous")],
             choices: ["44 A", "50 A", "55 A", "60 A"],
-            answerIndex: 2,
-            explanation: "A load expected to run three hours or more is taken at 125%, and the multiplier applies to the conductor and to the device ahead of it: 44 × 1.25 = 55 A. The 50 A answer is the next standard device below the load, which is what you get by protecting at the load itself.",
-            citation: "210.19(A)(1), 210.20(A)"
+            answerIndex: 3,
+            explanation: "44 × 1.25 = 55 A is the minimum calculated rating. A 55 A breaker is not a standard rating in Table 240.6(A), so select 60 A. Conductors must meet their separate ampacity, correction, adjustment and protection requirements; this question asks only for the standard breaker rating.",
+            citation: "210.20(A), Table 240.6(A)"
         ),
         QuizQuestion(
             id: "install-quiz-dedicated-space",
-            prompt: "A water pipe runs horizontally 30 inches above a panelboard, inside the panel's footprint. Is that permitted?",
+            prompt: "A water pipe runs 30 inches above an indoor panelboard, inside its footprint and below the structural ceiling. Is that permitted?",
             choices: [
                 "No, it is in the dedicated space above the equipment",
                 "Yes, the dedicated space is only 6 in. deep",
@@ -264,8 +264,8 @@ enum InstallContent {
         ArticleMatchQuestion(
             id: "install-match-support",
             scenario: "You need the maximum spacing between straps on a run of 1 inch EMT.",
-            choices: [.wiringMethods, .generalRequirements, .raceways, .boxes],
-            answer: .wiringMethods,
+            choices: [.emt, .generalRequirements, .raceways, .boxes],
+            answer: .emt,
             explanation: "Support spacing for a raceway lives in that raceway's own article in Chapter 3, which is where the wiring-method articles are. Chapter 9 is only the tables, and it has nothing to say about how a pipe is fastened."
         ),
         ArticleMatchQuestion(

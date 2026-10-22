@@ -19,7 +19,7 @@ enum CodeBasicsContent {
         ),
         Flashcard(
             id: "basics-shall",
-            frontTitle: "Shall, shall not, and shall be permitted",
+            frontTitle: "What does \"shall be permitted\" mean?",
             frontSubtitle: "Three phrases that decide test questions",
             backTitle: "Requirement, prohibition, permission",
             backBody: "\"Shall\" is mandatory. \"Shall not\" is prohibited. \"Shall be permitted\" means allowed but not required, and that third one is where candidates lose points: an answer that says something is required when the code only permits it is wrong even though the practice is common.",
@@ -31,7 +31,7 @@ enum CodeBasicsContent {
             frontTitle: "Informational notes",
             frontSubtitle: "Printed right there in the book",
             backTitle: "Explanatory, not enforceable",
-            backBody: "An informational note explains or points elsewhere. It is not a requirement and cannot be cited as one. The 3% branch-circuit voltage-drop figure everyone quotes lives in a note, which is why a design can exceed it and still pass inspection.",
+            backBody: "An informational note explains or points elsewhere; it does not impose a requirement. The general 3% branch-circuit voltage-drop recommendation is in a note. Some specific applications have mandatory voltage-drop limits, so the note does not settle every installation.",
             citation: "90.5(C)",
             choice: CardChoice("Enforceable", "Explanatory only", answerIndex: 1)
         ),
@@ -40,7 +40,7 @@ enum CodeBasicsContent {
             frontTitle: "Accessible vs. readily accessible",
             frontSubtitle: "Two terms, one word apart",
             backTitle: "One may need tools, the other may not",
-            backBody: "Accessible means you can get to it, possibly by removing a panel or climbing. Readily accessible means you can reach it quickly without tools, without a ladder, and without moving obstacles. A disconnect required to be readily accessible cannot be behind a locked panel you need a screwdriver to open.",
+            backBody: "Accessible equipment can be approached for service or operation. Readily accessible equipment must be reachable quickly without portable ladders, removing obstacles, or using tools other than keys. A key-operated lock alone does not disqualify it; a cover requiring a screwdriver does. Accessibility of wiring methods has its own definition.",
             citation: "Art. 100"
         ),
         Flashcard(
@@ -48,7 +48,7 @@ enum CodeBasicsContent {
             frontTitle: "Continuous load",
             frontSubtitle: "Three hours is the line",
             backTitle: "Maximum current for 3 hours or more",
-            backBody: "A load is continuous if its maximum current is expected to run for three hours or more. It matters because the branch circuit and its overcurrent device get sized at 125% of the continuous portion. Lighting in a store is the standard example; a household clothes dryer is not.",
+            backBody: "A load is continuous if its maximum current is expected for three hours or more. Ordinary branch-circuit conductors and protection are sized for the noncontinuous load plus 125% of the continuous load. A listed assembly rated for continuous operation at 100% can qualify for an exception; check the equipment and the applicable rule.",
             citation: "Art. 100, 210.19(A), 210.20(A)"
         ),
         Flashcard(
@@ -90,11 +90,11 @@ enum CodeBasicsContent {
         ),
         QuizQuestion(
             id: "basics-q-continuous",
-            prompt: "A 40 A continuous load is fed by a branch circuit. What is the minimum conductor ampacity before any derating?",
+            prompt: "An ordinary branch circuit, without the listed 100%-rated assembly exception, supplies a 40 A continuous load. What is the minimum conductor ampacity before correction and adjustment?",
             givens: [.load(40), Given("Duty", "continuous")],
             choices: ["50 A", "40 A", "45 A", "32 A"],
             answerIndex: 0,
-            explanation: "A continuous load is sized at 125%: 40 × 1.25 = 50 A. The same 125% applies to the overcurrent device. Candidates who multiply by 1.25 once and forget the second application get a conductor that its own breaker overloads.",
+            explanation: "40 × 1.25 = 50 A. The conductor and the overcurrent device are each checked against this 50 A minimum. Apply 125% once to the load for each check, rather than multiplying the result by 125% again.",
             citation: "210.19(A), 210.20(A)"
         ),
         QuizQuestion(

@@ -74,19 +74,23 @@ extension CalcGenerator {
         // 7: heat against cooling, larger only.
         let climate = NECTables.noncoincident(coolingVA, heatingVA)
 
-        let total = generalDemand + rangeVA + dryerVA + applianceDemand + climate
+        // Cooling including 125% is always below heating in this parameter
+        // range. The disposal is stipulated to be the largest motor retained
+        // with heating, so add its 25% motor allowance after appliance demand.
+        let motorAllowance = disposal * 0.25
+        let total = generalDemand + rangeVA + dryerVA + applianceDemand + climate + motorAllowance
         let amps = NECTables.serviceAmps(va: total)
         guard let rating = NECTables.dwellingServiceRating(amps: amps) else {
             return ampacityProblem(using: &rng)
         }
 
         // Each alternative total is one whole step done the common wrong way.
-        let noLightingDemandVA = generalTotal + rangeVA + dryerVA + applianceDemand + climate
+        let noLightingDemandVA = generalTotal + rangeVA + dryerVA + applianceDemand + climate + motorAllowance
         let noCircuitsVA = NECTables.generalLightingDemand(totalVA: lighting)
-            + rangeVA + dryerVA + applianceDemand + climate
-        let rangeAtNameplateVA = generalDemand + rangeKW * 1000 + dryerVA + applianceDemand + climate
-        let bothClimateVA = generalDemand + rangeVA + dryerVA + applianceDemand + coolingVA + heatingVA
-        let appliancesWholeVA = generalDemand + rangeVA + dryerVA + applianceTotal + climate
+            + rangeVA + dryerVA + applianceDemand + climate + motorAllowance
+        let rangeAtNameplateVA = generalDemand + rangeKW * 1000 + dryerVA + applianceDemand + climate + motorAllowance
+        let bothClimateVA = generalDemand + rangeVA + dryerVA + applianceDemand + coolingVA + heatingVA + motorAllowance
+        let appliancesWholeVA = generalDemand + rangeVA + dryerVA + applianceTotal + climate + motorAllowance
 
         // Half the problems ask for the calculated load, half for the service
         // size, and that is not variety for its own sake.
@@ -148,7 +152,8 @@ extension CalcGenerator {
             "The dryer is the greater of its nameplate and 5000 VA: \(Int(dryerNameplate).groupedText) against 5000, so \(Int(dryerVA).groupedText) VA.",
             "Four fastened-in-place appliances (\(Int(waterHeater)) + \(Int(dishwasher)) + \(Int(disposal)) + \(Int(compactor)) = \(Int(applianceTotal).groupedText) VA) reach the four-appliance threshold, so 220.53 takes them at 75%: \(Int(applianceDemand.rounded()).groupedText) VA.",
             "Heat and air conditioning cannot run together, so 220.60 counts only the larger: \(Int(climate).groupedText) VA.",
-            "Total \(Int(generalDemand.rounded()).groupedText) + \(Int(rangeVA).groupedText) + \(Int(dryerVA).groupedText) + \(Int(applianceDemand.rounded()).groupedText) + \(Int(climate).groupedText) = \(Int(total.rounded()).groupedText) VA.",
+            "Add 25% of the largest retained motor under 220.50 and 430.24: \(Int(disposal)) × 0.25 = \(Int(motorAllowance)) VA.",
+            "Total \(Int(generalDemand.rounded()).groupedText) + \(Int(rangeVA).groupedText) + \(Int(dryerVA).groupedText) + \(Int(applianceDemand.rounded()).groupedText) + \(Int(climate).groupedText) + \(Int(motorAllowance)) = \(Int(total.rounded()).groupedText) VA.",
         ]
         if asksForService {
             steps.append("\(Int(total.rounded()).groupedText) VA ÷ 240 V = \(amps.roundedAmpsText) A, and the smallest standard rating that carries it is \(rating) A.")
@@ -165,8 +170,8 @@ extension CalcGenerator {
         return CalcScenario(
             id: "gen-dwellingLoad-\(UUID().uuidString)",
             situation: asksForService
-                ? "Standard method, single-family dwelling on a 120/240 V single-phase service. What is the minimum standard service rating?"
-                : "Standard method, single-family dwelling on a 120/240 V single-phase service. What is the calculated load?",
+                ? "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?"
+                : "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
             givens: [
                 Given("Floor area", "\(Int(area))", unit: "ft²"),
                 Given("Range", rangeKW.factorText, unit: "kW"),
@@ -181,7 +186,7 @@ extension CalcGenerator {
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "220.41, Table 220.45, 220.52, 220.53, 220.54, Table 220.55, 220.60, 230.79(C)",
+            citation: "220.41, Table 220.45, 220.50, 430.24, 220.52, 220.53, 220.54, Table 220.55, 220.60, 230.79(C)",
             mistakes: mistakes
         )
     }

@@ -28,7 +28,7 @@ enum CalcContent {
                 "Six current-carrying conductors adjust by 0.80: 65.25 × 0.80 = 52.2 A.",
                 "The 75°C termination allows 65 A, which is higher, so the derated 52.2 A is the limit.",
             ],
-            citation: "310.16, 310.15(B)(1), 310.15(C)(1), 110.14(C)"
+            citation: "310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C)"
         ),
         CalcScenario(
             id: "calc-ocpd-1",
@@ -68,7 +68,7 @@ enum CalcContent {
         ),
         CalcScenario(
             id: "calc-boxfill-1",
-            situation: "A box holds six 12 AWG insulated conductors, three equipment grounds, internal cable clamps, and one device yoke. Find the minimum volume.",
+            situation: "Six 12 AWG insulated conductors and three 12 AWG equipment grounds enter a box. It has internal cable clamps and one single-gang device yoke connected to 12 AWG conductors, with no other fill allowances. Find the minimum volume.",
             givens: [
                 .conductor("12 AWG", "THHN"),
                 Given("Insulated", "6", unit: "conductors"),
@@ -90,7 +90,7 @@ enum CalcContent {
         ),
         CalcScenario(
             id: "calc-vdrop-1",
-            situation: "A 120 V single-phase branch circuit carries 16 A on 10 AWG copper for 100 feet one way. Find the voltage drop.",
+            situation: "Estimate voltage drop on a 120 V single-phase circuit carrying 16 A on 10 AWG copper for 100 feet one way. Use the resistive formula with K = 12.9 ohm-cmil/ft, neglecting reactance and power-factor effects. Round to 0.1 V.",
             givens: [
                 .conductor("10 AWG", "THHN"),
                 .material(.copper),

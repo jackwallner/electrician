@@ -77,7 +77,7 @@ extension NECTables {
             case .allClamps: return "Internal cable clamps, however many"
             case .supportFitting: return "Each fixture stud or hickey"
             case .deviceYoke: return "Each device or equipment yoke"
-            case .allGrounds: return "All equipment grounds together"
+            case .allGrounds: return "Up to four entering equipment grounds"
             }
         }
 
@@ -104,7 +104,7 @@ extension NECTables {
             case .deviceYoke:
                 return "the largest conductor connected to that device"
             case .allGrounds:
-                return "the largest equipment ground in the box"
+                return "the largest entering equipment ground; add 1/4 allowance for each beyond four"
             }
         }
 
@@ -117,6 +117,12 @@ extension NECTables {
             case .allGrounds: return "314.16(B)(5)"
             }
         }
+    }
+
+    /// 314.16(B)(5), 2020 and 2023: count entering grounds and bonding
+    /// jumpers, excluding pigtails that remain entirely inside the box.
+    static func groundFillAllowances(entering count: Int) -> Double {
+        count > 0 ? 1 + Double(max(0, count - 4)) / 4 : 0
     }
 
     // MARK: - Working space, 110.26
@@ -201,9 +207,8 @@ extension NECTables {
         }
     }
 
-    /// Under a street, road, alley, driveway or parking lot every column goes
-    /// to the same figure, which is the exception worth memorising because it
-    /// collapses the whole table into one number.
+    /// General vehicle-traffic row only. Dwelling-only driveways and qualifying
+    /// concrete-cover installations have separate rows in Table 300.5.
     static let coverUnderTrafficInches = 24
 
     // MARK: - Support spacing

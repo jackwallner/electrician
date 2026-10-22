@@ -49,8 +49,8 @@ enum PracticeSkill: String, CaseIterable, Identifiable, Sendable {
         case .voltageDrop: return "The field calculation, drilled"
         case .egcSizing: return "Table 250.122, read from the breaker"
         case .gecSizing: return "Table 250.66, and the rod's own ceiling"
-        case .motorConductor: return "Table current, never the nameplate"
-        case .motorProtection: return "The one place you round up"
+        case .motorConductor: return "Table current for ordinary motors"
+        case .motorProtection: return "Device percentages and standard ratings"
         case .dwellingLoad: return "The full dwelling calculation"
         }
     }

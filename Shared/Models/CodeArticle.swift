@@ -21,6 +21,7 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
     case boxes
     case raceways
     case motors
+    case emt
 
     var id: String { rawValue }
 
@@ -39,6 +40,7 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
         case .boxes: return "Art. 314"
         case .raceways: return "Ch. 9"
         case .motors: return "Art. 430"
+        case .emt: return "Art. 358"
         }
     }
 
@@ -56,6 +58,7 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
         case .boxes: return "Boxes & Enclosures"
         case .raceways: return "Raceway Fill"
         case .motors: return "Motors"
+        case .emt: return "Electrical Metallic Tubing"
         }
     }
 
@@ -74,6 +77,7 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
         case .boxes: return "314 Boxes"
         case .raceways: return "Ch. 9 Fill"
         case .motors: return "430 Motors"
+        case .emt: return "358 EMT"
         }
     }
 
@@ -99,6 +103,8 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
             return "How many conductors fit in a pipe. The fill percentages and the conductor and raceway area tables all live in Chapter 9, not in the raceway articles themselves, which is the part people miss."
         case .motors:
             return "Motors run on their own rules. The tables replace the nameplate for conductor sizing, the overload and short-circuit protection are separate calculations, and the numbers do not match anything in the ampacity table."
+        case .emt:
+            return "Installing EMT: permitted uses, securing, support spacing and bends between pull points. Article 358 supplies these installation rules; Chapter 9 supplies fill areas."
         case .generalRequirements:
             return "Access and clearance rather than a wiring method: how much room you must be able to stand in, how much headroom, what may be above the panel, how conductors are terminated and marked, and what temperature column a termination lets you use."
         case .services:

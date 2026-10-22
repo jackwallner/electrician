@@ -132,7 +132,7 @@ extension FieldCalculators {
 
     /// Box fill from what is actually in the box, counted the way 314.16(B)
     /// counts it: every allowance sized on the largest conductor it belongs to,
-    /// all the grounds together as one, and each device yoke as two.
+    /// up to four entering grounds as one, then a quarter each, and each yoke as two.
     ///
     /// - Parameters:
     ///   - conductors: how many insulated conductors enter and terminate or
@@ -142,8 +142,8 @@ extension FieldCalculators {
     ///   - devices: device or equipment yokes, each worth two allowances.
     ///   - hasClamps: whether there are internal cable clamps. However many,
     ///     they are one allowance together.
-    ///   - grounds: how many equipment grounds. However many, they are one
-    ///     allowance together, which is what the parameter is here to prove.
+    ///   - grounds: equipment grounds or bonding jumpers entering the box.
+    ///     Internal grounding pigtails are excluded.
     static func boxFill(
         conductors: Int,
         conductorSize: String,
@@ -160,7 +160,7 @@ extension FieldCalculators {
         let conductorVolume = Double(conductors) * unit
         let clampVolume = hasClamps ? unit : 0
         let deviceVolume = Double(devices) * 2 * unit
-        let groundVolume = grounds > 0 ? groundUnit : 0
+        let groundVolume = NECTables.groundFillAllowances(entering: grounds) * groundUnit
         let required = conductorVolume + clampVolume + deviceVolume + groundVolume
 
         return BoxFillResult(
@@ -210,7 +210,8 @@ extension FieldCalculators {
         fastenedApplianceVA: [Double],
         coolingVA: Double,
         heatingVA: Double,
-        volts: Double = 240
+        volts: Double = 240,
+        largestRetainedMotorVA: Double = 0
     ) -> DwellingLoadResult? {
         guard squareFeet > 0 else { return nil }
 
@@ -231,7 +232,7 @@ extension FieldCalculators {
         )
 
         let climate = NECTables.noncoincident(coolingVA, heatingVA)
-        let total = afterDemand + range + dryer + applianceAfter + climate
+        let total = afterDemand + range + dryer + applianceAfter + climate + largestRetainedMotorVA * 0.25
         let amps = NECTables.serviceAmps(va: total, volts: volts)
         guard let rating = NECTables.dwellingServiceRating(amps: amps),
               let unclamped = NECTables.nextStandardOCPD(atLeast: amps)

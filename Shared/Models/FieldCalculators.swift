@@ -53,7 +53,7 @@ enum FieldCalculators {
             smallConductorCeiling: ceiling,
             allowable: allowable,
             ocpdCeiling: ocpdCeiling,
-            citation: "310.16, 310.15(B)(1), 310.15(C)(1), 110.14(C), 240.4(D)"
+            citation: "310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C), 240.4(D)"
         )
     }
 

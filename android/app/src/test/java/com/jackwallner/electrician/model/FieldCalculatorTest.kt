@@ -133,10 +133,10 @@ class FieldCalculatorTest {
     }
 
     @Test fun dwellingStandardAndOptionalExamplesRemainDistinct() {
-        val result = checkNotNull(FieldCalculators.dwellingLoad(2000.0, 2, 1, 12.0, 1, 5500.0, listOf(4500.0, 1200.0, 900.0, 1000.0), 5000.0, 10000.0))
+        val result = checkNotNull(FieldCalculators.dwellingLoad(2000.0, 2, 1, 12.0, 1, 5500.0, listOf(4500.0, 1200.0, 900.0, 1000.0), 5000.0, 10000.0, largestRetainedMotorVA = 900.0))
         assertEquals(5625.0, result.generalAfterDemand, 1e-3)
         assertEquals(5700.0, result.applianceAfterDemand, 1e-3)
-        assertEquals(34825.0, result.totalVA, 0.5)
+        assertEquals(35050.0, result.totalVA, 0.5)
         assertEquals(150, result.serviceRating)
         val optional = NECTables.optionalMethodGeneralLoad(35600.0)
         val hvac = NECTables.optionalMethodHVAC(5000.0, 10000.0, 1)
@@ -148,7 +148,7 @@ class FieldCalculatorTest {
     @Test fun boxFillCountsGroundsOnceAndDeviceYokesTwice() {
         val result = checkNotNull(FieldCalculators.boxFill(6, "12 AWG", 1, true, 3, "12 AWG"))
         assertEquals(22.5, result.required, 1e-3)
-        assertEquals(result.required, checkNotNull(FieldCalculators.boxFill(6, "12 AWG", 1, true, 9, "12 AWG")).required, 1e-3)
+        assertEquals(25.3125, checkNotNull(FieldCalculators.boxFill(6, "12 AWG", 1, true, 9, "12 AWG")).required, 1e-4)
         assertNotNull(result.smallestBox)
         assertEquals(18.0, checkNotNull(NECTables.smallestBox(18.0)).cubicInches, 1e-9)
         assertNull(NECTables.smallestBox(999.0))

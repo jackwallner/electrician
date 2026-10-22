@@ -60,7 +60,7 @@ class SourceParityTest {
     @Test fun exportedCountsMatchNativeLibraryWithoutDuplicatedOrLostDrills() {
         val rooms = ElectricianContent.rooms
         assertEquals(6, rooms.size)
-        assertEquals(125, rooms.sumOf { it.drills.sumOf { drill -> drill.kind.itemCount } })
+        assertEquals(126, rooms.sumOf { it.drills.sumOf { drill -> drill.kind.itemCount } })
         assertEquals(ElectricianContent.raw.getInt("freeItemCount"), ElectricianContent.freeItemCount)
         assertEquals(ElectricianContent.raw.getInt("membershipItemCount"), ElectricianContent.membershipItemCount)
         assertEquals(ElectricianContent.raw.getInt("membershipDrillCount"), ElectricianContent.membershipDrillCount)
@@ -103,7 +103,7 @@ class SourceParityTest {
                 }
             }
         }
-        assertEquals(125, ids.size)
+        assertEquals(126, ids.size)
         assertEquals(ids.size, ids.toSet().size)
     }
 
@@ -134,9 +134,9 @@ class SourceParityTest {
 
     @Test fun sourceEditionClaimIsPreservedWithoutClaiming2026Verification() {
         assertEquals("2023 NEC", NECTables.edition)
-        assertEquals(2020, NECTables.stableSince)
+        assertEquals(2023, NECTables.stableSince)
         assertEquals(2023, NECTables.verifiedThrough)
-        assertEquals("2020 and 2023 NEC", NECTables.coverageLabel)
+        assertEquals("2023 NEC", NECTables.coverageLabel)
     }
 
     @Test fun exportedGeneratedFixturesCarryFourChoicesAndNamedMistakes() {

@@ -732,11 +732,12 @@ final class ContentValidityTests: XCTestCase {
             dryerNameplateVA: 5500,
             fastenedApplianceVA: [4500, 1200, 900, 1000],
             coolingVA: 5000,
-            heatingVA: 10_000
+            heatingVA: 10_000,
+            largestRetainedMotorVA: 900
         ))
         XCTAssertEqual(result.generalAfterDemand, 5625, accuracy: 0.001)
         XCTAssertEqual(result.applianceAfterDemand, 5700, accuracy: 0.001)
-        XCTAssertEqual(result.totalVA, 34_825, accuracy: 0.5)
+        XCTAssertEqual(result.totalVA, 35_050, accuracy: 0.5)
         XCTAssertEqual(result.serviceRating, 150)
         XCTAssertEqual(standard.choices[standard.answerIndex], "150 A")
 
@@ -771,12 +772,12 @@ final class ContentValidityTests: XCTestCase {
             hasClamps: true, grounds: 3, groundSize: "12 AWG"
         ))
         XCTAssertEqual(result.required, 22.5, accuracy: 0.001)
-        // Adding grounds does not change the answer. That is the whole rule.
+        // Five additional entering grounds beyond four add 5/4 allowances.
         let moreGrounds = try XCTUnwrap(FieldCalculators.boxFill(
             conductors: 6, conductorSize: "12 AWG", devices: 1,
             hasClamps: true, grounds: 9, groundSize: "12 AWG"
         ))
-        XCTAssertEqual(moreGrounds.required, result.required, accuracy: 0.001)
+        XCTAssertEqual(moreGrounds.required, 25.3125, accuracy: 0.0001)
         XCTAssertNotNil(result.smallestBox)
     }
 

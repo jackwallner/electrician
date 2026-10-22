@@ -121,7 +121,7 @@ extension CalcGenerator {
             steps.append("Table 250.122 has no \(ocpd) A row. The rows are not-exceeding bands, so \(ocpd) A reads the \(band) A row.")
         }
         steps.append("In the \(material.displayName.lowercased()) column that row calls for \(answer).")
-        steps.append("Nothing about the circuit conductor size changes this. An equipment ground is sized from the device, and it only grows with the conductors when they are increased for voltage drop, under 250.122(B).")
+        steps.append("This is the Table 250.122 minimum for the stated ordinary circuit. Increasing ungrounded conductors beyond the minimum sufficient ampacity can also require a proportional wire EGC increase under 250.122(B).")
 
         let mistakes = mistakeMap(answerLabel: answer, choices: choices.labels, [
             (fromGECTable, CandidateMistake.usedGECTableForEGC),
@@ -132,7 +132,7 @@ extension CalcGenerator {
 
         return CalcScenario(
             id: "gen-egcSizing-\(UUID().uuidString)",
-            situation: "What is the minimum size equipment grounding conductor for this circuit?",
+            situation: "For an ordinary circuit with conductors not increased in size and no parallel raceways, what is the minimum wire equipment grounding conductor from Table 250.122?",
             givens: [
                 Given("Protected at", "\(ocpd)", unit: "A"),
                 .material(material),
@@ -156,7 +156,8 @@ extension CalcGenerator {
                             "250 kcmil", "350 kcmil", "500 kcmil"]
         let serviceSize = serviceSizes.randomElement(using: &rng)!
         let serviceMaterial = ConductorMaterial.allCases.randomElement(using: &rng)!
-        let sets = [1, 1, 1, 2].randomElement(using: &rng)!
+        let rolledSets = [1, 1, 1, 2].randomElement(using: &rng)!
+        let sets = ["4 AWG", "2 AWG"].contains(serviceSize) ? 1 : rolledSets
         let electrode = NECTables.ElectrodeType.allCases.randomElement(using: &rng)!
 
         guard let fromTable = NECTables.groundingElectrodeConductor(
@@ -235,7 +236,7 @@ extension CalcGenerator {
 
         return CalcScenario(
             id: "gen-gecSizing-\(UUID().uuidString)",
-            situation: "What is the minimum size copper grounding electrode conductor for this service?",
+            situation: "What minimum copper grounding electrode conductor connects this service only to the stated electrode, without continuing to another electrode? For a ground ring, assume a 2 AWG copper ring. Assume physical protection where required by 250.64(B).",
             givens: givens,
             choices: choices.labels,
             answerIndex: choices.answerIndex,

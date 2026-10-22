@@ -47,7 +47,7 @@ enum HowToPlayContent {
             id: "htp-columns",
             icon: "cable.connector",
             title: "Three temperature columns",
-            body: "A conductor's insulation picks which column you read. The equipment it lands on picks which column you may finish in, and most equipment is 75°C. So the pattern for nearly every derating question is: start at 90, correct and adjust, then check it against 75 and take the lower number.",
+            body: "A conductor's insulation picks which column you read. The equipment it lands on picks which column you may finish in, with 60°C or 75°C limits unless a different rating is identified. For the stated 90°C wire and 75°C terminals here, correct and adjust from 90°C, then cap the result at the 75°C ampacity.",
             givens: [.conductor("6 AWG", "THHN"), .terminals(.c75)],
             tip: "Starting the derate from the 75°C value gives a wrong answer that looks right."
         ),
@@ -63,7 +63,7 @@ enum HowToPlayContent {
             id: "htp-240-4-d",
             icon: "bolt.shield.fill",
             title: "The rule that beats the table",
-            body: "14, 12 and 10 AWG copper are capped at 15, 20 and 30 amps for overcurrent protection no matter what the ampacity table says. Aluminum 12 and 10 cap at 15 and 25. More candidates lose points to this one rule than to any other in the book.",
+            body: "14, 12 and 10 AWG copper are capped at 15, 20 and 30 amps for ordinary general-purpose overcurrent protection unless a specific code permission applies. Aluminum 12 and 10 cap at 15 and 25. More candidates lose points to this one rule than to any other in the book.",
             givens: [.conductor("12 AWG", "THWN-2"), .material(.copper)],
             tip: "If a question hands you a small conductor, check 240.4(D) before you answer."
         ),
@@ -84,7 +84,7 @@ enum HowToPlayContent {
             // a curriculum that does not exist yet, and a candidate who finds
             // the gap themselves after paying is right to be annoyed.
             body: "Six rooms: how the book is organized and how to find an article, conductors and ampacity, the installation rules you look up on site, the worked calculations, dwelling service and load calculations, and grounding with motors. On top of those the generator runs \(PracticeSkill.allCases.count) calculation shapes without limit. That is deliberately the part of the exam that is pure calculation and pure navigation.",
-            tip: "Services, feeders, load calculations, wiring methods and the special occupancy chapters are not covered yet. Keep studying those from your own book."
+            tip: "This is selected calculation and navigation practice, not a complete exam curriculum. Special occupancies and many equipment-specific installation rules need separate study. Keep studying those from your own book."
         ),
     ]
 }

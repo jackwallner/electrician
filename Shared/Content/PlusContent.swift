@@ -24,7 +24,7 @@ enum PlusContent {
             id: "plus-basics-90-2",
             prompt: "Which of these is outside the scope of the code entirely?",
             choices: [
-                "Utility-owned service drops and metering",
+                "Service drops and metering under the exclusive control of an electric utility",
                 "A detached garage on a residential lot",
                 "A carnival ride's temporary wiring",
                 "A floating building's feeder",
@@ -35,7 +35,7 @@ enum PlusContent {
         ),
         QuizQuestion(
             id: "plus-basics-125-twice",
-            prompt: "A 30 A continuous load is on a branch circuit. What must be at least 37.5 A?",
+            prompt: "An ordinary branch circuit without the listed 100%-rated assembly exception supplies a 30 A continuous load. What must be at least 37.5 A?",
             givens: [.load(30), Given("Duty", "continuous")],
             choices: [
                 "Both the conductor ampacity and the overcurrent device",
@@ -44,12 +44,12 @@ enum PlusContent {
                 "Neither, 30 A is sufficient",
             ],
             answerIndex: 0,
-            explanation: "The 125% applies in two separate places: 210.19(A) for the conductor and 210.20(A) for the device. Applying it to only one gives you a conductor its own breaker will not protect, or a breaker that nuisance-trips.",
+            explanation: "30 × 1.25 = 37.5 A. Check the conductor and the overcurrent device separately against that minimum; do not apply the multiplier twice in succession. A standard breaker selection would be 40 A, subject to the conductor's separate protection requirements.",
             citation: "210.19(A), 210.20(A)"
         ),
         QuizQuestion(
             id: "plus-basics-accessible",
-            prompt: "Equipment is mounted above a suspended ceiling with lift-out panels. It is:",
+            prompt: "Equipment above a suspended ceiling with lift-out panels can be reached only using a portable ladder. It is:",
             choices: [
                 "Accessible but not readily accessible",
                 "Readily accessible",
@@ -74,7 +74,7 @@ enum PlusContent {
             ],
             answerIndex: 0,
             explanation: "They multiply. A 0.87 correction and a 0.80 adjustment give 0.696 of the starting value, not 0.80 and not a 33% reduction. Taking only the worse of the two is a common shortcut and it produces an unsafe answer.",
-            citation: "310.15(B)(1), 310.15(C)(1)"
+            citation: "310.15(B)(1)(1), 310.15(C)(1)"
         ),
         QuizQuestion(
             id: "plus-cond-parallel",
@@ -94,7 +94,7 @@ enum PlusContent {
         ),
         QuizQuestion(
             id: "plus-cond-10awg-alum",
-            prompt: "What is the maximum overcurrent device on 10 AWG aluminum?",
+            prompt: "For an ordinary general-purpose circuit, with no correction, adjustment or specific 240.4(E)/(G) permission, what is the maximum overcurrent device on 10 AWG aluminum?",
             givens: [.conductor("10 AWG", "THWN-2"), .material(.aluminum)],
             choices: ["25 A", "30 A", "20 A", "35 A"],
             answerIndex: 0,
@@ -121,8 +121,8 @@ enum PlusContent {
         ArticleMatchQuestion(
             id: "plus-am-support",
             scenario: "You need the maximum distance from a box to the first strap on a run of EMT.",
-            choices: [.raceways, .boxes, .branchCircuits, .conductors],
-            answer: .raceways,
+            choices: [.emt, .boxes, .branchCircuits, .conductors],
+            answer: .emt,
             explanation: "Support spacing lives with the wiring method, in the EMT article itself. This one is the mirror of the fill question: installation in the article, math in Chapter 9."
         ),
     ]

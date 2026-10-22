@@ -11,14 +11,14 @@ enum ConductorContent {
             id: "cond-three-columns",
             frontTitle: "Why the table has three columns",
             frontSubtitle: "60°C, 75°C, 90°C",
-            backTitle: "The column is the insulation's rating, not the circuit's",
-            backBody: "The column you read is set by the conductor's insulation. The column you are allowed to finish in is set by whatever the conductor lands on: the breaker lugs, the terminal block, the equipment. Most equipment is rated 75°C, so most answers finish in the 75°C column no matter what the wire is rated.",
+            backTitle: "Insulation sets the starting column; terminations limit the result",
+            backBody: "Use the insulation rating for correction and adjustment, then respect the termination limit. Unless equipment is listed and identified otherwise, circuits rated 100 A or less with 14 through 1 AWG conductors use the 60°C termination basis. Larger circuits or conductors use 75°C. A question must supply the ratings needed to choose the column.",
             citation: "310.16, 110.14(C)"
         ),
         Flashcard(
             id: "cond-ninety-start",
             frontTitle: "So what is the 90°C column for?",
-            frontSubtitle: "If you can never terminate there",
+            frontSubtitle: "With 75°C equipment terminations",
             backTitle: "It is the starting point for derating",
             backBody: "You may begin correction and adjustment from the 90°C ampacity of a 90°C-rated conductor, then compare the result against the termination limit. That is the whole trick: derate from 90, terminate at 75, take the lower number. Starting the derate from the 75°C value is the most common way to get a right-looking wrong answer.",
             citation: "110.14(C), 310.15",
@@ -30,22 +30,22 @@ enum ConductorContent {
             frontSubtitle: "The table assumes 30°C",
             backTitle: "Hotter air, smaller number",
             backBody: "Table 310.16 is built for a 30°C ambient. Anything hotter multiplies the ampacity down, and the factor depends on which column you started in: the 90°C column loses less to heat than the 60°C column does, which is exactly why installers pay for 90°C insulation.",
-            citation: "310.15(B)(1)"
+            citation: "310.15(B)(1)(1)"
         ),
         Flashcard(
             id: "cond-bundling",
             frontTitle: "More than three in a raceway",
             frontSubtitle: "Current-carrying, not total",
             backTitle: "Four or more current-carrying conductors adjust down",
-            backBody: "Count current-carrying conductors only. An equipment grounding conductor never counts. A neutral that carries only the unbalanced current of a balanced multiwire circuit does not count either, but a neutral on a circuit feeding nonlinear loads does. Getting the count wrong changes the factor and therefore the answer.",
+            backBody: "For a raceway longer than 24 inches, count current-carrying conductors. Equipment grounds do not count. A neutral carrying only imbalance from the other conductors of the same circuit need not count. In a four-wire, three-phase wye circuit whose major load is nonlinear, the neutral does count. Check the exceptions before applying an adjustment.",
             citation: "310.15(C)(1), 310.15(E)"
         ),
         Flashcard(
             id: "cond-240-4-d",
             frontTitle: "14, 12 and 10 AWG copper",
             frontSubtitle: "The rule that overrides the table",
-            backTitle: "15, 20 and 30 amps, regardless",
-            backBody: "The ampacity table says 14 AWG copper is good for 20 A in the 75°C column and 25 A at 90°C. It does not matter. Small conductors are capped at 15, 20 and 30 amps for 14, 12 and 10 AWG copper. Aluminum 12 and 10 cap at 15 and 25. This single rule accounts for more wrong answers than any other in the article.",
+            backTitle: "Normally 15, 20 and 30 amps for general-purpose protection",
+            backBody: "For ordinary general-purpose circuits, 240.4(D) limits 14, 12 and 10 AWG copper protection to 15, 20 and 30 A. Aluminum 12 and 10 AWG are limited to 15 and 25 A. Correction and adjustment can require still smaller protection. Specific permissions in 240.4(E) and (G), including motor circuits, can change these limits.",
             citation: "240.4(D)"
         ),
         Flashcard(
@@ -53,7 +53,7 @@ enum ConductorContent {
             frontTitle: "The next-size-up rule",
             frontSubtitle: "And when you do not get it",
             backTitle: "Only when the calculation lands between standard sizes",
-            backBody: "If the conductor's ampacity does not match a standard rating, you may go up to the next standard size, but only at 800 A or below and only where the circuit does not supply receptacles for cord-and-plug-connected portable loads. Small conductors under 240.4(D) never get it, because their cap is not an ampacity.",
+            backBody: "240.4(B) permits the next higher standard rating when the conductor ampacity lies between standard ratings, the selected device does not exceed 800 A, and the conductors are not part of a branch circuit supplying more than one receptacle for portable cord-and-plug loads. The load must still fit the conductor. This permission does not override a 240.4(D) small-conductor limit.",
             citation: "240.4(B), 240.4(C), 240.6(A)"
         ),
     ]
@@ -88,7 +88,7 @@ enum ConductorContent {
         ),
         QuizQuestion(
             id: "cond-q-harmonic-neutral",
-            prompt: "Same raceway, but the load is now electronic ballasts and switching power supplies. How many current-carrying conductors?",
+            prompt: "A four-wire, three-phase wye circuit's major load is nonlinear electronic equipment. Three phase conductors, its neutral and an EGC share a raceway longer than 24 inches. How many count as current-carrying?",
             givens: [Given("Load", "nonlinear"), Given("In raceway", "3 phase + 1 neutral + 1 EGC")],
             choices: ["4", "3", "5", "2"],
             answerIndex: 0,
@@ -97,11 +97,11 @@ enum ConductorContent {
         ),
         QuizQuestion(
             id: "cond-q-nextsize",
-            prompt: "A feeder conductor calculates to 88 A of required ampacity and the load is not continuous. What standard overcurrent device is permitted?",
-            givens: [.load(88)],
+            prompt: "A feeder conductor has 88 A of allowable ampacity after all limits. Its noncontinuous load is 80 A, and all conditions of 240.4(B) are met. What is the largest standard overcurrent rating permitted?",
+            givens: [Given("Allowable ampacity", "88", unit: "A"), .load(80)],
             choices: ["90 A", "80 A", "100 A", "88 A"],
             answerIndex: 0,
-            explanation: "88 A is not a standard rating. The next standard size up is 90 A, and at 800 A or below with no portable cord-and-plug receptacle loads that is permitted. 88 A is not on the standard list at all.",
+            explanation: "The conductor can carry the 80 A load. Its 88 A allowable ampacity falls between standard ratings, and the stated 240.4(B) conditions permit the next rating, 90 A. Required load ampacity alone would not establish the conductor protection limit.",
             citation: "240.4(B), 240.6(A)"
         ),
     ]

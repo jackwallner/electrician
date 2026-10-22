@@ -28,7 +28,7 @@ enum class MotorSupply(val displayName: String, val volts: Int, val phase: Phase
     val citation: String get() = if (phase == Phase.single) "430.248" else "430.250"
 }
 enum class MotorProtection(val displayName: String, val percent: Double) {
-    nonTimeDelayFuse("Nontime-delay fuse", 3.0), dualElementFuse("Dual-element (time-delay) fuse", 1.75),
+    nonTimeDelayFuse("Nontime-delay fuse", 3.0), dualElementFuse("Dual-element fuse (not Class CC)", 1.75),
     instantaneousTrip("Instantaneous-trip breaker", 8.0), inverseTimeBreaker("Inverse-time breaker", 2.5);
     val percentLabel: String get() = "${(percent * 100).toInt()}%"
 }
@@ -60,7 +60,7 @@ object NECTables {
             .optJSONObject(size)?.nullableDouble(column.value.toString())?.toInt()
 
     fun ambientCorrection(celsius: Int, column: TemperatureRating): Double? {
-        if (celsius <= 25) return 1.0
+        if (celsius < -10) return ambientCorrection(-10, column)
         return raw.getJSONArray("ambient").objects().firstOrNull { it.getInt("celsius") == celsius }
             ?.getJSONObject("columns")?.nullableDouble(column.value.toString())
     }
@@ -78,6 +78,7 @@ object NECTables {
     fun nextStandardOCPDAtMost(amps: Double): Int? = standardOCPD.lastOrNull { it <= amps + 0.0001 }
     fun smallConductorCeiling(size: String, material: ConductorMaterial): Int? =
         raw.getJSONObject("smallConductorLimit").optJSONObject(size)?.nullableDouble(material.name)?.toInt()
+    fun groundFillAllowances(entering: Int): Double = if (entering > 0) 1 + max(0, entering - 4) / 4.0 else 0.0
     fun fillPercent(conductorCount: Int): Double = when (conductorCount) { 1 -> 0.53; 2 -> 0.31; else -> 0.4 }
 
     fun groundingElectrodeConductor(serviceSize: String, serviceMaterial: ConductorMaterial, gecMaterial: ConductorMaterial, parallelSets: Int = 1): String? {
@@ -105,7 +106,12 @@ object NECTables {
     fun motorFLC(hp: String, supply: MotorSupply): Double? = raw.getJSONObject(if (supply.phase == Phase.single) "singlePhaseFLC" else "threePhaseFLC").optJSONObject(hp)?.nullableDouble(supply.name)
     fun motorRatings(supply: MotorSupply): List<MotorRating> = motorRatings.filter { motorFLC(it.label, supply) != null }
     const val motorConductorFactor = 1.25
-    fun motorBranchOCPD(flc: Double, protection: MotorProtection): Int? = standardOCPD.firstOrNull { abs(it - flc * protection.percent) < 0.0001 } ?: nextStandardOCPDAtLeast(flc * protection.percent)
+    fun motorBranchOCPD(flc: Double, protection: MotorProtection): Int? {
+        val ratings = if (protection == MotorProtection.nonTimeDelayFuse || protection == MotorProtection.dualElementFuse)
+            (standardOCPD + listOf(1, 3, 6, 601)).sorted() else standardOCPD
+        val selected = ratings.firstOrNull { it >= flc * protection.percent - 0.0001 } ?: return null
+        return if (protection == MotorProtection.inverseTimeBreaker) max(15, selected) else selected
+    }
     fun motorOverloadTrip(nameplateFLA: Double, serviceFactor: Double, tempRiseC: Double?): Double = nameplateFLA * if (serviceFactor >= 1.15 || tempRiseC != null && tempRiseC <= 40) 1.25 else 1.15
     fun motorFeederAmpacity(flcs: List<Double>): Double? = flcs.maxOrNull()?.let { it * motorConductorFactor + (flcs.sum() - it) }
     fun motorFeederOCPD(largestBranchOCPD: Int, otherFLCs: List<Double>): Int? = nextStandardOCPDAtMost(largestBranchOCPD + otherFLCs.sum())

@@ -18,7 +18,7 @@ enum ProContent {
             frontTitle: "Grounded conductor vs. grounding conductor",
             frontSubtitle: "One letter, opposite jobs",
             backTitle: "One carries current by design, one does not",
-            backBody: "The grounded conductor is the neutral. It is a normal circuit conductor that happens to be connected to earth at the service, and it carries current every day. An equipment grounding conductor carries nothing until something goes wrong. Answers that treat them as interchangeable are always wrong.",
+            backBody: "A grounded conductor is intentionally grounded and can carry normal load current. In common dwelling systems it is the neutral, but a grounded conductor is not always a neutral. The equipment grounding conductor bonds exposed metal and provides a fault-current path; it is not intended to carry normal load current.",
             citation: "Art. 100, 250.24"
         ),
         Flashcard(
@@ -34,7 +34,7 @@ enum ProContent {
             frontTitle: "The conductor to a ground rod",
             frontSubtitle: "However big the service is",
             backTitle: "Never required to be larger than 6 AWG copper",
-            backBody: "A rod, pipe or plate electrode has a ceiling: the conductor running to it is never required to exceed 6 AWG copper, because the electrode itself cannot carry more than that. A concrete-encased electrode caps at 4 AWG. A ground ring caps at the size of the ring.",
+            backBody: "For a conductor connecting only to a rod, pipe or plate electrode, 250.66(A) does not require more than 6 AWG copper. This is a sizing permission, not a physical current limit of the electrode. The corresponding copper limit for a concrete-encased electrode is 4 AWG. For a ground ring it is the ring conductor's actual size.",
             citation: "250.66(A), 250.66(B), 250.66(C)"
         ),
         Flashcard(
@@ -42,7 +42,7 @@ enum ProContent {
             frontTitle: "Bonding the neutral downstream",
             frontSubtitle: "In a subpanel",
             backTitle: "Not permitted past the service disconnect",
-            backBody: "The neutral and the equipment grounding system connect at exactly one point: the service disconnect. Bonding them again in a subpanel puts normal load current onto the grounding conductors and every metal part they touch. Separately derived systems are the exception, and they get their own bonding point.",
+            backBody: "Keep the neutral isolated from equipment grounding conductors and bonded metal on the load side of the service disconnect, except where a specific rule permits otherwise. Bonding again in an ordinary feeder subpanel creates a parallel path for normal current. Supply-side service bonding and separately derived systems have their own rules, so the whole system need not have only one physical bond.",
             citation: "250.24(A)(5), 250.30",
             choice: CardChoice("Required", "Not permitted", answerIndex: 1)
         ),
@@ -59,7 +59,7 @@ enum ProContent {
     static let groundingQuiz: [QuizQuestion] = [
         QuizQuestion(
             id: "gnd-q-egc-200",
-            prompt: "A feeder is protected at 200 A. What is the minimum copper equipment grounding conductor?",
+            prompt: "An ordinary feeder is protected at 200 A, with conductors not increased in size and no parallel raceways. What is the minimum copper wire equipment grounding conductor from Table 250.122?",
             givens: [Given("OCPD", "200", unit: "A"), .material(.copper)],
             choices: ["6 AWG", "4 AWG", "8 AWG", "3 AWG"],
             answerIndex: 0,
@@ -68,8 +68,8 @@ enum ProContent {
         ),
         QuizQuestion(
             id: "gnd-q-rod-cap",
-            prompt: "A 400 A service is grounded to a driven rod as its only electrode. What size copper conductor is required to the rod?",
-            givens: [Given("Service", "400", unit: "A"), Given("Electrode", "ground rod")],
+            prompt: "Table 250.66 calls for 1/0 AWG copper for a service. A conductor connects only to a driven rod and does not continue to another electrode. What minimum copper size does 250.66(A) permit?",
+            givens: [Given("Table GEC", "1/0 AWG copper"), Given("Electrode", "ground rod")],
             choices: ["6 AWG", "1/0 AWG", "4 AWG", "2 AWG"],
             answerIndex: 0,
             explanation: "The size from the service conductors would be much larger, but the rod exception caps it: a conductor to a rod, pipe or plate electrode is never required to be larger than 6 AWG copper.",
@@ -99,7 +99,7 @@ enum ProContent {
             frontTitle: "The nameplate says 28 amps",
             frontSubtitle: "So size the conductors for 28?",
             backTitle: "No. Conductors come from the code tables",
-            backBody: "For conductor sizing and for the branch-circuit short-circuit device, motor current comes from Tables 430.247 through 430.250, not from the nameplate. The nameplate value is used for one thing only: overload protection. Mixing those two up is the defining mistake in this article.",
+            backBody: "For an ordinary single-speed motor of usual speed and torque characteristics, conductors and branch-circuit short-circuit protection use the code-table full-load current. Separate overload protection uses nameplate current. Low-speed, high-torque, multispeed and other specifically excepted motors require their own treatment under 430.6(A)(1).",
             citation: "430.6(A)(1), 430.32",
             choice: CardChoice("Use the nameplate", "Use the table", answerIndex: 1)
         ),
@@ -108,7 +108,7 @@ enum ProContent {
             frontTitle: "Single motor, continuous duty",
             frontSubtitle: "Conductor sizing",
             backTitle: "125% of the table full-load current",
-            backBody: "Branch-circuit conductors to a single continuous-duty motor are sized at 125% of the full-load current from the table. It is 125% because a motor is treated as a continuous load, and it is the table value because the nameplate is reserved for overload.",
+            backBody: "430.22(A) requires conductors for a single continuous-duty motor to have at least 125% of the applicable full-load current. This is the motor rule for this duty class. Short-time, intermittent, periodic and varying-duty motors have other provisions; do not assume every motor is a continuous load.",
             citation: "430.22"
         ),
         Flashcard(
@@ -132,16 +132,16 @@ enum ProContent {
     static let motorQuiz: [QuizQuestion] = [
         QuizQuestion(
             id: "mtr-q-conductor",
-            prompt: "A continuous-duty motor has a table full-load current of 28 A. What minimum conductor ampacity is required?",
+            prompt: "A single ordinary continuous-duty motor has an applicable table full-load current of 28 A. What minimum branch-circuit conductor ampacity does 430.22(A) require?",
             givens: [Given("Table FLC", "28", unit: "A"), Given("Duty", "continuous")],
             choices: ["35 A", "28 A", "32.2 A", "70 A"],
             answerIndex: 0,
-            explanation: "28 × 1.25 = 35 A. The 125% is the continuous-load treatment motors always get. 32.2 A would be 115%, which belongs to overload sizing and not to conductors.",
+            explanation: "430.22(A) gives 28 × 1.25 = 35 A for this single continuous-duty motor. 32.2 A is 115%, an overload-protection percentage rather than this conductor-sizing factor. Other motor duty classes have separate provisions.",
             citation: "430.22"
         ),
         QuizQuestion(
             id: "mtr-q-overload-source",
-            prompt: "Which value do you use to size the running overload protection?",
+            prompt: "For an ordinary continuous-duty motor over 1 hp using a separate current-responsive overload device under 430.32(A)(1), which current is the starting value?",
             choices: [
                 "The motor nameplate full-load current",
                 "The table full-load current",
@@ -154,7 +154,7 @@ enum ProContent {
         ),
         QuizQuestion(
             id: "mtr-q-service-factor",
-            prompt: "A motor nameplate reads 34 A with a service factor of 1.15. What is the maximum standard overload setting?",
+            prompt: "A continuous-duty motor over 1 hp has a nameplate current of 34 A and a marked service factor of 1.15. Under 430.32(A)(1), before any allowance for failure to start, what is the maximum separate overload-device rating or setting?",
             givens: [Given("Nameplate FLA", "34", unit: "A"), Given("Service factor", "1.15")],
             choices: ["42.5 A", "39.1 A", "34 A", "85 A"],
             answerIndex: 0,

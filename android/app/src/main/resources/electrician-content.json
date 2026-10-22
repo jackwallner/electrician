@@ -83,6 +83,13 @@
       "howToSpot" : "Motors run on their own rules. The tables replace the nameplate for conductor sizing, the overload and short-circuit protection are separate calculations, and the numbers do not match anything in the ampacity table.",
       "id" : "motors",
       "shortName" : "430 Motors"
+    },
+    {
+      "citation" : "Art. 358",
+      "displayName" : "Electrical Metallic Tubing",
+      "howToSpot" : "Installing EMT: permitted uses, securing, support spacing and bends between pull points. Article 358 supplies these installation rules; Chapter 9 supplies fill areas.",
+      "id" : "emt",
+      "shortName" : "358 EMT"
     }
   ],
   "candidateEditions" : [
@@ -96,19 +103,19 @@
       "edition" : 2014,
       "id" : "nec2014",
       "name" : "2014 NEC",
-      "note" : "Older than the app's 2023 NEC. Ampacity tables, the small-conductor rule and overcurrent sizing are the same in practice; GFCI and AFCI coverage, receptacle placement and the surge-protection and emergency-disconnect requirements are where the two cycles differ. Practice the calculations here and check those areas in your own book."
+      "note" : "Older than the app's 2023 NEC. Many calculation values match, but the 10 A standard breaker rating was added in 2023, and Article 220, ambient-correction and motor-protection citations moved. GFCI and AFCI coverage and receptacle placement also differ. Check the edition and amendments listed by your exam board."
     },
     {
       "edition" : 2017,
       "id" : "nec2017",
       "name" : "2017 NEC",
-      "note" : "Older than the app's 2023 NEC. Ampacity tables, the small-conductor rule and overcurrent sizing are the same in practice; GFCI and AFCI coverage, receptacle placement and the surge-protection and emergency-disconnect requirements are where the two cycles differ. Practice the calculations here and check those areas in your own book."
+      "note" : "Older than the app's 2023 NEC. Many calculation values match, but the 10 A standard breaker rating was added in 2023, and Article 220, ambient-correction and motor-protection citations moved. GFCI and AFCI coverage and receptacle placement also differ. Check the edition and amendments listed by your exam board."
     },
     {
       "edition" : 2020,
       "id" : "nec2020",
       "name" : "2020 NEC",
-      "note" : "Older than the app's 2023 NEC. Ampacity tables, the small-conductor rule and overcurrent sizing are the same in practice; GFCI and AFCI coverage, receptacle placement and the surge-protection and emergency-disconnect requirements are where the two cycles differ. Practice the calculations here and check those areas in your own book."
+      "note" : "Older than the app's 2023 NEC. Many calculation values match, but the 10 A standard breaker rating was added in 2023, and Article 220, ambient-correction and motor-protection citations moved. GFCI and AFCI coverage and receptacle placement also differ. Check the edition and amendments listed by your exam board."
     },
     {
       "edition" : 2023,
@@ -161,7 +168,7 @@
       "title" : "Licensed already"
     }
   ],
-  "freeItemCount" : 72,
+  "freeItemCount" : 73,
   "jurisdictions" : [
     {
       "authority" : "Alabama Electrical Contractors Board",
@@ -658,7 +665,7 @@
       "title" : "Nine chapters, in an order that matters"
     },
     {
-      "body" : "A conductor's insulation picks which column you read. The equipment it lands on picks which column you may finish in, and most equipment is 75°C. So the pattern for nearly every derating question is: start at 90, correct and adjust, then check it against 75 and take the lower number.",
+      "body" : "A conductor's insulation picks which column you read. The equipment it lands on picks which column you may finish in, with 60°C or 75°C limits unless a different rating is identified. For the stated 90°C wire and 75°C terminals here, correct and adjust from 90°C, then cap the result at the 75°C ampacity.",
       "givens" : [
         {
           "label" : "Conductor",
@@ -696,7 +703,7 @@
       "title" : "Heat and crowding both cost you"
     },
     {
-      "body" : "14, 12 and 10 AWG copper are capped at 15, 20 and 30 amps for overcurrent protection no matter what the ampacity table says. Aluminum 12 and 10 cap at 15 and 25. More candidates lose points to this one rule than to any other in the book.",
+      "body" : "14, 12 and 10 AWG copper are capped at 15, 20 and 30 amps for ordinary general-purpose overcurrent protection unless a specific code permission applies. Aluminum 12 and 10 cap at 15 and 25. More candidates lose points to this one rule than to any other in the book.",
       "givens" : [
         {
           "label" : "Conductor",
@@ -731,7 +738,7 @@
       ],
       "icon" : "checklist",
       "id" : "htp-coverage",
-      "tip" : "Services, feeders, load calculations, wiring methods and the special occupancy chapters are not covered yet. Keep studying those from your own book.",
+      "tip" : "This is selected calculation and navigation practice, not a complete exam curriculum. Special occupancies and many equipment-specific installation rules need separate study. Keep studying those from your own book.",
       "title" : "What this app covers today"
     }
   ],
@@ -766,14 +773,14 @@
               },
               "citation" : "90.5",
               "frontSubtitle" : "Three phrases that decide test questions",
-              "frontTitle" : "Shall, shall not, and shall be permitted",
+              "frontTitle" : "What does \"shall be permitted\" mean?",
               "givens" : [
 
               ],
               "id" : "basics-shall"
             },
             {
-              "backBody" : "An informational note explains or points elsewhere. It is not a requirement and cannot be cited as one. The 3% branch-circuit voltage-drop figure everyone quotes lives in a note, which is why a design can exceed it and still pass inspection.",
+              "backBody" : "An informational note explains or points elsewhere; it does not impose a requirement. The general 3% branch-circuit voltage-drop recommendation is in a note. Some specific applications have mandatory voltage-drop limits, so the note does not settle every installation.",
               "backTitle" : "Explanatory, not enforceable",
               "choice" : {
                 "answerIndex" : 1,
@@ -791,7 +798,7 @@
               "id" : "basics-informational-note"
             },
             {
-              "backBody" : "Accessible means you can get to it, possibly by removing a panel or climbing. Readily accessible means you can reach it quickly without tools, without a ladder, and without moving obstacles. A disconnect required to be readily accessible cannot be behind a locked panel you need a screwdriver to open.",
+              "backBody" : "Accessible equipment can be approached for service or operation. Readily accessible equipment must be reachable quickly without portable ladders, removing obstacles, or using tools other than keys. A key-operated lock alone does not disqualify it; a cover requiring a screwdriver does. Accessibility of wiring methods has its own definition.",
               "backTitle" : "One may need tools, the other may not",
               "choice" : null,
               "citation" : "Art. 100",
@@ -803,7 +810,7 @@
               "id" : "basics-readily-accessible"
             },
             {
-              "backBody" : "A load is continuous if its maximum current is expected to run for three hours or more. It matters because the branch circuit and its overcurrent device get sized at 125% of the continuous portion. Lighting in a store is the standard example; a household clothes dryer is not.",
+              "backBody" : "A load is continuous if its maximum current is expected for three hours or more. Ordinary branch-circuit conductors and protection are sized for the noncontinuous load plus 125% of the continuous load. A listed assembly rated for continuous operation at 100% can qualify for an exception; check the equipment and the applicable rule.",
               "backTitle" : "Maximum current for 3 hours or more",
               "choice" : null,
               "citation" : "Art. 100, 210.19(A), 210.20(A)",
@@ -876,7 +883,7 @@
                 "32 A"
               ],
               "citation" : "210.19(A), 210.20(A)",
-              "explanation" : "A continuous load is sized at 125%: 40 × 1.25 = 50 A. The same 125% applies to the overcurrent device. Candidates who multiply by 1.25 once and forget the second application get a conductor that its own breaker overloads.",
+              "explanation" : "40 × 1.25 = 50 A. The conductor and the overcurrent device are each checked against this 50 A minimum. Apply 125% once to the load for each check, rather than multiplying the result by 125% again.",
               "givens" : [
                 {
                   "label" : "Load",
@@ -890,7 +897,7 @@
                 }
               ],
               "id" : "basics-q-continuous",
-              "prompt" : "A 40 A continuous load is fed by a branch circuit. What is the minimum conductor ampacity before any derating?"
+              "prompt" : "An ordinary branch circuit, without the listed 100%-rated assembly exception, supplies a 40 A continuous load. What is the minimum conductor ampacity before correction and adjustment?"
             },
             {
               "answerIndex" : 0,
@@ -1060,6 +1067,18 @@
 
               ],
               "id" : "article-motors"
+            },
+            {
+              "backBody" : "Installing EMT: permitted uses, securing, support spacing and bends between pull points. Article 358 supplies these installation rules; Chapter 9 supplies fill areas.",
+              "backTitle" : "When to go here",
+              "choice" : null,
+              "citation" : "Art. 358",
+              "frontSubtitle" : "Art. 358",
+              "frontTitle" : "Electrical Metallic Tubing",
+              "givens" : [
+
+              ],
+              "id" : "article-emt"
             }
           ],
           "kind" : "flashcards",
@@ -1259,7 +1278,7 @@
             {
               "answerIndex" : 0,
               "choices" : [
-                "Utility-owned service drops and metering",
+                "Service drops and metering under the exclusive control of an electric utility",
                 "A detached garage on a residential lot",
                 "A carnival ride's temporary wiring",
                 "A floating building's feeder"
@@ -1281,7 +1300,7 @@
                 "Neither, 30 A is sufficient"
               ],
               "citation" : "210.19(A), 210.20(A)",
-              "explanation" : "The 125% applies in two separate places: 210.19(A) for the conductor and 210.20(A) for the device. Applying it to only one gives you a conductor its own breaker will not protect, or a breaker that nuisance-trips.",
+              "explanation" : "30 × 1.25 = 37.5 A. Check the conductor and the overcurrent device separately against that minimum; do not apply the multiplier twice in succession. A standard breaker selection would be 40 A, subject to the conductor's separate protection requirements.",
               "givens" : [
                 {
                   "label" : "Load",
@@ -1295,7 +1314,7 @@
                 }
               ],
               "id" : "plus-basics-125-twice",
-              "prompt" : "A 30 A continuous load is on a branch circuit. What must be at least 37.5 A?"
+              "prompt" : "An ordinary branch circuit without the listed 100%-rated assembly exception supplies a 30 A continuous load. What must be at least 37.5 A?"
             },
             {
               "answerIndex" : 0,
@@ -1311,7 +1330,7 @@
 
               ],
               "id" : "plus-basics-accessible",
-              "prompt" : "Equipment is mounted above a suspended ceiling with lift-out panels. It is:"
+              "prompt" : "Equipment above a suspended ceiling with lift-out panels can be reached only using a portable ladder. It is:"
             }
           ],
           "kind" : "quiz",
@@ -1357,12 +1376,12 @@
             {
               "answerIndex" : 0,
               "choices" : [
-                "Ch. 9 Fill",
+                "358 EMT",
                 "314 Boxes",
                 "210 Branch Ckts",
                 "310 Conductors"
               ],
-              "citation" : "Ch. 9",
+              "citation" : "Art. 358",
               "explanation" : "Support spacing lives with the wiring method, in the EMT article itself. This one is the mirror of the fill question: installation in the article, math in Chapter 9.",
               "givens" : [
 
@@ -1390,8 +1409,8 @@
           "isPlus" : false,
           "items" : [
             {
-              "backBody" : "The column you read is set by the conductor's insulation. The column you are allowed to finish in is set by whatever the conductor lands on: the breaker lugs, the terminal block, the equipment. Most equipment is rated 75°C, so most answers finish in the 75°C column no matter what the wire is rated.",
-              "backTitle" : "The column is the insulation's rating, not the circuit's",
+              "backBody" : "Use the insulation rating for correction and adjustment, then respect the termination limit. Unless equipment is listed and identified otherwise, circuits rated 100 A or less with 14 through 1 AWG conductors use the 60°C termination basis. Larger circuits or conductors use 75°C. A question must supply the ratings needed to choose the column.",
+              "backTitle" : "Insulation sets the starting column; terminations limit the result",
               "choice" : null,
               "citation" : "310.16, 110.14(C)",
               "frontSubtitle" : "60°C, 75°C, 90°C",
@@ -1412,7 +1431,7 @@
                 ]
               },
               "citation" : "110.14(C), 310.15",
-              "frontSubtitle" : "If you can never terminate there",
+              "frontSubtitle" : "With 75°C equipment terminations",
               "frontTitle" : "So what is the 90°C column for?",
               "givens" : [
 
@@ -1423,7 +1442,7 @@
               "backBody" : "Table 310.16 is built for a 30°C ambient. Anything hotter multiplies the ampacity down, and the factor depends on which column you started in: the 90°C column loses less to heat than the 60°C column does, which is exactly why installers pay for 90°C insulation.",
               "backTitle" : "Hotter air, smaller number",
               "choice" : null,
-              "citation" : "310.15(B)(1)",
+              "citation" : "310.15(B)(1)(1)",
               "frontSubtitle" : "The table assumes 30°C",
               "frontTitle" : "Ambient correction",
               "givens" : [
@@ -1432,7 +1451,7 @@
               "id" : "cond-ambient"
             },
             {
-              "backBody" : "Count current-carrying conductors only. An equipment grounding conductor never counts. A neutral that carries only the unbalanced current of a balanced multiwire circuit does not count either, but a neutral on a circuit feeding nonlinear loads does. Getting the count wrong changes the factor and therefore the answer.",
+              "backBody" : "For a raceway longer than 24 inches, count current-carrying conductors. Equipment grounds do not count. A neutral carrying only imbalance from the other conductors of the same circuit need not count. In a four-wire, three-phase wye circuit whose major load is nonlinear, the neutral does count. Check the exceptions before applying an adjustment.",
               "backTitle" : "Four or more current-carrying conductors adjust down",
               "choice" : null,
               "citation" : "310.15(C)(1), 310.15(E)",
@@ -1444,8 +1463,8 @@
               "id" : "cond-bundling"
             },
             {
-              "backBody" : "The ampacity table says 14 AWG copper is good for 20 A in the 75°C column and 25 A at 90°C. It does not matter. Small conductors are capped at 15, 20 and 30 amps for 14, 12 and 10 AWG copper. Aluminum 12 and 10 cap at 15 and 25. This single rule accounts for more wrong answers than any other in the article.",
-              "backTitle" : "15, 20 and 30 amps, regardless",
+              "backBody" : "For ordinary general-purpose circuits, 240.4(D) limits 14, 12 and 10 AWG copper protection to 15, 20 and 30 A. Aluminum 12 and 10 AWG are limited to 15 and 25 A. Correction and adjustment can require still smaller protection. Specific permissions in 240.4(E) and (G), including motor circuits, can change these limits.",
+              "backTitle" : "Normally 15, 20 and 30 amps for general-purpose protection",
               "choice" : null,
               "citation" : "240.4(D)",
               "frontSubtitle" : "The rule that overrides the table",
@@ -1456,7 +1475,7 @@
               "id" : "cond-240-4-d"
             },
             {
-              "backBody" : "If the conductor's ampacity does not match a standard rating, you may go up to the next standard size, but only at 800 A or below and only where the circuit does not supply receptacles for cord-and-plug-connected portable loads. Small conductors under 240.4(D) never get it, because their cap is not an ampacity.",
+              "backBody" : "240.4(B) permits the next higher standard rating when the conductor ampacity lies between standard ratings, the selected device does not exceed 800 A, and the conductors are not part of a branch circuit supplying more than one receptacle for portable cord-and-plug loads. The load must still fit the conductor. This permission does not override a 240.4(D) small-conductor limit.",
               "backTitle" : "Only when the calculation lands between standard sizes",
               "choice" : null,
               "citation" : "240.4(B), 240.4(C), 240.6(A)",
@@ -1569,7 +1588,7 @@
                 }
               ],
               "id" : "cond-q-harmonic-neutral",
-              "prompt" : "Same raceway, but the load is now electronic ballasts and switching power supplies. How many current-carrying conductors?"
+              "prompt" : "A four-wire, three-phase wye circuit's major load is nonlinear electronic equipment. Three phase conductors, its neutral and an EGC share a raceway longer than 24 inches. How many count as current-carrying?"
             },
             {
               "answerIndex" : 0,
@@ -1580,16 +1599,21 @@
                 "88 A"
               ],
               "citation" : "240.4(B), 240.6(A)",
-              "explanation" : "88 A is not a standard rating. The next standard size up is 90 A, and at 800 A or below with no portable cord-and-plug receptacle loads that is permitted. 88 A is not on the standard list at all.",
+              "explanation" : "The conductor can carry the 80 A load. Its 88 A allowable ampacity falls between standard ratings, and the stated 240.4(B) conditions permit the next rating, 90 A. Required load ampacity alone would not establish the conductor protection limit.",
               "givens" : [
+                {
+                  "label" : "Allowable ampacity",
+                  "unit" : "A",
+                  "value" : "88"
+                },
                 {
                   "label" : "Load",
                   "unit" : "A",
-                  "value" : "88"
+                  "value" : "80"
                 }
               ],
               "id" : "cond-q-nextsize",
-              "prompt" : "A feeder conductor calculates to 88 A of required ampacity and the load is not continuous. What standard overcurrent device is permitted?"
+              "prompt" : "A feeder conductor has 88 A of allowable ampacity after all limits. Its noncontinuous load is 80 A, and all conditions of 240.4(B) are met. What is the largest standard overcurrent rating permitted?"
             }
           ],
           "kind" : "quiz",
@@ -1608,7 +1632,7 @@
                 "Add the two reductions together",
                 "Apply only the ambient factor"
               ],
-              "citation" : "310.15(B)(1), 310.15(C)(1)",
+              "citation" : "310.15(B)(1)(1), 310.15(C)(1)",
               "explanation" : "They multiply. A 0.87 correction and a 0.80 adjustment give 0.696 of the starting value, not 0.80 and not a 33% reduction. Taking only the worse of the two is a common shortcut and it produces an unsafe answer.",
               "givens" : [
 
@@ -1671,7 +1695,7 @@
                 }
               ],
               "id" : "plus-cond-10awg-alum",
-              "prompt" : "What is the maximum overcurrent device on 10 AWG aluminum?"
+              "prompt" : "For an ordinary general-purpose circuit, with no correction, adjustment or specific 240.4(E)\/(G) permission, what is the maximum overcurrent device on 10 AWG aluminum?"
             }
           ],
           "kind" : "quiz",
@@ -1702,7 +1726,7 @@
                 ]
               },
               "citation" : "110.26(A)(1)",
-              "frontSubtitle" : "Measured out from the live parts",
+              "frontSubtitle" : "From exposed live parts, or the enclosure front when enclosed",
               "frontTitle" : "How deep does the working space in front of a panel have to be?",
               "givens" : [
                 {
@@ -1729,15 +1753,15 @@
                 ]
               },
               "citation" : "110.26(A)(2)",
-              "frontSubtitle" : "And what decides it",
-              "frontTitle" : "How wide does that space have to be?",
+              "frontSubtitle" : "Assume its door can open at least 90 degrees",
+              "frontTitle" : "What is the minimum working-space width for a panel 24 inches wide?",
               "givens" : [
 
               ],
               "id" : "install-card-width"
             },
             {
-              "backBody" : "The headroom is clear space: piping, ducts and equipment foreign to the electrical installation are not allowed in it. The common exam framing is a ceiling at six feet, which fails, or a panel that is itself seven feet tall, where the equipment height governs and the answer is seven.",
+              "backBody" : "The usual clear height is 6.5 feet or the equipment height if greater. Existing dwelling installations at 200 A or less have a specific exception. Dedicated space above the equipment is a separate rule; do not treat the whole room above the working space as that dedicated column.",
               "backTitle" : "Six and a half feet, or the height of the equipment where it is taller",
               "choice" : null,
               "citation" : "110.26(A)(3), 110.26(E)",
@@ -1749,12 +1773,12 @@
               "id" : "install-card-height"
             },
             {
-              "backBody" : "Both conditions have to be true. Big gear that is narrow, or wide gear that is small, takes one entrance. Where both apply, the space needs an entrance at each end, each at least twenty-four inches wide and six and a half feet high, so nobody is trapped past an arcing fault.",
+              "backBody" : "The general trigger is both 1200 A or more and over 6 feet wide, for equipment containing switching, overcurrent or control devices. Each entrance is at least 24 inches wide and 6.5 feet high. A single entrance can qualify where unobstructed egress or double working-space depth satisfies the specific alternatives in 110.26(C)(2).",
               "backTitle" : "At 1200 amperes or more, and over six feet wide",
               "choice" : null,
               "citation" : "110.26(C)(2)",
               "frontSubtitle" : null,
-              "frontTitle" : "When does a working space need an exit at each end?",
+              "frontTitle" : "What is the general two-entrance trigger for large equipment containing switching, overcurrent or control devices?",
               "givens" : [
                 {
                   "label" : "Equipment",
@@ -1800,9 +1824,9 @@
                   "18 in."
                 ]
               },
-              "citation" : "Table 300.5",
+              "citation" : "Table 300.5(A) (Table 300.5 in 2020)",
               "frontSubtitle" : null,
-              "frontTitle" : "Minimum cover over a direct-buried cable in a residential yard?",
+              "frontTitle" : "Minimum cover for a 240 V direct-buried cable in a yard without concrete cover or vehicle traffic?",
               "givens" : [
                 {
                   "label" : "Method",
@@ -1821,7 +1845,7 @@
               "backBody" : "Every one of the four conditions has to hold. This is the row that lets a homeowner's yard light go in at a foot, and it is the row candidates quote for a 240 volt circuit or a 30 ampere one, where it does not apply. Miss any condition and the run goes back to its own column.",
               "backTitle" : "Residential branch circuit, 120 volts or less, 20 amperes or less, and GFCI protected",
               "choice" : null,
-              "citation" : "Table 300.5",
+              "citation" : "Table 300.5(A) (Table 300.5 in 2020)",
               "frontSubtitle" : null,
               "frontTitle" : "The 12-inch burial row: what has to be true to use it?",
               "givens" : [
@@ -1830,8 +1854,8 @@
               "id" : "install-card-burial-residential"
             },
             {
-              "backBody" : "Under a street, road, alley, driveway or parking lot the whole table collapses to one number, whatever the wiring method. That is worth remembering as a rule rather than as a row: it turns a five-column lookup into a single fact, and it is the version the exam usually asks for.",
-              "backTitle" : "Everything goes to twenty-four inches",
+              "backBody" : "The general streets, roads, alleys, driveways and parking-lots row requires 24 inches. One- and two-family dwelling driveways used only for dwelling purposes have a separate row: 18 inches for the ordinary cable and raceway columns, 12 inches for the qualifying GFCI residential branch circuit, and 6 inches for qualifying low-voltage lighting. Concrete-cover rows and table notes must also be checked.",
+              "backTitle" : "Twenty-four inches in the general vehicle-traffic row",
               "choice" : {
                 "answerIndex" : 0,
                 "options" : [
@@ -1839,9 +1863,9 @@
                   "18 in."
                 ]
               },
-              "citation" : "Table 300.5",
+              "citation" : "Table 300.5(A) (Table 300.5 in 2020)",
               "frontSubtitle" : null,
-              "frontTitle" : "What happens to cover under a driveway or a parking lot?",
+              "frontTitle" : "Minimum cover under a public street or commercial parking lot?",
               "givens" : [
 
               ],
@@ -1857,9 +1881,9 @@
                   "8 ft"
                 ]
               },
-              "citation" : "358.30(A)",
+              "citation" : "358.30(A), (B)",
               "frontSubtitle" : null,
-              "frontTitle" : "How is EMT secured and supported?",
+              "frontTitle" : "What is the general maximum support interval for EMT with no support exception?",
               "givens" : [
 
               ],
@@ -1869,7 +1893,7 @@
               "backBody" : "The twelve inches is measured to the cable entry and assumes the box has a clamp. A single-gang nonmetallic box without a clamp gets its own allowance: the cable is secured within eight inches of the box instead, measured along the sheath, with a length of sheath inside the box.",
               "backTitle" : "Within twelve inches of a box, then every four and a half feet",
               "choice" : null,
-              "citation" : "334.30, 314.17(C)",
+              "citation" : "334.30, 314.17(B)(2)",
               "frontSubtitle" : null,
               "frontTitle" : "How is type NM cable secured and supported?",
               "givens" : [
@@ -1982,7 +2006,7 @@
                 "18 in.",
                 "24 in."
               ],
-              "citation" : "Table 300.5",
+              "citation" : "Table 300.5(A) (Table 300.5 in 2020)",
               "explanation" : "Rigid and intermediate metal conduit have their own column at six inches, because the raceway itself is the physical protection the cover would otherwise be providing. The twenty-four inch figure people quote for everything is the direct-burial column.",
               "givens" : [
                 {
@@ -2002,7 +2026,7 @@
                 "18 in.",
                 "24 in."
               ],
-              "citation" : "Table 300.5",
+              "citation" : "Table 300.5(A) (Table 300.5 in 2020)",
               "explanation" : "Nonmetallic raceways sit between the two: eighteen inches, because the raceway resists damage but not the way a steel one does. Reading the metal-conduit six inches for PVC is the mistake this pair is here to separate.",
               "givens" : [
                 {
@@ -2028,7 +2052,7 @@
 
               ],
               "id" : "install-quiz-support-nm",
-              "prompt" : "Type NM cable runs from a device box along the framing. Where does the first staple go, and how often after that?"
+              "prompt" : "Type NM cable enters a box with an internal cable clamp and runs along framing with no support exception. What are the maximum securing distance from the box and support interval?"
             },
             {
               "answerIndex" : 1,
@@ -2055,12 +2079,12 @@
                 "3 ft"
               ],
               "citation" : "210.52(A)(2)",
-              "explanation" : "Two feet or more of wall, measured horizontally and including space measured around corners, is a wall space. Fixed panels in exterior walls and the space occupied by a fixed cabinet count too. Anything narrower than two feet is not a wall space and needs nothing.",
+              "explanation" : "The general threshold is 2 feet, including measurements around corners. Fixed wall panels can count, while sliding panels and interruptions such as doorways, fireplaces and fixed cabinets are treated differently. A qualifying wall space needs coverage within 6 feet; it does not necessarily require a separate receptacle centered on each section.",
               "givens" : [
 
               ],
               "id" : "install-quiz-wall-space",
-              "prompt" : "What is the narrowest section of wall that counts as a wall space needing its own receptacle?"
+              "prompt" : "In a dwelling living room, what is the minimum width of an uninterrupted wall space that falls under the general receptacle-spacing rule?"
             },
             {
               "answerIndex" : 1,
@@ -2096,18 +2120,18 @@
                 }
               ],
               "id" : "install-quiz-bends",
-              "prompt" : "A run of EMT leaves a panel, turns twice at 90 degrees, and takes two 45-degree offsets. How many more degrees of bend are allowed before a pull point?"
+              "prompt" : "An EMT run between pull points contains exactly two 90-degree bends and two 45-degree bends. How many more degrees of bend are allowed?"
             },
             {
-              "answerIndex" : 2,
+              "answerIndex" : 3,
               "choices" : [
                 "44 A",
                 "50 A",
                 "55 A",
                 "60 A"
               ],
-              "citation" : "210.19(A)(1), 210.20(A)",
-              "explanation" : "A load expected to run three hours or more is taken at 125%, and the multiplier applies to the conductor and to the device ahead of it: 44 × 1.25 = 55 A. The 50 A answer is the next standard device below the load, which is what you get by protecting at the load itself.",
+              "citation" : "210.20(A), Table 240.6(A)",
+              "explanation" : "44 × 1.25 = 55 A is the minimum calculated rating. A 55 A breaker is not a standard rating in Table 240.6(A), so select 60 A. Conductors must meet their separate ampacity, correction, adjustment and protection requirements; this question asks only for the standard breaker rating.",
               "givens" : [
                 {
                   "label" : "Load",
@@ -2121,7 +2145,7 @@
                 }
               ],
               "id" : "install-quiz-continuous",
-              "prompt" : "A 44 A continuous load feeds from a panel. What is the minimum branch-circuit conductor ampacity and device rating?"
+              "prompt" : "An ordinary branch circuit supplies only a 44 A continuous load. The listed 100%-rated assembly exception does not apply. What is the minimum standard inverse-time circuit-breaker rating?"
             },
             {
               "answerIndex" : 0,
@@ -2137,7 +2161,7 @@
 
               ],
               "id" : "install-quiz-dedicated-space",
-              "prompt" : "A water pipe runs horizontally 30 inches above a panelboard, inside the panel's footprint. Is that permitted?"
+              "prompt" : "A water pipe runs 30 inches above an indoor panelboard, inside its footprint and below the structural ceiling. Is that permitted?"
             }
           ],
           "kind" : "quiz",
@@ -2215,12 +2239,12 @@
             {
               "answerIndex" : 0,
               "choices" : [
-                "300 Wiring",
+                "358 EMT",
                 "110 General",
                 "Ch. 9 Fill",
                 "314 Boxes"
               ],
-              "citation" : "Art. 300",
+              "citation" : "Art. 358",
               "explanation" : "Support spacing for a raceway lives in that raceway's own article in Chapter 3, which is where the wiring-method articles are. Chapter 9 is only the tables, and it has nothing to say about how a pipe is fastened.",
               "givens" : [
 
@@ -2271,7 +2295,7 @@
                 "45.2 A",
                 "60 A"
               ],
-              "citation" : "310.16, 310.15(B)(1), 310.15(C)(1), 110.14(C)",
+              "citation" : "310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C)",
               "givens" : [
                 {
                   "label" : "Conductor",
@@ -2427,7 +2451,7 @@
               "mistakes" : {
 
               },
-              "situation" : "A box holds six 12 AWG insulated conductors, three equipment grounds, internal cable clamps, and one device yoke. Find the minimum volume.",
+              "situation" : "Six 12 AWG insulated conductors and three 12 AWG equipment grounds enter a box. It has internal cable clamps and one single-gang device yoke connected to 12 AWG conductors, with no other fill allowances. Find the minimum volume.",
               "steps" : [
                 "Each allowance for 12 AWG is 2.25 in³.",
                 "Six insulated conductors is six allowances.",
@@ -2477,7 +2501,7 @@
               "mistakes" : {
 
               },
-              "situation" : "A 120 V single-phase branch circuit carries 16 A on 10 AWG copper for 100 feet one way. Find the voltage drop.",
+              "situation" : "Estimate voltage drop on a 120 V single-phase circuit carrying 16 A on 10 AWG copper for 100 feet one way. Use the resistive formula with K = 12.9 ohm-cmil\/ft, neglecting reactance and power-factor effects. Round to 0.1 V.",
               "steps" : [
                 "Single-phase uses 2 as the factor, because the current goes out and comes back.",
                 "K for copper is 12.9 and 10 AWG is 10,380 circular mils.",
@@ -2543,7 +2567,7 @@
               "choice" : null,
               "citation" : "Table 220.45 (Table 220.42 in 2020)",
               "frontSubtitle" : "And to which loads",
-              "frontTitle" : "What demand factor applies to the general lighting total?",
+              "frontTitle" : "Under the standard dwelling method, what demand factor applies to the general lighting total?",
               "givens" : [
 
               ],
@@ -2561,7 +2585,7 @@
               },
               "citation" : "Table 220.55",
               "frontSubtitle" : null,
-              "frontTitle" : "A single 11 kW household range. What goes into the calculation?",
+              "frontTitle" : "Standard method, Table 220.55 column C: what demand applies to one 11 kW household range?",
               "givens" : [
                 {
                   "label" : "Range",
@@ -2588,7 +2612,7 @@
               },
               "citation" : "220.54",
               "frontSubtitle" : null,
-              "frontTitle" : "A dryer nameplate reads 4200 VA. What goes into the calculation?",
+              "frontTitle" : "Standard method, one household electric dryer rated 4200 VA: what calculated load is used?",
               "givens" : [
                 {
                   "label" : "Dryer nameplate",
@@ -2622,7 +2646,7 @@
               },
               "citation" : "220.60",
               "frontSubtitle" : null,
-              "frontTitle" : "Electric heat at 12 kW and air conditioning at 5 kW. What goes in?",
+              "frontTitle" : "Standard method: interlocked heat at 12 kW and cooling at 5 kW cannot run together. Which load is counted?",
               "givens" : [
                 {
                   "label" : "Heat",
@@ -2661,7 +2685,7 @@
               },
               "citation" : "230.79(C)",
               "frontSubtitle" : null,
-              "frontTitle" : "A dwelling calculation comes out at 78 amperes. What service is required?",
+              "frontTitle" : "A one-family dwelling calculates to 78 A. What is the minimum service-disconnect rating?",
               "givens" : [
                 {
                   "label" : "Calculated",
@@ -2730,7 +2754,7 @@
                 }
               ],
               "id" : "load-quiz-demand",
-              "prompt" : "General lighting, small-appliance and laundry circuits total 11,000 VA. What is the load after the demand factor?"
+              "prompt" : "Under the standard dwelling method, general lighting, small-appliance and laundry circuits total 11,000 VA. What is the load after the lighting demand factor?"
             },
             {
               "answerIndex" : 0,
@@ -2755,7 +2779,7 @@
                 }
               ],
               "id" : "load-quiz-range-over-12",
-              "prompt" : "One household range rated 16 kW. What is its demand load?"
+              "prompt" : "Under the standard dwelling method, what is the Table 220.55 column C demand for one household range rated 16 kW?"
             },
             {
               "answerIndex" : 0,
@@ -2798,7 +2822,7 @@
                 "6.5 kW"
               ],
               "citation" : "220.60",
-              "explanation" : "Noncoincident loads count once, at the larger value: 9 kW. The 13 kW answer adds them, and the 6.5 kW answer applies the optional method's 65% heating factor in a standard-method calculation, where it does not belong.",
+              "explanation" : "Noncoincident loads count once, at the larger value: 9 kW. The 13 kW answer adds them, and 6.5 kW is the arithmetic average of the two loads, which is not the noncoincident-load rule.",
               "givens" : [
                 {
                   "label" : "Heat",
@@ -2812,7 +2836,7 @@
                 }
               ],
               "id" : "load-quiz-noncoincident",
-              "prompt" : "A dwelling has 9 kW of electric space heating and a 4 kW air conditioner. What goes into the service calculation?"
+              "prompt" : "Under the standard dwelling method, interlocked 9 kW electric heat and 4 kW air conditioning cannot run together. Before any separately required motor allowance, which HVAC load is counted?"
             },
             {
               "answerIndex" : 0,
@@ -2832,7 +2856,7 @@
                 }
               ],
               "id" : "load-quiz-neutral",
-              "prompt" : "A dwelling's calculated range load is 8000 VA. What does the range contribute to the neutral load?"
+              "prompt" : "A 120\/240 V single-phase dwelling range has an 8000 VA demand calculated under Table 220.55. Using the permitted 220.61(B)(1) reduction, what minimum neutral load is included?"
             },
             {
               "answerIndex" : 0,
@@ -2868,7 +2892,7 @@
                 "They are covered by the 3 VA per square foot"
               ],
               "citation" : "220.52, Table 220.45",
-              "explanation" : "They go into the subtotal that the demand table then discounts, alongside the general lighting and the laundry circuit. Adding them afterward at 100% inflates the service by roughly 2900 VA, which is enough to move the answer up a standard size on a small house.",
+              "explanation" : "They go into the subtotal that the demand table then discounts, alongside the general lighting and the laundry circuit. Adding the two 1500 VA circuits afterward instead of in the 35% band inflates the calculated load by 1950 VA, which is enough to move the answer up a standard size on a small house.",
               "givens" : [
 
               ],
@@ -2892,7 +2916,7 @@
                 "150 A",
                 "175 A"
               ],
-              "citation" : "220.41, Table 220.45, 220.52, 220.53, 220.54, Table 220.55, 220.60, 240.6(A)",
+              "citation" : "220.41, Table 220.45, 220.50, 430.24, 220.52, 220.53, 220.54, Table 220.55, 220.60, 240.6(A)",
               "givens" : [
                 {
                   "label" : "Floor area",
@@ -2944,7 +2968,7 @@
               "mistakes" : {
 
               },
-              "situation" : "Standard method. A 2000 square foot single-family dwelling on a 120\/240 V single-phase service. What is the minimum standard service rating?",
+              "situation" : "Standard method, 2000 ft² one-family dwelling on 120\/240 V. Include two small-appliance circuits and one laundry circuit. Heat and cooling are interlocked; the 900 VA disposal is the largest motor operating with heat, and the cooling load including its motor allowance is below 10,000 VA. There are no other loads. What is the minimum standard service rating?",
               "steps" : [
                 "General lighting: 2000 ft² × 3 VA = 6000 VA.",
                 "Add the circuits that belong inside it: two small-appliance circuits at 1500 VA each plus a 1500 VA laundry circuit = 4500 VA. Subtotal 10,500 VA.",
@@ -2952,8 +2976,9 @@
                 "Range: one unit not over 12 kW reads column C flat at 8 kW = 8000 VA.",
                 "Dryer: the greater of nameplate and 5000 VA, so 5500 VA.",
                 "Fastened-in-place appliances: water heater, dishwasher, disposal and compactor total 7600 VA. That is four appliances, so 220.53 takes them at 75% = 5700 VA.",
-                "Heat against cooling: they cannot run together, so only the larger counts. 10,000 VA.",
-                "Total 5625 + 8000 + 5500 + 5700 + 10,000 = 34,825 VA. Divided by 240 V that is 145.1 A, and the smallest standard rating that carries it is 150 A."
+                "Heat against cooling: they cannot run together. Heating, including the retained appliance motor allowance, exceeds the cooling case, so retain 10,000 VA of heating.",
+                "220.50 and 430.24 add 25% of the largest retained motor: the 900 VA disposal adds 225 VA beyond the appliance demand.",
+                "Total 5625 + 8000 + 5500 + 5700 + 10,000 + 225 = 35,050 VA. At 240 V that is 146.0 A; the smallest standard service rating that carries it is 150 A."
               ]
             },
             {
@@ -3006,7 +3031,7 @@
               "mistakes" : {
 
               },
-              "situation" : "The same house, worked by the optional method for a one-family dwelling. What is the minimum standard service rating?",
+              "situation" : "Optional method, the same 2000 ft² one-family dwelling on 120\/240 V, with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked. The 10,000 VA resistance heat consists of fewer than four separately controlled units, with no heat pump. What is the minimum standard service rating?",
               "steps" : [
                 "The optional method puts every general load in one pile, and it uses NAMEPLATE ratings: no column C for the range and no separate dryer minimum.",
                 "General lighting 6000 VA, plus small-appliance and laundry 4500 VA = 10,500 VA.",
@@ -3042,7 +3067,7 @@
               "mistakes" : {
 
               },
-              "situation" : "Three identical household ranges, each rated 14 kW, on one feeder. What is the demand load?",
+              "situation" : "Standard method, Table 220.55 column C and Note 1: three identical 14 kW household ranges on a 120\/240 V single-phase feeder. What is their demand load?",
               "steps" : [
                 "Column C of Table 220.55 gives 14 kW for three ranges. That is the starting figure, and it already assumes each range is not over 12 kW.",
                 "These are 14 kW, which is 2 kW over. Column C rises 5% for each kilowatt or major fraction above 12, so 2 kW is a 10% increase.",
@@ -3069,7 +3094,7 @@
           "isPlus" : false,
           "items" : [
             {
-              "backBody" : "The grounded conductor is the neutral. It is a normal circuit conductor that happens to be connected to earth at the service, and it carries current every day. An equipment grounding conductor carries nothing until something goes wrong. Answers that treat them as interchangeable are always wrong.",
+              "backBody" : "A grounded conductor is intentionally grounded and can carry normal load current. In common dwelling systems it is the neutral, but a grounded conductor is not always a neutral. The equipment grounding conductor bonds exposed metal and provides a fault-current path; it is not intended to carry normal load current.",
               "backTitle" : "One carries current by design, one does not",
               "choice" : null,
               "citation" : "Art. 100, 250.24",
@@ -3093,7 +3118,7 @@
               "id" : "gnd-gec-vs-egc"
             },
             {
-              "backBody" : "A rod, pipe or plate electrode has a ceiling: the conductor running to it is never required to exceed 6 AWG copper, because the electrode itself cannot carry more than that. A concrete-encased electrode caps at 4 AWG. A ground ring caps at the size of the ring.",
+              "backBody" : "For a conductor connecting only to a rod, pipe or plate electrode, 250.66(A) does not require more than 6 AWG copper. This is a sizing permission, not a physical current limit of the electrode. The corresponding copper limit for a concrete-encased electrode is 4 AWG. For a ground ring it is the ring conductor's actual size.",
               "backTitle" : "Never required to be larger than 6 AWG copper",
               "choice" : null,
               "citation" : "250.66(A), 250.66(B), 250.66(C)",
@@ -3105,7 +3130,7 @@
               "id" : "gnd-rod-ceiling"
             },
             {
-              "backBody" : "The neutral and the equipment grounding system connect at exactly one point: the service disconnect. Bonding them again in a subpanel puts normal load current onto the grounding conductors and every metal part they touch. Separately derived systems are the exception, and they get their own bonding point.",
+              "backBody" : "Keep the neutral isolated from equipment grounding conductors and bonded metal on the load side of the service disconnect, except where a specific rule permits otherwise. Bonding again in an ordinary feeder subpanel creates a parallel path for normal current. Supply-side service bonding and separately derived systems have their own rules, so the whole system need not have only one physical bond.",
               "backTitle" : "Not permitted past the service disconnect",
               "choice" : {
                 "answerIndex" : 1,
@@ -3166,7 +3191,7 @@
                 }
               ],
               "id" : "gnd-q-egc-200",
-              "prompt" : "A feeder is protected at 200 A. What is the minimum copper equipment grounding conductor?"
+              "prompt" : "An ordinary feeder is protected at 200 A, with conductors not increased in size and no parallel raceways. What is the minimum copper wire equipment grounding conductor from Table 250.122?"
             },
             {
               "answerIndex" : 0,
@@ -3180,9 +3205,9 @@
               "explanation" : "The size from the service conductors would be much larger, but the rod exception caps it: a conductor to a rod, pipe or plate electrode is never required to be larger than 6 AWG copper.",
               "givens" : [
                 {
-                  "label" : "Service",
-                  "unit" : "A",
-                  "value" : "400"
+                  "label" : "Table GEC",
+                  "unit" : null,
+                  "value" : "1\/0 AWG copper"
                 },
                 {
                   "label" : "Electrode",
@@ -3191,7 +3216,7 @@
                 }
               ],
               "id" : "gnd-q-rod-cap",
-              "prompt" : "A 400 A service is grounded to a driven rod as its only electrode. What size copper conductor is required to the rod?"
+              "prompt" : "Table 250.66 calls for 1\/0 AWG copper for a service. A conductor connects only to a driven rod and does not continue to another electrode. What minimum copper size does 250.66(A) permit?"
             },
             {
               "answerIndex" : 0,
@@ -3223,7 +3248,7 @@
           "isPlus" : false,
           "items" : [
             {
-              "backBody" : "For conductor sizing and for the branch-circuit short-circuit device, motor current comes from Tables 430.247 through 430.250, not from the nameplate. The nameplate value is used for one thing only: overload protection. Mixing those two up is the defining mistake in this article.",
+              "backBody" : "For an ordinary single-speed motor of usual speed and torque characteristics, conductors and branch-circuit short-circuit protection use the code-table full-load current. Separate overload protection uses nameplate current. Low-speed, high-torque, multispeed and other specifically excepted motors require their own treatment under 430.6(A)(1).",
               "backTitle" : "No. Conductors come from the code tables",
               "choice" : {
                 "answerIndex" : 1,
@@ -3241,7 +3266,7 @@
               "id" : "mtr-table-not-nameplate"
             },
             {
-              "backBody" : "Branch-circuit conductors to a single continuous-duty motor are sized at 125% of the full-load current from the table. It is 125% because a motor is treated as a continuous load, and it is the table value because the nameplate is reserved for overload.",
+              "backBody" : "430.22(A) requires conductors for a single continuous-duty motor to have at least 125% of the applicable full-load current. This is the motor rule for this duty class. Short-time, intermittent, periodic and varying-duty motors have other provisions; do not assume every motor is a continuous load.",
               "backTitle" : "125% of the table full-load current",
               "choice" : null,
               "citation" : "430.22",
@@ -3294,7 +3319,7 @@
                 "70 A"
               ],
               "citation" : "430.22",
-              "explanation" : "28 × 1.25 = 35 A. The 125% is the continuous-load treatment motors always get. 32.2 A would be 115%, which belongs to overload sizing and not to conductors.",
+              "explanation" : "430.22(A) gives 28 × 1.25 = 35 A for this single continuous-duty motor. 32.2 A is 115%, an overload-protection percentage rather than this conductor-sizing factor. Other motor duty classes have separate provisions.",
               "givens" : [
                 {
                   "label" : "Table FLC",
@@ -3308,7 +3333,7 @@
                 }
               ],
               "id" : "mtr-q-conductor",
-              "prompt" : "A continuous-duty motor has a table full-load current of 28 A. What minimum conductor ampacity is required?"
+              "prompt" : "A single ordinary continuous-duty motor has an applicable table full-load current of 28 A. What minimum branch-circuit conductor ampacity does 430.22(A) require?"
             },
             {
               "answerIndex" : 0,
@@ -3324,7 +3349,7 @@
 
               ],
               "id" : "mtr-q-overload-source",
-              "prompt" : "Which value do you use to size the running overload protection?"
+              "prompt" : "For an ordinary continuous-duty motor over 1 hp using a separate current-responsive overload device under 430.32(A)(1), which current is the starting value?"
             },
             {
               "answerIndex" : 0,
@@ -3349,7 +3374,7 @@
                 }
               ],
               "id" : "mtr-q-service-factor",
-              "prompt" : "A motor nameplate reads 34 A with a service factor of 1.15. What is the maximum standard overload setting?"
+              "prompt" : "A continuous-duty motor over 1 hp has a nameplate current of 34 A and a marked service factor of 1.15. Under 430.32(A)(1), before any allowance for failure to start, what is the maximum separate overload-device rating or setting?"
             }
           ],
           "kind" : "quiz",
@@ -3419,14 +3444,14 @@
       "icon" : "fan.fill",
       "id" : "motorConductor",
       "roomID" : "grounding-room",
-      "subtitle" : "Table current, never the nameplate",
+      "subtitle" : "Table current for ordinary motors",
       "title" : "Feed the Motor"
     },
     {
       "icon" : "gearshape.2.fill",
       "id" : "motorProtection",
       "roomID" : "grounding-room",
-      "subtitle" : "The one place you round up",
+      "subtitle" : "Device percentages and standard ratings",
       "title" : "Protect the Motor"
     },
     {
@@ -3995,289 +4020,289 @@
       {
         "celsius" : -10,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : -9,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : -8,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : -7,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : -6,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : -5,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : -4,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : -3,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : -2,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : -1,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 0,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 1,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 2,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 3,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 4,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 5,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 6,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 7,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 8,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 9,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 10,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.29,
+          "75" : 1.2,
+          "90" : 1.1499999999999999
         }
       },
       {
         "celsius" : 11,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.22,
+          "75" : 1.1499999999999999,
+          "90" : 1.1200000000000001
         }
       },
       {
         "celsius" : 12,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.22,
+          "75" : 1.1499999999999999,
+          "90" : 1.1200000000000001
         }
       },
       {
         "celsius" : 13,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.22,
+          "75" : 1.1499999999999999,
+          "90" : 1.1200000000000001
         }
       },
       {
         "celsius" : 14,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.22,
+          "75" : 1.1499999999999999,
+          "90" : 1.1200000000000001
         }
       },
       {
         "celsius" : 15,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.22,
+          "75" : 1.1499999999999999,
+          "90" : 1.1200000000000001
         }
       },
       {
         "celsius" : 16,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.1499999999999999,
+          "75" : 1.1100000000000001,
+          "90" : 1.0800000000000001
         }
       },
       {
         "celsius" : 17,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.1499999999999999,
+          "75" : 1.1100000000000001,
+          "90" : 1.0800000000000001
         }
       },
       {
         "celsius" : 18,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.1499999999999999,
+          "75" : 1.1100000000000001,
+          "90" : 1.0800000000000001
         }
       },
       {
         "celsius" : 19,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.1499999999999999,
+          "75" : 1.1100000000000001,
+          "90" : 1.0800000000000001
         }
       },
       {
         "celsius" : 20,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.1499999999999999,
+          "75" : 1.1100000000000001,
+          "90" : 1.0800000000000001
         }
       },
       {
         "celsius" : 21,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.0800000000000001,
+          "75" : 1.05,
+          "90" : 1.04
         }
       },
       {
         "celsius" : 22,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.0800000000000001,
+          "75" : 1.05,
+          "90" : 1.04
         }
       },
       {
         "celsius" : 23,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.0800000000000001,
+          "75" : 1.05,
+          "90" : 1.04
         }
       },
       {
         "celsius" : 24,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.0800000000000001,
+          "75" : 1.05,
+          "90" : 1.04
         }
       },
       {
         "celsius" : 25,
         "columns" : {
-          "60" : 1,
-          "75" : 1,
-          "90" : 1
+          "60" : 1.0800000000000001,
+          "75" : 1.05,
+          "90" : 1.04
         }
       },
       {
@@ -4564,80 +4589,80 @@
         "celsius" : 61,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.46999999999999997,
+          "90" : 0.65000000000000002
         }
       },
       {
         "celsius" : 62,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.46999999999999997,
+          "90" : 0.65000000000000002
         }
       },
       {
         "celsius" : 63,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.46999999999999997,
+          "90" : 0.65000000000000002
         }
       },
       {
         "celsius" : 64,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.46999999999999997,
+          "90" : 0.65000000000000002
         }
       },
       {
         "celsius" : 65,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.46999999999999997,
+          "90" : 0.65000000000000002
         }
       },
       {
         "celsius" : 66,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.33000000000000002,
+          "90" : 0.57999999999999996
         }
       },
       {
         "celsius" : 67,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.33000000000000002,
+          "90" : 0.57999999999999996
         }
       },
       {
         "celsius" : 68,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.33000000000000002,
+          "90" : 0.57999999999999996
         }
       },
       {
         "celsius" : 69,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.33000000000000002,
+          "90" : 0.57999999999999996
         }
       },
       {
         "celsius" : 70,
         "columns" : {
           "60" : null,
-          "75" : null,
-          "90" : null
+          "75" : 0.33000000000000002,
+          "90" : 0.57999999999999996
         }
       },
       {
@@ -4645,7 +4670,7 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.5
         }
       },
       {
@@ -4653,7 +4678,7 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.5
         }
       },
       {
@@ -4661,7 +4686,7 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.5
         }
       },
       {
@@ -4669,7 +4694,7 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.5
         }
       },
       {
@@ -4677,7 +4702,7 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.5
         }
       },
       {
@@ -4685,7 +4710,7 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.40999999999999998
         }
       },
       {
@@ -4693,7 +4718,7 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.40999999999999998
         }
       },
       {
@@ -4701,7 +4726,7 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.40999999999999998
         }
       },
       {
@@ -4709,7 +4734,7 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.40999999999999998
         }
       },
       {
@@ -4717,7 +4742,47 @@
         "columns" : {
           "60" : null,
           "75" : null,
-          "90" : null
+          "90" : 0.40999999999999998
+        }
+      },
+      {
+        "celsius" : 81,
+        "columns" : {
+          "60" : null,
+          "75" : null,
+          "90" : 0.28999999999999998
+        }
+      },
+      {
+        "celsius" : 82,
+        "columns" : {
+          "60" : null,
+          "75" : null,
+          "90" : 0.28999999999999998
+        }
+      },
+      {
+        "celsius" : 83,
+        "columns" : {
+          "60" : null,
+          "75" : null,
+          "90" : 0.28999999999999998
+        }
+      },
+      {
+        "celsius" : 84,
+        "columns" : {
+          "60" : null,
+          "75" : null,
+          "90" : 0.28999999999999998
+        }
+      },
+      {
+        "celsius" : 85,
+        "columns" : {
+          "60" : null,
+          "75" : null,
+          "90" : 0.28999999999999998
         }
       }
     ],
@@ -4961,8 +5026,8 @@
         "90" : 430
       }
     },
-    "coverageLabel" : "2020 and 2023 NEC",
-    "coverageNote" : "Every table here is unchanged across the 2020 and 2023 NEC, so the calculations are the same ones your exam asks for on any of those cycles. What does change between editions is coverage: GFCI and AFCI scope, surge protection, emergency and equipment disconnects. Verify those in the book your jurisdiction has adopted.",
+    "coverageLabel" : "2023 NEC",
+    "coverageNote" : "Values and citations follow the 2023 NEC. Most calculation tables also apply in 2020, but 2023 adds the 10 A standard breaker rating and renumbers several sections. Use the edition and amendments named by your exam board; state adoption and exam editions can differ.",
     "edition" : "2023 NEC",
     "editionNote" : "Values follow the 2023 NEC. Your jurisdiction may have adopted a different edition or amended it locally.",
     "egcRows" : [
@@ -5538,8 +5603,9 @@
         "copper" : 15
       }
     },
-    "stableSince" : 2020,
+    "stableSince" : 2023,
     "standardOCPD" : [
+      10,
       15,
       20,
       25,

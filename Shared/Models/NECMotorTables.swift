@@ -161,7 +161,7 @@ extension NECTables {
         var displayName: String {
             switch self {
             case .nonTimeDelayFuse: return "Nontime-delay fuse"
-            case .dualElementFuse: return "Dual-element (time-delay) fuse"
+            case .dualElementFuse: return "Dual-element fuse (not Class CC)"
             case .instantaneousTrip: return "Instantaneous-trip breaker"
             case .inverseTimeBreaker: return "Inverse-time breaker"
             }
@@ -179,21 +179,31 @@ extension NECTables {
         }
 
         var percentLabel: String { "\(Int(percent * 100))%" }
+
+        var standardRatings: [Int] {
+            switch self {
+            case .nonTimeDelayFuse, .dualElementFuse:
+                return ([1, 3, 6, 601] + NECTables.standardOCPD).sorted()
+            case .instantaneousTrip, .inverseTimeBreaker:
+                return NECTables.standardOCPD
+            }
+        }
     }
 
     /// The largest standard device allowed ahead of one motor.
     ///
-    /// 430.52(C)(1) Exception 1 is the part that makes this different from
+    /// 430.52(C)(1)(a) is the part that makes this different from
     /// every other overcurrent calculation in the book: where the percentage
     /// does not land on a standard rating, you go UP to the next standard size,
     /// not down. A candidate who applies the 240.6 "next size down" habit here
     /// gets every motor question wrong.
     static func motorBranchOCPD(flc: Double, protection: MotorProtection) -> Int? {
         let calculated = flc * protection.percent
-        if let exact = standardOCPD.first(where: { abs(Double($0) - calculated) < 0.0001 }) {
-            return exact
-        }
-        return nextStandardOCPD(atLeast: calculated)
+        guard let selected = protection.standardRatings.first(where: { Double($0) >= calculated - 0.0001 })
+        else { return nil }
+        // 430.52(C)(1)(a) also permits 15 A for a nonadjustable breaker when
+        // the next higher standard rating would be below 15 A.
+        return protection == .inverseTimeBreaker ? max(15, selected) : selected
     }
 
     /// 430.32(A)(1): the separate overload device, which IS sized from the
