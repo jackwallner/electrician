@@ -172,6 +172,29 @@ final class AccessibilityAuditTests: XCTestCase {
         capture("settings_ax3_low")
     }
 
+    func testFieldToolsAX3() {
+        launch(size: Self.ax3, setUp: Self.seeded + ["-subscription.localProOverride", "YES"])
+        app.swipeUp(); app.swipeUp(); settle(0.8)
+        if open("Field tools") {
+            capture("tools_list_ax3")
+            if open("Voltage drop") {
+                capture("vdrop_ax3")
+                let fields = app.textFields
+                if fields.count > 0 {
+                    let field = fields.element(boundBy: 0)
+                    field.tap()
+                    field.typeText("125.5")
+                    settle(0.8)
+                    capture("vdrop_typed_ax3")
+                    attachTree("vdrop_typed")
+                    noteOffscreenControls(context: "vdrop")
+                } else {
+                    problems.append("vdrop: no text field")
+                }
+            }
+        }
+    }
+
     // MARK: - Helpers
 
     private func noteOffscreenControls(context: String) {
