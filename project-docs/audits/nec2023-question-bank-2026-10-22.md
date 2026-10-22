@@ -1,6 +1,6 @@
 # NEC 2023 question-bank audit, 2026-10-22
 
-Reviewed every item in the six-room iOS library and its Android export: 125 original items, plus the new EMT reference card (126 total). There are 87 selectable questions/self-tests and 39 reference-only cards. Reference cards have a written answer and citation, not selectable options. All 10 generated shapes are included. No NEC prose is reproduced here or added to the app.
+Reviewed every item in the six-room iOS library and its Android export: 125 original items, plus the new EMT reference card (126 total). Corrected 63 original items and retained 62 after review. There are 87 selectable questions/self-tests and 39 reference-only cards. Reference cards have a written answer and citation, not selectable options. All 10 generated shapes are included. No NEC prose is reproduced here or added to the app.
 
 The audit began in an isolated checkout from `13a9255`, then was rebased onto `f0b49bf` from origin/main, which contains the completed Android app scaffolding. All ten native Android generators received the same corrections as Swift. The original local checkout, including its unrelated uncommitted Android generator, profile and exporter files, was left byte-for-byte unchanged.
 
@@ -48,6 +48,7 @@ The reviewed answer contract is `TestFixtures/nec2023-bank-audit.json`. It is in
 | `install-quiz-dedicated-space` | Structural-ceiling boundary was unstated. | Place the pipe below the structural ceiling inside the dedicated column. | 110.26(E)(1) |
 | `install-match-support` | Key selected Article 300, which does not contain EMT strap spacing. | Select 358 EMT, specifically 358.30. | 358.30; Art. 358 |
 | `calc-ampacity-1` | Ambient-table reference was imprecise for 2023. | Use 310.15(B)(1)(1); retain 52.2 A. | 310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C) |
+| `calc-conduitfill-1` | Rounded intermediate areas obscured the actual fit comparison. | Show the exact 0.1899 in² bundle and 0.1216/0.2132 in² fill allowances; retain 3/4-inch EMT. | Ch. 9 Tables 1, 4, 5 |
 | `calc-boxfill-1` | Ground size, entering conductors and yoke size were unstated. | Specify all as 12 AWG, entering conductors and a single-gang yoke; retain 22.5 in³. | 314.16(B) |
 | `calc-vdrop-1` | Temperature/resistance model and rounding were unstated. | Specify K = 12.9, resistive approximation, one-way distance and 0.1 V rounding; retain 4.0 V. | 210.19(A) Informational Note, Ch. 9 Table 8 |
 | `load-card-demand-bands` | The method was unstated. | Specify standard dwelling calculation. | Table 220.45 (Table 220.42 in 2020) |
@@ -78,14 +79,14 @@ The reviewed answer contract is `TestFixtures/nec2023-bank-audit.json`. It is in
 
 | Item id or family | Problem | Correction | NEC 2023 citation |
 |---|---|---|---|
-| `gen-ampacity-*` | Raceway exceptions were unstated; ambient-table citation was old. | Specify dry location and raceway longer than 24 inches; cite the 30°C-basis table. | 310.16; 310.15(B)(1)(1); 310.15(C)(1); 110.14(C) |
+| `gen-ampacity-*` | Raceway exceptions and answer precision were unstated; ambient-table citation was old. | Specify dry location, raceway longer than 24 inches and nearest 0.1 A; show unrounded sizing limits and cite the 30°C-basis table. | 310.16; 310.15(B)(1)(1); 310.15(C)(1); 110.14(C) |
 | `gen-ocpd-*` | No numerical key error found within the stated ordinary-circuit assumptions. | Retain the explicit no-next-size-up condition and small-conductor limits. | 240.4(D); 240.6(A); 110.14(C) |
-| `gen-conduitfill-*` | A short nipple can use different fill limits. | Specify a run longer than 24 inches and Table 5 areas. | Ch. 9 Table 1, Note 4; Tables 4 and 5 |
-| `gen-boxfill-*` and box-fill calculators | Claimed any number of grounds takes one allowance. | One allowance through four entering grounds; add 0.25 per additional entering ground/jumper. Exercise 5, 6 and 9 grounds too. | 314.16(B)(5) |
+| `gen-conduitfill-*` | A short nipple can use different fill limits; intermediate areas were prematurely rounded. | Specify a run longer than 24 inches and Table 5 areas; preserve precision in the fit comparison. | Ch. 9 Table 1, Note 4; Tables 4 and 5 |
+| `gen-boxfill-*` and box-fill calculators | Claimed any number of grounds takes one allowance; rounded minimum-volume options had no precision instruction. | One allowance through four entering grounds; add 0.25 per additional entering ground/jumper. Exercise 5, 6 and 9 grounds too. Ask nearest 0.01 in³ and retain the unrounded physical-box minimum. | 314.16(B)(5) |
 | `gen-vdrop-*` | K, resistance model and rounding were unstated. | Specify copper 12.9/aluminum 21.2, one-way distance, resistive approximation and 0.1 V rounding. | 210.19(A) informational note; Ch. 9 Table 8 |
 | `gen-egcSizing-*` | Implied conductor size never affects wire EGC sizing. | State ordinary nonparallel, non-increased conductors; explain proportional increase rule. | 250.122(A), (B) |
 | `gen-gecSizing-*` | Assumed every ground ring is 2 AWG; allowed ordinary parallel service conductors below 1/0. | State actual 2 AWG ring, electrode-only connection and physical protection; prohibit the undersized ordinary parallel cases. | 250.66(A)-(C); 250.64(B); 310.10(G) |
-| `gen-motorConductor-*` | Table-versus-nameplate rule was stated without motor-type scope. | Specify ordinary single-speed continuous-duty motors of usual speed and torque. | 430.6(A)(1); 430.22(A); Tables 430.248 and 430.250 |
+| `gen-motorConductor-*` | Table-versus-nameplate rule lacked motor-type scope and answer precision. | Specify ordinary single-speed continuous-duty motors of usual speed and torque, nearest 0.1 A and the unrounded minimum for conductor selection. | 430.6(A)(1); 430.22(A); Tables 430.248 and 430.250 |
 | `gen-motorProtection-*` | Generic standard-rating selection included instantaneous-trip devices; fuse-only ratings were missing; references used 2020 numbering. | Generate fuses and nonadjustable inverse-time breakers, exclude Class CC from the 175% fuse case, include 1/3/6/601 A fuse ratings and the 15 A small-motor breaker permission. Exclude increased starting-current allowances. | Table 430.52(C)(1); 430.52(C)(1)(a); 240.6(A) |
 | `gen-dwellingLoad-*` | Missing 25% largest retained motor allowance and concurrency assumptions. | State circuit counts, column C for the range, HVAC interlock and retained motor; add the motor allowance. Explicit column C avoids the alternative Note 3 demand permitted for an 8 kW range. | 220.50; 430.24; Table 220.55 Note 3; 220.52-.60 |
 | `NECTables.standardOCPD` | Omitted the 10 A standard rating added in 2023. | Add 10 A and remove the claim that every shipped value is unchanged from 2020. | Table 240.6(A) |
@@ -214,7 +215,7 @@ Every original id appears below. “Verified” means retained after review; “
 | `install-match-readily-accessible` | Verified | 100 Definitions | Art. 100 |
 | `calc-ampacity-1` | Corrected | 52.2 A | 310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C) |
 | `calc-ocpd-1` | Verified | 20 A | 310.16, 240.4(D), 240.6(A) |
-| `calc-conduitfill-1` | Verified | 3/4" | Ch. 9 Table 1, Table 4, Table 5 |
+| `calc-conduitfill-1` | Corrected | 3/4" | Ch. 9 Table 1, Table 4, Table 5 |
 | `calc-boxfill-1` | Corrected | 22.5 in³ | 314.16(B) |
 | `calc-vdrop-1` | Corrected | 4.0 V | 210.19(A) Informational Note, Ch. 9 Table 8 |
 | `load-card-va-per-sqft` | Verified | 3 VA/ft² | 220.41 (220.12 in 2020) |

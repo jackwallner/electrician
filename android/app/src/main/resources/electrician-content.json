@@ -2405,10 +2405,10 @@
               },
               "situation" : "Nine 10 AWG THHN conductors need to run in EMT. Pick the smallest trade size.",
               "steps" : [
-                "One 10 AWG THHN is 0.0211 in². Nine of them is 0.19 in².",
+                "One 10 AWG THHN is 0.0211 in². Nine of them is 0.1899 in².",
                 "More than two conductors means the allowance is 40%.",
-                "1\/2\" EMT is 0.304 in² interior; 40% of that is 0.12 in², which is not enough.",
-                "3\/4\" EMT is 0.533 in²; 40% is 0.21 in², which covers 0.19 in². 3\/4\" is the answer."
+                "1\/2\" EMT is 0.304 in² interior; 40% of that is 0.1216 in², which is not enough.",
+                "3\/4\" EMT is 0.533 in²; 40% is 0.2132 in², which covers 0.1899 in². 3\/4\" is the answer."
               ]
             },
             {
@@ -2505,8 +2505,8 @@
               "steps" : [
                 "Single-phase uses 2 as the factor, because the current goes out and comes back.",
                 "K for copper is 12.9 and 10 AWG is 10,380 circular mils.",
-                "VD = 2 × 12.9 × 16 × 100 ÷ 10,380 = 4.0 V.",
-                "4.0 V on 120 V is 3.3%, which is past the 3% figure the informational note suggests. It is a note, not a requirement, but an exam question asking whether it is acceptable wants you to notice."
+                "VD = 2 × 12.9 × 16 × 100 ÷ 10,380 ≈ 4.0 V.",
+                "4.0 V on 120 V is about 3.3%, which exceeds the general 3% branch-circuit recommendation. That informational guidance is distinct from mandatory voltage-drop limits for specific applications."
               ]
             }
           ],
@@ -2978,7 +2978,7 @@
                 "Fastened-in-place appliances: water heater, dishwasher, disposal and compactor total 7600 VA. That is four appliances, so 220.53 takes them at 75% = 5700 VA.",
                 "Heat against cooling: they cannot run together. Heating, including the retained appliance motor allowance, exceeds the cooling case, so retain 10,000 VA of heating.",
                 "220.50 and 430.24 add 25% of the largest retained motor: the 900 VA disposal adds 225 VA beyond the appliance demand.",
-                "Total 5625 + 8000 + 5500 + 5700 + 10,000 + 225 = 35,050 VA. At 240 V that is 146.0 A; the smallest standard service rating that carries it is 150 A."
+                "Total 5625 + 8000 + 5500 + 5700 + 10,000 + 225 = 35,050 VA. At 240 V that is about 146.0 A; the smallest standard service rating that carries it is 150 A."
               ]
             },
             {
@@ -3038,7 +3038,7 @@
                 "Add the nameplates: range 12,000 + dryer 5500 + appliances 7600 = 25,100 VA. Pile total 35,600 VA.",
                 "First 10,000 VA at 100%, the remaining 25,600 VA at 40% = 10,240 VA. General total 20,240 VA.",
                 "Heating and air conditioning are added separately at their own percentages: air conditioning at 100% is 5000 VA, electric heat with fewer than four separately controlled units at 65% is 6500 VA. The larger is 6500 VA.",
-                "Total 20,240 + 6500 = 26,740 VA. Divided by 240 V that is 111.4 A, so a 125 A service.",
+                "Total 20,240 + 6500 = 26,740 VA. Divided by 240 V that is about 111.4 A, so a 125 A service.",
                 "The standard method put the same house at 150 A. Both are correct calculations; only the one the question asked for is the right answer."
               ]
             },

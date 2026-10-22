@@ -227,7 +227,7 @@ enum LoadContent {
                 "Fastened-in-place appliances: water heater, dishwasher, disposal and compactor total 7600 VA. That is four appliances, so 220.53 takes them at 75% = 5700 VA.",
                 "Heat against cooling: they cannot run together. Heating, including the retained appliance motor allowance, exceeds the cooling case, so retain 10,000 VA of heating.",
                 "220.50 and 430.24 add 25% of the largest retained motor: the 900 VA disposal adds 225 VA beyond the appliance demand.",
-                "Total 5625 + 8000 + 5500 + 5700 + 10,000 + 225 = 35,050 VA. At 240 V that is 146.0 A; the smallest standard service rating that carries it is 150 A.",
+                "Total 5625 + 8000 + 5500 + 5700 + 10,000 + 225 = 35,050 VA. At 240 V that is about 146.0 A; the smallest standard service rating that carries it is 150 A.",
             ],
             citation: "220.41, Table 220.45, 220.50, 430.24, 220.52, 220.53, 220.54, Table 220.55, 220.60, 240.6(A)"
         ),
@@ -251,7 +251,7 @@ enum LoadContent {
                 "Add the nameplates: range 12,000 + dryer 5500 + appliances 7600 = 25,100 VA. Pile total 35,600 VA.",
                 "First 10,000 VA at 100%, the remaining 25,600 VA at 40% = 10,240 VA. General total 20,240 VA.",
                 "Heating and air conditioning are added separately at their own percentages: air conditioning at 100% is 5000 VA, electric heat with fewer than four separately controlled units at 65% is 6500 VA. The larger is 6500 VA.",
-                "Total 20,240 + 6500 = 26,740 VA. Divided by 240 V that is 111.4 A, so a 125 A service.",
+                "Total 20,240 + 6500 = 26,740 VA. Divided by 240 V that is about 111.4 A, so a 125 A service.",
                 "The standard method put the same house at 150 A. Both are correct calculations; only the one the question asked for is the right answer.",
             ],
             citation: "220.82, 220.82(B), 220.82(C), 240.6(A)"

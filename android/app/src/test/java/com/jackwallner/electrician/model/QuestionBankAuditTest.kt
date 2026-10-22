@@ -104,6 +104,7 @@ class QuestionBankAuditTest {
                     val cap = values("smallConductorLimit").optJSONObject(conductor())?.optDouble(if (copper) "copper" else "aluminum", terminal) ?: terminal
                     "${standards().last { it <= minOf(cap, terminal) }} A"
                 } else {
+                    assertTrue(q.id, "nearest 0.1 A" in q.situation)
                     val correction = values("ambient").getJSONObject(given("Ambient")).getDouble("90")
                     val count = number("Current-carrying")
                     val factor = when { count <= 3 -> 1.0; count <= 6 -> 0.8; count <= 9 -> 0.7; else -> 0.5 }
@@ -115,6 +116,7 @@ class QuestionBankAuditTest {
                 tables.getJSONArray("emtTradeSizes").strings().first { values("emtArea").getDouble(it) * 0.4 >= area }
             }
             "boxFill" -> {
+                assertTrue(q.id, "nearest 0.01 in³" in q.situation)
                 val grounds = number("Grounds")
                 val groundUnits = if (grounds > 0) 1 + maxOf(0.0, grounds - 4) / 4 else 0.0
                 val clamps = if (q.givens.any { it.label == "Internal clamps" }) 1 else 0
@@ -137,7 +139,10 @@ class QuestionBankAuditTest {
                 val cap = mapOf("Rod, pipe or plate" to "6 AWG", "Concrete-encased" to "4 AWG", "Ground ring" to "2 AWG")[given("Electrode")]
                 if (cap != null && values("circularMils").getDouble(tableSize) > values("circularMils").getDouble(cap)) cap else tableSize
             }
-            "motorConductor" -> format(flc() * 1.25, 1, "A")
+            "motorConductor" -> {
+                assertTrue(q.id, "nearest 0.1 A" in q.situation)
+                format(flc() * 1.25, 1, "A")
+            }
             "motorProtection" -> {
                 val device = given("Device")
                 val factor = checkNotNull(mapOf("Nontime-delay fuse" to 3.0, "Dual-element fuse (not Class CC)" to 1.75, "Inverse-time breaker (nonadjustable)" to 2.5)[device])

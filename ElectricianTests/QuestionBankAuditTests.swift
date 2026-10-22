@@ -145,6 +145,7 @@ final class QuestionBankAuditTests: XCTestCase {
                 let cap = (t.smallConductorLimit[size]?[copper ? "copper" : "aluminum"]).map(Double.init) ?? terminal
                 return "\(try XCTUnwrap(t.standardOCPD.last { Double($0) <= min(terminal, cap) })) A"
             }
+            XCTAssertTrue(q.situation.contains("nearest 0.1 A"), q.id)
             let ambient = try given("Ambient")
             let correction = try XCTUnwrap(t.ambient[ambient]?["90"] ?? nil)
             let count = try number("Current-carrying")
@@ -154,6 +155,7 @@ final class QuestionBankAuditTests: XCTestCase {
             let area = try XCTUnwrap(t.thhnArea[conductor()]) * number("Quantity")
             return try XCTUnwrap(t.emtTradeSizes.first { (t.emtArea[$0] ?? 0) * 0.4 >= area })
         case .boxFill:
+            XCTAssertTrue(q.situation.contains("nearest 0.01 in³"), q.id)
             let unit = try XCTUnwrap(t.conductorVolume[conductor()])
             let grounds = try number("Grounds")
             let groundUnits = grounds > 0 ? 1 + max(0, grounds - 4) / 4 : 0
@@ -179,6 +181,7 @@ final class QuestionBankAuditTests: XCTestCase {
             guard let cap else { return tableSize }
             return try XCTUnwrap(t.circularMils[tableSize]) > XCTUnwrap(t.circularMils[cap]) ? cap : tableSize
         case .motorConductor:
+            XCTAssertTrue(q.situation.contains("nearest 0.1 A"), q.id)
             return format(try motorFLC() * 1.25, 1, "A")
         case .motorProtection:
             let device = try given("Device")

@@ -202,14 +202,16 @@ enum CalcGenerator {
 
         var steps = [
             "Start in the 90°C column, because that is the conductor's own rating: \(size) \(material.displayName) is \(Int(base)) A.",
-            "Ambient \(ambient)°C corrects by \(correction.factorText): \(Int(base)) × \(correction.factorText) = \((base * correction).roundedAmpsText) A.",
-            "\(ccc) current-carrying conductors adjust by \(adjustment.factorText): \((base * correction).roundedAmpsText) × \(adjustment.factorText) = \(derated.roundedAmpsText) A.",
+            "Ambient \(ambient)°C corrects by \(correction.factorText): \(Int(base)) × \(correction.factorText) = \((base * correction).factorText) A.",
+            "\(ccc) current-carrying conductors adjust by \(adjustment.factorText): \((base * correction).factorText) × \(adjustment.factorText) = \(derated.factorText) A.",
         ]
         if answer < derated {
-            steps.append("The 75°C termination limits it to \(Int(terminalLimit)) A, and the lower number wins, so the answer is \(answer.roundedAmpsText) A.")
+            steps.append("The 75°C termination limits it to \(Int(terminalLimit)) A, and the lower number wins, so the answer is \(answer.factorText) A.")
         } else {
-            steps.append("That is still under the \(Int(terminalLimit)) A termination limit, so the derated value stands: \(answer.roundedAmpsText) A.")
+            steps.append("That is still under the \(Int(terminalLimit)) A termination limit, so the derated value stands: \(answer.factorText) A.")
         }
+
+        steps.append("Report \(answer.factorText) A as \(answer.roundedAmpsText) A to the nearest 0.1 A. Compare actual loads against the unrounded allowable ampacity.")
 
         let amps: (Double) -> String = { "\($0.roundedAmpsText) A" }
         let mistakes = mistakeMap(answerLabel: amps(answer), [
@@ -220,7 +222,7 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-ampacity-\(UUID().uuidString)",
-            situation: "Find the allowable ampacity in this dry-location raceway, longer than 24 inches, with no adjustment exception.",
+            situation: "Find the allowable ampacity in this dry-location raceway, longer than 24 inches, with no adjustment exception. Report the calculated limit to the nearest 0.1 A.",
             givens: [
                 .conductor(size, "THHN"),
                 .material(material),
@@ -380,10 +382,10 @@ enum CalcGenerator {
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: [
-                "One \(size) THHN is \(area.areaText) in². \(count) of them is \(bundle.areaText) in².",
+                "One \(size) THHN is \(area.factorText) in². \(count) of them is \(bundle.factorText) in².",
                 "Over two conductors the allowance is \(Int(percent * 100))%, not 53% or 31%.",
-                "\(answerTrade) EMT is \((NECTables.emtArea[answerTrade] ?? 0).areaText) in² interior, and \(Int(percent * 100))% of that is \(allowance.areaText) in².",
-                "\(allowance.areaText) in² covers the \(bundle.areaText) in² bundle, and the next size down does not, so \(answerTrade) is the answer.",
+                "\(answerTrade) EMT is \((NECTables.emtArea[answerTrade] ?? 0).factorText) in² interior, and \(Int(percent * 100))% of that is \(allowance.factorText) in².",
+                "\(allowance.factorText) in² covers the \(bundle.factorText) in² bundle, and the next size down does not, so \(answerTrade) is the answer.",
             ],
             citation: "Ch. 9 Table 1, Table 4, Table 5",
             mistakes: mistakes
@@ -443,7 +445,7 @@ enum CalcGenerator {
         ]
         if hasClamp { steps.append("Internal clamps count as one allowance no matter how many there are.") }
         steps.append("Each device yoke counts as two, so \(devices) yoke\(devices == 1 ? "" : "s") is \(deviceUnits).")
-        steps.append("\(totalUnits.factorText) allowances × \(volume.volumeText) in³ = \(required.volumeText) in³.")
+        steps.append("\(totalUnits.factorText) allowances × \(volume.volumeText) in³ = \(required.factorText) in³ before rounding. Report \(required.volumeText) in³ to the nearest 0.01 in³; use the unrounded minimum when selecting a physical box.")
 
         let volumeLabel: (Double) -> String = { "\($0.volumeText) in³" }
         let mistakes = mistakeMap(answerLabel: volumeLabel(required), [
@@ -454,7 +456,7 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-boxfill-\(UUID().uuidString)",
-            situation: "All insulated conductors and grounds listed enter the box and have the stated size. Each single-gang yoke connects to that size; there are no other fill allowances. Find the minimum box volume.",
+            situation: "All insulated conductors and grounds listed enter the box and have the stated size. Each single-gang yoke connects to that size; there are no other fill allowances. Find the minimum box volume. Report the calculated minimum to the nearest 0.01 in³.",
             givens: givens,
             choices: choices.labels,
             answerIndex: choices.answerIndex,
@@ -522,7 +524,7 @@ enum CalcGenerator {
             steps: [
                 "\(phase == .single ? "Single-phase uses 2" : "Three-phase uses 1.732") as the factor, because that is the path the current actually takes.",
                 "K for \(material.displayName.lowercased()) is \(k.factorText), and \(size) is \(Int(cm)) circular mils.",
-                "VD = \(phase.voltageDropFactor.factorText) × \(k.factorText) × \(amps.trimmedAmps) A × \(feet) ft ÷ \(Int(cm)) cmil = \(drop.voltsText) V.",
+                "VD = \(phase.voltageDropFactor.factorText) × \(k.factorText) × \(amps.trimmedAmps) A × \(feet) ft ÷ \(Int(cm)) cmil ≈ \(drop.voltsText) V.",
                 "That is \(percent.voltsText)% of \(volts) V, so it is \(percent <= 3 ? "within" : "past") the 3% figure the informational note suggests for a branch circuit.",
             ],
             citation: "210.19(A) Informational Note, Ch. 9 Table 8",
@@ -643,7 +645,7 @@ enum CalcGenerator {
 // MARK: - Formatting
 
 extension Double {
-    /// Ampacity rounded the way the code rounds it: to the nearest whole amp.
+    /// Presentation rounding only; use the unrounded value for sizing limits.
     var roundedAmps: Int { Int(rounded()) }
     var roundedAmpsText: String { String(format: "%.1f", self) }
 

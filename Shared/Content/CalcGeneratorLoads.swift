@@ -156,7 +156,7 @@ extension CalcGenerator {
             "Total \(Int(generalDemand.rounded()).groupedText) + \(Int(rangeVA).groupedText) + \(Int(dryerVA).groupedText) + \(Int(applianceDemand.rounded()).groupedText) + \(Int(climate).groupedText) + \(Int(motorAllowance)) = \(Int(total.rounded()).groupedText) VA.",
         ]
         if asksForService {
-            steps.append("\(Int(total.rounded()).groupedText) VA ÷ 240 V = \(amps.roundedAmpsText) A, and the smallest standard rating that carries it is \(rating) A.")
+            steps.append("\(Int(total.rounded()).groupedText) VA ÷ 240 V ≈ \(amps.roundedAmpsText) A. Use the unrounded current to select the smallest standard rating that carries it: \(rating) A.")
         }
 
         let mistakes = mistakeMap(answerLabel: format(answerValue), choices: choices.labels, [

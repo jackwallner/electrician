@@ -142,20 +142,21 @@ object CalcGenerator {
 
         val steps = mutableListOf(
             "Start in the 90°C column, because that is the conductor's own rating: $size ${material.displayName} is ${base.swiftInt()} A.",
-            "Ambient ${ambient}°C corrects by ${correction.factorText}: ${base.swiftInt()} × ${correction.factorText} = ${(base * correction).roundedAmpsText} A.",
-            "$ccc current-carrying conductors adjust by ${adjustment.factorText}: ${(base * correction).roundedAmpsText} × ${adjustment.factorText} = ${derated.roundedAmpsText} A.",
+            "Ambient ${ambient}°C corrects by ${correction.factorText}: ${base.swiftInt()} × ${correction.factorText} = ${(base * correction).factorText} A.",
+            "$ccc current-carrying conductors adjust by ${adjustment.factorText}: ${(base * correction).factorText} × ${adjustment.factorText} = ${derated.factorText} A.",
         )
         if (answer < derated) {
-            steps += "The 75°C termination limits it to ${terminalLimit.swiftInt()} A, and the lower number wins, so the answer is ${answer.roundedAmpsText} A."
+            steps += "The 75°C termination limits it to ${terminalLimit.swiftInt()} A, and the lower number wins, so the answer is ${answer.factorText} A."
         } else {
-            steps += "That is still under the ${terminalLimit.swiftInt()} A termination limit, so the derated value stands: ${answer.roundedAmpsText} A."
+            steps += "That is still under the ${terminalLimit.swiftInt()} A termination limit, so the derated value stands: ${answer.factorText} A."
         }
+        steps += "Report ${answer.factorText} A as ${answer.roundedAmpsText} A to the nearest 0.1 A. Compare actual loads against the unrounded allowable ampacity."
         val mistakes = mistakeMap(amps(answer), listOf(
             amps(startedAt75) to CandidateMistake.derateFrom75,
             amps(forgotBundling) to CandidateMistake.ignoredBundling,
             amps(forgotTerminals) to CandidateMistake.ignoredTerminationCap,
         ))
-        return CalcScenario(newID("ampacity"), "Find the allowable ampacity in this dry-location raceway, longer than 24 inches, with no adjustment exception.",
+        return CalcScenario(newID("ampacity"), "Find the allowable ampacity in this dry-location raceway, longer than 24 inches, with no adjustment exception. Report the calculated limit to the nearest 0.1 A.",
             listOf(Given.conductor(size, "THHN"), Given.material(material), Given.ambient(ambient), Given.currentCarrying(ccc), Given.terminals(TemperatureRating.c75)),
             choices.labels, choices.answerIndex, steps, "310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C)", mistakes)
     }
@@ -228,10 +229,10 @@ object CalcGenerator {
             listOf(Given.conductor(size, "THHN"), Given("Quantity", "$count", "conductors"), Given.raceway("EMT", "?")),
             choices.labels, choices.answerIndex,
             listOf(
-                "One $size THHN is ${area.areaText} in². $count of them is ${bundle.areaText} in².",
+                "One $size THHN is ${area.factorText} in². $count of them is ${bundle.factorText} in².",
                 "Over two conductors the allowance is $pct%, not 53% or 31%.",
-                "$answerTrade EMT is ${interior.areaText} in² interior, and $pct% of that is ${allowance.areaText} in².",
-                "${allowance.areaText} in² covers the ${bundle.areaText} in² bundle, and the next size down does not, so $answerTrade is the answer.",
+                "$answerTrade EMT is ${interior.factorText} in² interior, and $pct% of that is ${allowance.factorText} in².",
+                "${allowance.factorText} in² covers the ${bundle.factorText} in² bundle, and the next size down does not, so $answerTrade is the answer.",
             ), "Ch. 9 Table 1, Table 4, Table 5", mistakes)
     }
 
@@ -271,13 +272,13 @@ object CalcGenerator {
         )
         if (hasClamp) steps += "Internal clamps count as one allowance no matter how many there are."
         steps += "Each device yoke counts as two, so $devices yoke${if (devices == 1) "" else "s"} is $deviceUnits."
-        steps += "${totalUnits.factorText} allowances × ${volume.volumeText} in³ = ${required.volumeText} in³."
+        steps += "${totalUnits.factorText} allowances × ${volume.volumeText} in³ = ${required.factorText} in³ before rounding. Report ${required.volumeText} in³ to the nearest 0.01 in³; use the unrounded minimum when selecting a physical box."
         val mistakes = mistakeMap(label(required), listOf(
             label(groundsIndividually) to CandidateMistake.countedGroundsIndividually,
             label(forgotDevices) to CandidateMistake.forgotDeviceYokes,
             label(yokeAsOne) to CandidateMistake.countedYokeAsOne,
         ))
-        return CalcScenario(newID("boxfill"), "All insulated conductors and grounds listed enter the box and have the stated size. Each single-gang yoke connects to that size; there are no other fill allowances. Find the minimum box volume.", givens,
+        return CalcScenario(newID("boxfill"), "All insulated conductors and grounds listed enter the box and have the stated size. Each single-gang yoke connects to that size; there are no other fill allowances. Find the minimum box volume. Report the calculated minimum to the nearest 0.01 in³.", givens,
             choices.labels, choices.answerIndex, steps, "314.16(B)", mistakes)
     }
 
@@ -313,7 +314,7 @@ object CalcGenerator {
             listOf(
                 "${if (phase == Phase.single) "Single-phase uses 2" else "Three-phase uses 1.732"} as the factor, because that is the path the current actually takes.",
                 "K for ${material.displayName.lowercase()} is ${k.factorText}, and $size is ${cm.swiftInt()} circular mils.",
-                "VD = ${phase.voltageDropFactor.factorText} × ${k.factorText} × ${amps.trimmedAmps} A × $feet ft ÷ ${cm.swiftInt()} cmil = ${drop.voltsText} V.",
+                "VD = ${phase.voltageDropFactor.factorText} × ${k.factorText} × ${amps.trimmedAmps} A × $feet ft ÷ ${cm.swiftInt()} cmil ≈ ${drop.voltsText} V.",
                 "That is ${percent.voltsText}% of $volts V, so it is ${if (percent <= 3) "within" else "past"} the 3% figure the informational note suggests for a branch circuit.",
             ), "210.19(A) Informational Note, Ch. 9 Table 8", mistakes)
     }
@@ -438,8 +439,8 @@ object CalcGenerator {
             pad = { it * padRNG.nextDouble(0.75..1.3) }, format = format)
         val steps = listOf(
             "The nameplate is not the number here. Branch-circuit conductors for a single motor are sized from the full-load current in Table ${motor.supply.flcTable()}, which for a ${motor.rating.label} motor at ${motor.supply.displayName} is ${motor.tableFLC.factorText} A.",
-            "430.22 puts the conductors at 125% of that: ${motor.tableFLC.factorText} × 1.25 = ${answer.roundedAmpsText} A.",
-            "That ${answer.roundedAmpsText} A is the minimum ampacity the conductors must have after any correction and adjustment, which is then read back into Table 310.16.",
+            "430.22 puts the conductors at 125% of that: ${motor.tableFLC.factorText} × 1.25 = ${answer.factorText} A before rounding.",
+            "The unrounded minimum is ${answer.factorText} A after correction and adjustment. The option is reported to the nearest 0.1 A; select actual conductors using the unrounded minimum and Table 310.16.",
             "The nameplate ${motor.nameplateFLA.factorText} A is still used, but only for the separate overload device under 430.32.",
         )
         val mistakes = mistakeMap(format(answer), choices.labels, listOf(
@@ -447,7 +448,7 @@ object CalcGenerator {
             format(forgot125) to CandidateMistake.motorForgot125,
             format(wrongRow) to CandidateMistake.motorWrongVoltageRow,
         ))
-        return CalcScenario(newID("motorConductor"), "For this single, ordinary single-speed continuous-duty motor of usual speed and torque characteristics, what minimum branch-circuit conductor ampacity does 430.22(A) require?",
+        return CalcScenario(newID("motorConductor"), "For this single, ordinary single-speed continuous-duty motor of usual speed and torque characteristics, what minimum branch-circuit conductor ampacity does 430.22(A) require? Report the calculated minimum to the nearest 0.1 A.",
             listOf(Given("Motor", motor.rating.label), Given("Supply", motor.supply.displayName), Given("Nameplate", motor.nameplateFLA.factorText, "A")),
             choices.labels, choices.answerIndex, steps, "430.22, ${motor.supply.citation}, 430.6(A)(1)", mistakes)
     }
@@ -469,14 +470,14 @@ object CalcGenerator {
             pad = { standardNeighbour(it, padRNG, 1..3) }, format = format)
         val steps = mutableListOf(
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: ${motor.rating.label} at ${motor.supply.displayName} is ${motor.tableFLC.factorText} A in Table ${motor.supply.flcTable()}.",
-            "Table 430.52(C)(1) allows a ${protection.displayName.lowercase()} up to ${protection.percentLabel} of that: ${motor.tableFLC.factorText} × ${protection.percent.factorText} = ${calculated.roundedAmpsText} A.",
+            "Table 430.52(C)(1) allows a ${protection.displayName.lowercase()} up to ${protection.percentLabel} of that: ${motor.tableFLC.factorText} × ${protection.percent.factorText} = ${calculated.factorText} A.",
         )
         steps += if (protection == MotorProtection.inverseTimeBreaker && calculated < 15) {
             "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A."
         } else if (answer.toDouble() > calculated) {
-            "${calculated.roundedAmpsText} A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so $answer A."
+            "${calculated.factorText} A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so $answer A."
         } else {
-            "${calculated.roundedAmpsText} A is itself a standard rating in 240.6(A), so $answer A is the answer with no rounding needed."
+            "${calculated.factorText} A is itself a standard rating in 240.6(A), so $answer A is the answer with no rounding needed."
         }
         steps += "This device does not protect against overload. That is a separate device sized from the nameplate ${motor.nameplateFLA.factorText} A under 430.32."
         val mistakes = mistakeMap(format(answer.toDouble()), choices.labels, listOf(
@@ -559,7 +560,7 @@ object CalcGenerator {
             "Add 25% of the largest retained motor under 220.50 and 430.24: ${disposal.swiftInt()} × 0.25 = ${motorAllowance.swiftInt()} VA.",
             "Total ${g(generalDemand.roundedAway)} + ${g(rangeVA)} + ${g(dryerVA)} + ${g(applianceDemand.roundedAway)} + ${g(climate)} + ${motorAllowance.swiftInt()} = ${g(total.roundedAway)} VA.",
         )
-        if (asksForService) steps += "${g(total.roundedAway)} VA ÷ 240 V = ${amps.roundedAmpsText} A, and the smallest standard rating that carries it is $rating A."
+        if (asksForService) steps += "${g(total.roundedAway)} VA ÷ 240 V ≈ ${amps.roundedAmpsText} A. Use the unrounded current to select the smallest standard rating that carries it: $rating A."
         val mistakes = mistakeMap(format(answerValue), choices.labels, listOf(
             format(alternatives[0]) to CandidateMistake.loadForgotLightingDemand,
             format(alternatives[1]) to CandidateMistake.loadAddedHeatAndCooling,

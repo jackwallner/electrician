@@ -76,3 +76,7 @@ Table 220.55 column C for the range; an 8 kW range otherwise also permits
 the Note 3 alternative. Motor standard-rating
 questions exclude instantaneous-trip devices, distinguish Class CC fuses and
 include the fuse-only ratings plus the small-motor 15 A breaker permission.
+
+State the requested answer precision for calculated ampacity and box volume.
+Keep intermediate areas and sizing limits unrounded in the working; rounded
+display values must not become physical conductor, box or device selection limits.

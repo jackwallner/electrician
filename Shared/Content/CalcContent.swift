@@ -59,10 +59,10 @@ enum CalcContent {
             choices: ["3/4\"", "1/2\"", "1\"", "1-1/4\""],
             answerIndex: 0,
             steps: [
-                "One 10 AWG THHN is 0.0211 in². Nine of them is 0.19 in².",
+                "One 10 AWG THHN is 0.0211 in². Nine of them is 0.1899 in².",
                 "More than two conductors means the allowance is 40%.",
-                "1/2\" EMT is 0.304 in² interior; 40% of that is 0.12 in², which is not enough.",
-                "3/4\" EMT is 0.533 in²; 40% is 0.21 in², which covers 0.19 in². 3/4\" is the answer.",
+                "1/2\" EMT is 0.304 in² interior; 40% of that is 0.1216 in², which is not enough.",
+                "3/4\" EMT is 0.533 in²; 40% is 0.2132 in², which covers 0.1899 in². 3/4\" is the answer.",
             ],
             citation: "Ch. 9 Table 1, Table 4, Table 5"
         ),
@@ -103,8 +103,8 @@ enum CalcContent {
             steps: [
                 "Single-phase uses 2 as the factor, because the current goes out and comes back.",
                 "K for copper is 12.9 and 10 AWG is 10,380 circular mils.",
-                "VD = 2 × 12.9 × 16 × 100 ÷ 10,380 = 4.0 V.",
-                "4.0 V on 120 V is 3.3%, which is past the 3% figure the informational note suggests. It is a note, not a requirement, but an exam question asking whether it is acceptable wants you to notice.",
+                "VD = 2 × 12.9 × 16 × 100 ÷ 10,380 ≈ 4.0 V.",
+                "4.0 V on 120 V is about 3.3%, which exceeds the general 3% branch-circuit recommendation. That informational guidance is distinct from mandatory voltage-drop limits for specific applications.",
             ],
             citation: "210.19(A) Informational Note, Ch. 9 Table 8"
         ),

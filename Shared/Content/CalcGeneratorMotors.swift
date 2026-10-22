@@ -108,8 +108,8 @@ extension CalcGenerator {
 
         let steps = [
             "The nameplate is not the number here. Branch-circuit conductors for a single motor are sized from the full-load current in Table \(motor.supply.phase == .single ? "430.248" : "430.250"), which for a \(motor.rating.label) motor at \(motor.supply.displayName) is \(motor.tableFLC.factorText) A.",
-            "430.22 puts the conductors at 125% of that: \(motor.tableFLC.factorText) × 1.25 = \(answer.roundedAmpsText) A.",
-            "That \(answer.roundedAmpsText) A is the minimum ampacity the conductors must have after any correction and adjustment, which is then read back into Table 310.16.",
+            "430.22 puts the conductors at 125% of that: \(motor.tableFLC.factorText) × 1.25 = \(answer.factorText) A before rounding.",
+            "The unrounded minimum is \(answer.factorText) A after correction and adjustment. The option is reported to the nearest 0.1 A; select actual conductors using the unrounded minimum and Table 310.16.",
             "The nameplate \(motor.nameplateFLA.factorText) A is still used, but only for the separate overload device under 430.32.",
         ]
 
@@ -121,7 +121,7 @@ extension CalcGenerator {
 
         return CalcScenario(
             id: "gen-motorConductor-\(UUID().uuidString)",
-            situation: "For this single, ordinary single-speed continuous-duty motor of usual speed and torque characteristics, what minimum branch-circuit conductor ampacity does 430.22(A) require?",
+            situation: "For this single, ordinary single-speed continuous-duty motor of usual speed and torque characteristics, what minimum branch-circuit conductor ampacity does 430.22(A) require? Report the calculated minimum to the nearest 0.1 A.",
             givens: [
                 Given("Motor", motor.rating.label),
                 Given("Supply", motor.supply.displayName),
@@ -174,14 +174,14 @@ extension CalcGenerator {
 
         var steps = [
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: \(motor.rating.label) at \(motor.supply.displayName) is \(motor.tableFLC.factorText) A in Table \(motor.supply.phase == .single ? "430.248" : "430.250").",
-            "Table 430.52(C)(1) allows a \(protection.displayName.lowercased()) up to \(protection.percentLabel) of that: \(motor.tableFLC.factorText) × \(protection.percent.factorText) = \(calculated.roundedAmpsText) A.",
+            "Table 430.52(C)(1) allows a \(protection.displayName.lowercased()) up to \(protection.percentLabel) of that: \(motor.tableFLC.factorText) × \(protection.percent.factorText) = \(calculated.factorText) A.",
         ]
         if protection == .inverseTimeBreaker && calculated < 15 {
             steps.append("430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.")
         } else if Double(answer) > calculated {
-            steps.append("\(calculated.roundedAmpsText) A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so \(answer) A.")
+            steps.append("\(calculated.factorText) A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so \(answer) A.")
         } else {
-            steps.append("\(calculated.roundedAmpsText) A is itself a standard rating in 240.6(A), so \(answer) A is the answer with no rounding needed.")
+            steps.append("\(calculated.factorText) A is itself a standard rating in 240.6(A), so \(answer) A is the answer with no rounding needed.")
         }
         steps.append("This device does not protect against overload. That is a separate device sized from the nameplate \(motor.nameplateFLA.factorText) A under 430.32.")
 
