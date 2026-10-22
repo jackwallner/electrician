@@ -46,7 +46,7 @@ final class ExperiencedAuditUITests: XCTestCase {
     private func dismissSheetsIfAny() {
         for label in ["Not now", "Maybe later", "Close", "Done", "Continue"] {
             let button = app.buttons[label]
-            if button.exists && app.sheets.count + app.otherElements["PopoverDismissRegion"].count > 0 {
+            if button.exists && app.sheets.count > 0 {
                 button.tap()
             }
         }
