@@ -63,7 +63,7 @@ func tables() -> [String: Any] {
         "egcRows": NECTables.egcRows, "motorRatings": NECTables.motorRatings,
         "singlePhaseFLC": NECTables.singlePhaseFLC, "threePhaseFLC": NECTables.threePhaseFLC,
         "rangeColumnC": NECTables.rangeColumnC, "boxSizes": NECTables.boxSizes, "supportRules": NECTables.supportRules,
-        "ambient": (-10...80).map { celsius in
+        "ambient": (-10...85).map { celsius in
             ["celsius": celsius, "columns": Dictionary(uniqueKeysWithValues: TemperatureRating.allCases.map {
                 (String($0.rawValue), json(NECTables.ambientCorrection(celsius: celsius, column: $0) as Any))
             })] as [String: Any]

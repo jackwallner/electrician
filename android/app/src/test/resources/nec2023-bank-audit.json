@@ -1,0 +1,1873 @@
+{
+  "edition": 2023,
+  "reviewed": "2026-10-22",
+  "sources": [
+    "https://link.nfpa.org/free-access/publications/70/2023",
+    "https://docinfofiles.nfpa.org/files/AboutTheCodes/70/70_A2022_NEC_P06_SD_MeetingAgenda_10_21.pdf",
+    "https://docinfofiles.nfpa.org/files/AboutTheCodes/70/70_A2025_NEC_P08_FD_PIResponses.pdf",
+    "https://docinfofiles.nfpa.org/files/AboutTheCodes/70/70_A2022_NEC_P02_SD_SRStatements.pdf",
+    "https://docinfofiles.nfpa.org/files/AboutTheCodes/70/70_A2022_NEC_P11_SD_SRStatements.pdf",
+    "https://www.eaton.com/content/dam/eaton/products/electrical-circuit-protection/fuses/code-updates/bus-ele-br-11318-2023-NEC-code-changes.pdf"
+  ],
+  "policy": "Reviewed answer and citation contract, independent of the production answer indices. Reference cards have one written answer and no selectable options. Numeric reference facts were checked against the cited NEC 2023 tables; do not regenerate this contract from production content to resolve a failure.",
+  "items": [
+    {
+      "id": "basics-chapters",
+      "mode": "reference",
+      "answer": "Chapters 1-4 are general, 5-7 are exceptions",
+      "citation": "90.3"
+    },
+    {
+      "id": "basics-shall",
+      "mode": "choice",
+      "answer": "Allowed but not required",
+      "citation": "90.5"
+    },
+    {
+      "id": "basics-informational-note",
+      "mode": "choice",
+      "answer": "Explanatory only",
+      "citation": "90.5(C)"
+    },
+    {
+      "id": "basics-readily-accessible",
+      "mode": "reference",
+      "answer": "One may need tools, the other may not",
+      "citation": "Art. 100"
+    },
+    {
+      "id": "basics-continuous-load",
+      "mode": "reference",
+      "answer": "Maximum current for 3 hours or more",
+      "citation": "Art. 100, 210.19(A), 210.20(A)"
+    },
+    {
+      "id": "basics-ampacity-def",
+      "mode": "reference",
+      "answer": "Current a conductor can carry continuously without exceeding its temperature rating",
+      "citation": "Art. 100, 310.14"
+    },
+    {
+      "id": "basics-q-chapter9",
+      "mode": "choice",
+      "answer": "Chapter 9 tables",
+      "citation": "Ch. 9 Tables 1, 4, 5"
+    },
+    {
+      "id": "basics-q-special",
+      "mode": "choice",
+      "answer": "The Chapter 5 rule",
+      "citation": "90.3"
+    },
+    {
+      "id": "basics-q-continuous",
+      "mode": "choice",
+      "answer": "50 A",
+      "citation": "210.19(A), 210.20(A)"
+    },
+    {
+      "id": "basics-q-definitions",
+      "mode": "choice",
+      "answer": "Article 100",
+      "citation": "Art. 100, Art. 312"
+    },
+    {
+      "id": "article-definitions",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 100"
+    },
+    {
+      "id": "article-generalRequirements",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 110"
+    },
+    {
+      "id": "article-branchCircuits",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 210"
+    },
+    {
+      "id": "article-loadCalculations",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 220"
+    },
+    {
+      "id": "article-overcurrent",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 240"
+    },
+    {
+      "id": "article-grounding",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 250"
+    },
+    {
+      "id": "article-services",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 230"
+    },
+    {
+      "id": "article-wiringMethods",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 300"
+    },
+    {
+      "id": "article-conductors",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 310"
+    },
+    {
+      "id": "article-boxes",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 314"
+    },
+    {
+      "id": "article-raceways",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Ch. 9"
+    },
+    {
+      "id": "article-motors",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 430"
+    },
+    {
+      "id": "article-emt",
+      "mode": "reference",
+      "answer": "When to go here",
+      "citation": "Art. 358"
+    },
+    {
+      "id": "am-receptacle-spacing",
+      "mode": "choice",
+      "answer": "210 Branch Ckts",
+      "citation": "Art. 210"
+    },
+    {
+      "id": "am-derate-attic",
+      "mode": "choice",
+      "answer": "310 Conductors",
+      "citation": "Art. 310"
+    },
+    {
+      "id": "am-emt-size",
+      "mode": "choice",
+      "answer": "Ch. 9 Fill",
+      "citation": "Ch. 9"
+    },
+    {
+      "id": "am-box-volume",
+      "mode": "choice",
+      "answer": "314 Boxes",
+      "citation": "Art. 314"
+    },
+    {
+      "id": "am-electrode",
+      "mode": "choice",
+      "answer": "250 Grounding",
+      "citation": "Art. 250"
+    },
+    {
+      "id": "am-motor-conductor",
+      "mode": "choice",
+      "answer": "430 Motors",
+      "citation": "Art. 430"
+    },
+    {
+      "id": "am-dwelling-service",
+      "mode": "choice",
+      "answer": "220 Load Calc",
+      "citation": "Art. 220"
+    },
+    {
+      "id": "am-breaker-standard",
+      "mode": "choice",
+      "answer": "240 Overcurrent",
+      "citation": "Art. 240"
+    },
+    {
+      "id": "am-readily-accessible",
+      "mode": "choice",
+      "answer": "100 Definitions",
+      "citation": "Art. 100"
+    },
+    {
+      "id": "am-egc-size",
+      "mode": "choice",
+      "answer": "250 Grounding",
+      "citation": "Art. 250"
+    },
+    {
+      "id": "plus-basics-annexc",
+      "mode": "choice",
+      "answer": "Only when every conductor is the same size and insulation",
+      "citation": "Annex C, Ch. 9 Table 1"
+    },
+    {
+      "id": "plus-basics-90-2",
+      "mode": "choice",
+      "answer": "Service drops and metering under the exclusive control of an electric utility",
+      "citation": "90.2"
+    },
+    {
+      "id": "plus-basics-125-twice",
+      "mode": "choice",
+      "answer": "Both the conductor ampacity and the overcurrent device",
+      "citation": "210.19(A), 210.20(A)"
+    },
+    {
+      "id": "plus-basics-accessible",
+      "mode": "choice",
+      "answer": "Accessible but not readily accessible",
+      "citation": "Art. 100"
+    },
+    {
+      "id": "plus-am-gfci",
+      "mode": "choice",
+      "answer": "210 Branch Ckts",
+      "citation": "Art. 210"
+    },
+    {
+      "id": "plus-am-tap",
+      "mode": "choice",
+      "answer": "240 Overcurrent",
+      "citation": "Art. 240"
+    },
+    {
+      "id": "plus-am-support",
+      "mode": "choice",
+      "answer": "358 EMT",
+      "citation": "Art. 358"
+    },
+    {
+      "id": "cond-three-columns",
+      "mode": "reference",
+      "answer": "Insulation sets the starting column; terminations limit the result",
+      "citation": "310.16, 110.14(C)"
+    },
+    {
+      "id": "cond-ninety-start",
+      "mode": "choice",
+      "answer": "Start derating there",
+      "citation": "110.14(C), 310.15"
+    },
+    {
+      "id": "cond-ambient",
+      "mode": "reference",
+      "answer": "Hotter air, smaller number",
+      "citation": "310.15(B)(1)(1)"
+    },
+    {
+      "id": "cond-bundling",
+      "mode": "reference",
+      "answer": "Four or more current-carrying conductors adjust down",
+      "citation": "310.15(C)(1), 310.15(E)"
+    },
+    {
+      "id": "cond-240-4-d",
+      "mode": "reference",
+      "answer": "Normally 15, 20 and 30 amps for general-purpose protection",
+      "citation": "240.4(D)"
+    },
+    {
+      "id": "cond-next-size-up",
+      "mode": "reference",
+      "answer": "Only when the calculation lands between standard sizes",
+      "citation": "240.4(B), 240.4(C), 240.6(A)"
+    },
+    {
+      "id": "cond-q-terminal",
+      "mode": "choice",
+      "answer": "75°C",
+      "citation": "110.14(C)"
+    },
+    {
+      "id": "cond-q-14awg",
+      "mode": "choice",
+      "answer": "15 A",
+      "citation": "240.4(D), 310.16"
+    },
+    {
+      "id": "cond-q-egc-count",
+      "mode": "choice",
+      "answer": "3",
+      "citation": "310.15(E), 310.15(C)(1)"
+    },
+    {
+      "id": "cond-q-harmonic-neutral",
+      "mode": "choice",
+      "answer": "4",
+      "citation": "310.15(E)(3)"
+    },
+    {
+      "id": "cond-q-nextsize",
+      "mode": "choice",
+      "answer": "90 A",
+      "citation": "240.4(B), 240.6(A)"
+    },
+    {
+      "id": "plus-cond-both-factors",
+      "mode": "choice",
+      "answer": "Multiply both against the same starting ampacity",
+      "citation": "310.15(B)(1)(1), 310.15(C)(1)"
+    },
+    {
+      "id": "plus-cond-parallel",
+      "mode": "choice",
+      "answer": "1/0 AWG",
+      "citation": "310.10(G)"
+    },
+    {
+      "id": "plus-cond-neutral-count",
+      "mode": "choice",
+      "answer": "2",
+      "citation": "310.15(E)(1)"
+    },
+    {
+      "id": "plus-cond-10awg-alum",
+      "mode": "choice",
+      "answer": "25 A",
+      "citation": "240.4(D)"
+    },
+    {
+      "id": "install-card-depth",
+      "mode": "choice",
+      "answer": "3 ft",
+      "citation": "110.26(A)(1)"
+    },
+    {
+      "id": "install-card-width",
+      "mode": "choice",
+      "answer": "30 in.",
+      "citation": "110.26(A)(2)"
+    },
+    {
+      "id": "install-card-height",
+      "mode": "reference",
+      "answer": "Six and a half feet, or the height of the equipment where it is taller",
+      "citation": "110.26(A)(3), 110.26(E)"
+    },
+    {
+      "id": "install-card-entrances",
+      "mode": "reference",
+      "answer": "At 1200 amperes or more, and over six feet wide",
+      "citation": "110.26(C)(2)"
+    },
+    {
+      "id": "install-card-dedicated",
+      "mode": "reference",
+      "answer": "The footprint of the equipment, from the floor to six feet above it or to the structural ceiling, whichever is lower",
+      "citation": "110.26(E)(1)"
+    },
+    {
+      "id": "install-card-burial-direct",
+      "mode": "choice",
+      "answer": "24 in.",
+      "citation": "Table 300.5(A) (Table 300.5 in 2020)"
+    },
+    {
+      "id": "install-card-burial-residential",
+      "mode": "reference",
+      "answer": "Residential branch circuit, 120 volts or less, 20 amperes or less, and GFCI protected",
+      "citation": "Table 300.5(A) (Table 300.5 in 2020)"
+    },
+    {
+      "id": "install-card-burial-traffic",
+      "mode": "choice",
+      "answer": "24 in.",
+      "citation": "Table 300.5(A) (Table 300.5 in 2020)"
+    },
+    {
+      "id": "install-card-support-emt",
+      "mode": "choice",
+      "answer": "10 ft",
+      "citation": "358.30(A), (B)"
+    },
+    {
+      "id": "install-card-support-nm",
+      "mode": "reference",
+      "answer": "Within twelve inches of a box, then every four and a half feet",
+      "citation": "334.30, 314.17(B)(2)"
+    },
+    {
+      "id": "install-card-bends",
+      "mode": "choice",
+      "answer": "360°",
+      "citation": "358.26, 344.26, 352.26"
+    },
+    {
+      "id": "install-quiz-depth-480",
+      "mode": "choice",
+      "answer": "3.5 ft",
+      "citation": "110.26(A)(1)"
+    },
+    {
+      "id": "install-quiz-depth-house",
+      "mode": "choice",
+      "answer": "3 ft",
+      "citation": "110.26(A)(1)"
+    },
+    {
+      "id": "install-quiz-width-equipment",
+      "mode": "choice",
+      "answer": "42 in.",
+      "citation": "110.26(A)(2)"
+    },
+    {
+      "id": "install-quiz-cover-rmc",
+      "mode": "choice",
+      "answer": "6 in.",
+      "citation": "Table 300.5(A) (Table 300.5 in 2020)"
+    },
+    {
+      "id": "install-quiz-cover-pvc",
+      "mode": "choice",
+      "answer": "18 in.",
+      "citation": "Table 300.5(A) (Table 300.5 in 2020)"
+    },
+    {
+      "id": "install-quiz-support-nm",
+      "mode": "choice",
+      "answer": "Within 12 in. of the box, then every 4.5 ft",
+      "citation": "334.30"
+    },
+    {
+      "id": "install-quiz-receptacle-spacing",
+      "mode": "choice",
+      "answer": "6 ft",
+      "citation": "210.52(A)(1)"
+    },
+    {
+      "id": "install-quiz-wall-space",
+      "mode": "choice",
+      "answer": "2 ft",
+      "citation": "210.52(A)(2)"
+    },
+    {
+      "id": "install-quiz-counter-spacing",
+      "mode": "choice",
+      "answer": "24 in.",
+      "citation": "210.52(C)(1)"
+    },
+    {
+      "id": "install-quiz-bends",
+      "mode": "choice",
+      "answer": "90°",
+      "citation": "358.26"
+    },
+    {
+      "id": "install-quiz-continuous",
+      "mode": "choice",
+      "answer": "60 A",
+      "citation": "210.20(A), Table 240.6(A)"
+    },
+    {
+      "id": "install-quiz-dedicated-space",
+      "mode": "choice",
+      "answer": "No, it is in the dedicated space above the equipment",
+      "citation": "110.26(E)(1)"
+    },
+    {
+      "id": "install-match-workspace",
+      "mode": "choice",
+      "answer": "110 General",
+      "citation": "Art. 110"
+    },
+    {
+      "id": "install-match-cover",
+      "mode": "choice",
+      "answer": "300 Wiring",
+      "citation": "Art. 300"
+    },
+    {
+      "id": "install-match-service-disconnect",
+      "mode": "choice",
+      "answer": "230 Services",
+      "citation": "Art. 230"
+    },
+    {
+      "id": "install-match-receptacle-spacing",
+      "mode": "choice",
+      "answer": "210 Branch Ckts",
+      "citation": "Art. 210"
+    },
+    {
+      "id": "install-match-support",
+      "mode": "choice",
+      "answer": "358 EMT",
+      "citation": "Art. 358"
+    },
+    {
+      "id": "install-match-readily-accessible",
+      "mode": "choice",
+      "answer": "100 Definitions",
+      "citation": "Art. 100"
+    },
+    {
+      "id": "calc-ampacity-1",
+      "mode": "choice",
+      "answer": "52.2 A",
+      "citation": "310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C)"
+    },
+    {
+      "id": "calc-ocpd-1",
+      "mode": "choice",
+      "answer": "20 A",
+      "citation": "310.16, 240.4(D), 240.6(A)"
+    },
+    {
+      "id": "calc-conduitfill-1",
+      "mode": "choice",
+      "answer": "3/4\"",
+      "citation": "Ch. 9 Table 1, Table 4, Table 5"
+    },
+    {
+      "id": "calc-boxfill-1",
+      "mode": "choice",
+      "answer": "22.5 in³",
+      "citation": "314.16(B)"
+    },
+    {
+      "id": "calc-vdrop-1",
+      "mode": "choice",
+      "answer": "4.0 V",
+      "citation": "210.19(A) Informational Note, Ch. 9 Table 8"
+    },
+    {
+      "id": "load-card-va-per-sqft",
+      "mode": "choice",
+      "answer": "3 VA/ft²",
+      "citation": "220.41 (220.12 in 2020)"
+    },
+    {
+      "id": "load-card-small-appliance",
+      "mode": "reference",
+      "answer": "1500 VA for each small-appliance circuit, and 1500 VA for the laundry circuit",
+      "citation": "220.52"
+    },
+    {
+      "id": "load-card-demand-bands",
+      "mode": "reference",
+      "answer": "The first 3000 VA at 100%, the rest up to 120,000 VA at 35%",
+      "citation": "Table 220.45 (Table 220.42 in 2020)"
+    },
+    {
+      "id": "load-card-range",
+      "mode": "choice",
+      "answer": "8 kW",
+      "citation": "Table 220.55"
+    },
+    {
+      "id": "load-card-dryer",
+      "mode": "choice",
+      "answer": "5000 VA",
+      "citation": "220.54"
+    },
+    {
+      "id": "load-card-fastened",
+      "mode": "reference",
+      "answer": "When there are four or more of them on the same feeder or service",
+      "citation": "220.53"
+    },
+    {
+      "id": "load-card-noncoincident",
+      "mode": "choice",
+      "answer": "12 kW",
+      "citation": "220.60"
+    },
+    {
+      "id": "load-card-optional",
+      "mode": "reference",
+      "answer": "It piles every general load together and takes the first 10 kVA at 100% and the rest at 40%",
+      "citation": "220.82"
+    },
+    {
+      "id": "load-card-service-minimum",
+      "mode": "choice",
+      "answer": "100 A",
+      "citation": "230.79(C)"
+    },
+    {
+      "id": "load-card-neutral",
+      "mode": "reference",
+      "answer": "Anything that is purely line to line",
+      "citation": "220.61"
+    },
+    {
+      "id": "load-quiz-general-lighting",
+      "mode": "choice",
+      "answer": "5400 VA",
+      "citation": "220.41 (220.12 in 2020)"
+    },
+    {
+      "id": "load-quiz-demand",
+      "mode": "choice",
+      "answer": "5800 VA",
+      "citation": "Table 220.45 (Table 220.42 in 2020)"
+    },
+    {
+      "id": "load-quiz-range-over-12",
+      "mode": "choice",
+      "answer": "9.6 kW",
+      "citation": "Table 220.55"
+    },
+    {
+      "id": "load-quiz-appliance-count",
+      "mode": "choice",
+      "answer": "3",
+      "citation": "220.53"
+    },
+    {
+      "id": "load-quiz-optional-vs-standard",
+      "mode": "choice",
+      "answer": "No, the method named is the answer being asked for",
+      "citation": "220.82, 220.40"
+    },
+    {
+      "id": "load-quiz-noncoincident",
+      "mode": "choice",
+      "answer": "9 kW",
+      "citation": "220.60"
+    },
+    {
+      "id": "load-quiz-neutral",
+      "mode": "choice",
+      "answer": "5600 VA",
+      "citation": "220.61(B)"
+    },
+    {
+      "id": "load-quiz-service-minimum",
+      "mode": "choice",
+      "answer": "100 A",
+      "citation": "230.79(C), 240.6(A)"
+    },
+    {
+      "id": "load-quiz-where-circuits-go",
+      "mode": "choice",
+      "answer": "Inside the general lighting subtotal, before the demand factor",
+      "citation": "220.52, Table 220.45"
+    },
+    {
+      "id": "load-calc-standard-dwelling",
+      "mode": "choice",
+      "answer": "150 A",
+      "citation": "220.41, Table 220.45, 220.50, 430.24, 220.52, 220.53, 220.54, Table 220.55, 220.60, 240.6(A)"
+    },
+    {
+      "id": "load-calc-optional-dwelling",
+      "mode": "choice",
+      "answer": "125 A",
+      "citation": "220.82, 220.82(B), 220.82(C), 240.6(A)"
+    },
+    {
+      "id": "load-calc-three-ranges",
+      "mode": "choice",
+      "answer": "15.4 kW",
+      "citation": "Table 220.55"
+    },
+    {
+      "id": "gnd-grounded-vs-grounding",
+      "mode": "reference",
+      "answer": "One carries current by design, one does not",
+      "citation": "Art. 100, 250.24"
+    },
+    {
+      "id": "gnd-gec-vs-egc",
+      "mode": "reference",
+      "answer": "One from the service conductors, one from the breaker",
+      "citation": "250.66, 250.122"
+    },
+    {
+      "id": "gnd-rod-ceiling",
+      "mode": "reference",
+      "answer": "Never required to be larger than 6 AWG copper",
+      "citation": "250.66(A), 250.66(B), 250.66(C)"
+    },
+    {
+      "id": "gnd-neutral-bond",
+      "mode": "choice",
+      "answer": "Not permitted",
+      "citation": "250.24(A)(5), 250.30"
+    },
+    {
+      "id": "gnd-supplemental",
+      "mode": "reference",
+      "answer": "Add one more electrode",
+      "citation": "250.53(A)(2), 250.53(A)(3)"
+    },
+    {
+      "id": "gnd-q-egc-200",
+      "mode": "choice",
+      "answer": "6 AWG",
+      "citation": "250.122"
+    },
+    {
+      "id": "gnd-q-rod-cap",
+      "mode": "choice",
+      "answer": "6 AWG",
+      "citation": "250.66(A)"
+    },
+    {
+      "id": "gnd-q-supplemental",
+      "mode": "choice",
+      "answer": "One additional electrode",
+      "citation": "250.53(A)(2)"
+    },
+    {
+      "id": "mtr-table-not-nameplate",
+      "mode": "choice",
+      "answer": "Use the table",
+      "citation": "430.6(A)(1), 430.32"
+    },
+    {
+      "id": "mtr-125",
+      "mode": "reference",
+      "answer": "125% of the table full-load current",
+      "citation": "430.22"
+    },
+    {
+      "id": "mtr-three-protections",
+      "mode": "reference",
+      "answer": "Overload, short circuit, and ground fault",
+      "citation": "430.32, 430.52"
+    },
+    {
+      "id": "mtr-overload-percent",
+      "mode": "reference",
+      "answer": "125% or 115%, depending on the nameplate",
+      "citation": "430.32(A)(1)"
+    },
+    {
+      "id": "mtr-q-conductor",
+      "mode": "choice",
+      "answer": "35 A",
+      "citation": "430.22"
+    },
+    {
+      "id": "mtr-q-overload-source",
+      "mode": "choice",
+      "answer": "The motor nameplate full-load current",
+      "citation": "430.32"
+    },
+    {
+      "id": "mtr-q-service-factor",
+      "mode": "choice",
+      "answer": "42.5 A",
+      "citation": "430.32(A)(1)"
+    }
+  ],
+  "tables": {
+    "copperAmpacity": {
+      "1 AWG": {
+        "60": 110,
+        "75": 130,
+        "90": 145
+      },
+      "1/0 AWG": {
+        "60": 125,
+        "75": 150,
+        "90": 170
+      },
+      "2 AWG": {
+        "60": 95,
+        "75": 115,
+        "90": 130
+      },
+      "2/0 AWG": {
+        "60": 145,
+        "75": 175,
+        "90": 195
+      },
+      "3 AWG": {
+        "60": 85,
+        "75": 100,
+        "90": 115
+      },
+      "3/0 AWG": {
+        "60": 165,
+        "75": 200,
+        "90": 225
+      },
+      "4 AWG": {
+        "60": 70,
+        "75": 85,
+        "90": 95
+      },
+      "4/0 AWG": {
+        "60": 195,
+        "75": 230,
+        "90": 260
+      },
+      "6 AWG": {
+        "60": 55,
+        "75": 65,
+        "90": 75
+      },
+      "8 AWG": {
+        "60": 40,
+        "75": 50,
+        "90": 55
+      },
+      "10 AWG": {
+        "60": 30,
+        "75": 35,
+        "90": 40
+      },
+      "12 AWG": {
+        "60": 20,
+        "75": 25,
+        "90": 30
+      },
+      "14 AWG": {
+        "60": 15,
+        "75": 20,
+        "90": 25
+      },
+      "250 kcmil": {
+        "60": 215,
+        "75": 255,
+        "90": 290
+      },
+      "300 kcmil": {
+        "60": 240,
+        "75": 285,
+        "90": 320
+      },
+      "350 kcmil": {
+        "60": 260,
+        "75": 310,
+        "90": 350
+      },
+      "400 kcmil": {
+        "60": 280,
+        "75": 335,
+        "90": 380
+      },
+      "500 kcmil": {
+        "60": 320,
+        "75": 380,
+        "90": 430
+      }
+    },
+    "aluminumAmpacity": {
+      "1 AWG": {
+        "60": 85,
+        "75": 100,
+        "90": 115
+      },
+      "1/0 AWG": {
+        "60": 100,
+        "75": 120,
+        "90": 135
+      },
+      "2 AWG": {
+        "60": 75,
+        "75": 90,
+        "90": 100
+      },
+      "2/0 AWG": {
+        "60": 115,
+        "75": 135,
+        "90": 150
+      },
+      "3 AWG": {
+        "60": 65,
+        "75": 75,
+        "90": 85
+      },
+      "3/0 AWG": {
+        "60": 130,
+        "75": 155,
+        "90": 175
+      },
+      "4 AWG": {
+        "60": 55,
+        "75": 65,
+        "90": 75
+      },
+      "4/0 AWG": {
+        "60": 150,
+        "75": 180,
+        "90": 205
+      },
+      "6 AWG": {
+        "60": 40,
+        "75": 50,
+        "90": 55
+      },
+      "8 AWG": {
+        "60": 35,
+        "75": 40,
+        "90": 45
+      },
+      "10 AWG": {
+        "60": 25,
+        "75": 30,
+        "90": 35
+      },
+      "12 AWG": {
+        "60": 15,
+        "75": 20,
+        "90": 25
+      },
+      "250 kcmil": {
+        "60": 170,
+        "75": 205,
+        "90": 230
+      },
+      "300 kcmil": {
+        "60": 195,
+        "75": 230,
+        "90": 260
+      },
+      "350 kcmil": {
+        "60": 210,
+        "75": 250,
+        "90": 280
+      },
+      "400 kcmil": {
+        "60": 225,
+        "75": 270,
+        "90": 305
+      },
+      "500 kcmil": {
+        "60": 260,
+        "75": 310,
+        "90": 350
+      }
+    },
+    "circularMils": {
+      "1 AWG": 83690,
+      "1/0 AWG": 105600,
+      "2 AWG": 66360,
+      "2/0 AWG": 133100,
+      "3 AWG": 52620,
+      "3/0 AWG": 167800,
+      "4 AWG": 41740,
+      "4/0 AWG": 211600,
+      "6 AWG": 26240,
+      "8 AWG": 16510,
+      "10 AWG": 10380,
+      "12 AWG": 6530,
+      "14 AWG": 4110,
+      "250 kcmil": 250000,
+      "300 kcmil": 300000,
+      "350 kcmil": 350000,
+      "400 kcmil": 400000,
+      "500 kcmil": 500000
+    },
+    "conductorVolume": {
+      "6 AWG": 5,
+      "8 AWG": 3,
+      "10 AWG": 2.5,
+      "12 AWG": 2.25,
+      "14 AWG": 2,
+      "16 AWG": 1.75,
+      "18 AWG": 1.5
+    },
+    "emtArea": {
+      "1-1/2\"": 2.036,
+      "1-1/4\"": 1.496,
+      "1\"": 0.864,
+      "1/2\"": 0.304,
+      "2-1/2\"": 5.858,
+      "2\"": 3.356,
+      "3-1/2\"": 11.545,
+      "3\"": 8.846,
+      "3/4\"": 0.533,
+      "4\"": 14.753
+    },
+    "emtTradeSizes": [
+      "1/2\"",
+      "3/4\"",
+      "1\"",
+      "1-1/4\"",
+      "1-1/2\"",
+      "2\"",
+      "2-1/2\"",
+      "3\"",
+      "3-1/2\"",
+      "4\""
+    ],
+    "thhnArea": {
+      "1 AWG": 0.1562,
+      "1/0 AWG": 0.1855,
+      "2 AWG": 0.1158,
+      "2/0 AWG": 0.2223,
+      "3 AWG": 0.0973,
+      "3/0 AWG": 0.2679,
+      "4 AWG": 0.0824,
+      "4/0 AWG": 0.3237,
+      "6 AWG": 0.0507,
+      "8 AWG": 0.0366,
+      "10 AWG": 0.0211,
+      "12 AWG": 0.0133,
+      "14 AWG": 0.0097,
+      "250 kcmil": 0.397,
+      "300 kcmil": 0.4608,
+      "350 kcmil": 0.5242,
+      "400 kcmil": 0.5863,
+      "500 kcmil": 0.7073
+    },
+    "standardOCPD": [
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      60,
+      70,
+      80,
+      90,
+      100,
+      110,
+      125,
+      150,
+      175,
+      200,
+      225,
+      250,
+      300,
+      350,
+      400,
+      450,
+      500,
+      600,
+      700,
+      800,
+      1000,
+      1200,
+      1600,
+      2000,
+      2500,
+      3000,
+      4000,
+      5000,
+      6000
+    ],
+    "smallConductorLimit": {
+      "10 AWG": {
+        "aluminum": 25,
+        "copper": 30
+      },
+      "12 AWG": {
+        "aluminum": 15,
+        "copper": 20
+      },
+      "14 AWG": {
+        "copper": 15
+      }
+    },
+    "gecCopperService": [
+      {
+        "aluminum": "6 AWG",
+        "copper": "8 AWG",
+        "serviceUpTo": 66360
+      },
+      {
+        "aluminum": "4 AWG",
+        "copper": "6 AWG",
+        "serviceUpTo": 105600
+      },
+      {
+        "aluminum": "2 AWG",
+        "copper": "4 AWG",
+        "serviceUpTo": 167800
+      },
+      {
+        "aluminum": "1/0 AWG",
+        "copper": "2 AWG",
+        "serviceUpTo": 350000
+      },
+      {
+        "aluminum": "3/0 AWG",
+        "copper": "1/0 AWG",
+        "serviceUpTo": 600000
+      },
+      {
+        "aluminum": "4/0 AWG",
+        "copper": "2/0 AWG",
+        "serviceUpTo": 1100000
+      },
+      {
+        "aluminum": "250 kcmil",
+        "copper": "3/0 AWG",
+        "serviceUpTo": 1.7976931348623157e+308
+      }
+    ],
+    "gecAluminumService": [
+      {
+        "aluminum": "6 AWG",
+        "copper": "8 AWG",
+        "serviceUpTo": 105600
+      },
+      {
+        "aluminum": "4 AWG",
+        "copper": "6 AWG",
+        "serviceUpTo": 167800
+      },
+      {
+        "aluminum": "2 AWG",
+        "copper": "4 AWG",
+        "serviceUpTo": 250000
+      },
+      {
+        "aluminum": "1/0 AWG",
+        "copper": "2 AWG",
+        "serviceUpTo": 500000
+      },
+      {
+        "aluminum": "3/0 AWG",
+        "copper": "1/0 AWG",
+        "serviceUpTo": 900000
+      },
+      {
+        "aluminum": "4/0 AWG",
+        "copper": "2/0 AWG",
+        "serviceUpTo": 1750000
+      },
+      {
+        "aluminum": "250 kcmil",
+        "copper": "3/0 AWG",
+        "serviceUpTo": 1.7976931348623157e+308
+      }
+    ],
+    "egcRows": [
+      {
+        "aluminum": "12 AWG",
+        "copper": "14 AWG",
+        "ocpdUpTo": 15
+      },
+      {
+        "aluminum": "10 AWG",
+        "copper": "12 AWG",
+        "ocpdUpTo": 20
+      },
+      {
+        "aluminum": "8 AWG",
+        "copper": "10 AWG",
+        "ocpdUpTo": 60
+      },
+      {
+        "aluminum": "6 AWG",
+        "copper": "8 AWG",
+        "ocpdUpTo": 100
+      },
+      {
+        "aluminum": "4 AWG",
+        "copper": "6 AWG",
+        "ocpdUpTo": 200
+      },
+      {
+        "aluminum": "2 AWG",
+        "copper": "4 AWG",
+        "ocpdUpTo": 300
+      },
+      {
+        "aluminum": "1 AWG",
+        "copper": "3 AWG",
+        "ocpdUpTo": 400
+      },
+      {
+        "aluminum": "1/0 AWG",
+        "copper": "2 AWG",
+        "ocpdUpTo": 500
+      },
+      {
+        "aluminum": "2/0 AWG",
+        "copper": "1 AWG",
+        "ocpdUpTo": 600
+      },
+      {
+        "aluminum": "3/0 AWG",
+        "copper": "1/0 AWG",
+        "ocpdUpTo": 800
+      },
+      {
+        "aluminum": "4/0 AWG",
+        "copper": "2/0 AWG",
+        "ocpdUpTo": 1000
+      },
+      {
+        "aluminum": "250 kcmil",
+        "copper": "3/0 AWG",
+        "ocpdUpTo": 1200
+      },
+      {
+        "aluminum": "350 kcmil",
+        "copper": "4/0 AWG",
+        "ocpdUpTo": 1600
+      },
+      {
+        "aluminum": "400 kcmil",
+        "copper": "250 kcmil",
+        "ocpdUpTo": 2000
+      },
+      {
+        "aluminum": "600 kcmil",
+        "copper": "350 kcmil",
+        "ocpdUpTo": 2500
+      },
+      {
+        "aluminum": "600 kcmil",
+        "copper": "400 kcmil",
+        "ocpdUpTo": 3000
+      },
+      {
+        "aluminum": "750 kcmil",
+        "copper": "500 kcmil",
+        "ocpdUpTo": 4000
+      },
+      {
+        "aluminum": "1200 kcmil",
+        "copper": "700 kcmil",
+        "ocpdUpTo": 5000
+      },
+      {
+        "aluminum": "1200 kcmil",
+        "copper": "800 kcmil",
+        "ocpdUpTo": 6000
+      }
+    ],
+    "singlePhaseFLC": {
+      "1 hp": {
+        "single115": 16,
+        "single230": 8
+      },
+      "1-1/2 hp": {
+        "single115": 20,
+        "single230": 10
+      },
+      "1/2 hp": {
+        "single115": 9.8,
+        "single230": 4.9
+      },
+      "1/3 hp": {
+        "single115": 7.2,
+        "single230": 3.6
+      },
+      "1/4 hp": {
+        "single115": 5.8,
+        "single230": 2.9
+      },
+      "1/6 hp": {
+        "single115": 4.4,
+        "single230": 2.2
+      },
+      "2 hp": {
+        "single115": 24,
+        "single230": 12
+      },
+      "3 hp": {
+        "single115": 34,
+        "single230": 17
+      },
+      "3/4 hp": {
+        "single115": 13.8,
+        "single230": 6.9
+      },
+      "5 hp": {
+        "single115": 56,
+        "single230": 28
+      },
+      "7-1/2 hp": {
+        "single115": 80,
+        "single230": 40
+      },
+      "10 hp": {
+        "single115": 100,
+        "single230": 50
+      }
+    },
+    "threePhaseFLC": {
+      "1 hp": {
+        "three208": 4.6,
+        "three230": 4.2,
+        "three460": 2.1
+      },
+      "1-1/2 hp": {
+        "three208": 6.6,
+        "three230": 6,
+        "three460": 3
+      },
+      "1/2 hp": {
+        "three208": 2.4,
+        "three230": 2.2,
+        "three460": 1.1
+      },
+      "2 hp": {
+        "three208": 7.5,
+        "three230": 6.8,
+        "three460": 3.4
+      },
+      "3 hp": {
+        "three208": 10.6,
+        "three230": 9.6,
+        "three460": 4.8
+      },
+      "3/4 hp": {
+        "three208": 3.5,
+        "three230": 3.2,
+        "three460": 1.6
+      },
+      "5 hp": {
+        "three208": 16.7,
+        "three230": 15.2,
+        "three460": 7.6
+      },
+      "7-1/2 hp": {
+        "three208": 24.2,
+        "three230": 22,
+        "three460": 11
+      },
+      "10 hp": {
+        "three208": 30.8,
+        "three230": 28,
+        "three460": 14
+      },
+      "15 hp": {
+        "three208": 46.2,
+        "three230": 42,
+        "three460": 21
+      },
+      "20 hp": {
+        "three208": 59.4,
+        "three230": 54,
+        "three460": 27
+      },
+      "25 hp": {
+        "three208": 74.8,
+        "three230": 68,
+        "three460": 34
+      },
+      "30 hp": {
+        "three208": 88,
+        "three230": 80,
+        "three460": 40
+      },
+      "40 hp": {
+        "three208": 114,
+        "three230": 104,
+        "three460": 52
+      },
+      "50 hp": {
+        "three208": 143,
+        "three230": 130,
+        "three460": 65
+      },
+      "60 hp": {
+        "three208": 169,
+        "three230": 154,
+        "three460": 77
+      },
+      "75 hp": {
+        "three208": 211,
+        "three230": 192,
+        "three460": 96
+      },
+      "100 hp": {
+        "three208": 273,
+        "three230": 248,
+        "three460": 124
+      }
+    },
+    "ambient": {
+      "-10": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "-9": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "-8": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "-7": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "-6": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "-5": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "-4": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "-3": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "-2": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "-1": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "0": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "1": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "2": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "3": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "4": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "5": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "6": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "7": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "8": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "9": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "10": {
+        "60": 1.29,
+        "75": 1.2,
+        "90": 1.15
+      },
+      "11": {
+        "60": 1.22,
+        "75": 1.15,
+        "90": 1.12
+      },
+      "12": {
+        "60": 1.22,
+        "75": 1.15,
+        "90": 1.12
+      },
+      "13": {
+        "60": 1.22,
+        "75": 1.15,
+        "90": 1.12
+      },
+      "14": {
+        "60": 1.22,
+        "75": 1.15,
+        "90": 1.12
+      },
+      "15": {
+        "60": 1.22,
+        "75": 1.15,
+        "90": 1.12
+      },
+      "16": {
+        "60": 1.15,
+        "75": 1.11,
+        "90": 1.08
+      },
+      "17": {
+        "60": 1.15,
+        "75": 1.11,
+        "90": 1.08
+      },
+      "18": {
+        "60": 1.15,
+        "75": 1.11,
+        "90": 1.08
+      },
+      "19": {
+        "60": 1.15,
+        "75": 1.11,
+        "90": 1.08
+      },
+      "20": {
+        "60": 1.15,
+        "75": 1.11,
+        "90": 1.08
+      },
+      "21": {
+        "60": 1.08,
+        "75": 1.05,
+        "90": 1.04
+      },
+      "22": {
+        "60": 1.08,
+        "75": 1.05,
+        "90": 1.04
+      },
+      "23": {
+        "60": 1.08,
+        "75": 1.05,
+        "90": 1.04
+      },
+      "24": {
+        "60": 1.08,
+        "75": 1.05,
+        "90": 1.04
+      },
+      "25": {
+        "60": 1.08,
+        "75": 1.05,
+        "90": 1.04
+      },
+      "26": {
+        "60": 1,
+        "75": 1,
+        "90": 1
+      },
+      "27": {
+        "60": 1,
+        "75": 1,
+        "90": 1
+      },
+      "28": {
+        "60": 1,
+        "75": 1,
+        "90": 1
+      },
+      "29": {
+        "60": 1,
+        "75": 1,
+        "90": 1
+      },
+      "30": {
+        "60": 1,
+        "75": 1,
+        "90": 1
+      },
+      "31": {
+        "60": 0.91,
+        "75": 0.94,
+        "90": 0.96
+      },
+      "32": {
+        "60": 0.91,
+        "75": 0.94,
+        "90": 0.96
+      },
+      "33": {
+        "60": 0.91,
+        "75": 0.94,
+        "90": 0.96
+      },
+      "34": {
+        "60": 0.91,
+        "75": 0.94,
+        "90": 0.96
+      },
+      "35": {
+        "60": 0.91,
+        "75": 0.94,
+        "90": 0.96
+      },
+      "36": {
+        "60": 0.82,
+        "75": 0.88,
+        "90": 0.91
+      },
+      "37": {
+        "60": 0.82,
+        "75": 0.88,
+        "90": 0.91
+      },
+      "38": {
+        "60": 0.82,
+        "75": 0.88,
+        "90": 0.91
+      },
+      "39": {
+        "60": 0.82,
+        "75": 0.88,
+        "90": 0.91
+      },
+      "40": {
+        "60": 0.82,
+        "75": 0.88,
+        "90": 0.91
+      },
+      "41": {
+        "60": 0.71,
+        "75": 0.82,
+        "90": 0.87
+      },
+      "42": {
+        "60": 0.71,
+        "75": 0.82,
+        "90": 0.87
+      },
+      "43": {
+        "60": 0.71,
+        "75": 0.82,
+        "90": 0.87
+      },
+      "44": {
+        "60": 0.71,
+        "75": 0.82,
+        "90": 0.87
+      },
+      "45": {
+        "60": 0.71,
+        "75": 0.82,
+        "90": 0.87
+      },
+      "46": {
+        "60": 0.58,
+        "75": 0.75,
+        "90": 0.82
+      },
+      "47": {
+        "60": 0.58,
+        "75": 0.75,
+        "90": 0.82
+      },
+      "48": {
+        "60": 0.58,
+        "75": 0.75,
+        "90": 0.82
+      },
+      "49": {
+        "60": 0.58,
+        "75": 0.75,
+        "90": 0.82
+      },
+      "50": {
+        "60": 0.58,
+        "75": 0.75,
+        "90": 0.82
+      },
+      "51": {
+        "60": 0.41,
+        "75": 0.67,
+        "90": 0.76
+      },
+      "52": {
+        "60": 0.41,
+        "75": 0.67,
+        "90": 0.76
+      },
+      "53": {
+        "60": 0.41,
+        "75": 0.67,
+        "90": 0.76
+      },
+      "54": {
+        "60": 0.41,
+        "75": 0.67,
+        "90": 0.76
+      },
+      "55": {
+        "60": 0.41,
+        "75": 0.67,
+        "90": 0.76
+      },
+      "56": {
+        "60": null,
+        "75": 0.58,
+        "90": 0.71
+      },
+      "57": {
+        "60": null,
+        "75": 0.58,
+        "90": 0.71
+      },
+      "58": {
+        "60": null,
+        "75": 0.58,
+        "90": 0.71
+      },
+      "59": {
+        "60": null,
+        "75": 0.58,
+        "90": 0.71
+      },
+      "60": {
+        "60": null,
+        "75": 0.58,
+        "90": 0.71
+      },
+      "61": {
+        "60": null,
+        "75": 0.47,
+        "90": 0.65
+      },
+      "62": {
+        "60": null,
+        "75": 0.47,
+        "90": 0.65
+      },
+      "63": {
+        "60": null,
+        "75": 0.47,
+        "90": 0.65
+      },
+      "64": {
+        "60": null,
+        "75": 0.47,
+        "90": 0.65
+      },
+      "65": {
+        "60": null,
+        "75": 0.47,
+        "90": 0.65
+      },
+      "66": {
+        "60": null,
+        "75": 0.33,
+        "90": 0.58
+      },
+      "67": {
+        "60": null,
+        "75": 0.33,
+        "90": 0.58
+      },
+      "68": {
+        "60": null,
+        "75": 0.33,
+        "90": 0.58
+      },
+      "69": {
+        "60": null,
+        "75": 0.33,
+        "90": 0.58
+      },
+      "70": {
+        "60": null,
+        "75": 0.33,
+        "90": 0.58
+      },
+      "71": {
+        "60": null,
+        "75": null,
+        "90": 0.5
+      },
+      "72": {
+        "60": null,
+        "75": null,
+        "90": 0.5
+      },
+      "73": {
+        "60": null,
+        "75": null,
+        "90": 0.5
+      },
+      "74": {
+        "60": null,
+        "75": null,
+        "90": 0.5
+      },
+      "75": {
+        "60": null,
+        "75": null,
+        "90": 0.5
+      },
+      "76": {
+        "60": null,
+        "75": null,
+        "90": 0.41
+      },
+      "77": {
+        "60": null,
+        "75": null,
+        "90": 0.41
+      },
+      "78": {
+        "60": null,
+        "75": null,
+        "90": 0.41
+      },
+      "79": {
+        "60": null,
+        "75": null,
+        "90": 0.41
+      },
+      "80": {
+        "60": null,
+        "75": null,
+        "90": 0.41
+      },
+      "81": {
+        "60": null,
+        "75": null,
+        "90": 0.29
+      },
+      "82": {
+        "60": null,
+        "75": null,
+        "90": 0.29
+      },
+      "83": {
+        "60": null,
+        "75": null,
+        "90": 0.29
+      },
+      "84": {
+        "60": null,
+        "75": null,
+        "90": 0.29
+      },
+      "85": {
+        "60": null,
+        "75": null,
+        "90": 0.29
+      }
+    }
+  }
+}

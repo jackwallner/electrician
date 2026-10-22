@@ -19,10 +19,12 @@ def main() -> None:
     targets = {
         "electrician-content.json": repo / "android/app/src/main/resources/electrician-content.json",
         "electrician-parity.json": repo / "android/app/src/test/resources/electrician-parity.json",
+        "nec2023-bank-audit.json": repo / "android/app/src/test/resources/nec2023-bank-audit.json",
         "swift-content-manifest.json": repo / "android/app/src/main/resources/swift-content-manifest.json",
     }
     with tempfile.TemporaryDirectory(prefix="electrician-export-") as temporary:
         work = Path(temporary)
+        (work / "nec2023-bank-audit.json").write_bytes((repo / "TestFixtures/nec2023-bank-audit.json").read_bytes())
         binary = work / "export"
         candidate_source = repo / "Shared/Services/CandidateProfile.swift"
         candidate_marker = "\n@MainActor\nfinal class CandidateProfile:"

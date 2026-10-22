@@ -25,8 +25,8 @@ enum class PracticeSkill(val title: String, val subtitle: String, val roomID: St
     voltageDrop("Drop the Voltage", "The field calculation, drilled", "calc-room", "chart.line.downtrend.xyaxis"),
     egcSizing("Size the Ground", "Table 250.122, read from the breaker", "grounding-room", "leaf.fill"),
     gecSizing("Reach the Electrode", "Table 250.66, and the rod's own ceiling", "grounding-room", "arrow.down.to.line"),
-    motorConductor("Feed the Motor", "Table current, never the nameplate", "grounding-room", "fan.fill"),
-    motorProtection("Protect the Motor", "The one place you round up", "grounding-room", "gearshape.2.fill"),
+    motorConductor("Feed the Motor", "Table current for ordinary motors", "grounding-room", "fan.fill"),
+    motorProtection("Protect the Motor", "Device percentages and standard ratings", "grounding-room", "gearshape.2.fill"),
     dwellingLoad("Size the Service", "The full dwelling calculation", "loads-room", "house.fill");
 
     val itemPrefix: String get() = "gen-$name-"

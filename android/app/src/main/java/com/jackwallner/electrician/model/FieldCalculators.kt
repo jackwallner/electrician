@@ -36,7 +36,7 @@ object FieldCalculators {
         val allowable = min(afterDerate, terminationCap.toDouble())
         val ceiling = NECTables.smallConductorCeiling(size, material)
         return AmpacityResult(table, ambient, adjustment, afterDerate, terminationCap, ceiling, allowable, ceiling?.let { min(allowable, it.toDouble()) } ?: allowable,
-            "310.16, 310.15(B)(1), 310.15(C)(1), 110.14(C), 240.4(D)")
+            "310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C), 240.4(D)")
     }
 
     fun conduitFill(conductorSize: String, count: Int, tradeSize: String): ConduitFillResult? {
@@ -102,12 +102,12 @@ object FieldCalculators {
         val conductorVolume = conductors * unit
         val clampVolume = if (hasClamps) unit else 0.0
         val deviceVolume = devices * 2 * unit
-        val groundVolume = if (grounds > 0) groundUnit else 0.0
+        val groundVolume = NECTables.groundFillAllowances(grounds) * groundUnit
         val required = conductorVolume + clampVolume + deviceVolume + groundVolume
         return BoxFillResult(conductorVolume, clampVolume, deviceVolume, groundVolume, required, NECTables.smallestBox(required)?.name, "314.16(A), 314.16(B)")
     }
 
-    fun dwellingLoad(squareFeet: Double, smallApplianceCircuits: Int, laundryCircuits: Int, rangeKW: Double, rangeCount: Int, dryerNameplateVA: Double, fastenedApplianceVA: List<Double>, coolingVA: Double, heatingVA: Double, volts: Double = 240.0): DwellingLoadResult? {
+    fun dwellingLoad(squareFeet: Double, smallApplianceCircuits: Int, laundryCircuits: Int, rangeKW: Double, rangeCount: Int, dryerNameplateVA: Double, fastenedApplianceVA: List<Double>, coolingVA: Double, heatingVA: Double, volts: Double = 240.0, largestRetainedMotorVA: Double = 0.0): DwellingLoadResult? {
         if (squareFeet <= 0) return null
         val lighting = squareFeet * 3
         val circuits = max(0, smallApplianceCircuits) * 1500.0 + max(0, laundryCircuits) * 1500.0
@@ -118,7 +118,7 @@ object FieldCalculators {
         val applianceTotal = fastenedApplianceVA.sum()
         val applianceAfter = NECTables.fastenedApplianceDemand(applianceTotal, fastenedApplianceVA.size)
         val climate = NECTables.noncoincident(coolingVA, heatingVA)
-        val total = afterDemand + range + dryer + applianceAfter + climate
+        val total = afterDemand + range + dryer + applianceAfter + climate + largestRetainedMotorVA * 0.25
         val amps = NECTables.serviceAmps(total, volts)
         val rating = NECTables.dwellingServiceRating(amps) ?: return null
         val unclamped = NECTables.nextStandardOCPDAtLeast(amps) ?: return null

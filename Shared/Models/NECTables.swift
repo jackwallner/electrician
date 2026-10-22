@@ -27,27 +27,11 @@ enum NECTables {
     /// the content tests catch whatever drifted.
     static let edition = "2023 NEC"
 
-    /// The oldest cycle whose values in this file are the same as the ones
-    /// here, and the newest cycle they have been CHECKED against.
-    ///
-    /// This pair is the honest answer to "why does a 2026 app quote 2023?".
-    /// The tables the app computes from are the most stable pages in the book:
-    /// 310.16 has not moved materially in decades, 240.6(A) and 240.4(D) are
-    /// unchanged since well before 2014, 250.122 last moved in 2014, and
-    /// 430.248/430.250 are older than most of the people sitting the exam. So
-    /// the arithmetic a candidate practises here is the same arithmetic on a
-    /// 2020, 2023 or 2026 paper. What actually moves between cycles is
-    /// COVERAGE (GFCI and AFCI scope, surge protection, emergency and
-    /// equipment disconnects, EV supply equipment), which is why those are
-    /// taught as rules to verify rather than as numbers to memorise.
-    ///
-    /// `verifiedThrough` is a claim about work that was actually done, not
-    /// about what is probably true. Raise it only after checking the tables in
-    /// this file page by page against that edition's book; every "covers your
-    /// edition" string in the app is derived from it, so raising it without
-    /// doing the check turns a study aid into a trap. Lowering it is always
-    /// safe.
-    static let stableSince = NECEdition.nec2020
+    /// The complete shipped data is verified against 2023. Table 240.6(A)
+    /// added the 10 A standard breaker rating in 2023, so do not claim that
+    /// every value is identical to 2020. Never raise verifiedThrough without
+    /// checking that edition's tables.
+    static let stableSince = NECEdition.nec2023
     static let verifiedThrough = NECEdition.nec2023
 
     /// The cycles this app's numbers are asserted to be correct for.
@@ -74,7 +58,7 @@ enum NECTables {
     /// coverage AND the limit of it, because the second half is what makes the
     /// first half trustworthy.
     static var coverageNote: String {
-        "Every table here is unchanged across the \(coverageLabel), so the calculations are the same ones your exam asks for on any of those cycles. What does change between editions is coverage: GFCI and AFCI scope, surge protection, emergency and equipment disconnects. Verify those in the book your jurisdiction has adopted."
+        "Values and citations follow the 2023 NEC. Most calculation tables also apply in 2020, but 2023 adds the 10 A standard breaker rating and renumbers several sections. Use the edition and amendments named by your exam board; state adoption and exam editions can differ."
     }
 
     // MARK: - Conductor sizes
@@ -153,8 +137,12 @@ enum NECTables {
     // MARK: - Ambient temperature correction, 310.15(B)(1)
 
     /// Correction factors keyed by the top of each ambient band, for the 75°C
-    /// and 90°C columns. Bands run in 5°C steps from 26-30°C upward.
+    /// and 90°C columns, Table 310.15(B)(1)(1) in 2023.
     private static let ambientBands: [(upTo: Int, c60: Double, c75: Double, c90: Double)] = [
+        (10, 1.29, 1.20, 1.15),
+        (15, 1.22, 1.15, 1.12),
+        (20, 1.15, 1.11, 1.08),
+        (25, 1.08, 1.05, 1.04),
         (30, 1.00, 1.00, 1.00),
         (35, 0.91, 0.94, 0.96),
         (40, 0.82, 0.88, 0.91),
@@ -162,13 +150,17 @@ enum NECTables {
         (50, 0.58, 0.75, 0.82),
         (55, 0.41, 0.67, 0.76),
         (60, 0.00, 0.58, 0.71),
+        (65, 0.00, 0.47, 0.65),
+        (70, 0.00, 0.33, 0.58),
+        (75, 0.00, 0.00, 0.50),
+        (80, 0.00, 0.00, 0.41),
+        (85, 0.00, 0.00, 0.29),
     ]
 
     /// The ambient correction factor, or nil when the ambient is off the end of
     /// the table for that column (which is itself the right answer to teach:
     /// the conductor cannot be used there).
     static func ambientCorrection(celsius: Int, column: TemperatureRating) -> Double? {
-        guard celsius > 25 else { return 1.0 }
         guard let band = ambientBands.first(where: { celsius <= $0.upTo }) else { return nil }
         let factor: Double
         switch column {
@@ -199,7 +191,7 @@ enum NECTables {
 
     /// Standard ampere ratings for fuses and inverse-time breakers, 240.6(A).
     static let standardOCPD: [Int] = [
-        15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100, 110, 125, 150,
+        10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100, 110, 125, 150,
         175, 200, 225, 250, 300, 350, 400, 450, 500, 600, 700, 800, 1000,
         1200, 1600, 2000, 2500, 3000, 4000, 5000, 6000,
     ]

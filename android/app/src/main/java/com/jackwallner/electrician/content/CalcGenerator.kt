@@ -49,7 +49,7 @@ object CandidateMistake {
     val usedFiftyThreePercentFill = p("fill-used-53-percent", PracticeSkill.conduitFill, "You used 53% fill. That is the allowance for ONE conductor. Over two conductors the allowance is 40%.")
     val racewayTooSmall = p("fill-raceway-too-small", PracticeSkill.conduitFill, "That raceway does not hold the bundle. Compare the bundle area against the allowance for the trade size, not against the raceway's full interior area.")
     val racewayOversized = p("fill-raceway-oversized", PracticeSkill.conduitFill, "That size works but it is not the smallest that works. The question asks for the smallest trade size the bundle fits in.")
-    val countedGroundsIndividually = p("boxfill-counted-grounds-individually", PracticeSkill.boxFill, "You counted each equipment ground separately. All the grounds in a box together are ONE allowance, however many there are.")
+    val countedGroundsIndividually = p("boxfill-counted-grounds-individually", PracticeSkill.boxFill, "You counted each equipment ground separately. Up to four entering equipment grounds use one allowance. Each additional entering ground or bonding jumper adds a quarter allowance. Internal pigtails do not count.")
     val forgotDeviceYokes = p("boxfill-forgot-yokes", PracticeSkill.boxFill, "You left the devices out. Each device yoke takes volume in the box.")
     val countedYokeAsOne = p("boxfill-yoke-as-one", PracticeSkill.boxFill, "You counted each yoke as one allowance. A device yoke counts as TWO.")
     val wrongPhaseFactor = p("vdrop-wrong-phase-factor", PracticeSkill.voltageDrop, "You used the other phase's factor. Single-phase uses 2 because the current goes out and back; three-phase uses 1.732.")
@@ -68,9 +68,9 @@ object CandidateMistake {
     val motorUsedNameplateForConductors = p("motor-nameplate-for-conductors", PracticeSkill.motorConductor, "You sized from the nameplate current. Branch-circuit conductors come off the full-load current in Table 430.248 or 430.250, whatever the nameplate says. The nameplate is only used for the overload device.")
     val motorForgot125 = p("motor-forgot-125", PracticeSkill.motorConductor, "You used the full-load current straight. 430.22 puts branch-circuit conductors for a single continuous-duty motor at 125% of it.")
     val motorWrongVoltageRow = p("motor-wrong-voltage-row", PracticeSkill.motorConductor, "You read the wrong voltage column. The same horsepower draws roughly half the current at twice the voltage, so picking the wrong column is a 2x error, not a rounding one.")
-    val motorRoundedOCPDDown = p("motor-rounded-ocpd-down", PracticeSkill.motorProtection, "You rounded down to the next standard rating. Motor branch-circuit protection is the exception: 430.52(C)(1) Exception 1 lets you go UP to the next standard size when the percentage does not land on one, because the device has to survive starting current.")
-    val motorWrongDevicePercent = p("motor-wrong-device-percent", PracticeSkill.motorProtection, "You used another device's percentage. Table 430.52 gives each type its own ceiling: 300% for a nontime-delay fuse, 175% for a dual-element fuse, 250% for an inverse-time breaker, 800% for an instantaneous-trip breaker.")
-    val motorUsedOverloadPercent = p("motor-used-overload-percent", PracticeSkill.motorProtection, "That is an overload calculation, not short-circuit protection. The two are separate devices with separate rules: overload runs at 115% or 125% of the NAMEPLATE, while the branch-circuit device runs at the Table 430.52 percentage of the TABLE current.")
+    val motorRoundedOCPDDown = p("motor-rounded-ocpd-down", PracticeSkill.motorProtection, "You selected less than the permitted maximum. 430.52(C)(1)(a) allows the next standard rating above a table calculation, and it also permits a 15 A nonadjustable breaker when the next standard rating would be smaller.")
+    val motorWrongDevicePercent = p("motor-wrong-device-percent", PracticeSkill.motorProtection, "You used another device's percentage. For these ordinary motors, Table 430.52(C)(1) uses 300% for nontime-delay fuses, 175% for dual-element fuses other than Class CC, and 250% for inverse-time breakers. Instantaneous-trip settings require the applicable motor design and listed combination controller.")
+    val motorUsedOverloadPercent = p("motor-used-overload-percent", PracticeSkill.motorProtection, "That is an overload calculation, not short-circuit protection. The two are separate devices with separate rules: overload runs at 115% or 125% of the NAMEPLATE, while the branch-circuit device runs at the Table 430.52(C)(1) percentage of the TABLE current.")
 
     val loadForgotLightingDemand = p("load-forgot-lighting-demand", PracticeSkill.dwellingLoad, "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one.")
     val loadForgotSmallAppliance = p("load-forgot-small-appliance", PracticeSkill.dwellingLoad, "You left out the small-appliance and laundry circuits. A dwelling carries two 1500 VA small-appliance circuits and a 1500 VA laundry circuit, and they go INSIDE the general lighting total before the demand factor, not after it.")
@@ -155,9 +155,9 @@ object CalcGenerator {
             amps(forgotBundling) to CandidateMistake.ignoredBundling,
             amps(forgotTerminals) to CandidateMistake.ignoredTerminationCap,
         ))
-        return CalcScenario(newID("ampacity"), "Find the allowable ampacity of this conductor as installed.",
+        return CalcScenario(newID("ampacity"), "Find the allowable ampacity in this dry-location raceway, longer than 24 inches, with no adjustment exception.",
             listOf(Given.conductor(size, "THHN"), Given.material(material), Given.ambient(ambient), Given.currentCarrying(ccc), Given.terminals(TemperatureRating.c75)),
-            choices.labels, choices.answerIndex, steps, "310.16, 310.15(B)(1), 310.15(C)(1), 110.14(C)", mistakes)
+            choices.labels, choices.answerIndex, steps, "310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C)", mistakes)
     }
 
     // Overcurrent protection sizing, where 240.4(D) beats the table.
@@ -224,7 +224,7 @@ object CalcGenerator {
             oneSmaller to CandidateMistake.racewayTooSmall,
             oneBigger to CandidateMistake.racewayOversized,
         ))
-        return CalcScenario(newID("conduitfill"), "Pick the smallest trade size of EMT that will carry these conductors.",
+        return CalcScenario(newID("conduitfill"), "Pick the smallest trade size of EMT for these conductors in a run longer than 24 inches, using the Chapter 9 Table 5 conductor areas.",
             listOf(Given.conductor(size, "THHN"), Given("Quantity", "$count", "conductors"), Given.raceway("EMT", "?")),
             choices.labels, choices.answerIndex,
             listOf(
@@ -243,12 +243,13 @@ object CalcGenerator {
         val currentCarrying = listOf(4, 5, 6, 7, 8).randomElement(rng)!!
         val devices = listOf(1, 2).randomElement(rng)!!
         val hasClamp = rng.nextBoolean()
-        val groundCount = listOf(2, 3, 4).randomElement(rng)!!
+        val groundCount = listOf(2, 3, 4, 5, 6, 9).randomElement(rng)!!
 
         val deviceUnits = devices * 2
-        val totalUnits = currentCarrying + 1 + (if (hasClamp) 1 else 0) + deviceUnits
+        val groundUnits = NECTables.groundFillAllowances(groundCount)
+        val totalUnits = (currentCarrying + (if (hasClamp) 1 else 0) + deviceUnits).toDouble() + groundUnits
         val required = totalUnits * volume
-        val groundsIndividually = (totalUnits - 1 + groundCount) * volume
+        val groundsIndividually = (totalUnits - groundUnits + groundCount.toDouble()) * volume
         val forgotDevices = (totalUnits - deviceUnits) * volume
         val yokeAsOne = (totalUnits - devices) * volume
 
@@ -266,17 +267,17 @@ object CalcGenerator {
         val steps = mutableListOf(
             "Each allowance for $size is ${volume.volumeText} in³, so this is a counting problem first and a multiplication problem second.",
             "$currentCarrying insulated conductors is $currentCarrying allowances.",
-            "The $groundCount equipment grounds together count as ONE allowance, not $groundCount.",
+            "Up to four entering grounds count as one allowance; each additional entering ground adds 0.25. These $groundCount grounds use ${groundUnits.factorText} allowances.",
         )
         if (hasClamp) steps += "Internal clamps count as one allowance no matter how many there are."
         steps += "Each device yoke counts as two, so $devices yoke${if (devices == 1) "" else "s"} is $deviceUnits."
-        steps += "$totalUnits allowances × ${volume.volumeText} in³ = ${required.volumeText} in³."
+        steps += "${totalUnits.factorText} allowances × ${volume.volumeText} in³ = ${required.volumeText} in³."
         val mistakes = mistakeMap(label(required), listOf(
             label(groundsIndividually) to CandidateMistake.countedGroundsIndividually,
             label(forgotDevices) to CandidateMistake.forgotDeviceYokes,
             label(yokeAsOne) to CandidateMistake.countedYokeAsOne,
         ))
-        return CalcScenario(newID("boxfill"), "Find the minimum box volume required.", givens,
+        return CalcScenario(newID("boxfill"), "All insulated conductors and grounds listed enter the box and have the stated size. Each single-gang yoke connects to that size; there are no other fill allowances. Find the minimum box volume.", givens,
             choices.labels, choices.answerIndex, steps, "314.16(B)", mistakes)
     }
 
@@ -306,7 +307,7 @@ object CalcGenerator {
             label(forgotFactor) to CandidateMistake.forgotPhaseFactor,
             label(usedOtherMetal) to CandidateMistake.wrongMaterialK,
         ))
-        return CalcScenario(newID("vdrop"), "Find the voltage drop on this run.",
+        return CalcScenario(newID("vdrop"), "Estimate voltage drop using K = 12.9 for copper or 21.2 for aluminum in ohm-cmil/ft. Use the resistive formula, neglect reactance and power-factor effects, and round to 0.1 V.",
             listOf(Given.conductor(size, "THHN"), Given.material(material), Given.voltage(volts, phase), Given.load(amps), Given.length(feet)),
             choices.labels, choices.answerIndex,
             listOf(
@@ -342,14 +343,14 @@ object CalcGenerator {
         steps += if (ocpd == band) "Table 250.122 has a row at $band A, so read it directly."
         else "Table 250.122 has no $ocpd A row. The rows are not-exceeding bands, so $ocpd A reads the $band A row."
         steps += "In the ${material.displayName.lowercase()} column that row calls for $answer."
-        steps += "Nothing about the circuit conductor size changes this. An equipment ground is sized from the device, and it only grows with the conductors when they are increased for voltage drop, under 250.122(B)."
+        steps += "This is the Table 250.122 minimum for the stated ordinary circuit. Increasing ungrounded conductors beyond the minimum sufficient ampacity can also require a proportional wire EGC increase under 250.122(B)."
         val mistakes = mistakeMap(answer, choices.labels, listOf(
             fromGECTable to CandidateMistake.usedGECTableForEGC,
             wrongColumn to CandidateMistake.egcWrongMaterialColumn,
             rowBelow to CandidateMistake.egcReadRowBelow,
             asService to CandidateMistake.egcUsedCircuitConductor,
         ))
-        return CalcScenario(newID("egcSizing"), "What is the minimum size equipment grounding conductor for this circuit?",
+        return CalcScenario(newID("egcSizing"), "For an ordinary circuit with conductors not increased in size and no parallel raceways, what is the minimum wire equipment grounding conductor from Table 250.122?",
             listOf(Given("Protected at", "$ocpd", "A"), Given.material(material), Given("Conductor", "Run in a raceway")),
             choices.labels, choices.answerIndex, steps, "250.122, Table 250.122, 250.122(B)", mistakes)
     }
@@ -359,7 +360,8 @@ object CalcGenerator {
         val padRNG = SeededGenerator(rng.next())
         val serviceSize = listOf("4 AWG", "2 AWG", "1/0 AWG", "2/0 AWG", "3/0 AWG", "4/0 AWG", "250 kcmil", "350 kcmil", "500 kcmil").randomElement(rng)!!
         val serviceMaterial = ConductorMaterial.entries.randomElement(rng)!!
-        val sets = listOf(1, 1, 1, 2).randomElement(rng)!!
+        val rolledSets = listOf(1, 1, 1, 2).randomElement(rng)!!
+        val sets = if (serviceSize in listOf("4 AWG", "2 AWG")) 1 else rolledSets
         val electrode = ElectrodeType.entries.randomElement(rng)!!
         val fromTable = NECTables.groundingElectrodeConductor(serviceSize, serviceMaterial, ConductorMaterial.copper, sets) ?: return egcProblem(rng)
 
@@ -395,7 +397,7 @@ object CalcGenerator {
             wrongBands to CandidateMistake.gecWrongServiceColumn,
             oneConductorOnly to CandidateMistake.gecMissedParallelSet,
         ))
-        return CalcScenario(newID("gecSizing"), "What is the minimum size copper grounding electrode conductor for this service?",
+        return CalcScenario(newID("gecSizing"), "What minimum copper grounding electrode conductor connects this service only to the stated electrode, without continuing to another electrode? For a ground ring, assume a 2 AWG copper ring. Assume physical protection where required by 250.64(B).",
             listOf(
                 Given("Service conductor", if (sets > 1) "$sets × $serviceSize" else serviceSize),
                 Given.material(serviceMaterial),
@@ -445,7 +447,7 @@ object CalcGenerator {
             format(forgot125) to CandidateMistake.motorForgot125,
             format(wrongRow) to CandidateMistake.motorWrongVoltageRow,
         ))
-        return CalcScenario(newID("motorConductor"), "What minimum ampacity must the branch-circuit conductors for this single continuous-duty motor have?",
+        return CalcScenario(newID("motorConductor"), "For this single, ordinary single-speed continuous-duty motor of usual speed and torque characteristics, what minimum branch-circuit conductor ampacity does 430.22(A) require?",
             listOf(Given("Motor", motor.rating.label), Given("Supply", motor.supply.displayName), Given("Nameplate", motor.nameplateFLA.factorText, "A")),
             choices.labels, choices.answerIndex, steps, "430.22, ${motor.supply.citation}, 430.6(A)(1)", mistakes)
     }
@@ -453,11 +455,11 @@ object CalcGenerator {
     fun motorProtectionProblem(rng: RandomSource): CalcScenario {
         val padRNG = SeededGenerator(rng.next())
         val motor = rollMotor(rng) ?: return ocpdProblem(rng)
-        val protection = MotorProtection.entries.randomElement(rng)!!
+        val protection = MotorProtection.entries.filter { it != MotorProtection.instantaneousTrip }.randomElement(rng)!!
         val calculated = motor.tableFLC * protection.percent
-        val answer = NECTables.motorBranchOCPD(motor.tableFLC, protection)
-        val roundedDown = NECTables.nextStandardOCPDAtMost(calculated)
-        if (answer == null || roundedDown == null) return ocpdProblem(rng)
+        val answer = NECTables.motorBranchOCPD(motor.tableFLC, protection) ?: return ocpdProblem(rng)
+        val roundedDown = protection.standardRatings.lastOrNull { it.toDouble() <= calculated }
+            ?: protection.standardRatings[0]
         val otherDevice = MotorProtection.entries.first { it != protection }
         val wrongPercent = NECTables.motorBranchOCPD(motor.tableFLC, otherDevice) ?: answer
         val overloadNumber = NECTables.nextStandardOCPDAtLeast(NECTables.motorOverloadTrip(motor.nameplateFLA, 1.15, null)) ?: answer
@@ -467,10 +469,12 @@ object CalcGenerator {
             pad = { standardNeighbour(it, padRNG, 1..3) }, format = format)
         val steps = mutableListOf(
             "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: ${motor.rating.label} at ${motor.supply.displayName} is ${motor.tableFLC.factorText} A in Table ${motor.supply.flcTable()}.",
-            "Table 430.52 allows a ${protection.displayName.lowercase()} up to ${protection.percentLabel} of that: ${motor.tableFLC.factorText} × ${protection.percent.factorText} = ${calculated.roundedAmpsText} A.",
+            "Table 430.52(C)(1) allows a ${protection.displayName.lowercase()} up to ${protection.percentLabel} of that: ${motor.tableFLC.factorText} × ${protection.percent.factorText} = ${calculated.roundedAmpsText} A.",
         )
-        steps += if (answer.toDouble() > calculated) {
-            "${calculated.roundedAmpsText} A is not a standard rating. This is the one calculation in the book that rounds UP: 430.52(C)(1) Exception 1 permits the next standard size, so $answer A."
+        steps += if (protection == MotorProtection.inverseTimeBreaker && calculated < 15) {
+            "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A."
+        } else if (answer.toDouble() > calculated) {
+            "${calculated.roundedAmpsText} A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so $answer A."
         } else {
             "${calculated.roundedAmpsText} A is itself a standard rating in 240.6(A), so $answer A is the answer with no rounding needed."
         }
@@ -480,9 +484,9 @@ object CalcGenerator {
             format(wrongPercent.toDouble()) to CandidateMistake.motorWrongDevicePercent,
             format(overloadNumber.toDouble()) to CandidateMistake.motorUsedOverloadPercent,
         ))
-        return CalcScenario(newID("motorProtection"), "What is the largest standard device permitted for branch-circuit short-circuit and ground-fault protection of this motor?",
+        return CalcScenario(newID("motorProtection"), "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
             listOf(Given("Motor", motor.rating.label), Given("Supply", motor.supply.displayName), Given("Nameplate", motor.nameplateFLA.factorText, "A"), Given("Device", protection.displayName)),
-            choices.labels, choices.answerIndex, steps, "430.52, Table 430.52, 430.52(C)(1) Ex. 1, 240.6(A)", mistakes)
+            choices.labels, choices.answerIndex, steps, "430.52, Table 430.52(C)(1), 430.52(C)(1)(a) (Ex. 1 in 2020), 240.6(A)", mistakes)
     }
 
     // Dwelling service, standard method.
@@ -509,15 +513,16 @@ object CalcGenerator {
         val applianceDemand = NECTables.fastenedApplianceDemand(applianceTotal, appliances.size)
         val climate = NECTables.noncoincident(coolingVA, heatingVA)
 
-        val total = generalDemand + rangeVA + dryerVA + applianceDemand + climate
+        val motorAllowance = disposal * 0.25
+        val total = generalDemand + rangeVA + dryerVA + applianceDemand + climate + motorAllowance
         val amps = NECTables.serviceAmps(total)
         val rating = NECTables.dwellingServiceRating(amps) ?: return ampacityProblem(rng)
 
-        val noLightingDemandVA = generalTotal + rangeVA + dryerVA + applianceDemand + climate
-        val noCircuitsVA = NECTables.generalLightingDemand(lighting) + rangeVA + dryerVA + applianceDemand + climate
-        val rangeAtNameplateVA = generalDemand + rangeKW * 1000 + dryerVA + applianceDemand + climate
-        val bothClimateVA = generalDemand + rangeVA + dryerVA + applianceDemand + coolingVA + heatingVA
-        val appliancesWholeVA = generalDemand + rangeVA + dryerVA + applianceTotal + climate
+        val noLightingDemandVA = generalTotal + rangeVA + dryerVA + applianceDemand + climate + motorAllowance
+        val noCircuitsVA = NECTables.generalLightingDemand(lighting) + rangeVA + dryerVA + applianceDemand + climate + motorAllowance
+        val rangeAtNameplateVA = generalDemand + rangeKW * 1000 + dryerVA + applianceDemand + climate + motorAllowance
+        val bothClimateVA = generalDemand + rangeVA + dryerVA + applianceDemand + coolingVA + heatingVA + motorAllowance
+        val appliancesWholeVA = generalDemand + rangeVA + dryerVA + applianceTotal + climate + motorAllowance
 
         // Half ask for the load, half for the service: the service form
         // quantises small mistakes away, the VA form separates all five.
@@ -551,7 +556,8 @@ object CalcGenerator {
             "The dryer is the greater of its nameplate and 5000 VA: ${g(dryerNameplate)} against 5000, so ${g(dryerVA)} VA.",
             "Four fastened-in-place appliances (${waterHeater.swiftInt()} + ${dishwasher.swiftInt()} + ${disposal.swiftInt()} + ${compactor.swiftInt()} = ${g(applianceTotal)} VA) reach the four-appliance threshold, so 220.53 takes them at 75%: ${g(applianceDemand.roundedAway)} VA.",
             "Heat and air conditioning cannot run together, so 220.60 counts only the larger: ${g(climate)} VA.",
-            "Total ${g(generalDemand.roundedAway)} + ${g(rangeVA)} + ${g(dryerVA)} + ${g(applianceDemand.roundedAway)} + ${g(climate)} = ${g(total.roundedAway)} VA.",
+            "Add 25% of the largest retained motor under 220.50 and 430.24: ${disposal.swiftInt()} × 0.25 = ${motorAllowance.swiftInt()} VA.",
+            "Total ${g(generalDemand.roundedAway)} + ${g(rangeVA)} + ${g(dryerVA)} + ${g(applianceDemand.roundedAway)} + ${g(climate)} + ${motorAllowance.swiftInt()} = ${g(total.roundedAway)} VA.",
         )
         if (asksForService) steps += "${g(total.roundedAway)} VA ÷ 240 V = ${amps.roundedAmpsText} A, and the smallest standard rating that carries it is $rating A."
         val mistakes = mistakeMap(format(answerValue), choices.labels, listOf(
@@ -561,7 +567,7 @@ object CalcGenerator {
             format(alternatives[3]) to CandidateMistake.loadForgotApplianceDemand,
             format(alternatives[4]) to CandidateMistake.loadForgotSmallAppliance,
         ))
-        val prefix = "Standard method, single-family dwelling on a 120/240 V single-phase service."
+        val prefix = "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat."
         return CalcScenario(newID("dwellingLoad"),
             if (asksForService) "$prefix What is the minimum standard service rating?" else "$prefix What is the calculated load?",
             listOf(
@@ -575,7 +581,7 @@ object CalcGenerator {
                 Given("Air conditioning", "${coolingVA.swiftInt()}", "VA"),
                 Given("Electric heat", "${heatingVA.swiftInt()}", "VA"),
             ), choices.labels, choices.answerIndex, steps,
-            "220.41, Table 220.45, 220.52, 220.53, 220.54, Table 220.55, 220.60, 230.79(C)", mistakes)
+            "220.41, Table 220.45, 220.50, 430.24, 220.52, 220.53, 220.54, Table 220.55, 220.60, 230.79(C)", mistakes)
     }
 
     private fun standardNeighbour(value: Double, pad: RandomSource, range: IntRange): Double {

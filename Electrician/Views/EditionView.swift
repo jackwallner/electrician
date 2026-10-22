@@ -1,22 +1,7 @@
 import SwiftUI
 
-/// "Why does an app called 2026 quote the 2023 NEC?"
-///
-/// That is a fair question and it deserves a screen rather than a footnote,
-/// because the honest answer is a genuine selling point rather than an excuse.
-/// The pages this app computes from are the most frozen in the book: the
-/// ampacity table, the correction and adjustment factors, the standard device
-/// ratings, the small-conductor rule, box and raceway fill, motor full-load
-/// current, and the two grounding tables. A candidate practising derating here
-/// is practising the same arithmetic their 2020, 2023 or 2026 paper will ask
-/// for. What genuinely moves between cycles is COVERAGE, and coverage is the
-/// one thing this app deliberately teaches as "verify it in your own book"
-/// rather than as a number to memorise.
-///
-/// The screen also has to be honest about the limit of that claim, because a
-/// coverage claim a reader cannot check is worth nothing. `NECTables`
-/// distinguishes the cycles the values are known to be stable across from the
-/// newest one they have actually been checked against, and this renders both.
+/// Explains the app's 2023 table basis and the limits of edition coverage.
+/// Numeric values and section references can both change between cycles.
 struct EditionView: View {
     @EnvironmentObject private var profile: CandidateProfile
 
@@ -53,7 +38,7 @@ struct EditionView: View {
                 }
             }
 
-            Section("What does not change between cycles") {
+            Section("Tables used in this app") {
                 ForEach(stableTables, id: \.title) { entry in
                     VStack(alignment: .leading, spacing: 3) {
                         Text(entry.title)
@@ -69,7 +54,7 @@ struct EditionView: View {
             }
 
             Section("What does change") {
-                Text("These are the areas that move between editions, and none of them is a table this app computes from. Every one of them is taught here as a rule to confirm in the book your jurisdiction has adopted, never as a number to memorise.")
+                Text("These requirements can also change between editions. Confirm their scope, exceptions and local amendments in the book named by your exam board.")
                     .font(.footnote)
                     .foregroundStyle(Theme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -83,7 +68,7 @@ struct EditionView: View {
             Section("How far this has been checked") {
                 LabeledContent("Values unchanged since", value: NECTables.stableSince.displayName)
                 LabeledContent("Verified against", value: NECTables.verifiedThrough.displayName)
-                Text("Verified means checked page by page against that edition's book, not assumed. Where your exam is written against a later cycle, the calculations here still apply, but confirm anything in the list above before you rely on it.")
+                Text("Verified means checked page by page against that edition's book, not assumed. For any other exam cycle, confirm the values, references and applicable rules in that edition before relying on an answer.")
                     .font(.footnote)
                     .foregroundStyle(Theme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -111,10 +96,10 @@ struct EditionView: View {
         [
             StableTable(title: "310.16 allowable ampacity",
                         detail: "The three temperature columns for copper and aluminum. The table this app derates from, and the one an exam question hands you a conductor and asks about."),
-            StableTable(title: "310.15(B)(1) and 310.15(C)(1)",
-                        detail: "Ambient correction and the adjustment for more than three current-carrying conductors."),
+            StableTable(title: "310.15(B)(1)(1) and 310.15(C)(1)",
+                        detail: "Ambient correction and current-carrying conductor adjustment. In 2020, the 30°C-basis ambient table is 310.15(B)(1)."),
             StableTable(title: "240.6(A) standard ratings, and 240.4(D)",
-                        detail: "The list of standard fuse and breaker sizes, and the small-conductor ceiling that overrides the ampacity table for 14, 12 and 10 AWG."),
+                        detail: "Standard fuse and breaker sizes, including the 10 A standard breaker rating added in 2023, and ordinary small-conductor protection limits."),
             StableTable(title: "Chapter 9 Tables 1, 4 and 5",
                         detail: "Raceway fill percentages, raceway interior areas and conductor areas."),
             StableTable(title: "314.16(A) and 314.16(B)",

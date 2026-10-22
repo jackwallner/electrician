@@ -90,7 +90,7 @@ enum CandidateMistake {
     static let countedGroundsIndividually = MistakePattern(
         id: "boxfill-counted-grounds-individually",
         skill: PracticeSkill.boxFill.rawValue,
-        summary: "You counted each equipment ground separately. All the grounds in a box together are ONE allowance, however many there are."
+        summary: "You counted each equipment ground separately. Up to four entering equipment grounds use one allowance. Each additional entering ground or bonding jumper adds a quarter allowance. Internal pigtails do not count."
     )
     static let forgotDeviceYokes = MistakePattern(
         id: "boxfill-forgot-yokes",
@@ -220,7 +220,7 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-ampacity-\(UUID().uuidString)",
-            situation: "Find the allowable ampacity of this conductor as installed.",
+            situation: "Find the allowable ampacity in this dry-location raceway, longer than 24 inches, with no adjustment exception.",
             givens: [
                 .conductor(size, "THHN"),
                 .material(material),
@@ -231,7 +231,7 @@ enum CalcGenerator {
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "310.16, 310.15(B)(1), 310.15(C)(1), 110.14(C)",
+            citation: "310.16, 310.15(B)(1)(1), 310.15(C)(1), 110.14(C)",
             mistakes: mistakes
         )
     }
@@ -371,7 +371,7 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-conduitfill-\(UUID().uuidString)",
-            situation: "Pick the smallest trade size of EMT that will carry these conductors.",
+            situation: "Pick the smallest trade size of EMT for these conductors in a run longer than 24 inches, using the Chapter 9 Table 5 conductor areas.",
             givens: [
                 .conductor(size, "THHN"),
                 Given("Quantity", "\(count)", unit: "conductors"),
@@ -393,7 +393,7 @@ enum CalcGenerator {
     // MARK: - Box fill
 
     /// "How big does the box have to be?" The counting rules are what trip
-    /// people: all the grounds together are one allowance, a yoke is two, and
+    /// people: up to four entering grounds use one allowance, a yoke is two, and
     /// the conductors that only pass through still count.
     static func boxFillProblem(using rng: inout RandomNumberGenerator) -> CalcScenario {
         // Padding needs randomness too, but it cannot borrow `rng` while
@@ -406,20 +406,20 @@ enum CalcGenerator {
         let currentCarrying = [4, 5, 6, 7, 8].randomElement(using: &rng)!
         let devices = [1, 2].randomElement(using: &rng)!
         let hasClamp = Bool.random(using: &rng)
-        let groundCount = [2, 3, 4].randomElement(using: &rng)!
+        let groundCount = [2, 3, 4, 5, 6, 9].randomElement(using: &rng)!
 
         // Allowances: each insulated conductor 1, all grounds together 1,
         // clamps together 1, each yoke 2.
         let conductorUnits = currentCarrying
-        let groundUnits = 1
+        let groundUnits = NECTables.groundFillAllowances(entering: groundCount)
         let clampUnits = hasClamp ? 1 : 0
         let deviceUnits = devices * 2
-        let totalUnits = conductorUnits + groundUnits + clampUnits + deviceUnits
+        let totalUnits = Double(conductorUnits + clampUnits + deviceUnits) + groundUnits
         let required = Double(totalUnits) * volume
 
-        let countedGroundsIndividually = Double(totalUnits - 1 + groundCount) * volume
-        let forgotDevices = Double(totalUnits - deviceUnits) * volume
-        let countedYokeAsOne = Double(totalUnits - devices) * volume
+        let countedGroundsIndividually = (totalUnits - groundUnits + Double(groundCount)) * volume
+        let forgotDevices = (totalUnits - Double(deviceUnits)) * volume
+        let countedYokeAsOne = (totalUnits - Double(devices)) * volume
 
         let choices = uniqueChoices(
             from: [required, countedGroundsIndividually, forgotDevices, countedYokeAsOne],
@@ -439,11 +439,11 @@ enum CalcGenerator {
         var steps = [
             "Each allowance for \(size) is \(volume.volumeText) in³, so this is a counting problem first and a multiplication problem second.",
             "\(currentCarrying) insulated conductors is \(currentCarrying) allowances.",
-            "The \(groundCount) equipment grounds together count as ONE allowance, not \(groundCount).",
+            "Up to four entering grounds count as one allowance; each additional entering ground adds 0.25. These \(groundCount) grounds use \(groundUnits.factorText) allowances.",
         ]
         if hasClamp { steps.append("Internal clamps count as one allowance no matter how many there are.") }
         steps.append("Each device yoke counts as two, so \(devices) yoke\(devices == 1 ? "" : "s") is \(deviceUnits).")
-        steps.append("\(totalUnits) allowances × \(volume.volumeText) in³ = \(required.volumeText) in³.")
+        steps.append("\(totalUnits.factorText) allowances × \(volume.volumeText) in³ = \(required.volumeText) in³.")
 
         let volumeLabel: (Double) -> String = { "\($0.volumeText) in³" }
         let mistakes = mistakeMap(answerLabel: volumeLabel(required), [
@@ -454,7 +454,7 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-boxfill-\(UUID().uuidString)",
-            situation: "Find the minimum box volume required.",
+            situation: "All insulated conductors and grounds listed enter the box and have the stated size. Each single-gang yoke connects to that size; there are no other fill allowances. Find the minimum box volume.",
             givens: givens,
             choices: choices.labels,
             answerIndex: choices.answerIndex,
@@ -509,7 +509,7 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-vdrop-\(UUID().uuidString)",
-            situation: "Find the voltage drop on this run.",
+            situation: "Estimate voltage drop using K = 12.9 for copper or 21.2 for aluminum in ohm-cmil/ft. Use the resistive formula, neglect reactance and power-factor effects, and round to 0.1 V.",
             givens: [
                 .conductor(size, "THHN"),
                 .material(material),

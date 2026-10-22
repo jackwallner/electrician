@@ -36,7 +36,7 @@ enum NECEdition: Int, CaseIterable, Identifiable, Sendable, Comparable {
             return "This is the edition every table and answer in the app is built from."
         }
         if self < app {
-            return "Older than the app's \(app.displayName). Ampacity tables, the small-conductor rule and overcurrent sizing are the same in practice; GFCI and AFCI coverage, receptacle placement and the surge-protection and emergency-disconnect requirements are where the two cycles differ. Practice the calculations here and check those areas in your own book."
+            return "Older than the app's \(app.displayName). Many calculation values match, but the 10 A standard breaker rating was added in 2023, and Article 220, ambient-correction and motor-protection citations moved. GFCI and AFCI coverage and receptacle placement also differ. Check the edition and amendments listed by your exam board."
         }
         return "Newer than the app's \(app.displayName). Conductor ampacity and overcurrent sizing carry forward; the newer cycle expands protection and equipment-disconnect requirements. Verify those against your own book."
     }

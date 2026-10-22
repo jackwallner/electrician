@@ -131,8 +131,8 @@ class GeneratorValidityTest {
 
         val general = NECTables.generalLightingDemand(2000 * NECTables.dwellingLightingVAPerSqFt + 4500)
         assertEquals(5625.0, general, 0.001)
-        val total = general + 8000 + 5500 + NECTables.fastenedApplianceDemand(7600.0, 4) + 10_000
-        assertEquals(34_825.0, total, 0.5)
+        val total = general + 8000 + 5500 + NECTables.fastenedApplianceDemand(7600.0, 4) + 10_000 + 900 * 0.25
+        assertEquals(35_050.0, total, 0.5)
         assertEquals(150, NECTables.dwellingServiceRating(NECTables.serviceAmps(total)))
         assertEquals("150 A", scenario("load-calc-standard-dwelling").answer)
         val optional = NECTables.optionalMethodGeneralLoad(2000 * 3.0 + 4500 + 12_000 + 5500 + 7600) + NECTables.optionalMethodHVAC(5000.0, 10_000.0, 1)

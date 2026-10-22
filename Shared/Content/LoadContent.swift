@@ -37,7 +37,7 @@ enum LoadContent {
         ),
         Flashcard(
             id: "load-card-demand-bands",
-            frontTitle: "What demand factor applies to the general lighting total?",
+            frontTitle: "Under the standard dwelling method, what demand factor applies to the general lighting total?",
             frontSubtitle: "And to which loads",
             backTitle: "The first 3000 VA at 100%, the rest up to 120,000 VA at 35%",
             backBody: "Only three things go through this table: general lighting, the small-appliance circuits, and the laundry circuit. The range, the dryer, the fastened-in-place appliances, the heating and the air conditioning all have their own rules and are added after. Pushing a dryer through the 35% band is the single most expensive error in the calculation, because it looks reasonable and shifts the answer by a whole service size.",
@@ -45,7 +45,7 @@ enum LoadContent {
         ),
         Flashcard(
             id: "load-card-range",
-            frontTitle: "A single 11 kW household range. What goes into the calculation?",
+            frontTitle: "Standard method, Table 220.55 column C: what demand applies to one 11 kW household range?",
             givens: [Given("Range", "11", unit: "kW"), Given("Quantity", "1")],
             backTitle: "8 kW, from column C",
             backBody: "One range not over 12 kW is 8 kW, whatever the nameplate says: 8.5, 10 and 12 kW ranges all come in at 8. Above 12 kW the column C figure rises 5% for each kilowatt, or major fraction of one, over 12. The nameplate is almost never the number, which is the same lesson Article 430 teaches about motors.",
@@ -54,7 +54,7 @@ enum LoadContent {
         ),
         Flashcard(
             id: "load-card-dryer",
-            frontTitle: "A dryer nameplate reads 4200 VA. What goes into the calculation?",
+            frontTitle: "Standard method, one household electric dryer rated 4200 VA: what calculated load is used?",
             givens: [Given("Dryer nameplate", "4200", unit: "VA")],
             backTitle: "5000 VA",
             backBody: "The dryer load is 5000 VA or the nameplate, whichever is LARGER, so a small dryer is carried at 5000 and a 7200 VA dryer is carried at 7200. Reading it as a maximum rather than a minimum is the usual mistake, and it is one of the few places in Article 220 where the code rounds a load up rather than discounting it.",
@@ -70,7 +70,7 @@ enum LoadContent {
         ),
         Flashcard(
             id: "load-card-noncoincident",
-            frontTitle: "Electric heat at 12 kW and air conditioning at 5 kW. What goes in?",
+            frontTitle: "Standard method: interlocked heat at 12 kW and cooling at 5 kW cannot run together. Which load is counted?",
             givens: [Given("Heat", "12", unit: "kW"), Given("Cooling", "5", unit: "kW")],
             backTitle: "The larger one only, so 12 kW",
             backBody: "Loads that cannot run at the same time are noncoincident, and only the largest of them is counted. Heat and air conditioning are the pair every exam uses. Adding them is the mistake; picking the smaller one because it looked like a discount is the other one.",
@@ -86,7 +86,7 @@ enum LoadContent {
         ),
         Flashcard(
             id: "load-card-service-minimum",
-            frontTitle: "A dwelling calculation comes out at 78 amperes. What service is required?",
+            frontTitle: "A one-family dwelling calculates to 78 A. What is the minimum service-disconnect rating?",
             givens: [Given("Calculated", "78", unit: "A")],
             backTitle: "100 amperes",
             backBody: "A one-family dwelling's service disconnecting means has a floor of 100 amperes regardless of what the calculation produces. So a small, all-gas house does not get a 90 ampere service, and the calculation's job in that case is to prove the minimum is enough rather than to size the service.",
@@ -116,7 +116,7 @@ enum LoadContent {
         ),
         QuizQuestion(
             id: "load-quiz-demand",
-            prompt: "General lighting, small-appliance and laundry circuits total 11,000 VA. What is the load after the demand factor?",
+            prompt: "Under the standard dwelling method, general lighting, small-appliance and laundry circuits total 11,000 VA. What is the load after the lighting demand factor?",
             givens: [Given("Subtotal", "11,000", unit: "VA")],
             choices: ["5800 VA", "11,000 VA", "3850 VA", "8000 VA"],
             answerIndex: 0,
@@ -125,7 +125,7 @@ enum LoadContent {
         ),
         QuizQuestion(
             id: "load-quiz-range-over-12",
-            prompt: "One household range rated 16 kW. What is its demand load?",
+            prompt: "Under the standard dwelling method, what is the Table 220.55 column C demand for one household range rated 16 kW?",
             givens: [Given("Range", "16", unit: "kW"), Given("Quantity", "1")],
             choices: ["9.6 kW", "8 kW", "16 kW", "11.2 kW"],
             answerIndex: 0,
@@ -155,16 +155,16 @@ enum LoadContent {
         ),
         QuizQuestion(
             id: "load-quiz-noncoincident",
-            prompt: "A dwelling has 9 kW of electric space heating and a 4 kW air conditioner. What goes into the service calculation?",
+            prompt: "Under the standard dwelling method, interlocked 9 kW electric heat and 4 kW air conditioning cannot run together. Before any separately required motor allowance, which HVAC load is counted?",
             givens: [Given("Heat", "9", unit: "kW"), Given("Cooling", "4", unit: "kW")],
             choices: ["9 kW", "13 kW", "4 kW", "6.5 kW"],
             answerIndex: 0,
-            explanation: "Noncoincident loads count once, at the larger value: 9 kW. The 13 kW answer adds them, and the 6.5 kW answer applies the optional method's 65% heating factor in a standard-method calculation, where it does not belong.",
+            explanation: "Noncoincident loads count once, at the larger value: 9 kW. The 13 kW answer adds them, and 6.5 kW is the arithmetic average of the two loads, which is not the noncoincident-load rule.",
             citation: "220.60"
         ),
         QuizQuestion(
             id: "load-quiz-neutral",
-            prompt: "A dwelling's calculated range load is 8000 VA. What does the range contribute to the neutral load?",
+            prompt: "A 120/240 V single-phase dwelling range has an 8000 VA demand calculated under Table 220.55. Using the permitted 220.61(B)(1) reduction, what minimum neutral load is included?",
             givens: [Given("Range demand", "8000", unit: "VA")],
             choices: ["5600 VA", "8000 VA", "4000 VA", "0 VA"],
             answerIndex: 0,
@@ -190,7 +190,7 @@ enum LoadContent {
                 "They are covered by the 3 VA per square foot",
             ],
             answerIndex: 0,
-            explanation: "They go into the subtotal that the demand table then discounts, alongside the general lighting and the laundry circuit. Adding them afterward at 100% inflates the service by roughly 2900 VA, which is enough to move the answer up a standard size on a small house.",
+            explanation: "They go into the subtotal that the demand table then discounts, alongside the general lighting and the laundry circuit. Adding the two 1500 VA circuits afterward instead of in the 35% band inflates the calculated load by 1950 VA, which is enough to move the answer up a standard size on a small house.",
             citation: "220.52, Table 220.45"
         ),
     ]
@@ -204,7 +204,7 @@ enum LoadContent {
     static let workedExamples: [CalcScenario] = [
         CalcScenario(
             id: "load-calc-standard-dwelling",
-            situation: "Standard method. A 2000 square foot single-family dwelling on a 120/240 V single-phase service. What is the minimum standard service rating?",
+            situation: "Standard method, 2000 ft² one-family dwelling on 120/240 V. Include two small-appliance circuits and one laundry circuit. Heat and cooling are interlocked; the 900 VA disposal is the largest motor operating with heat, and the cooling load including its motor allowance is below 10,000 VA. There are no other loads. What is the minimum standard service rating?",
             givens: [
                 Given("Floor area", "2000", unit: "ft²"),
                 Given("Range", "12", unit: "kW"),
@@ -225,14 +225,15 @@ enum LoadContent {
                 "Range: one unit not over 12 kW reads column C flat at 8 kW = 8000 VA.",
                 "Dryer: the greater of nameplate and 5000 VA, so 5500 VA.",
                 "Fastened-in-place appliances: water heater, dishwasher, disposal and compactor total 7600 VA. That is four appliances, so 220.53 takes them at 75% = 5700 VA.",
-                "Heat against cooling: they cannot run together, so only the larger counts. 10,000 VA.",
-                "Total 5625 + 8000 + 5500 + 5700 + 10,000 = 34,825 VA. Divided by 240 V that is 145.1 A, and the smallest standard rating that carries it is 150 A.",
+                "Heat against cooling: they cannot run together. Heating, including the retained appliance motor allowance, exceeds the cooling case, so retain 10,000 VA of heating.",
+                "220.50 and 430.24 add 25% of the largest retained motor: the 900 VA disposal adds 225 VA beyond the appliance demand.",
+                "Total 5625 + 8000 + 5500 + 5700 + 10,000 + 225 = 35,050 VA. At 240 V that is 146.0 A; the smallest standard service rating that carries it is 150 A.",
             ],
-            citation: "220.41, Table 220.45, 220.52, 220.53, 220.54, Table 220.55, 220.60, 240.6(A)"
+            citation: "220.41, Table 220.45, 220.50, 430.24, 220.52, 220.53, 220.54, Table 220.55, 220.60, 240.6(A)"
         ),
         CalcScenario(
             id: "load-calc-optional-dwelling",
-            situation: "The same house, worked by the optional method for a one-family dwelling. What is the minimum standard service rating?",
+            situation: "Optional method, the same 2000 ft² one-family dwelling on 120/240 V, with two small-appliance circuits, one laundry circuit and no other loads. Heat and cooling are interlocked. The 10,000 VA resistance heat consists of fewer than four separately controlled units, with no heat pump. What is the minimum standard service rating?",
             givens: [
                 Given("Floor area", "2000", unit: "ft²"),
                 Given("Range", "12", unit: "kW"),
@@ -257,7 +258,7 @@ enum LoadContent {
         ),
         CalcScenario(
             id: "load-calc-three-ranges",
-            situation: "Three identical household ranges, each rated 14 kW, on one feeder. What is the demand load?",
+            situation: "Standard method, Table 220.55 column C and Note 1: three identical 14 kW household ranges on a 120/240 V single-phase feeder. What is their demand load?",
             givens: [
                 Given("Ranges", "3"),
                 Given("Each rated", "14", unit: "kW"),

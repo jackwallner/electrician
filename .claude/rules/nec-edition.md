@@ -40,3 +40,9 @@ What genuinely moves between cycles is coverage, not the tables, and
 `EditionView` lists both sides of that. When a table does move, update
 `NECTables` (including `edition`) and let the content tests catch the authored
 content that drifted.
+
+The 2026-10-22 bank audit found that Table 240.6(A) adds a standard 10 A
+breaker rating in 2023. `stableSince` is therefore 2023; do not restore a
+blanket claim that every shipped value matches 2020. The audit report at
+`project-docs/audits/nec2023-question-bank-2026-10-22.md` records the 2020
+citation crosswalk and item-level findings.

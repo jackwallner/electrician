@@ -59,3 +59,18 @@ termination cap sometimes binds**; with the old 35°C/4-conductor floors the
 derated figure was always below the cap, so the app's own headline rule never
 appeared as a wrong answer. If you narrow a range, check the mistake catalogue
 still fires.
+
+## Question-bank validation
+
+`QuestionBankAuditTests` and Android's `QuestionBankAuditTest` use the reviewed
+`TestFixtures/nec2023-bank-audit.json` answer/citation contract and independent
+table-based solvers. Do not regenerate that contract to silence failures. Review
+changed wording and all options against the cited edition before updating it.
+The native Android generator must also retain byte-for-byte Swift parity.
+
+Ground fill uses one allowance through four entering grounds, then a quarter
+per additional entering ground or bonding jumper. Internal pigtails are excluded.
+Dwelling standard-method questions disclose the largest motor retained with
+heating and include its extra 25% after appliance demand. Motor standard-rating
+questions exclude instantaneous-trip devices, distinguish Class CC fuses and
+include the fuse-only ratings plus the small-motor 15 A breaker permission.
