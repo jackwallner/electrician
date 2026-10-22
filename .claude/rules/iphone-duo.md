@@ -29,6 +29,12 @@ paths:
 - While split: the stat chips are inert (the breakdown is already open), and
   Settings opens in the trailing pane instead of a sheet (`settingsSheet`
   binding; opening the Duo with the sheet up moves it to the pane).
+- iOS 27.1 places the leading pane's toolbar (gear, back) either in a
+  vertical side column toward the fold (content inset to about 357 pt) or in
+  a top horizontal bar (content to about 441 pt), from one launch to the next.
+  Both clear the fold and there is no tab bar to cover content, so it is not
+  forced: `toolbarVerticalBehavior(.disabled)` added blank edge strips in Quit
+  Zyn (`nicfree`). Take a store set's inner shots from one run so the panes match.
 - Still system sheets, so centred across the fold: the paywall, What's New,
   feedback and the sheets raised from inside Settings. Onboarding is a
   full-width readable column shown before Home exists.
