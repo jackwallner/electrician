@@ -75,7 +75,9 @@ final class InterruptedAuditTests: XCTestCase {
             tapPrimary()
         }
         // Edition: choose the 2020 cycle (not the app default, not "not sure").
-        if tap("NEC 2020") || tap("2020") {
+        let row2020 = app.buttons.matching(NSPredicate(format: "label BEGINSWITH '2020 NEC'")).firstMatch
+        if row2020.waitForExistence(timeout: 4) {
+            row2020.tap(); settle(0.8)
             capture("ob_04_edition_2020_chosen")
         } else {
             notes.append("edition: could not tap 2020 row")
@@ -162,10 +164,12 @@ final class InterruptedAuditTests: XCTestCase {
     func testTimedChallengeBackgrounded() {
         launch(Self.seeded)
         app.swipeUp(); settle(0.8)
-        guard open("Timed") else { return }
+        capture("tc_00_home_scrolled")
+        guard openTraining("Timed") else { return }
         capture("tc_01_started")
         let before = timerLabel()
         notes.append("timer at start: \(before)")
+        capture("tc_01b_timer_running")
         tapChoice(0)
         settle(1.0)
         let t0 = Date()
@@ -187,7 +191,7 @@ final class InterruptedAuditTests: XCTestCase {
         launch(Self.seeded)
         app.swipeUp(); app.swipeUp(); settle(0.8)
         guard open("Field tools") else { return }
-        guard open("Ohm") else { return }
+        guard openScrolling("Ohm") else { return }
         let volts = app.textFields.element(boundBy: 0)
         guard volts.waitForExistence(timeout: 5) else { notes.append("no volts field"); return }
         volts.tap()
@@ -205,7 +209,7 @@ final class InterruptedAuditTests: XCTestCase {
         notes.append("keyboard Return button present: \(returnKey.exists)")
         back()
         capture("ft_02_back_on_list")
-        if open("Ohm") {
+        if openScrolling("Ohm") {
             capture("ft_03_reopened")
             notes.append("volts after return: \(app.textFields.element(boundBy: 0).value ?? "?")")
         }
@@ -213,7 +217,7 @@ final class InterruptedAuditTests: XCTestCase {
         // Then the harder interruption: kill and relaunch.
         killAndRelaunch(Self.seeded)
         app.swipeUp(); app.swipeUp(); settle(0.8)
-        if open("Field tools"), open("Ohm") {
+        if open("Field tools"), openScrolling("Ohm") {
             capture("ft_04_after_kill")
             notes.append("volts after kill: \(app.textFields.element(boundBy: 0).value ?? "?")")
         }
@@ -227,9 +231,10 @@ final class InterruptedAuditTests: XCTestCase {
         capture("fc_01_room")
         guard open("Know the Articles") else { return }
         capture("fc_02_deck_start")
-        for _ in 0..<2 {
+        for i in 0..<2 {
             app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.45)).tap()
             settle(1.0)
+            capture("fc_02b_flipped_\(i)")
             let knew = app.buttons.matching(NSPredicate(format: "label CONTAINS[c] 'Knew it'")).firstMatch
             if knew.waitForExistence(timeout: 3) { knew.tap() } else { notes.append("no Knew it button") }
             settle(1.2)
@@ -249,7 +254,8 @@ final class InterruptedAuditTests: XCTestCase {
     func testEndlessLeftByBack() {
         launch(Self.seeded)
         app.swipeUp(); settle(0.8)
-        guard open("Endless") else { return }
+        capture("en_00_home_scrolled")
+        guard openTraining("Endless") else { return }
         capture("en_01_picker")
         let first = app.buttons.matching(NSPredicate(format: "label CONTAINS 'Ampacity'")).firstMatch
         if first.waitForExistence(timeout: 4) { first.tap(); settle() }
@@ -259,8 +265,6 @@ final class InterruptedAuditTests: XCTestCase {
         capture("en_03_third_problem")
         back()
         capture("en_04_after_back")
-        back()
-        capture("en_05_home")
     }
 
     // MARK: - Helpers
@@ -271,7 +275,8 @@ final class InterruptedAuditTests: XCTestCase {
     }
 
     private func timerLabel() -> String {
-        app.staticTexts.matching(NSPredicate(format: "label MATCHES '[0-9]+s'")).firstMatch.label
+        let t = app.staticTexts.matching(NSPredicate(format: "label MATCHES '[0-9]+s' OR label MATCHES '[0-9]+:[0-9]+' OR label CONTAINS 'left'")).firstMatch
+        return t.exists ? t.label : "none"
     }
 
     private func reviewedLabel() -> String {
@@ -328,6 +333,40 @@ final class InterruptedAuditTests: XCTestCase {
             return true
         }
         notes.append("could not open: \(label)")
+        return false
+    }
+
+    /// Training cards sit in a horizontal row; Timed and Fix My Mistakes are
+    /// off the right edge on a 393pt screen, so swipe the row before tapping.
+    @discardableResult
+    private func openTraining(_ label: String) -> Bool {
+        let predicate = NSPredicate(format: "label CONTAINS %@", label)
+        let card = app.buttons.matching(predicate).firstMatch
+        if !card.exists || !card.isHittable {
+            app.buttons.matching(NSPredicate(format: "label CONTAINS 'Exam'")).firstMatch
+                .swipeLeft()
+            settle(0.8)
+            capture("training_row_swiped")
+        }
+        guard card.waitForExistence(timeout: 4) else {
+            notes.append("could not open training card: \(label)")
+            return false
+        }
+        card.tap()
+        settle()
+        return true
+    }
+
+    /// Open a list row that may be below the fold.
+    @discardableResult
+    private func openScrolling(_ label: String) -> Bool {
+        let predicate = NSPredicate(format: "label CONTAINS %@", label)
+        for _ in 0..<4 {
+            let row = app.buttons.matching(predicate).firstMatch
+            if row.exists, row.isHittable { row.tap(); settle(); return true }
+            app.swipeUp(); settle(0.6)
+        }
+        notes.append("could not scroll to: \(label)")
         return false
     }
 
