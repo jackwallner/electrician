@@ -18,6 +18,7 @@ struct CalcDrillView: View {
     @State private var finished = false
     @State private var confettiTrigger = 0
     @State private var answerRect: CGRect?
+    @State private var density = QuestionDensity.regular
 
     var body: some View {
         if finished {
@@ -50,13 +51,13 @@ struct CalcDrillView: View {
                 .animation(Theme.Motion.meter, value: answered)
             VStack(spacing: 16) {
                 CenteringScrollView {
-                    VStack(spacing: 18) {
+                    VStack(spacing: density.stackSpacing) {
                         Text(scenario.situation)
                             .font(Theme.questionTitle)
                             .foregroundStyle(Theme.ink)
                             .multilineTextAlignment(.center)
                         if !scenario.givens.isEmpty {
-                            GivensView(givens: scenario.givens)
+                            GivensView(givens: scenario.givens, scale: density.givensScale)
                                 .padding(.horizontal, 4)
                         }
                         ChoiceList(
@@ -74,6 +75,8 @@ struct CalcDrillView: View {
                     }
                     .padding(.horizontal, 4)
                 }
+                .questionDensity($density)
+                .environment(\.questionDensity, density)
                 footer
             }
             .id(index)

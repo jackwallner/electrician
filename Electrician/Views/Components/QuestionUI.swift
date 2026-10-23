@@ -28,6 +28,46 @@ extension View {
     }
 }
 
+/// How tightly a question is set. A short viewport (the folded iPhone Duo, a
+/// pane of the unfolded one, an iPhone SE) cannot hold a three-line prompt, a
+/// second row of givens and four answers at full spacing, so the fourth answer
+/// sat sliced in half against the Next button before anything was answered.
+/// Compact trims only spacing and padding; type sizes never change.
+enum QuestionDensity: Equatable, Sendable {
+    case regular
+    case compact
+
+    /// Scroll viewports shorter than this are set compact. Every current iPhone
+    /// with a Pro or Max screen stays above it, so their layout is unchanged.
+    static let compactBelowHeight: CGFloat = 520
+
+    /// - Parameter height: the question's scroll viewport height; 0 before the
+    ///   first layout, which stays regular.
+    static func forViewport(height: CGFloat) -> QuestionDensity {
+        height > 0 && height < compactBelowHeight ? .compact : .regular
+    }
+
+    var stackSpacing: CGFloat { self == .compact ? 12 : 18 }
+    var givensScale: CGFloat { self == .compact ? 0.9 : 1 }
+    var choiceSpacing: CGFloat { self == .compact ? 8 : 10 }
+    var choiceVerticalPadding: CGFloat { self == .compact ? 12 : 16 }
+}
+
+extension EnvironmentValues {
+    @Entry var questionDensity: QuestionDensity = .regular
+}
+
+extension View {
+    /// Sets the question density from this scroll view's own height.
+    func questionDensity(_ density: Binding<QuestionDensity>) -> some View {
+        onGeometryChange(for: QuestionDensity.self) { proxy in
+            QuestionDensity.forViewport(height: proxy.size.height)
+        } action: { newValue in
+            density.wrappedValue = newValue
+        }
+    }
+}
+
 /// Scroll target for the coaching note revealed on grading. Lives outside
 /// `QuestionPager` because a generic type cannot hold a static stored property.
 private let questionExplanationID = "question-explanation"
@@ -57,12 +97,14 @@ struct QuestionPager<Choices: View>: View {
     var eyebrow: String? = nil
     @ViewBuilder let choices: () -> Choices
 
+    @State private var density = QuestionDensity.regular
+
     var body: some View {
         // Centering, not top-aligned: on a 13-inch iPad a three-choice question
         // used to sit in the top quarter of the screen. See CenteringScrollView.
         CenteringScrollView {
             ScrollViewReader { proxy in
-            VStack(spacing: 20) {
+            VStack(spacing: density == .compact ? 14 : 20) {
                 if let eyebrow {
                     Text(eyebrow)
                         .font(Theme.eyebrow)
@@ -76,7 +118,7 @@ struct QuestionPager<Choices: View>: View {
                     .multilineTextAlignment(.center)
                     .padding(.top, 8)
                 if !givens.isEmpty {
-                    GivensView(givens: givens)
+                    GivensView(givens: givens, scale: density.givensScale)
                         .padding(.horizontal, 4)
                 }
                 choices()
@@ -129,6 +171,8 @@ struct QuestionPager<Choices: View>: View {
             }
             }
         }
+        .questionDensity($density)
+        .environment(\.questionDensity, density)
     }
 }
 
@@ -149,11 +193,12 @@ struct ChoiceList: View {
     @State private var shineTrigger = 0
     @State private var landed = false
     @State private var shakes: CGFloat = 0
+    @Environment(\.questionDensity) private var density
 
     private var answered: Bool { selection != nil }
 
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: density.choiceSpacing) {
             ForEach(labels.indices, id: \.self) { index in
                 row(index)
             }
@@ -212,7 +257,8 @@ struct ChoiceList: View {
                     }
                 }
             }
-            .padding(16)
+            .padding(.horizontal, 16)
+            .padding(.vertical, density.choiceVerticalPadding)
             .frame(maxWidth: .infinity)
             .background(background(index), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay(
