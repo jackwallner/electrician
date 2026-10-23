@@ -5,6 +5,8 @@ paths:
   - "Electrician/Utilities/DuoScreenshotMode.swift"
   - "Electrician/Views/StatsView.swift"
   - "Electrician/Views/SettingsView.swift"
+  - "Electrician/Views/Components/QuestionUI.swift"
+  - "Electrician/Views/Drills/CalcDrillView.swift"
 ---
 
 # Electrician: iPhone Duo (2026-10-21)
@@ -37,6 +39,14 @@ paths:
   in `UnfoldedSplit.swift`): back button at the pane's leading edge, title
   centred, as on a phone and in Bridge's Auction Room. Folded keeps
   `.automatic`, so the outer display is unchanged.
+- Short viewports set questions compact (`QuestionDensity`, `QuestionUI.swift`):
+  a scroll viewport under 520 pt (a Duo pane about 434 pt, folded about 444,
+  an iPhone SE about 480) trims stack spacing, givens chip scale and answer
+  padding, never type size. Supervisor review (2026-10-23) rejected the
+  derating problem in The Five Shapes because its fourth answer sat sliced
+  against the Next button before anything was answered. `CalcDrillView` and
+  `QuestionPager` measure their own scroll view and pass the density down the
+  environment to `ChoiceList`; `QuestionDensityTests` holds the thresholds.
 - Still system sheets, so centred across the fold: the paywall, What's New,
   feedback and the sheets raised from inside Settings. Onboarding is a
   full-width readable column shown before Home exists.
@@ -66,7 +76,11 @@ gh-sim launch --device 'iPhone Duo' --wait 10 \
   --args "-DuoSeed -DuoTour -electrician.suppressWhatsNew -DuoTourFirst 1 -DuoTourStep 8 -DuoTourStepRegular 8 -DuoRoutes drill-worked-examples"
 ```
 
-One inner surface per job, so plan the set against the six-run cap. Native
+With `--screen`, one `gh-sim all` captures the whole set: keep `-DuoSeed
+-electrician.suppressWhatsNew` in `--args` and put the tour in each screen,
+`--screen "-DuoTour -DuoTourFirst 1 -DuoTourStep 60 -DuoTourStepRegular 60
+-DuoRoutes drill-worked-examples"`, one per surface. gh-sim relaunches per
+screen, folded then unfolded. Native
 video: `--record-seconds` must outlast `--wait` (30 with `--wait 20`, a fast
 tour of about four routes, `-DuoTourFirst 3 -DuoTourStep 3
 -DuoTourStepRegular 4`). When the wait outlasted the recording, the
