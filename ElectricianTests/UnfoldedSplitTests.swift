@@ -52,4 +52,38 @@ final class UnfoldedSplitTests: XCTestCase {
             }
         }
     }
+
+    // MARK: - Training tiles
+
+    private let tile = CGSize(width: 128, height: 118)
+
+    func testPhoneRowKeepsNaturalSizesInOneLine() {
+        let frames = TrainingTileLayout.frames(for: Array(repeating: tile, count: 5), wrapWidth: nil)
+        XCTAssertEqual(frames.map(\.minY), Array(repeating: 0, count: 5))
+        XCTAssertEqual(frames.map(\.minX), [0, 138, 276, 414, 552])
+        XCTAssertEqual(frames.map(\.width), Array(repeating: 128, count: 5))
+    }
+
+    func testPaneWrapsFiveTilesIntoWholeColumns() {
+        // A Duo pane's training row: about 440 pt pane, less Home's margins.
+        let width: CGFloat = 400
+        let frames = TrainingTileLayout.frames(for: Array(repeating: tile, count: 5), wrapWidth: width)
+        XCTAssertEqual(TrainingTileLayout.columns(for: width), 3)
+        XCTAssertEqual(frames.map(\.minY), [0, 0, 0, 128, 128])
+        for frame in frames {
+            XCTAssertGreaterThanOrEqual(frame.width, TrainingTileLayout.minimumTileWidth)
+            // No tile is cut off at the pane's edge (the fold).
+            XCTAssertLessThanOrEqual(frame.maxX, width + 0.001)
+        }
+        XCTAssertEqual(frames[2].maxX, width, accuracy: 0.001)
+    }
+
+    func testColumnsNeverDropBelowOneOrUnderTheMinimumWidth() {
+        XCTAssertEqual(TrainingTileLayout.columns(for: 60), 1)
+        for width in stride(from: CGFloat(120), through: 900, by: 7) {
+            let columns = CGFloat(TrainingTileLayout.columns(for: width))
+            let tileWidth = (width - 10 * (columns - 1)) / columns
+            XCTAssertGreaterThanOrEqual(tileWidth, TrainingTileLayout.minimumTileWidth - 0.001, "width \(width)")
+        }
+    }
 }

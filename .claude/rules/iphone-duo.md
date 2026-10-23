@@ -7,6 +7,8 @@ paths:
   - "Electrician/Views/SettingsView.swift"
   - "Electrician/Views/Components/QuestionUI.swift"
   - "Electrician/Views/Drills/CalcDrillView.swift"
+  - "Electrician/Views/RoomView.swift"
+  - "Electrician/Views/EndlessPickerView.swift"
 ---
 
 # Electrician: iPhone Duo (2026-10-21)
@@ -47,6 +49,20 @@ paths:
   against the Next button before anything was answered. `CalcDrillView` and
   `QuestionPager` measure their own scroll view and pass the density down the
   environment to `ChoiceList`; `QuestionDensityTests` holds the thresholds.
+- Home's Training tiles scroll in one row on a phone, the next tile peeking
+  from the screen edge. At regular width (a Duo pane, iPad) that peek became a
+  sliver cut off at the fold, with the clipped card shadows reading as a grey
+  strip, and supervisor review rejected it (2026-10-23). They now wrap into
+  whole columns (`TrainingTileLayout` in `UnfoldedSplit.swift`, three across a
+  Duo pane, five tiles as three plus two). It is one `Layout` inside the same
+  scroll view either way, scrolling and clipping only switched off, so a fold
+  never rebuilds the tiles. `UnfoldedSplitTests` holds the math.
+- A room lists its generated shapes under its drills (`RoomView`'s Endless
+  Practice section, `PracticeSkillCard` shared with the picker), gated like
+  the Home tile. Worked Calculations has a single drill, so its pane was one
+  card over an empty half, also rejected (2026-10-23); it now shows Fill the
+  Pipe, Fill the Box and Drop the Voltage with their accuracy. Basics and
+  Installation have no shapes and show no section.
 - Still system sheets, so centred across the fold: the paywall, What's New,
   feedback and the sheets raised from inside Settings. Onboarding is a
   full-width readable column shown before Home exists.

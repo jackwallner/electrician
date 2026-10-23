@@ -37,7 +37,7 @@ struct EndlessPickerView: View {
                             NavigationLink {
                                 PracticeRunView(mode: .endless(skill))
                             } label: {
-                                skillCard(skill, accent: group.room.accent)
+                                PracticeSkillCard(skill: skill, accent: group.room.accent, record: records.records[skill.rawValue])
                             }
                             .buttonStyle(PressableCardStyle())
                         }
@@ -69,15 +69,25 @@ struct EndlessPickerView: View {
         .background(Theme.voltage.opacity(0.10), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .padding(.top, 12)
     }
+}
 
-    private func skillCard(_ skill: PracticeSkill, accent: Color) -> some View {
-        let record = records.records[skill.rawValue]
-        return HStack(spacing: 14) {
+/// One generated shape as a card: its icon in the room's accent, what it
+/// drills and, once answered, how it is going. Shared by the picker and the
+/// room it belongs to. Locked shows the membership lock instead of the
+/// chevron; the caller decides what a tap does.
+struct PracticeSkillCard: View {
+    let skill: PracticeSkill
+    let accent: Color
+    var record: PracticeRecord?
+    var locked = false
+
+    var body: some View {
+        HStack(spacing: 14) {
             Image(systemName: skill.icon)
                 .font(.title3.weight(.semibold))
-                .foregroundStyle(accent)
+                .foregroundStyle(locked ? accent.opacity(0.55) : accent)
                 .frame(width: 48, height: 48)
-                .background(accent.opacity(0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .background(accent.opacity(locked ? 0.08 : 0.12), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
                 Text(skill.title)
                     .font(Theme.cardTitle)
@@ -93,9 +103,9 @@ struct EndlessPickerView: View {
                 }
             }
             Spacer(minLength: 4)
-            Image(systemName: "chevron.right")
+            Image(systemName: locked ? "lock.fill" : "chevron.right")
                 .font(.footnote.weight(.semibold))
-                .foregroundStyle(Theme.inkTertiary)
+                .foregroundStyle(locked ? Theme.brass : Theme.inkTertiary)
         }
         .padding(14)
         .themedCard()

@@ -7,7 +7,14 @@ struct RoomView: View {
 
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var subscriptions: SubscriptionService
+    @StateObject private var records = PracticeRecordStore.shared
     @State private var showPaywall = false
+
+    /// The generated shapes this room teaches. Rooms without one (the
+    /// authored-only rooms) show no section.
+    private var skills: [PracticeSkill] {
+        PracticeSkill.allCases.filter { $0.roomID == room.id }
+    }
 
     private var roomLocked: Bool { !room.isFree && !subscriptions.isPro }
     private var lockedCount: Int {
@@ -25,6 +32,9 @@ struct RoomView: View {
                     ForEach(room.drills) { drill in
                         drillRow(drill)
                     }
+                }
+                if !skills.isEmpty {
+                    endlessSection
                 }
                 if lockedCount > 0 {
                     upsell
@@ -135,6 +145,47 @@ struct RoomView: View {
         .frame(maxWidth: .infinity)
         .themedCard(corner: 16)
         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+
+    /// The room's drills are a fixed set; its generated shapes never run out.
+    /// Offering them here puts unlimited reps one tap from the set just
+    /// finished, instead of two screens away in Endless Practice. Same
+    /// membership gate as the Endless Practice tile on Home.
+    private var endlessSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("ENDLESS PRACTICE")
+                .font(Theme.eyebrow)
+                .kerning(Theme.eyebrowKerning)
+                .foregroundStyle(Theme.inkSecondary)
+                .padding(.horizontal, 4)
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 320), spacing: 14)],
+                spacing: 10
+            ) {
+                ForEach(skills) { skill in
+                    skillRow(skill)
+                }
+            }
+        }
+        .padding(.top, 8)
+    }
+
+    @ViewBuilder
+    private func skillRow(_ skill: PracticeSkill) -> some View {
+        let card = PracticeSkillCard(
+            skill: skill,
+            accent: room.accent,
+            record: records.records[skill.rawValue],
+            locked: !subscriptions.isPro
+        )
+        if subscriptions.isPro {
+            NavigationLink { PracticeRunView(mode: .endless(skill)) } label: { card }
+                .buttonStyle(PressableCardStyle())
+        } else {
+            Button { showPaywall = true } label: { card }
+                .buttonStyle(PressableCardStyle())
+                .accessibilityHint("Included with \(Membership.name)")
+        }
     }
 
     /// Says exactly what the money buys IN THIS ROOM, which is the whole point

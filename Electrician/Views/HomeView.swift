@@ -23,6 +23,8 @@ struct HomeView: View {
     @State private var showWhatsNew = false
     @State private var pendingAfterUpgrade: AppDestination?
     @State private var highlightedRoomID: String?
+    /// The training row's width, which its tiles wrap within at regular width.
+    @State private var trainingRowWidth: CGFloat = 0
     /// The container's width and fold, measured so the unfolded iPhone Duo can
     /// put Home and Your Progress on opposite sides of the fold.
     @State private var paneGeometry = PaneGeometry(width: 0, fold: nil)
@@ -689,22 +691,23 @@ struct HomeView: View {
                 Spacer()
             }
             .padding(.horizontal, 4)
-            if horizontalSizeClass == .regular {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 10)], spacing: 10) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                TrainingTileLayout(wrapWidth: wrapsTraining ? trainingRowWidth - 8 : nil) {
                     trainingTiles
                 }
                 .padding(.horizontal, 4)
-            } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 10) {
-                        trainingTiles
-                    }
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 2)
-                }
+                .padding(.vertical, 2)
             }
+            .scrollDisabled(wrapsTraining)
+            .scrollClipDisabled(wrapsTraining)
+            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { trainingRowWidth = $0 }
         }
     }
+
+    /// At regular width (an unfolded Duo pane, iPad) the tiles wrap into
+    /// columns that fill the row; a scroller there would end in a sliver of
+    /// tile against the fold. The phone keeps its scrolling row.
+    private var wrapsTraining: Bool { windowSizeClass == .regular && trainingRowWidth > 0 }
 
     @ViewBuilder
     private var trainingTiles: some View {
@@ -816,8 +819,8 @@ struct HomeView: View {
             }
         }
         .padding(12)
-        .frame(width: horizontalSizeClass == .regular ? nil : 128, height: 118, alignment: .leading)
-        .frame(maxWidth: horizontalSizeClass == .regular ? .infinity : nil, alignment: .leading)
+        .frame(width: wrapsTraining ? nil : 128, height: 118, alignment: .leading)
+        .frame(maxWidth: wrapsTraining ? .infinity : nil, alignment: .leading)
         .themedCard(corner: 16)
     }
 
