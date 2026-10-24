@@ -184,10 +184,7 @@ struct PracticeRunView: View {
             }
             .padding(.horizontal, 4)
         case .review:
-            // Completed, not current. See CalcDrillView for the same rule.
-            ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(items.count, 1)))
-                .tint(Theme.voltage)
-                .animation(Theme.Motion.meter, value: answered)
+            DrillProgressHeader(index: index, total: items.count, answered: answered)
         case .endless:
             HStack {
                 Text("\(score) of \(attempted) correct")
@@ -210,28 +207,11 @@ struct PracticeRunView: View {
     }
 
     private var footer: some View {
-        Group {
-            if answered {
-                Button {
-                    advance()
-                } label: {
-                    Text(isLastItem ? "Finish" : "Next").primaryCTA()
-                }
-            } else {
-                Text(counterText)
-                    .font(.caption)
-                    .foregroundStyle(Theme.inkTertiary)
-                    .frame(height: 54)
-            }
-        }
+        DrillNextButton(title: isLastItem ? "Finish" : "Next", enabled: answered, action: advance)
     }
 
     private var isLastItem: Bool {
         mode == .review && index + 1 >= items.count
-    }
-
-    private var counterText: String {
-        mode == .review ? "\(index + 1) of \(items.count)" : "Question \(index + 1)"
     }
 
     // MARK: - Clock

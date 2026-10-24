@@ -134,8 +134,7 @@ enum DuoScreenshotMode {
     static func destination(_ route: Route, progress: ProgressStore, subscriptions: SubscriptionService) -> some View {
         switch route {
         case .quick:
-            QuickSessionView(items: SessionBuilder.quickSession(
-                seen: progress.seenItems, missed: progress.missedItems, includePro: subscriptions.isPro))
+            QuickSessionView(items: quickSessionItems())
         case .room(let id):
             if let room = DrillLibrary.room(id: id) { RoomView(room: room) }
         case .drill(let id):
@@ -152,6 +151,17 @@ enum DuoScreenshotMode {
         case .readiness: PracticeReadinessView()
         case .howto: HowToPlayView()
         }
+    }
+
+    /// The real Quick Session reshuffles on every launch, so a capture could
+    /// open on any of a few hundred items. This one is fixed: it leads with the
+    /// 14 AWG cap question, whose givens and named trap are the app at its most
+    /// typical, then fills the run from the pool in id order.
+    private static func quickSessionItems() -> [QuickItem] {
+        let pool = SessionBuilder.choicePool(includePro: true).sorted { $0.id < $1.id }
+        let lead = pool.filter { $0.id == "cond-q-14awg" }
+        let rest = pool.filter { $0.id != "cond-q-14awg" }
+        return (lead + rest).prefix(10).map(SessionBuilder.prepared)
     }
 
     @MainActor @ViewBuilder

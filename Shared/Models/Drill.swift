@@ -67,6 +67,14 @@ struct ArticleMatchQuestion: Identifiable, Sendable {
     let choices: [CodeArticle]
     let answer: CodeArticle
     let explanation: String
+
+    /// What the reader is asked. A scenario on its own ends on what you need to
+    /// know ("...how many receptacles it takes."), so over four article names
+    /// it read as a sizing question with the wrong answers, which supervisor
+    /// review rejected (2026-10-23). Every runner shows this, never `scenario`.
+    var prompt: String { "\(scenario)\n\(Self.ask)" }
+
+    static let ask = "Which article do you open?"
 }
 
 /// A named candidate mistake: the reasoning error that produces one specific
@@ -172,7 +180,7 @@ extension ArticleMatchQuestion {
     var asQuizQuestion: QuizQuestion {
         QuizQuestion(
             id: id,
-            prompt: scenario,
+            prompt: prompt,
             choices: choices.map(\.shortName),
             answerIndex: choices.firstIndex(of: answer) ?? 0,
             explanation: explanation,

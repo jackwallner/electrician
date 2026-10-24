@@ -113,10 +113,7 @@ struct QuickSessionView: View {
 
     private var drillBody: some View {
         VStack(spacing: 16) {
-            // Completed, not current. See CalcDrillView for the same rule.
-            ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(items.count, 1)))
-                .tint(Theme.voltage)
-                .animation(Theme.Motion.meter, value: answered)
+            DrillProgressHeader(index: index, total: items.count, answered: answered)
             VStack(spacing: 12) {
                 QuestionPager(
                     prompt: item.prompt,
@@ -175,20 +172,7 @@ struct QuickSessionView: View {
     }
 
     private var footer: some View {
-        Group {
-            if answered {
-                Button {
-                    advance()
-                } label: {
-                    Text(index + 1 < items.count ? "Next" : "Finish").primaryCTA()
-                }
-            } else {
-                Text("\(index + 1) of \(items.count)")
-                    .font(.caption)
-                    .foregroundStyle(Theme.inkTertiary)
-                    .frame(height: 54)
-            }
-        }
+        DrillNextButton(title: index + 1 < items.count ? "Next" : "Finish", enabled: answered, action: advance)
     }
 
     // MARK: - Grading

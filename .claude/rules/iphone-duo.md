@@ -9,6 +9,8 @@ paths:
   - "Electrician/Views/Drills/CalcDrillView.swift"
   - "Electrician/Views/RoomView.swift"
   - "Electrician/Views/EndlessPickerView.swift"
+  - "Electrician/Views/Drills/QuickSessionView.swift"
+  - "Shared/Models/Drill.swift"
 ---
 
 # Electrician: iPhone Duo (2026-10-21)
@@ -63,6 +65,19 @@ paths:
   card over an empty half, also rejected (2026-10-23); it now shows Fill the
   Pipe, Fill the Box and Drop the Voltage with their accuracy. Basics and
   Installation have no shapes and show no section.
+- Quick Session in the left pane was rejected (2026-10-23) twice over. An
+  article-match item showed its scenario ("...how many receptacles it
+  takes.") over four article names, so question and answers read as
+  mismatched: `ArticleMatchQuestion.prompt` now appends `ask` ("Which article
+  do you open?") and every runner and the session pool use it, never
+  `scenario` (`testArticleMatchPromptsAskForTheArticle`; the Android exports
+  carry the same strings). And the "1 of 10" caption sat alone under an empty
+  band where Next lands: Quick Session, quiz, calc and Fix My Mistakes now
+  show the count beside the bar (`DrillProgressHeader`; timed and endless
+  keep their score bar), and every choice runner shows a dimmed Next from the
+  first frame (`DrillNextButton`), so the answers end above a button and
+  grading never moves the layout. The capture's `quick` route is a fixed session that
+  leads with the 14 AWG cap question, not a fresh shuffle.
 - Still system sheets, so centred across the fold: the paywall, What's New,
   feedback and the sheets raised from inside Settings. Onboarding is a
   full-width readable column shown before Home exists.

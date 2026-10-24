@@ -34902,7 +34902,7 @@
             "mistakes" : {
 
             },
-            "prompt" : "A feeder is buried across a yard and you need the minimum depth of cover.",
+            "prompt" : "A feeder is buried across a yard and you need the minimum depth of cover.\nWhich article do you open?",
             "roomID" : "install-room",
             "sourceLabel" : "Installation Rules",
             "steps" : [
@@ -35118,7 +35118,7 @@
             "mistakes" : {
 
             },
-            "prompt" : "A 10-foot tap is made from a 400 A feeder and you need to know what size the tap conductors may be.",
+            "prompt" : "A 10-foot tap is made from a 400 A feeder and you need to know what size the tap conductors may be.\nWhich article do you open?",
             "roomID" : "basics-room",
             "sourceLabel" : "Code Basics",
             "steps" : [

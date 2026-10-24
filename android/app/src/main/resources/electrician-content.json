@@ -1103,7 +1103,7 @@
 
               ],
               "id" : "am-receptacle-spacing",
-              "prompt" : "A dwelling-unit wall is 14 feet long with no doorway. You need to know how many receptacle outlets are required and where they go."
+              "prompt" : "A dwelling-unit wall is 14 feet long with no doorway. You need to know how many receptacle outlets are required and where they go.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1119,7 +1119,7 @@
 
               ],
               "id" : "am-derate-attic",
-              "prompt" : "Eight current-carrying conductors share a raceway in an attic that reaches 48°C. You need the usable ampacity."
+              "prompt" : "Eight current-carrying conductors share a raceway in an attic that reaches 48°C. You need the usable ampacity.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1135,7 +1135,7 @@
 
               ],
               "id" : "am-emt-size",
-              "prompt" : "Nine 8 AWG THHN conductors need to run in EMT and you have to pick the trade size."
+              "prompt" : "Nine 8 AWG THHN conductors need to run in EMT and you have to pick the trade size.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1151,7 +1151,7 @@
 
               ],
               "id" : "am-box-volume",
-              "prompt" : "A device box holds six 12 AWG conductors, three grounds, internal clamps and two yokes. You need the minimum volume."
+              "prompt" : "A device box holds six 12 AWG conductors, three grounds, internal clamps and two yokes. You need the minimum volume.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1167,7 +1167,7 @@
 
               ],
               "id" : "am-electrode",
-              "prompt" : "You need to know whether a metal underground water pipe qualifies as a grounding electrode and how much of it must be in contact with earth."
+              "prompt" : "You need to know whether a metal underground water pipe qualifies as a grounding electrode and how much of it must be in contact with earth.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1183,7 +1183,7 @@
 
               ],
               "id" : "am-motor-conductor",
-              "prompt" : "A 10 hp three-phase motor needs branch-circuit conductors sized. The nameplate reads 28 amps."
+              "prompt" : "A 10 hp three-phase motor needs branch-circuit conductors sized. The nameplate reads 28 amps.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1199,7 +1199,7 @@
 
               ],
               "id" : "am-dwelling-service",
-              "prompt" : "A 2,400 square foot dwelling with a range, a dryer and a water heater needs a service size."
+              "prompt" : "A 2,400 square foot dwelling with a range, a dryer and a water heater needs a service size.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1215,7 +1215,7 @@
 
               ],
               "id" : "am-breaker-standard",
-              "prompt" : "A calculation gives 138 amps and you need to know what breaker is permitted."
+              "prompt" : "A calculation gives 138 amps and you need to know what breaker is permitted.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1231,7 +1231,7 @@
 
               ],
               "id" : "am-readily-accessible",
-              "prompt" : "An inspector says a disconnect is not \"readily accessible.\" You want to check exactly what that phrase requires."
+              "prompt" : "An inspector says a disconnect is not \"readily accessible.\" You want to check exactly what that phrase requires.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1247,7 +1247,7 @@
 
               ],
               "id" : "am-egc-size",
-              "prompt" : "A 200 A feeder needs an equipment grounding conductor sized."
+              "prompt" : "A 200 A feeder needs an equipment grounding conductor sized.\nWhich article do you open?"
             }
           ],
           "kind" : "quiz",
@@ -1355,7 +1355,7 @@
 
               ],
               "id" : "plus-am-gfci",
-              "prompt" : "You need to know whether a receptacle in a garage requires GFCI protection."
+              "prompt" : "You need to know whether a receptacle in a garage requires GFCI protection.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1371,7 +1371,7 @@
 
               ],
               "id" : "plus-am-tap",
-              "prompt" : "A 10-foot tap is made from a 400 A feeder and you need to know what size the tap conductors may be."
+              "prompt" : "A 10-foot tap is made from a 400 A feeder and you need to know what size the tap conductors may be.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -1387,7 +1387,7 @@
 
               ],
               "id" : "plus-am-support",
-              "prompt" : "You need the maximum distance from a box to the first strap on a run of EMT."
+              "prompt" : "You need the maximum distance from a box to the first strap on a run of EMT.\nWhich article do you open?"
             }
           ],
           "kind" : "quiz",
@@ -2186,7 +2186,7 @@
 
               ],
               "id" : "install-match-workspace",
-              "prompt" : "You need to know how much clear space has to be left in front of a 480 V switchboard."
+              "prompt" : "You need to know how much clear space has to be left in front of a 480 V switchboard.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -2202,7 +2202,7 @@
 
               ],
               "id" : "install-match-cover",
-              "prompt" : "A feeder is buried across a yard and you need the minimum depth of cover."
+              "prompt" : "A feeder is buried across a yard and you need the minimum depth of cover.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -2218,7 +2218,7 @@
 
               ],
               "id" : "install-match-service-disconnect",
-              "prompt" : "You need to know how many disconnects a service is allowed and where they may be located."
+              "prompt" : "You need to know how many disconnects a service is allowed and where they may be located.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -2234,7 +2234,7 @@
 
               ],
               "id" : "install-match-receptacle-spacing",
-              "prompt" : "A dwelling living room wall is 14 feet long and you need to know how many receptacles it takes."
+              "prompt" : "A dwelling living room wall is 14 feet long and you need to know how many receptacles it takes.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -2250,7 +2250,7 @@
 
               ],
               "id" : "install-match-support",
-              "prompt" : "You need the maximum spacing between straps on a run of 1 inch EMT."
+              "prompt" : "You need the maximum spacing between straps on a run of 1 inch EMT.\nWhich article do you open?"
             },
             {
               "answerIndex" : 0,
@@ -2266,7 +2266,7 @@
 
               ],
               "id" : "install-match-readily-accessible",
-              "prompt" : "A disconnect has to be readily accessible, and you are arguing about whether one behind a locked door qualifies."
+              "prompt" : "A disconnect has to be readily accessible, and you are arguing about whether one behind a locked door qualifies.\nWhich article do you open?"
             }
           ],
           "kind" : "quiz",

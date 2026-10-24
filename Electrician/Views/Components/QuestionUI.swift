@@ -68,6 +68,50 @@ extension View {
     }
 }
 
+/// A drill's place in its run: the bar plus "3 of 10" beside it. The count
+/// used to sit alone under the answers, in the slot the Next button takes once
+/// graded, and on a short screen that left a small caption under an empty
+/// band that supervisor review read as unfinished (2026-10-23).
+struct DrillProgressHeader: View {
+    let index: Int
+    let total: Int
+    let answered: Bool
+
+    var body: some View {
+        HStack(spacing: 12) {
+            // Completed, not current: the bar counts an item once it has been
+            // graded, so the final answer fills it instead of leaving the run
+            // permanently one short of done.
+            ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(total, 1)))
+                .tint(Theme.voltage)
+                .animation(Theme.Motion.meter, value: answered)
+            Text("\(index + 1) of \(total)")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(Theme.inkTertiary)
+                .monospacedDigit()
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Question \(index + 1) of \(total)")
+    }
+}
+
+/// Next sits in place from the first frame, dimmed until the answer is graded,
+/// so grading never changes the layout and the answers always end above a
+/// button rather than above empty space.
+struct DrillNextButton: View {
+    let title: String
+    let enabled: Bool
+    let action: @MainActor () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title).primaryCTA()
+        }
+        .disabled(!enabled)
+        .opacity(enabled ? 1 : 0.4)
+    }
+}
+
 /// Scroll target for the coaching note revealed on grading. Lives outside
 /// `QuestionPager` because a generic type cannot hold a static stored property.
 private let questionExplanationID = "question-explanation"

@@ -104,6 +104,17 @@ final class ContentValidityTests: XCTestCase {
         }
     }
 
+    /// A scenario alone reads as a sizing question over four article names.
+    /// Every place an article match is shown has to put the ask under it.
+    func testArticleMatchPromptsAskForTheArticle() {
+        let pool = Dictionary(SessionBuilder.choicePool(includePro: true).map { ($0.id, $0) }) { first, _ in first }
+        for question in allArticleMatch {
+            XCTAssertTrue(question.asQuizQuestion.prompt.hasSuffix(ArticleMatchQuestion.ask), question.id)
+            XCTAssertTrue(question.asQuizQuestion.prompt.hasPrefix(question.scenario), question.id)
+            XCTAssertEqual(pool[question.id]?.prompt, question.prompt, "\(question.id) in Quick Session")
+        }
+    }
+
     // MARK: - Copy rules
 
     /// Global house style. Also a legal tell: em dashes are how copied text

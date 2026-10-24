@@ -33,10 +33,7 @@ struct QuizDrillView: View {
 
     private var drillBody: some View {
         VStack(spacing: 16) {
-            // Completed, not current. See CalcDrillView for the same rule.
-            ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(questions.count, 1)))
-                .tint(Theme.voltage)
-                .animation(Theme.Motion.meter, value: answered)
+            DrillProgressHeader(index: index, total: questions.count, answered: answered)
             VStack(spacing: 16) {
                 QuestionPager(
                     prompt: question.prompt,
@@ -75,20 +72,7 @@ struct QuizDrillView: View {
     }
 
     private var footer: some View {
-        Group {
-            if answered {
-                Button {
-                    advance()
-                } label: {
-                    Text(index + 1 < questions.count ? "Next Question" : "Finish").primaryCTA()
-                }
-            } else {
-                Text("Question \(index + 1) of \(questions.count)")
-                    .font(.caption)
-                    .foregroundStyle(Theme.inkTertiary)
-                    .frame(height: 54)
-            }
-        }
+        DrillNextButton(title: index + 1 < questions.count ? "Next Question" : "Finish", enabled: answered, action: advance)
     }
 
     private var reportContext: ContentReport.Context {

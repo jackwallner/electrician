@@ -218,7 +218,7 @@ enum SessionBuilder {
                         let answerIndex = question.choices.firstIndex(of: question.answer) ?? 0
                         return QuickItem(
                             id: question.id,
-                            prompt: question.scenario,
+                            prompt: question.prompt,
                             givens: [],
                             choices: labels,
                             answerIndex: answerIndex,

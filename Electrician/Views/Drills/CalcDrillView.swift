@@ -43,12 +43,7 @@ struct CalcDrillView: View {
 
     private var drillBody: some View {
         VStack(spacing: 16) {
-            // Completed, not current: the bar counts an item once it has been
-            // graded, so the final answer fills it instead of leaving the run
-            // permanently one short of done.
-            ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(scenarios.count, 1)))
-                .tint(Theme.voltage)
-                .animation(Theme.Motion.meter, value: answered)
+            DrillProgressHeader(index: index, total: scenarios.count, answered: answered)
             VStack(spacing: 16) {
                 CenteringScrollView {
                     VStack(spacing: density.stackSpacing) {
@@ -121,13 +116,7 @@ struct CalcDrillView: View {
     }
 
     private var footer: some View {
-        Button {
-            advance()
-        } label: {
-            Text(index == scenarios.count - 1 ? "Finish" : "Next").primaryCTA()
-        }
-        .disabled(!answered)
-        .opacity(answered ? 1 : 0.4)
+        DrillNextButton(title: index == scenarios.count - 1 ? "Finish" : "Next", enabled: answered, action: advance)
     }
 
     private func select(_ pick: Int) {
