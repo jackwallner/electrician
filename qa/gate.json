@@ -1,0 +1,17 @@
+{
+  "project": "Electrician.xcodeproj",
+  "scheme": "ElectricianUITests",
+  "uitests_dir": "ElectricianUITests",
+  "journeys": [
+    "ElectricianUITests/ReleaseJourneysUITests"
+  ],
+  "personas": [
+    "newcomer",
+    "accessibility",
+    "reduce-motion",
+    "german"
+  ],
+  "persona_overrides": {},
+  "slot": null,
+  "bundle_id": "com.jackwallner.electrician"
+}
