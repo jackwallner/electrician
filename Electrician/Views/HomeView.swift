@@ -808,6 +808,8 @@ struct HomeView: View {
                 .foregroundStyle(Theme.ink)
                 .multilineTextAlignment(.leading)
                 .fixedSize(horizontal: false, vertical: true)
+                // The line break is visual only; VoiceOver reads one phrase.
+                .accessibilityLabel(title.replacingOccurrences(of: "\n", with: " "))
             if let badge {
                 Text(badge)
                     .font(.caption2.weight(.semibold))
@@ -816,6 +818,7 @@ struct HomeView: View {
                 Text(locked ? Membership.name : " ")
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(Theme.brass)
+                    .accessibilityHidden(!locked)
             }
         }
         .padding(12)

@@ -49,12 +49,8 @@ final class ReleaseJourneysUITests: XCTestCase {
         QA.checkpoint(app, "field-tools")
         app.navigationBars.buttons.firstMatch.tap()
         home("home-after-tools", in: app)
-        let upgrade = reveal(app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@", "Get Electrician+")).firstMatch, in: app)
-        upgrade.tap()
-        XCTAssertTrue(app.buttons["Restore"].waitForExistence(timeout: 20))
-        QA.checkpoint(app, "upgrade", paywall: true)
-        tap("Close", in: app)
-        home("home-after-upgrade", in: app)
+        // The Duo seed is already an Electrician+ member, so there is no
+        // upgrade to open here; test1 covers the trial page.
         tap("Settings", in: app)
         checkpoint("settings", button: "Done", in: app)
         tap("Done", in: app)

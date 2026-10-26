@@ -195,31 +195,40 @@ struct OnboardingView: View {
 
     private func infoPage(icon: String, tint: Color, title: String,
                           body bodyText: String, givens: [Given]) -> some View {
-        VStack(spacing: 26) {
-            Spacer()
-            Image(systemName: icon)
-                .font(.system(size: 40, weight: .semibold))
-                .foregroundStyle(tint)
-                .frame(width: 96, height: 96)
-                .background(tint.opacity(0.12), in: Circle())
-                .overlay(Circle().strokeBorder(tint.opacity(0.25), lineWidth: 1))
-            Text(title)
-                .font(Theme.displayLarge)
-                .foregroundStyle(Theme.ink)
-                .multilineTextAlignment(.center)
-            if !givens.isEmpty {
-                GivensView(givens: givens, scale: 1.15)
-                    .padding(.horizontal, 24)
+        // At the largest text sizes the copy outgrows the screen, so the page
+        // scrolls; at every other size it fills the viewport exactly as before.
+        GeometryReader { viewport in
+            ScrollView {
+                VStack(spacing: 26) {
+                    Spacer()
+                    Image(systemName: icon)
+                        .font(.system(size: 40, weight: .semibold))
+                        .foregroundStyle(tint)
+                        .frame(width: 96, height: 96)
+                        .background(tint.opacity(0.12), in: Circle())
+                        .overlay(Circle().strokeBorder(tint.opacity(0.25), lineWidth: 1))
+                    Text(title)
+                        .font(Theme.displayLarge)
+                        .foregroundStyle(Theme.ink)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                    if !givens.isEmpty {
+                        GivensView(givens: givens, scale: 1.15)
+                            .padding(.horizontal, 24)
+                    }
+                    Text(bodyText)
+                        .font(.body)
+                        .foregroundStyle(Theme.inkSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                    Spacer()
+                }
+                .padding(.horizontal, 28)
+                .frame(minHeight: viewport.size.height)
             }
-            Text(bodyText)
-                .font(.body)
-                .foregroundStyle(Theme.inkSecondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-            Spacer()
-            Spacer()
+            .scrollBounceBehavior(.basedOnSize)
         }
-        .padding(.horizontal, 28)
     }
 
     // MARK: - Setup steps
