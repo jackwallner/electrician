@@ -93,7 +93,9 @@ final class SubscriptionService: NSObject, ObservableObject {
     @Published private(set) var trialEligibility: [String: Bool] = [:]
 
     private var isConfigured = false
+    #if DEBUG
     private let localOverrideKey = "subscription.localProOverride"
+    #endif
     private var paywallImpressionsThisSession: Set<String> = []
     /// DEBUG StoreKit Testing catalog prices. Used when RevenueCat is not
     /// configured (simulator / placeholder key) so the paywall can still
@@ -110,7 +112,9 @@ final class SubscriptionService: NSObject, ObservableObject {
 
     override private init() {
         super.init()
+        #if DEBUG
         isPro = UserDefaults.standard.bool(forKey: localOverrideKey)
+        #endif
     }
 
     func start() {
@@ -130,7 +134,9 @@ final class SubscriptionService: NSObject, ObservableObject {
 
     /// Dev/testing switch: flips Pro without a live RC key (Settings toggle).
     func setLocalOverride(isPro: Bool) {
+        #if DEBUG
         UserDefaults.standard.set(isPro, forKey: localOverrideKey)
+        #endif
         self.isPro = isPro
     }
 
@@ -479,7 +485,11 @@ final class SubscriptionService: NSObject, ObservableObject {
 
     private func apply(_ info: CustomerInfo) {
         let entitled = info.entitlements[Self.entitlementKey]?.isActive == true
+        #if DEBUG
         let override = UserDefaults.standard.bool(forKey: localOverrideKey)
+        #else
+        let override = false
+        #endif
         isPro = entitled || override
     }
 }
