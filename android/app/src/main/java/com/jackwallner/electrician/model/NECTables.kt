@@ -104,7 +104,7 @@ object NECTables {
 
     fun motorFLC(hp: String, supply: MotorSupply): Double? = raw.getJSONObject(if (supply.phase == Phase.single) "singlePhaseFLC" else "threePhaseFLC").optJSONObject(hp)?.nullableDouble(supply.name)
     fun motorRatings(supply: MotorSupply): List<MotorRating> = motorRatings.filter { motorFLC(it.label, supply) != null }
-    const val motorConductorFactor = 1.25
+    val motorConductorFactor: Double get() = raw.getDouble("motorConductorFactor")
     fun motorBranchOCPD(flc: Double, protection: MotorProtection): Int? = standardOCPD.firstOrNull { abs(it - flc * protection.percent) < 0.0001 } ?: nextStandardOCPDAtLeast(flc * protection.percent)
     fun motorOverloadTrip(nameplateFLA: Double, serviceFactor: Double, tempRiseC: Double?): Double = nameplateFLA * if (serviceFactor >= 1.15 || tempRiseC != null && tempRiseC <= 40) 1.25 else 1.15
     fun motorFeederAmpacity(flcs: List<Double>): Double? = flcs.maxOrNull()?.let { it * motorConductorFactor + (flcs.sum() - it) }
@@ -129,14 +129,19 @@ object NECTables {
     fun fastenedApplianceDemand(totalVA: Double, count: Int): Double = if (count >= 4) totalVA * 0.75 else totalVA
     fun noncoincident(a: Double, b: Double): Double = max(a, b)
     fun serviceAmps(va: Double, volts: Double = 240.0, phase: Phase = Phase.single): Double = va / (volts * if (phase == Phase.single) 1.0 else 1.732)
-    const val minimumDwellingServiceAmps = 100
+    val dwellingLightingVAPerSqFt: Double get() = raw.getDouble("dwellingLightingVAPerSqFt")
+    val smallApplianceCircuitVA: Double get() = raw.getDouble("smallApplianceCircuitVA")
+    val minimumSmallApplianceCircuits: Int get() = raw.getInt("minimumSmallApplianceCircuits")
+    val laundryCircuitVA: Double get() = raw.getDouble("laundryCircuitVA")
+    val minimumDryerVA: Double get() = raw.getDouble("minimumDryerVA")
+    val minimumDwellingServiceAmps: Int get() = raw.getInt("minimumDwellingServiceAmps")
     fun dwellingServiceRating(amps: Double): Int? = nextStandardOCPDAtLeast(amps)?.let { max(it, minimumDwellingServiceAmps) }
     fun optionalMethodGeneralLoad(totalVA: Double): Double = min(totalVA, 10_000.0) + max(0.0, totalVA - 10_000) * 0.4
     fun optionalMethodHVAC(coolingVA: Double, heatingVA: Double, heatingUnits: Int): Double = max(coolingVA, heatingVA * if (heatingUnits >= 4) 0.4 else 0.65)
     fun smallestBox(required: Double): BoxSize? = boxSizes.sortedBy { it.cubicInches }.firstOrNull { it.cubicInches >= required - 0.0001 }
     fun terminationColumn(circuitAmps: Double, conductorSize: String): TemperatureRating = if (circuitAmps > 100 || (circularMilsExtended[conductorSize] ?: 0.0) > (circularMilsExtended["1 AWG"] ?: 0.0)) TemperatureRating.c75 else TemperatureRating.c60
-    const val continuousLoadFactor = 1.25
-    const val continuousLoadHours = 3
+    val continuousLoadFactor: Double get() = raw.getDouble("continuousLoadFactor")
+    val continuousLoadHours: Int get() = raw.getInt("continuousLoadHours")
 
     private fun numbers(key: String): Map<String, Double> = raw.getJSONObject(key).let { rows -> rows.keys().asSequence().associateWith(rows::getDouble) }
     private fun gecRows(key: String): List<GECRow> = raw.getJSONArray(key).objects().map { GECRow(it.getDouble("serviceUpTo"), it.getString("copper"), it.getString("aluminum")) }

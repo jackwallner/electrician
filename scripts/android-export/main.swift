@@ -63,6 +63,31 @@ func tables() -> [String: Any] {
         "egcRows": NECTables.egcRows, "motorRatings": NECTables.motorRatings,
         "singlePhaseFLC": NECTables.singlePhaseFLC, "threePhaseFLC": NECTables.threePhaseFLC,
         "rangeColumnC": NECTables.rangeColumnC, "boxSizes": NECTables.boxSizes, "supportRules": NECTables.supportRules,
+        "dwellingLightingVAPerSqFt": NECTables.dwellingLightingVAPerSqFt,
+        "smallApplianceCircuitVA": NECTables.smallApplianceCircuitVA,
+        "minimumSmallApplianceCircuits": NECTables.minimumSmallApplianceCircuits,
+        "laundryCircuitVA": NECTables.laundryCircuitVA, "minimumDryerVA": NECTables.minimumDryerVA,
+        "motorConductorFactor": NECTables.motorConductorFactor,
+        "minimumDwellingServiceAmps": NECTables.minimumDwellingServiceAmps,
+        "workingSpaceWidthInches": NECTables.workingSpaceWidthInches,
+        "workingSpaceHeightFeet": NECTables.workingSpaceHeightFeet,
+        "twoEntranceAmpThreshold": NECTables.twoEntranceAmpThreshold,
+        "coverUnderTrafficInches": NECTables.coverUnderTrafficInches,
+        "maximumBendDegrees": NECTables.maximumBendDegrees,
+        "continuousLoadFactor": NECTables.continuousLoadFactor, "continuousLoadHours": NECTables.continuousLoadHours,
+        "boxAllowances": NECTables.BoxAllowance.allCases.map {
+            ["id": $0.rawValue, "name": $0.displayName, "count": $0.count, "sizedBy": $0.sizedBy, "citation": $0.citation] as [String: Any]
+        },
+        "burialMethods": NECTables.BurialMethod.allCases.map {
+            ["id": $0.rawValue, "name": $0.displayName, "inches": $0.inches] as [String: Any]
+        },
+        "workingSpaceConditions": NECTables.WorkingSpaceCondition.allCases.map {
+            ["id": $0.rawValue, "name": $0.displayName, "detail": $0.detail,
+             "below151": NECTables.workingSpaceDepthFeet(voltsToGround: 120, condition: $0),
+             "above150": NECTables.workingSpaceDepthFeet(voltsToGround: 277, condition: $0)] as [String: Any]
+        },
+        "voltageDropAssumptions": FieldCalculators.VoltageDropResult.assumptions,
+        "voltageDropThreePercentNote": FieldCalculators.VoltageDropResult.threePercentNote,
         "ambient": (-10...80).map { celsius in
             ["celsius": celsius, "columns": Dictionary(uniqueKeysWithValues: TemperatureRating.allCases.map {
                 (String($0.rawValue), json(NECTables.ambientCorrection(celsius: celsius, column: $0) as Any))
@@ -83,6 +108,7 @@ func content() -> [String: Any] {
             ["id": $0.rawValue, "citation": $0.citation, "displayName": $0.displayName, "shortName": $0.shortName, "howToSpot": $0.howToSpot]
         },
         "primer": json(HowToPlayContent.pages), "tables": json(tables()),
+        "mistakePatterns": json(CandidateMistake.all),
         "jurisdictions": json(Jurisdictions.all), "jurisdictionsReviewed": Jurisdictions.reviewed,
         "otherJurisdiction": json(Jurisdictions.other),
         "skills": PracticeSkill.allCases.map {

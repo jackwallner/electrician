@@ -33,6 +33,6 @@
     "Shared/Models/NECTables.swift": "d66d855387cd4230e6e1043493e23ffddbb44a21ed8dc3add01996831e93b771",
     "Shared/Models/SeededGenerator.swift": "2f6cecada20e34e8ceccfc8102b5db1b476e44b5de9616139b7e2e26c8640f47",
     "Shared/Services/CandidateProfile.swift": "4ee8a9af96cc6cf87d12f0b2a9556abddeb1c21d8bbfe1f94b29ab078c6776fe",
-    "scripts/android-export/main.swift": "6b640dfb57ef322ee7136f13fa9ddb03c150b9950fad239d7a29592d9e354ffd"
+    "scripts/android-export/main.swift": "fae2ee65cfd1ebe3f4eb6c15c66852acc7385e90737eb7202a05f3475a1a1282"
   }
 }

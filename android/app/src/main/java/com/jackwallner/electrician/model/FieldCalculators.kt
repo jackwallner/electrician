@@ -5,17 +5,15 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
+import com.jackwallner.electrician.content.ElectricianContent
+import com.jackwallner.electrician.content.strings
+
 data class AmpacityResult(val tableAmps: Int, val ambientFactor: Double, val adjustment: Double, val afterDerate: Double, val terminationCap: Int, val smallConductorCeiling: Int?, val allowable: Double, val ocpdCeiling: Double, val citation: String)
 data class ConduitFillResult(val oneConductorArea: Double, val bundleArea: Double, val racewayArea: Double, val allowedPercent: Double, val allowedArea: Double, val actualPercent: Double, val fits: Boolean, val smallestFitting: String?, val citation: String)
 data class VoltageDropResult(val volts: Double, val percent: Double, val withinThreePercent: Boolean, val citation: String) {
     companion object {
-        val assumptions = listOf(
-            "Resistive only: reactance and power factor are not included.",
-            "Conductor at its table resistance, not at operating temperature.",
-            "Uncoated conductor in a non-magnetic raceway.",
-            "One-way length doubled (or × 1.732) by the phase factor, not a measured circuit path.",
-        )
-        const val threePercentNote = "3% is the figure the informational note suggests for a branch circuit. It is a recommendation, not a general requirement, though some jurisdictions do enforce it."
+        val assumptions: List<String> get() = ElectricianContent.raw.getJSONObject("tables").getJSONArray("voltageDropAssumptions").strings()
+        val threePercentNote: String get() = ElectricianContent.raw.getJSONObject("tables").getString("voltageDropThreePercentNote")
     }
 }
 data class OhmsLawResult(val volts: Double, val amps: Double, val ohms: Double, val watts: Double, val basis: String, val conflicts: List<String> = emptyList()) {
@@ -109,12 +107,12 @@ object FieldCalculators {
 
     fun dwellingLoad(squareFeet: Double, smallApplianceCircuits: Int, laundryCircuits: Int, rangeKW: Double, rangeCount: Int, dryerNameplateVA: Double, fastenedApplianceVA: List<Double>, coolingVA: Double, heatingVA: Double, volts: Double = 240.0): DwellingLoadResult? {
         if (squareFeet <= 0) return null
-        val lighting = squareFeet * 3
-        val circuits = max(0, smallApplianceCircuits) * 1500.0 + max(0, laundryCircuits) * 1500.0
+        val lighting = squareFeet * NECTables.dwellingLightingVAPerSqFt
+        val circuits = max(0, smallApplianceCircuits) * NECTables.smallApplianceCircuitVA + max(0, laundryCircuits) * NECTables.laundryCircuitVA
         val subtotal = lighting + circuits
         val afterDemand = NECTables.generalLightingDemand(subtotal)
         val range = if (rangeCount > 0) (NECTables.rangeDemandKW(rangeCount, rangeKW) ?: 0.0) * 1000 else 0.0
-        val dryer = if (dryerNameplateVA > 0) max(dryerNameplateVA, 5000.0) else 0.0
+        val dryer = if (dryerNameplateVA > 0) max(dryerNameplateVA, NECTables.minimumDryerVA) else 0.0
         val applianceTotal = fastenedApplianceVA.sum()
         val applianceAfter = NECTables.fastenedApplianceDemand(applianceTotal, fastenedApplianceVA.size)
         val climate = NECTables.noncoincident(coolingVA, heatingVA)

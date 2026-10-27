@@ -628,6 +628,178 @@
   ],
   "membershipDrillCount" : 11,
   "membershipItemCount" : 53,
+  "mistakePatterns" : [
+    {
+      "id" : "ampacity-derate-from-75",
+      "skill" : "ampacity",
+      "summary" : "You derated from the 75°C column. Corrections and adjustments start in the conductor's own insulation column, and 75°C only comes back at the end as the termination cap."
+    },
+    {
+      "id" : "ampacity-ignored-bundling",
+      "skill" : "ampacity",
+      "summary" : "You applied the ambient correction but not the bundling adjustment. Four or more current-carrying conductors derate again, and the two factors multiply."
+    },
+    {
+      "id" : "ampacity-ignored-termination",
+      "skill" : "ampacity",
+      "summary" : "You derated correctly and then stopped. The result still has to be capped at the termination column, which is usually 75°C."
+    },
+    {
+      "id" : "ocpd-ignored-240-4-d",
+      "skill" : "overcurrent",
+      "summary" : "You protected at the ampacity table value and missed 240.4(D). For 14, 12 and 10 AWG the small-conductor ceiling overrides the table."
+    },
+    {
+      "id" : "ocpd-rounded-up",
+      "skill" : "overcurrent",
+      "summary" : "You rounded up to the next standard rating. Without a next-size-up allowance the protection goes to the largest standard rating at or BELOW the conductor's usable ampacity."
+    },
+    {
+      "id" : "ocpd-from-90",
+      "skill" : "overcurrent",
+      "summary" : "You sized from the 90°C column. The 90°C value is a starting point for derating, never the number equipment terminations let you protect at."
+    },
+    {
+      "id" : "fill-used-53-percent",
+      "skill" : "conduitFill",
+      "summary" : "You used 53% fill. That is the allowance for ONE conductor. Over two conductors the allowance is 40%."
+    },
+    {
+      "id" : "fill-raceway-too-small",
+      "skill" : "conduitFill",
+      "summary" : "That raceway does not hold the bundle. Compare the bundle area against the allowance for the trade size, not against the raceway's full interior area."
+    },
+    {
+      "id" : "fill-raceway-oversized",
+      "skill" : "conduitFill",
+      "summary" : "That size works but it is not the smallest that works. The question asks for the smallest trade size the bundle fits in."
+    },
+    {
+      "id" : "boxfill-counted-grounds-individually",
+      "skill" : "boxFill",
+      "summary" : "You counted each equipment ground separately. All the grounds in a box together are ONE allowance, however many there are."
+    },
+    {
+      "id" : "boxfill-forgot-yokes",
+      "skill" : "boxFill",
+      "summary" : "You left the devices out. Each device yoke takes volume in the box."
+    },
+    {
+      "id" : "boxfill-yoke-as-one",
+      "skill" : "boxFill",
+      "summary" : "You counted each yoke as one allowance. A device yoke counts as TWO."
+    },
+    {
+      "id" : "vdrop-wrong-phase-factor",
+      "skill" : "voltageDrop",
+      "summary" : "You used the other phase's factor. Single-phase uses 2 because the current goes out and back; three-phase uses 1.732."
+    },
+    {
+      "id" : "vdrop-forgot-phase-factor",
+      "skill" : "voltageDrop",
+      "summary" : "You left the phase factor out entirely, so the drop is only the one-way figure."
+    },
+    {
+      "id" : "vdrop-wrong-material-k",
+      "skill" : "voltageDrop",
+      "summary" : "You used the other metal's K. Copper and aluminum have different resistivity constants and swapping them moves the answer by about 60%."
+    },
+    {
+      "id" : "egc-used-250-66",
+      "skill" : "egcSizing",
+      "summary" : "You sized this from Table 250.66. That table sizes the conductor to the electrode, and it is read from the service conductor. An equipment ground running with a circuit comes from Table 250.122, read from the overcurrent device."
+    },
+    {
+      "id" : "egc-wrong-material-column",
+      "skill" : "egcSizing",
+      "summary" : "You read the other metal's column. Aluminum needs more area than copper for the same job, so the two columns are never the same size on a row."
+    },
+    {
+      "id" : "egc-read-row-below",
+      "skill" : "egcSizing",
+      "summary" : "You dropped to the row below. Table 250.122 is a set of not-exceeding bands: a rating between two rows reads the row ABOVE it, so a 45 A device takes the 60 A row."
+    },
+    {
+      "id" : "egc-used-circuit-conductor",
+      "skill" : "egcSizing",
+      "summary" : "That is the circuit conductor size, not the equipment ground. The ground is sized independently from the device rating and is almost always smaller."
+    },
+    {
+      "id" : "gec-used-250-122",
+      "skill" : "gecSizing",
+      "summary" : "You sized this from Table 250.122, which is read from the overcurrent device and sizes an equipment ground. The conductor to the electrode comes from Table 250.66, read from the largest ungrounded service conductor."
+    },
+    {
+      "id" : "gec-ignored-electrode-ceiling",
+      "skill" : "gecSizing",
+      "summary" : "That is the table value, but the electrode caps it. A rod, pipe or plate never requires more than 6 AWG copper, a concrete-encased electrode more than 4 AWG, and a ground ring more than the ring conductor itself."
+    },
+    {
+      "id" : "gec-wrong-service-column",
+      "skill" : "gecSizing",
+      "summary" : "You read the copper service bands for an aluminum service, or the reverse. Table 250.66 has a separate set of bands for each service metal, and they do not line up."
+    },
+    {
+      "id" : "gec-missed-parallel-set",
+      "skill" : "gecSizing",
+      "summary" : "You read the table on one conductor of the parallel set. The table is entered on the EQUIVALENT area of the whole set: two 250 kcmil in parallel is read as 500 kcmil."
+    },
+    {
+      "id" : "motor-nameplate-for-conductors",
+      "skill" : "motorConductor",
+      "summary" : "You sized from the nameplate current. Branch-circuit conductors come off the full-load current in Table 430.248 or 430.250, whatever the nameplate says. The nameplate is only used for the overload device."
+    },
+    {
+      "id" : "motor-forgot-125",
+      "skill" : "motorConductor",
+      "summary" : "You used the full-load current straight. 430.22 puts branch-circuit conductors for a single continuous-duty motor at 125% of it."
+    },
+    {
+      "id" : "motor-wrong-voltage-row",
+      "skill" : "motorConductor",
+      "summary" : "You read the wrong voltage column. The same horsepower draws roughly half the current at twice the voltage, so picking the wrong column is a 2x error, not a rounding one."
+    },
+    {
+      "id" : "motor-rounded-ocpd-down",
+      "skill" : "motorProtection",
+      "summary" : "You rounded down to the next standard rating. Motor branch-circuit protection is the exception: 430.52(C)(1) Exception 1 lets you go UP to the next standard size when the percentage does not land on one, because the device has to survive starting current."
+    },
+    {
+      "id" : "motor-wrong-device-percent",
+      "skill" : "motorProtection",
+      "summary" : "You used another device's percentage. Table 430.52 gives each type its own ceiling: 300% for a nontime-delay fuse, 175% for a dual-element fuse, 250% for an inverse-time breaker, 800% for an instantaneous-trip breaker."
+    },
+    {
+      "id" : "motor-used-overload-percent",
+      "skill" : "motorProtection",
+      "summary" : "That is an overload calculation, not short-circuit protection. The two are separate devices with separate rules: overload runs at 115% or 125% of the NAMEPLATE, while the branch-circuit device runs at the Table 430.52 percentage of the TABLE current."
+    },
+    {
+      "id" : "load-forgot-lighting-demand",
+      "skill" : "dwellingLoad",
+      "summary" : "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
+    },
+    {
+      "id" : "load-forgot-small-appliance",
+      "skill" : "dwellingLoad",
+      "summary" : "You left out the small-appliance and laundry circuits. A dwelling carries two 1500 VA small-appliance circuits and a 1500 VA laundry circuit, and they go INSIDE the general lighting total before the demand factor, not after it."
+    },
+    {
+      "id" : "load-used-range-nameplate",
+      "skill" : "dwellingLoad",
+      "summary" : "You used the range nameplate. A household range has its own demand table: one range not over 12 kW is taken at 8 kW, however big the nameplate says it is."
+    },
+    {
+      "id" : "load-added-heat-and-cooling",
+      "skill" : "dwellingLoad",
+      "summary" : "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
+    },
+    {
+      "id" : "load-forgot-appliance-demand",
+      "skill" : "dwellingLoad",
+      "summary" : "You carried the fastened-in-place appliances at 100%. Four or more of them on the same service come in at 75% under 220.53, and the range, dryer, heating and air conditioning are not part of that count."
+    }
+  ],
   "otherJurisdiction" : {
     "authority" : "Your local authority having jurisdiction",
     "commonEdition" : null,
@@ -4721,6 +4893,57 @@
         }
       }
     ],
+    "boxAllowances" : [
+      {
+        "citation" : "314.16(B)(1)",
+        "count" : 1,
+        "id" : "conductorThrough",
+        "name" : "A conductor passing through",
+        "sizedBy" : "its own size"
+      },
+      {
+        "citation" : "314.16(B)(1)",
+        "count" : 1,
+        "id" : "conductorTerminating",
+        "name" : "A conductor ending in the box",
+        "sizedBy" : "its own size"
+      },
+      {
+        "citation" : "314.16(B)(1)",
+        "count" : 0,
+        "id" : "conductorOriginating",
+        "name" : "A pigtail made up inside the box",
+        "sizedBy" : "its own size"
+      },
+      {
+        "citation" : "314.16(B)(2)",
+        "count" : 1,
+        "id" : "allClamps",
+        "name" : "Internal cable clamps, however many",
+        "sizedBy" : "the largest conductor in the box"
+      },
+      {
+        "citation" : "314.16(B)(3)",
+        "count" : 1,
+        "id" : "supportFitting",
+        "name" : "Each fixture stud or hickey",
+        "sizedBy" : "the largest conductor in the box"
+      },
+      {
+        "citation" : "314.16(B)(4)",
+        "count" : 2,
+        "id" : "deviceYoke",
+        "name" : "Each device or equipment yoke",
+        "sizedBy" : "the largest conductor connected to that device"
+      },
+      {
+        "citation" : "314.16(B)(5)",
+        "count" : 1,
+        "id" : "allGrounds",
+        "name" : "All equipment grounds together",
+        "sizedBy" : "the largest equipment ground in the box"
+      }
+    ],
     "boxSizes" : [
       {
         "cubicInches" : 10,
@@ -4789,6 +5012,33 @@
       {
         "cubicInches" : 42,
         "name" : "4-11\/16x2-1\/8 square"
+      }
+    ],
+    "burialMethods" : [
+      {
+        "id" : "directBurial",
+        "inches" : 24,
+        "name" : "Direct-buried cable or conductors"
+      },
+      {
+        "id" : "rigidOrIMC",
+        "inches" : 6,
+        "name" : "Rigid metal or intermediate metal conduit"
+      },
+      {
+        "id" : "nonmetallicRaceway",
+        "inches" : 18,
+        "name" : "Nonmetallic raceway listed for direct burial"
+      },
+      {
+        "id" : "residentialBranch",
+        "inches" : 12,
+        "name" : "Residential branch circuit, 120V, 20A, GFCI protected"
+      },
+      {
+        "id" : "lowVoltageLighting",
+        "inches" : 6,
+        "name" : "Irrigation and landscape lighting, 30V or less"
       }
     ],
     "circularMils" : {
@@ -4869,6 +5119,8 @@
       "16 AWG" : 1.75,
       "18 AWG" : 1.5
     },
+    "continuousLoadFactor" : 1.25,
+    "continuousLoadHours" : 3,
     "copperAmpacity" : {
       "1 AWG" : {
         "60" : 110,
@@ -4963,6 +5215,8 @@
     },
     "coverageLabel" : "2020 and 2023 NEC",
     "coverageNote" : "Every table here is unchanged across the 2020 and 2023 NEC, so the calculations are the same ones your exam asks for on any of those cycles. What does change between editions is coverage: GFCI and AFCI scope, surge protection, emergency and equipment disconnects. Verify those in the book your jurisdiction has adopted.",
+    "coverUnderTrafficInches" : 24,
+    "dwellingLightingVAPerSqFt" : 3,
     "edition" : "2023 NEC",
     "editionNote" : "Values follow the 2023 NEC. Your jurisdiction may have adopted a different edition or amended it locally.",
     "egcRows" : [
@@ -5362,6 +5616,12 @@
         "serviceUpTo" : 1.7976931348623157e+308
       }
     ],
+    "laundryCircuitVA" : 1500,
+    "maximumBendDegrees" : 360,
+    "minimumDryerVA" : 5000,
+    "minimumDwellingServiceAmps" : 100,
+    "minimumSmallApplianceCircuits" : 2,
+    "motorConductorFactor" : 1.25,
     "motorRatings" : [
       {
         "hp" : 0.16666666666666666,
@@ -5525,6 +5785,7 @@
         "single230" : 50
       }
     },
+    "smallApplianceCircuitVA" : 1500,
     "smallConductorLimit" : {
       "10 AWG" : {
         "aluminum" : 25,
@@ -5764,6 +6025,39 @@
         "three460" : 124
       }
     },
-    "verifiedThrough" : 2023
+    "twoEntranceAmpThreshold" : 1200,
+    "verifiedThrough" : 2023,
+    "voltageDropAssumptions" : [
+      "Resistive only: reactance and power factor are not included.",
+      "Conductor at its table resistance, not at operating temperature.",
+      "Uncoated conductor in a non-magnetic raceway.",
+      "One-way length doubled (or × 1.732) by the phase factor, not a measured circuit path."
+    ],
+    "voltageDropThreePercentNote" : "3% is the figure the informational note suggests for a branch circuit. It is a recommendation, not a general requirement, though some jurisdictions do enforce it.",
+    "workingSpaceConditions" : [
+      {
+        "above150" : 3,
+        "below151" : 3,
+        "detail" : "Live parts on one side, nothing live or grounded facing them",
+        "id" : 1,
+        "name" : "Condition 1"
+      },
+      {
+        "above150" : 3.5,
+        "below151" : 3,
+        "detail" : "Live parts on one side, grounded parts on the other",
+        "id" : 2,
+        "name" : "Condition 2"
+      },
+      {
+        "above150" : 4,
+        "below151" : 3,
+        "detail" : "Live parts on both sides of where you stand",
+        "id" : 3,
+        "name" : "Condition 3"
+      }
+    ],
+    "workingSpaceHeightFeet" : 6.5,
+    "workingSpaceWidthInches" : 30
   }
 }
