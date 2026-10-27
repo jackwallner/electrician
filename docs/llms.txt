@@ -1,0 +1,19 @@
+# Electrician Exam Practice 2026
+
+> Electrician Exam Practice is an exam prep app for journeyman and master electricians. Practice NEC navigation and calculations with problems that never repeat.
+
+## App
+
+- [Electrician Exam Prep App | Electrician Exam Practice 2026](https://jackwallner.com/ios/electrician/index.html.md): Electrician Exam Practice is an exam prep app for journeyman and master electricians. Practice NEC navigation and calculations with problems that never repeat.
+
+## Guides
+
+- [Best Journeyman Electrician Test Prep App (2026)](https://jackwallner.com/ios/electrician/best-journeyman-electrician-test-prep-app.html.md): Five journeyman electrician test prep apps for iPhone and iPad compared: question banks, NEC edition, mock exams, calculators and what each one leaves out.
+- [How to Calculate Conduit Fill (NEC Chapter 9) | Electrician](https://jackwallner.com/ios/electrician/how-to-calculate-conduit-fill.html.md): How to calculate conduit fill under NEC Chapter 9: Table 1 fill limits, Table 4 conduit areas, Table 5 wire areas, and four worked examples in EMT.
+
+## Optional
+
+- [Android Privacy Policy: Electrician Exam Prep](https://jackwallner.github.io/electrician/android-privacy.html.md): Electrician Exam Prep for Android keeps practice data on your device. Google Play and RevenueCat handle subscriptions.
+- [Privacy Policy: Electrician Exam Practice 2026](https://jackwallner.com/ios/electrician/privacy-policy.html.md): Electrician Exam Practice 2026 does not collect, transmit, or sell your personal information.
+- [Support: Electrician Exam Practice 2026](https://jackwallner.com/ios/electrician/support.html.md): Email jackwallner+e@gmail.com. Include your iOS version and what you were doing when the problem happened, and you will get a real reply.
+- [Terms of Use: Electrician Exam Prep](https://jackwallner.github.io/electrician/terms.html.md): Terms of Use for Electrician Exam Prep, a study aid for electrician licensing exams.
