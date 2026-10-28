@@ -6,7 +6,7 @@ Web page: https://jackwallner.com/ios/electrician/best-journeyman-electrician-te
 
 ## Best Journeyman Electrician Test Prep App
 
-By Jack Wallner · Last updated October 19, 2026
+By Jack Wallner · Last updated October 28, 2026
 
 **Best for state-by-state exam lists and a large question bank:** NEC Electrical Exam by Dakota. **Best for 8,000+ questions in English and Spanish plus field calculators:** NEC Mastery. **Best for full-length timed mock exams:** Journeyman Electrician Pro. **Best for drilling the code calculations with fresh problems and step-by-step working:** Electrician Exam Practice 2026, the app I make. Journeyman Electrician (2025) is a simple free option, but it was last updated in January 2025.
 

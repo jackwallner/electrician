@@ -6,7 +6,7 @@ Web page: https://jackwallner.com/ios/electrician/how-to-calculate-conduit-fill.
 
 ## How to Calculate Conduit Fill (NEC Chapter 9)
 
-By Jack Wallner · Last updated October 19, 2026 · Based on the 2023 NEC
+By Jack Wallner · Last updated October 28, 2026 · Based on the 2023 NEC
 
 To calculate conduit fill, add the cross-sectional area of every conductor (NEC Chapter 9, Table 5) and compare the total with the allowed area for the conduit (Chapter 9, Table 4). The limit is 53% of the conduit's interior for one conductor, 31% for two, and 40% for three or more (Table 1). Choose the smallest trade size whose limit is at least the total.
 
