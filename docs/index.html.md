@@ -15,6 +15,8 @@ here against tables that have not moved in years.
 
 [Download on the App Store](https://apps.apple.com/us/app/id6804828725?pt=128748779&ct=jw-electrician-home&mt=8)
 
+## How it works
+
 ### Find it fast
 
 Read a scenario, name the article, before you open anything. Article
