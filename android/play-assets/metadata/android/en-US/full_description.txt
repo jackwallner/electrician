@@ -1,4 +1,6 @@
-The electrician licensing exam is open book. That is not the relief it sounds like. It is timed, and every question you hunt for costs you two more you never reach. Electrician Exam Prep is a focused practice companion for apprentice, journeyman, master and contractor candidates working from 2023 NEC values.
+Electrician Exam Prep is a practice app for the electrician licensing exam, built on 2023 NEC values for apprentice, journeyman, master and contractor candidates. Three practice rooms and all eight field calculators are free.
+
+The exam is open book and timed, so every question you hunt for costs you two more you never reach.
 
 It is not a complete exam blueprint. It drills the navigation and calculations it covers, and names what it does not, so you can plan the rest elsewhere.
 
