@@ -77,6 +77,26 @@ final class ProgressStore: ObservableObject {
         defaults.set(streakCount, forKey: Keys.streakCount)
     }
 
+    /// The streak as it stands today, which is what to print.
+    ///
+    /// `streakCount` is the length of the last run, and only the next finished
+    /// drill ends it, so after a week away it still held the old figure and
+    /// Home showed it as live. A run survives today and tomorrow: practised
+    /// yesterday means today can still extend it, anything older is over.
+    func currentStreak(now: Date = Date()) -> Int {
+        guard streakCount > 0 else { return 0 }
+        // No day on record means a seeded count (the App Store capture sets
+        // `progress.streakCount` alone), so it is shown as stored.
+        guard let last = defaults.object(forKey: Keys.lastActiveDay) as? Date else { return streakCount }
+        let calendar = Calendar.current
+        let gap = calendar.dateComponents(
+            [.day],
+            from: calendar.startOfDay(for: last),
+            to: calendar.startOfDay(for: now)
+        ).day ?? 0
+        return gap > 1 ? 0 : streakCount
+    }
+
     /// Item-level memory that feeds the Get Started mix: anything answered wrong
     /// (or self-graded "again") comes back first; unseen items come next.
     func recordItem(id: String, correct: Bool) {

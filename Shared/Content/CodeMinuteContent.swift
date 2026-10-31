@@ -150,6 +150,20 @@ enum CodeMinuteContent {
         return String(format: "%04d-%02d-%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0)
     }
 
+    /// An archive row's date, read in the zone the day key is cut in.
+    ///
+    /// The row used to format in the device's zone while the key, the
+    /// questions and the result screen's "Code Minute Oct 29" all use Pacific
+    /// time, so for most of the country the first row carried today's local date
+    /// over yesterday's challenge.
+    static func archiveLabel(for day: Date, locale: Locale = .current, calendar: Calendar = dayCalendar) -> String {
+        var style = Date.FormatStyle.dateTime.weekday(.wide).month(.abbreviated).day()
+        style.calendar = calendar
+        style.timeZone = calendar.timeZone
+        style.locale = locale
+        return day.formatted(style)
+    }
+
     private static func shortDate(for day: Date, calendar: Calendar = dayCalendar) -> String {
         let formatter = DateFormatter()
         formatter.calendar = calendar

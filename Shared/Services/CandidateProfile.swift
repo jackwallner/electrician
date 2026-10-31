@@ -391,6 +391,9 @@ final class CandidateProfile: ObservableObject {
 
     // MARK: - Exam date
 
+    /// Whole days to the exam: 0 on the day itself, nil with no date or once it
+    /// has gone by. It used to clamp at zero, so the day after the exam Home
+    /// still read "Exam today" and kept the cram plan up every day afterwards.
     var daysUntilExam: Int? {
         guard let examDate else { return nil }
         let calendar = Calendar.current
@@ -399,7 +402,8 @@ final class CandidateProfile: ObservableObject {
             from: calendar.startOfDay(for: Date()),
             to: calendar.startOfDay(for: examDate)
         ).day
-        return days.map { max(0, $0) }
+        guard let days, days >= 0 else { return nil }
+        return days
     }
 
     var examCountdownSummary: String? {

@@ -273,10 +273,10 @@ private struct OhmsLawToolView: View {
 
     private var result: FieldCalculators.OhmsLawResult? {
         FieldCalculators.ohmsLaw(
-            volts: Double(voltsText),
-            amps: Double(ampsText),
-            ohms: Double(ohmsText),
-            watts: Double(wattsText)
+            volts: FieldCalculators.number(from: voltsText),
+            amps: FieldCalculators.number(from: ampsText),
+            ohms: FieldCalculators.number(from: ohmsText),
+            watts: FieldCalculators.number(from: wattsText)
         )
     }
 
@@ -290,10 +290,10 @@ private struct OhmsLawToolView: View {
             }
             if let result {
                 Section("Result") {
-                    LabeledContent("V", value: result.volts.trimmedAmps)
-                    LabeledContent("I", value: result.amps.trimmedAmps)
-                    LabeledContent("R", value: result.ohms.trimmedAmps)
-                    LabeledContent("P", value: result.watts.trimmedAmps)
+                    LabeledContent("V", value: FieldCalculators.readingText(result.volts))
+                    LabeledContent("I", value: FieldCalculators.readingText(result.amps))
+                    LabeledContent("R", value: FieldCalculators.readingText(result.ohms))
+                    LabeledContent("P", value: FieldCalculators.readingText(result.watts))
                     Text("Solved from \(result.basis).")
                         .font(.caption)
                         .foregroundStyle(Theme.inkSecondary)

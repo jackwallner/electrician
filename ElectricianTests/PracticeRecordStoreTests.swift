@@ -171,6 +171,34 @@ final class PracticeRecordStoreTests: XCTestCase {
         XCTAssertEqual(store.outstandingMistakes().first?.summary, derateFrom75.summary)
     }
 
+    /// What a tally looks like after an update: the pattern id is the same, the
+    /// wording is whatever the build that banked it printed.
+    private func banked(by earlierBuild: MistakePattern) -> MistakePattern {
+        MistakePattern(id: earlierBuild.id, skill: earlierBuild.skill, summary: "How an earlier release worded this.")
+    }
+
+    /// The Stats screen prints the summary it gets from `outstandingMistakes()`,
+    /// and targeted practice matches the pattern it gets from there against the
+    /// pattern the generator attaches to a distractor, field for field. A
+    /// release that corrects the wording (the 2026-10-22 audit rewrote four)
+    /// must therefore reach people who banked the pattern before the update
+    /// immediately, not only after they miss it again.
+    func testOutstandingMistakesReadTheCurrentWordingAfterAnUpdate() {
+        for live in CandidateMistake.all {
+            store.resetAll()
+            store.recordMistake(banked(by: live))
+            let afterUpdate = PracticeRecordStore(defaults: defaults)
+            XCTAssertEqual(afterUpdate.outstandingMistakes(), [live], live.id)
+        }
+    }
+
+    /// A pattern the registry no longer knows still has to show something.
+    func testAnUnregisteredPatternKeepsItsStoredCopy() {
+        let orphan = MistakePattern(id: "retired-pattern", skill: PracticeSkill.ampacity.rawValue, summary: "Kept as banked.")
+        store.recordMistake(orphan)
+        XCTAssertEqual(PracticeRecordStore(defaults: defaults).outstandingMistakes(), [orphan])
+    }
+
     func testResetClearsMistakes() {
         store.recordMistake(derateFrom75)
         store.resetAll()

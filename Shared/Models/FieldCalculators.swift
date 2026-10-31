@@ -226,3 +226,38 @@ enum FieldCalculators {
         )
     }
 }
+
+extension FieldCalculators {
+
+    // MARK: - Bench entry and readout
+
+    /// A number as typed on the decimal pad.
+    ///
+    /// The pad types the device locale's decimal mark, and `Double("4,7")` is
+    /// nil, so on a comma-decimal device a value like 4,7 was dropped as blank
+    /// and the tool answered from whatever else was filled in. A point is
+    /// always accepted too.
+    static func number(from text: String, locale: Locale = .current) -> Double? {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        let mark = locale.decimalSeparator ?? "."
+        return Double(mark == "." ? trimmed : trimmed.replacingOccurrences(of: mark, with: "."))
+    }
+
+    /// A bench reading to four significant figures with no trailing zeros.
+    ///
+    /// One decimal place read 0.25 A as 0.2, 2.4 mA as 0.0 and 0.05 ohm as 0.1,
+    /// which is wrong exactly where someone checks a small current or a
+    /// conductor's resistance. Large readings keep one decimal.
+    static func readingText(_ value: Double) -> String {
+        guard value.isFinite else { return "n/a" }
+        guard value != 0 else { return "0" }
+        let leadingDigit = Int(floor(log10(abs(value))))
+        let decimals = min(6, max(1, 3 - leadingDigit))
+        var text = String(format: "%.\(decimals)f", value)
+        while text.contains("."), text.hasSuffix("0") { text.removeLast() }
+        if text.hasSuffix(".") { text.removeLast() }
+        return text
+    }
+}
+
