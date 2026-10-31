@@ -32,7 +32,7 @@
     "Shared/Models/NECMotorTables.swift": "87fb8b3c2eb96fbf817528cbe2dc1944f187d635f09928c06ac6bd30896de0c4",
     "Shared/Models/NECTables.swift": "f2bb21847c3d853951a63bc6c0d237065efb13126c47a71e1491f91172cec172",
     "Shared/Models/SeededGenerator.swift": "2f6cecada20e34e8ceccfc8102b5db1b476e44b5de9616139b7e2e26c8640f47",
-    "Shared/Services/CandidateProfile.swift": "e7df00db49032e79a582ba96ca138178333cf4e2c6d2d19d50867aa09ae9ab61",
+    "Shared/Services/CandidateProfile.swift": "b39e5d1bed57839ce3aa783e45d581e3b0c8f90fe4715b1aa14637d495876d74",
     "scripts/android-export/main.swift": "14a223f3b643afdfdd41b4fdf4b61f176fa8b42ed30c14bd11449684c3fb758f"
   }
 }
