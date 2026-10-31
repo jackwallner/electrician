@@ -55,6 +55,35 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertEqual(store.streakCount, 1)
     }
 
+    /// `streakCount` is the length of the last run, and only the next finished
+    /// drill ends it, so after a week away Home still printed the old figure as
+    /// if it were live. What is shown has to be what the run is worth today.
+    func testStreakReadsZeroOnceADayHasBeenMissed() {
+        let calendar = Calendar.current
+        let first = calendar.startOfDay(for: Date(timeIntervalSince1970: 1_750_000_000)).addingTimeInterval(12 * 3600)
+        func day(_ offset: Int) -> Date { calendar.date(byAdding: .day, value: offset, to: first)! }
+
+        store.recordSession(drillID: "a", now: day(0))
+        store.recordSession(drillID: "a", now: day(1))
+
+        XCTAssertEqual(store.currentStreak(now: day(1)), 2, "Practised today")
+        XCTAssertEqual(store.currentStreak(now: day(2)), 2, "Practised yesterday, so today can still extend it")
+        XCTAssertEqual(store.currentStreak(now: day(3)), 0, "A whole day missed ends the run")
+        XCTAssertEqual(store.currentStreak(now: day(30)), 0)
+        XCTAssertEqual(store.streakCount, 2, "The stored run is untouched; only what is shown changes")
+    }
+
+    func testNothingPractisedReadsZero() {
+        XCTAssertEqual(store.currentStreak(), 0)
+    }
+
+    /// The screenshot capture seeds `progress.streakCount` with no day on
+    /// record, and that seeded count has to keep showing.
+    func testASeededCountWithNoDayOnRecordIsShownAsStored() {
+        defaults.set(6, forKey: "progress.streakCount")
+        XCTAssertEqual(ProgressStore(defaults: defaults).currentStreak(), 6)
+    }
+
     func testRoomProgress() {
         guard let room = DrillLibrary.rooms.first else { return XCTFail("no rooms") }
         XCTAssertEqual(store.roomProgress(room), 0)

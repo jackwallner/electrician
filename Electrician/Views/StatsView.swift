@@ -257,7 +257,7 @@ struct StatsView: View {
                 .frame(width: 38, height: 38)
                 .background(Theme.copper.opacity(0.13), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
-                Text("\(progress.streakCount)-day streak")
+                Text("\(progress.currentStreak())-day streak")
                     .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
                 Text("\(progress.totalSessions) drill\(progress.totalSessions == 1 ? "" : "s") finished")

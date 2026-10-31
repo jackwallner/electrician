@@ -376,8 +376,8 @@ struct HomeView: View {
                 StatsView()
             } label: {
                 HStack(spacing: 8) {
-                    statChip(value: progress.streakCount, icon: "flame.fill", color: Theme.copper,
-                             label: "\(progress.streakCount) day streak")
+                    statChip(value: progress.currentStreak(), icon: "flame.fill", color: Theme.copper,
+                             label: "\(progress.currentStreak()) day streak")
                     statChip(value: progress.totalSessions, icon: "checkmark.seal.fill", color: Theme.voltage,
                              label: "\(progress.totalSessions) drills done")
                 }
