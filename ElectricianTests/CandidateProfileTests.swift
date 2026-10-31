@@ -137,6 +137,29 @@ final class CandidateProfileTests: XCTestCase {
         XCTAssertGreaterThan(profile.suggestedDailyQuestions, 0)
     }
 
+    /// Once the date has gone by there is nothing left to count down to. The
+    /// countdown used to clamp at zero, so the day after the exam Home still
+    /// read "Exam today" and kept the cram plan on screen every day after.
+    func testAnExamDateInThePastNoLongerCountsDown() {
+        let profile = CandidateProfile(defaults: defaults)
+        profile.examDate = Calendar.current.date(byAdding: .day, value: -5, to: Date())
+
+        XCTAssertNil(profile.daysUntilExam)
+        XCTAssertNil(profile.examCountdownSummary)
+        XCTAssertEqual(profile.pace, .undated)
+        XCTAssertFalse(profile.pace.isUrgent)
+        XCTAssertEqual(profile.suggestedDailyQuestions, 15)
+    }
+
+    func testYesterdayHasPassedButTodayHasNot() {
+        let profile = CandidateProfile(defaults: defaults)
+        profile.examDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())
+        XCTAssertNil(profile.daysUntilExam)
+
+        profile.examDate = Date()
+        XCTAssertEqual(profile.daysUntilExam, 0)
+    }
+
     func testCountdownCountsWholeDays() {
         let profile = CandidateProfile(defaults: defaults)
         profile.examDate = Calendar.current.date(byAdding: .day, value: 10, to: Date())
