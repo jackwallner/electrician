@@ -214,6 +214,85 @@ final class PracticeRecordStoreTests: XCTestCase {
         XCTAssertGreaterThan(store.fixableCount, 1)
     }
 
+    // MARK: - What the review session can actually show
+
+    /// Every authored item id with the room that owns it.
+    private var authoredItems: [(id: String, roomID: String, drillID: String)] {
+        DrillLibrary.rooms.flatMap { room in
+            room.drills.flatMap { drill -> [(id: String, roomID: String, drillID: String)] in
+                let ids: [String]
+                switch drill.kind {
+                case .flashcards(let cards): ids = cards.map(\.id)
+                case .quiz(let questions): ids = questions.map(\.id)
+                case .articleMatch(let questions): ids = questions.map(\.id)
+                case .calc(let scenarios): ids = scenarios.map(\.id)
+                }
+                return ids.map { (id: $0, roomID: room.id, drillID: drill.id) }
+            }
+        }
+    }
+
+    private func authoredID(inDrill drillID: String, at index: Int = 0) throws -> String {
+        let ids = authoredItems.filter { $0.drillID == drillID }
+        return try XCTUnwrap(ids.indices.contains(index) ? ids[index].id : nil, drillID)
+    }
+
+    /// Fix My Mistakes builds its session from `SessionBuilder.choicePool`, which
+    /// holds quiz, article-match and choice-flashcard items. A plain flip card and
+    /// a worked calculation are not in it, yet both drills record a miss as
+    /// reviewable, so the queue offered ids the session then silently dropped.
+    /// 47 of the 126 authored items were in that gap, including every worked
+    /// calculation.
+    func testEveryItemTheQueueOffersCanBeServedByTheReviewSession() {
+        var stranded: [String] = []
+        for item in authoredItems {
+            store.resetAll()
+            store.record(itemID: item.id, roomID: item.roomID, correct: false)
+            let queue = store.reviewQueue()
+            let served = SessionBuilder.reviewSession(ids: queue, includePro: true)
+            if served.count != queue.count || store.dueCount != served.count {
+                stranded.append("\(item.drillID)/\(item.id)")
+            }
+        }
+        XCTAssertEqual(stranded, [], "Counted as due but never shown in Fix My Mistakes")
+    }
+
+    /// The Home tile reads "N to fix" from `fixableCount`. A member who misses a
+    /// worked calculation or a plain card got a badge for something the session
+    /// then answered with "Nothing due right now".
+    func testAMissedWorkedCalculationOrPlainCardDoesNotInflateTheFixCount() throws {
+        let quiz = try authoredID(inDrill: "navigation-quiz")
+        let calc = try authoredID(inDrill: "worked-examples")
+        let plainCard = try authoredID(inDrill: "article-cards")
+
+        store.record(itemID: calc, roomID: "calc-room", correct: false)
+        store.record(itemID: plainCard, roomID: "basics-room", correct: false)
+        XCTAssertEqual(store.fixableCount, 0, "Nothing the session can show is waiting")
+        XCTAssertTrue(store.reviewQueue().isEmpty)
+
+        store.record(itemID: quiz, roomID: "basics-room", correct: false)
+        XCTAssertEqual(store.dueCount, 1)
+        XCTAssertEqual(store.fixableCount, 1)
+        XCTAssertEqual(store.reviewQueue(), [quiz])
+    }
+
+    /// The queue is capped at twelve, worst first. Cards the session cannot show
+    /// used to take those places, so a dozen missed flip cards left a real quiz
+    /// miss with no seat and the whole session came up empty.
+    func testUnshowableMissesDoNotCrowdARealOneOutOfTheQueue() throws {
+        let cards = authoredItems.filter { $0.drillID == "article-cards" }
+        XCTAssertGreaterThanOrEqual(cards.count, 12)
+        let early = Date(timeIntervalSince1970: 1_000_000)
+        for (offset, card) in cards.enumerated() {
+            store.record(itemID: card.id, roomID: card.roomID, correct: false, now: early.addingTimeInterval(Double(offset)))
+        }
+        let quiz = try authoredID(inDrill: "navigation-quiz")
+        store.record(itemID: quiz, roomID: "basics-room", correct: false, now: early.addingTimeInterval(500))
+
+        let session = SessionBuilder.reviewSession(ids: store.reviewQueue(), includePro: true)
+        XCTAssertEqual(session.map(\.id), [quiz])
+    }
+
     /// Generated rows collapse per skill; the stats screen reads them by title.
     func testSkillStatsReportGeneratedRows() {
         store.record(itemID: PracticeSkill.ampacity.itemPrefix + "abc", roomID: "conductors-room", correct: true)

@@ -221,7 +221,7 @@ final class PracticeRecordStore: ObservableObject {
     /// wrong surface before the ones they nearly have.
     func reviewQueue(limit: Int = 12) -> [String] {
         records
-            .filter { $0.value.needsReview && $0.value.isDue && PracticeSkill(rawValue: $0.key) == nil }
+            .filter { awaitsReview($0.key, $0.value) }
             .sorted { lhs, rhs in
                 if lhs.value.accuracy != rhs.value.accuracy { return lhs.value.accuracy < rhs.value.accuracy }
                 return lhs.value.dueDate < rhs.value.dueDate
@@ -232,7 +232,19 @@ final class PracticeRecordStore: ObservableObject {
 
     /// Authored items waiting for another look.
     var dueCount: Int {
-        records.filter { $0.value.needsReview && $0.value.isDue && PracticeSkill(rawValue: $0.key) == nil }.count
+        records.filter { awaitsReview($0.key, $0.value) }.count
+    }
+
+    /// Due, missed, and something a review session can actually show. A miss on
+    /// a plain flip card or a worked calculation is recorded like any other, but
+    /// the session cannot present it, so counting it would put a badge on Home
+    /// that opens onto "Nothing due right now" and let twelve such cards crowd
+    /// a real miss out of the queue.
+    private func awaitsReview(_ key: String, _ record: PracticeRecord) -> Bool {
+        record.needsReview
+            && record.isDue
+            && PracticeSkill(rawValue: key) == nil
+            && !SessionBuilder.unreviewableItemIDs.contains(key)
     }
 
     /// Everything Fix My Mistakes has to work with: the authored questions the
