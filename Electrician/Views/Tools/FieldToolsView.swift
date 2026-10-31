@@ -162,7 +162,7 @@ private struct ConduitFillToolView: View {
             }
             if let result {
                 Section("Result") {
-                    LabeledContent("Fill", value: String(format: "%.0f%% of allowed %.0f%%", result.actualPercent * 100, result.allowedPercent * 100))
+                    LabeledContent("Fill", value: String(format: "%.2f%% of allowed %.0f%%", result.actualPercent * 100, result.allowedPercent * 100))
                     LabeledContent("This size", value: result.fits ? "Fits" : "Does not fit")
                     if let smallest = result.smallestFitting {
                         LabeledContent("Smallest EMT", value: smallest)
