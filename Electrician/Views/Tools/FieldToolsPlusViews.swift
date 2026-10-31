@@ -194,7 +194,7 @@ struct BoxFillToolView: View {
                     LabeledContent("Conductors", value: "\(result.conductorVolume.volumeText) in³")
                     LabeledContent("Device yokes, 2 each", value: "\(result.deviceVolume.volumeText) in³")
                     LabeledContent("Clamps, 1 total", value: "\(result.clampVolume.volumeText) in³")
-                    LabeledContent("Grounds, 1 total", value: "\(result.groundVolume.volumeText) in³")
+                    LabeledContent("Grounds", value: "\(result.groundVolume.volumeText) in³")
                 }
                 Section("Result") {
                     LabeledContent("Minimum volume", value: "\(result.required.volumeText) in³")
@@ -205,7 +205,7 @@ struct BoxFillToolView: View {
                             .font(.caption)
                             .foregroundStyle(Theme.inkSecondary)
                     }
-                    Text("Grounds count as ONE allowance however many there are, and each yoke counts as TWO. Pigtails made up entirely inside the box are not counted at all.")
+                    Text("Up to four equipment grounds count as ONE allowance and each one past four adds a quarter. Each yoke counts as TWO. Pigtails made up entirely inside the box are not counted at all.")
                         .font(.caption)
                         .foregroundStyle(Theme.inkSecondary)
                     Text("\(result.citation) · \(NECTables.edition)")
