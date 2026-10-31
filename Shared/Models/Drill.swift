@@ -130,6 +130,15 @@ enum DrillKind: Sendable {
         case .calc(let scenarios): return scenarios.count
         }
     }
+
+    var itemIDs: [String] {
+        switch self {
+        case .flashcards(let cards): return cards.map(\.id)
+        case .quiz(let questions): return questions.map(\.id)
+        case .articleMatch(let questions): return questions.map(\.id)
+        case .calc(let scenarios): return scenarios.map(\.id)
+        }
+    }
 }
 
 struct Drill: Identifiable, Sendable {

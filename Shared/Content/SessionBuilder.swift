@@ -191,6 +191,20 @@ enum SessionBuilder {
         )
     }
 
+    /// Authored items whose misses no review session can put back in front of
+    /// the reader: the plain flip cards and the worked calculations, which are
+    /// not in `choicePool`. Their drills still grade and record them, so the
+    /// review queue has to leave them out or it offers ids the session then
+    /// silently drops, and the "to fix" badge counts work nobody can do.
+    ///
+    /// Derived from the pool, not listed by kind, so a drill kind that later
+    /// joins the pool stops being excluded without anyone remembering this.
+    static let unreviewableItemIDs: Set<String> = {
+        let servable = Set(choicePool(includePro: true).map(\.id))
+        let authored = DrillLibrary.rooms.flatMap(\.drills).flatMap { $0.kind.itemIDs }
+        return Set(authored).subtracting(servable)
+    }()
+
     /// Every choice-gradeable item a player is entitled to: the free rooms'
     /// free drills, plus (for members) the locked extra sets and the paid room.
     static func choicePool(includePro: Bool) -> [QuickItem] {
