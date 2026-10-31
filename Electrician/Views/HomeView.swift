@@ -755,7 +755,7 @@ struct HomeView: View {
         if records.fixableCount > 0 {
             trainingTile(
                 title: "Fix My\nMistakes",
-                icon: "arrow.trianglehead.counterclockwise",
+                icon: "arrow.counterclockwise",
                 color: Theme.conduit,
                 badge: subscriptions.isPro ? "\(records.fixableCount) to fix" : "Unlock"
             ) {
