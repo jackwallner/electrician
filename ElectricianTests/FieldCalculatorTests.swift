@@ -134,4 +134,34 @@ final class FieldCalculatorTests: XCTestCase {
         }
         XCTAssertTrue(FieldCalculators.VoltageDropResult.threePercentNote.contains("recommendation"))
     }
+
+    // MARK: - Ohm's law entry and readout
+
+    /// The decimal pad types the device locale's mark. `Double("4,7")` is nil,
+    /// so on a comma-decimal device the value was silently dropped as blank.
+    func testBenchValuesAcceptTheLocalDecimalMark() {
+        let german = Locale(identifier: "de_DE")
+        let american = Locale(identifier: "en_US")
+        XCTAssertEqual(FieldCalculators.number(from: "4,7", locale: german), 4.7)
+        XCTAssertEqual(FieldCalculators.number(from: "4.7", locale: german), 4.7)
+        XCTAssertEqual(FieldCalculators.number(from: "4.7", locale: american), 4.7)
+        XCTAssertEqual(FieldCalculators.number(from: " 120 ", locale: american), 120)
+        XCTAssertNil(FieldCalculators.number(from: "", locale: american))
+        XCTAssertNil(FieldCalculators.number(from: "abc", locale: german))
+    }
+
+    /// One decimal place turned 0.25 A into 0.2, 2.4 mA into 0.0 and 0.05 ohm
+    /// into 0.1. A bench calculator that cannot show a small current is wrong
+    /// exactly where an electrician checks one.
+    func testBenchReadoutKeepsFourSignificantFigures() {
+        XCTAssertEqual(FieldCalculators.readingText(0.0024), "0.0024")
+        XCTAssertEqual(FieldCalculators.readingText(0.0576), "0.0576")
+        XCTAssertEqual(FieldCalculators.readingText(0.25), "0.25")
+        XCTAssertEqual(FieldCalculators.readingText(0.05), "0.05")
+        XCTAssertEqual(FieldCalculators.readingText(2.5), "2.5")
+        XCTAssertEqual(FieldCalculators.readingText(17.142857), "17.14")
+        XCTAssertEqual(FieldCalculators.readingText(120), "120")
+        XCTAssertEqual(FieldCalculators.readingText(1234.5678), "1234.6")
+        XCTAssertEqual(FieldCalculators.readingText(10000), "10000")
+    }
 }
