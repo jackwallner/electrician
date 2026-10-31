@@ -65,3 +65,10 @@ fill by 0.45 in dark mode, which is measured to hold the lightest accent above
 5:1. Anything else that paints a solid accent behind white text must use
 `Theme.voltageFill` / `Theme.copperFill`, not the base token. Adding a new
 accent means adding its dark-mode check too.
+
+**SF Symbol names resolve at run time, so the compiler cannot check them.** The
+app deploys to iOS 17.0: a symbol that arrived with SF Symbols 6 (iOS 18), such
+as `arrow.trianglehead.counterclockwise`, draws nothing on iOS 17. After adding
+or changing an icon name, run `python3 scripts/check-sf-symbols.py` on a Mac; it
+compares every symbol-shaped literal with the symbol table macOS ships and the
+deployment target in `project.yml`.
