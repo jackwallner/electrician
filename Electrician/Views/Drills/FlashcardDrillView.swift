@@ -327,6 +327,12 @@ struct FlashcardDrillView: View {
     /// fades as it goes, so the verdict stamp leaves with it instead of being
     /// cut off the instant the queue drops the card.
     private func fling(direction: CGFloat, size: CGSize) {
+        // A second tap on Knew it, Again or Next while the card is still in
+        // flight has to be ignored. Its animation changes nothing (the card is
+        // already on its way), so SwiftUI runs its completion straight away,
+        // and `commit` would grade and drop the NEXT card, which the reader
+        // never saw, as well.
+        guard !isFlinging else { return }
         isFlinging = true
         hasSwipedDeck = true
         Haptics.impact(.rigid, intensity: 0.7)
