@@ -1007,7 +1007,7 @@ struct OnboardingView: View {
             text: "Endless Practice: ten calculation shapes, generated fresh, so you never memorise a question instead of a method."
         )
         let fix = TrialBenefit(
-            icon: "arrow.trianglehead.counterclockwise",
+            icon: "arrow.counterclockwise",
             text: "Fix My Mistakes: every wrong answer is a NAMED error, and this builds new problems that set the same trap until you stop falling for it."
         )
         let warmUp = TrialBenefit(
