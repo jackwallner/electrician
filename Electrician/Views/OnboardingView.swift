@@ -736,8 +736,9 @@ struct OnboardingView: View {
     }
 
     private var goalSuggestion: String? {
-        guard let countdown = profile.examCountdownSummary else { return nil }
-        return "\(countdown). At \(profile.suggestedDailyQuestions) questions a day you will have worked roughly 600 problems before you sit it."
+        guard let countdown = profile.examCountdownSummary,
+              let planned = profile.plannedQuestions else { return nil }
+        return "\(countdown). At \(profile.suggestedDailyQuestions) questions a day you will have worked roughly \(planned.groupedText) problems before you sit it."
     }
 
     // MARK: Plan recap
