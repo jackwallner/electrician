@@ -122,6 +122,15 @@ final class PracticeRecordStore: ObservableObject {
     }
 
     /// The patterns targeted practice should aim at, worst first.
+    ///
+    /// Each comes back from the current registry by id. A tally keeps the
+    /// pattern as it was worded when it was banked, and wording is corrected
+    /// between releases (the 2026-10-22 audit rewrote four summaries). The
+    /// stored copy would go on showing superseded text on the Stats screen and,
+    /// because `MistakePattern` compares every field, would never equal the
+    /// pattern a generator now attaches to the distractor, so Fix My Mistakes
+    /// would quietly stop aiming at it. The stored copy is only the fallback
+    /// for an id the registry no longer knows.
     func outstandingMistakes(limit: Int = 4) -> [MistakePattern] {
         mistakes.values
             .sorted { lhs, rhs in
@@ -129,7 +138,7 @@ final class PracticeRecordStore: ObservableObject {
                 return lhs.lastMissed > rhs.lastMissed
             }
             .prefix(limit)
-            .map(\.pattern)
+            .map { CandidateMistake.pattern(id: $0.pattern.id) ?? $0.pattern }
     }
 
     var outstandingMistakeCount: Int {
