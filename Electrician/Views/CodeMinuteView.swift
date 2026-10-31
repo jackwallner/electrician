@@ -131,7 +131,7 @@ struct CodeMinuteView: View {
                 Image(systemName: result == nil ? "play.circle" : "checkmark.circle.fill")
                     .foregroundStyle(result == nil ? Theme.copper : Theme.voltage)
                     .frame(width: 28)
-                Text(date, format: .dateTime.weekday(.wide).month(.abbreviated).day())
+                Text(CodeMinuteContent.archiveLabel(for: date))
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(Theme.ink)
                 Spacer()

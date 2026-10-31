@@ -142,6 +142,34 @@ final class CodeMinuteTests: XCTestCase {
         XCTAssertEqual(losAngeles, CodeMinuteContent.key(for: tokyoEvening, calendar: CodeMinuteContent.dayCalendar))
     }
 
+    /// An archive row has to name the day whose questions it opens. The row was
+    /// labelled in the device's zone and opened in Pacific time, so for most of
+    /// the country the first row read as today's date while holding yesterday's
+    /// challenge, titled "Code Minute" with a different date once opened.
+    @MainActor
+    func testArchiveRowsAreLabelledInTheZoneTheDayKeyIsCutIn() throws {
+        // 04:30 UTC on 31 October is 21:30 on the 30th in Los Angeles and
+        // 00:30 on the 31st in New York.
+        var utc = Calendar(identifier: .gregorian)
+        utc.timeZone = TimeZone(identifier: "UTC")!
+        let now = utc.date(from: DateComponents(year: 2026, month: 10, day: 31, hour: 4, minute: 30))!
+        XCTAssertEqual(CodeMinuteContent.key(for: now), "2026-10-30")
+
+        let defaults = UserDefaults(suiteName: "CodeMinuteTests.archive")!
+        defaults.removePersistentDomain(forName: "CodeMinuteTests.archive")
+        defer { defaults.removePersistentDomain(forName: "CodeMinuteTests.archive") }
+        let rows = CodeMinuteStore(defaults: defaults).archiveDates(before: now, count: 3)
+
+        let english = Locale(identifier: "en_US")
+        let expected = ["2026-10-29": "Oct 29", "2026-10-28": "Oct 28", "2026-10-27": "Oct 27"]
+        for date in rows {
+            let key = CodeMinuteContent.key(for: date)
+            let label = CodeMinuteContent.archiveLabel(for: date, locale: english)
+            let monthAndDay = try XCTUnwrap(expected[key], "unexpected archive key \(key)")
+            XCTAssertTrue(label.contains(monthAndDay), "\(key) is labelled \"\(label)\"")
+        }
+    }
+
     /// The daily calculations keep their numbered working, the same as every
     /// other generated question.
     func testDailyGeneratedItemsCarryTheirWorking() {
