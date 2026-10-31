@@ -9,7 +9,7 @@
     "Shared/Content/CalcGeneratorLoads.swift": "eaac8525582307211a324241adacaf43d568c6471de70b028db6412bdb255991",
     "Shared/Content/CalcGeneratorMotors.swift": "260d482c663e183fc2dcc49097d6f41a115872bc41605975d641676f970cf407",
     "Shared/Content/CodeBasicsContent.swift": "c4dbf2361d249958a3c5a6792f7d17498f469a16b2a5856aca8de8d30dac88b5",
-    "Shared/Content/CodeMinuteContent.swift": "a57ef91c522fe02b4575362ad4b551165ee69c242e5e5a762f1b7e7b6aa53750",
+    "Shared/Content/CodeMinuteContent.swift": "23db05eb8e6a63f9f8fc6cc1db89dc864baa7934d1aec8aeb23b042f789c9e56",
     "Shared/Content/ConductorContent.swift": "945d17920b85f81412dc098909c4caa2decf5bba8709020727fa17cce14976d8",
     "Shared/Content/DrillLibrary.swift": "0d8804a0aede2ff25a959279302956359db3972bab20f2720880f26b5b9318b1",
     "Shared/Content/EndlessPractice.swift": "2555745db1e90206e5673ed62450b1f1175802867eff5c64eb7d5c779adcbfd5",
@@ -22,7 +22,7 @@
     "Shared/Content/ShellCopy.swift": "7bc0c782dbd1e052a84ebf51a1be93dc0ceb99af7bd89de6ff9a16d0844c446b",
     "Shared/Models/CodeArticle.swift": "aa0942f7022bffdbc599b9e0ef8f194c2fb8ceb5ab14b122e630af0054843c03",
     "Shared/Models/Drill.swift": "e79952af60dd2cfaf49ede20beef9773262d57c8a0af57df8a44bb60bad656c4",
-    "Shared/Models/FieldCalculators.swift": "07f2a62f42c1f044549320f96aaed6a08e7501d4e3f7823364a64e24e20e2f92",
+    "Shared/Models/FieldCalculators.swift": "917ff8084266d766269c54e1f6634e7a29952a45c20008aab644a7697e896f9b",
     "Shared/Models/FieldCalculatorsPlus.swift": "cdee03aab7e3dad707562e49b58f55b9a18bba147f9b9d566b233a761358f037",
     "Shared/Models/Given.swift": "d61cb66a8e27c73126c37410c3e7d20b8055268cc79d256f72a52dfcdc9ea01d",
     "Shared/Models/Jurisdictions.swift": "a48dc807619f86857199d0eb999ebafd8f0191b8c87b99c1d0777e839e7240ee",
@@ -32,7 +32,7 @@
     "Shared/Models/NECMotorTables.swift": "87fb8b3c2eb96fbf817528cbe2dc1944f187d635f09928c06ac6bd30896de0c4",
     "Shared/Models/NECTables.swift": "f2bb21847c3d853951a63bc6c0d237065efb13126c47a71e1491f91172cec172",
     "Shared/Models/SeededGenerator.swift": "2f6cecada20e34e8ceccfc8102b5db1b476e44b5de9616139b7e2e26c8640f47",
-    "Shared/Services/CandidateProfile.swift": "4ee8a9af96cc6cf87d12f0b2a9556abddeb1c21d8bbfe1f94b29ab078c6776fe",
+    "Shared/Services/CandidateProfile.swift": "e7df00db49032e79a582ba96ca138178333cf4e2c6d2d19d50867aa09ae9ab61",
     "scripts/android-export/main.swift": "14a223f3b643afdfdd41b4fdf4b61f176fa8b42ed30c14bd11449684c3fb758f"
   }
 }
