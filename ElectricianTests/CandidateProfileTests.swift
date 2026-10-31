@@ -168,6 +168,36 @@ final class CandidateProfileTests: XCTestCase {
         XCTAssertEqual(profile.examCountdownSummary, "10 days out")
     }
 
+    // MARK: - What the plan adds up to
+
+    /// The reminder step quoted "roughly 600 problems" for every date. The
+    /// figure is the daily target times the days left: the night before the
+    /// exam it is one day of the cram target, not six hundred questions.
+    func testPlannedQuestionsAreTheDailyTargetTimesTheDaysLeft() {
+        let profile = CandidateProfile(defaults: defaults)
+        XCTAssertNil(profile.plannedQuestions, "No date, no total")
+
+        for (days, daily) in [(1, 60), (3, 60), (10, 40), (20, 30), (30, 20), (100, 15)] {
+            profile.examDate = Calendar.current.date(byAdding: .day, value: days, to: Date())
+            XCTAssertEqual(profile.suggestedDailyQuestions, daily, "\(days) days out")
+            XCTAssertEqual(profile.plannedQuestions, daily * days, "\(days) days out")
+        }
+    }
+
+    func testExamDayCountsOneDayOfPractice() {
+        let profile = CandidateProfile(defaults: defaults)
+        profile.examDate = Date()
+
+        XCTAssertEqual(profile.plannedQuestions, profile.suggestedDailyQuestions)
+    }
+
+    func testAPassedExamPlansNothing() {
+        let profile = CandidateProfile(defaults: defaults)
+        profile.examDate = Calendar.current.date(byAdding: .day, value: -3, to: Date())
+
+        XCTAssertNil(profile.plannedQuestions)
+    }
+
     func testFocusTogglesBothWays() {
         let profile = CandidateProfile(defaults: defaults)
         profile.toggleFocus("calc-room")

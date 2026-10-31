@@ -451,6 +451,13 @@ final class CandidateProfile: ObservableObject {
         }
     }
 
+    /// What the daily target adds up to by the time the exam arrives, or nil
+    /// with no upcoming date. The exam day itself counts as one day of work.
+    var plannedQuestions: Int? {
+        guard let days = daysUntilExam else { return nil }
+        return suggestedDailyQuestions * max(days, 1)
+    }
+
     // MARK: - Mutations
 
     func selectTrack(_ track: LicenseTrack) {
