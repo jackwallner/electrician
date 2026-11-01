@@ -37,6 +37,11 @@ enum Theme {
     /// white text lands around 2.3:1 and is unreadable. Anything that paints a
     /// solid accent behind white must use these instead.
     static let voltageFill = Color(light: (0.05, 0.34, 0.64), dark: (0.11, 0.44, 0.80))
+    /// Copper and brass as TEXT on their own 12-15% tint (a note card, a pill).
+    /// The plain accents measure 4.0:1 there; these hold 5.5:1 or better in light
+    /// mode and keep the lighter dark-mode values.
+    static let copperInk = Color(light: (0.55, 0.26, 0.07), dark: (0.91, 0.58, 0.33))
+    static let brassInk = Color(light: (0.47, 0.34, 0.04), dark: (0.87, 0.72, 0.34))
     static let copperFill = Color(light: (0.65, 0.31, 0.11), dark: (0.72, 0.36, 0.14))
 
     /// Equipment-grounding green. The grounding room, and nothing else.
@@ -320,7 +325,7 @@ struct PlusBadge: View {
     var body: some View {
         Text(text)
             .font(.caption.weight(.heavy))
-            .foregroundStyle(Theme.brass)
+            .foregroundStyle(Theme.brassInk)
             .padding(.horizontal, 8)
             .padding(.vertical, 3)
             .background(Theme.brass.opacity(0.15), in: Capsule())
@@ -448,8 +453,12 @@ struct PrimaryCTAStyle: ViewModifier {
         return content
             .font(.headline)
             .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 56)
+            .multilineTextAlignment(.center)
+            // Grows with Dynamic Type: a fixed 56pt cut "Start Today's Challenge"
+            // to "Start Today's Ch..." at the largest sizes.
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.vertical, 8)
+            .frame(maxWidth: .infinity, minHeight: 56)
             .background {
                 shape
                     .fill(color)

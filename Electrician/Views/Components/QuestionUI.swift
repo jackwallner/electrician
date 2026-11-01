@@ -90,7 +90,9 @@ struct DrillProgressHeader: View {
                 .foregroundStyle(Theme.inkTertiary)
                 .monospacedDigit()
         }
-        .accessibilityElement(children: .combine)
+        // .ignore, not .combine: combining kept the ProgressView's adjustable
+        // trait, so the audit read a 20pt-tall control it could not tap.
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel("Question \(index + 1) of \(total)")
     }
 }
@@ -142,6 +144,14 @@ struct QuestionPager<Choices: View>: View {
     @ViewBuilder let choices: () -> Choices
 
     @State private var density = QuestionDensity.regular
+    @State private var viewportHeight: CGFloat = 0
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    /// On a short pane or at accessibility sizes the question and its coaching
+    /// note cannot share the screen. Scrolling to the note's bottom then leaves
+    /// the prompt cut mid-line under the progress header, so the note is pinned
+    /// to the top edge instead and padded so that position is always reachable.
+    private var pinsExplanation: Bool { density == .compact || typeSize.isAccessibilitySize }
 
     var body: some View {
         // Centering, not top-aligned: on a 13-inch iPad a three-choice question
@@ -193,6 +203,7 @@ struct QuestionPager<Choices: View>: View {
                             ReportIssueButton(context: reportContext)
                         }
                     }
+                    .frame(minHeight: pinsExplanation ? max(0, viewportHeight - 20) : nil, alignment: .top)
                     .id(questionExplanationID)
                 }
             }
@@ -210,12 +221,13 @@ struct QuestionPager<Choices: View>: View {
                 // Bring the coaching note into view rather than leaving it
                 // parked below the fold behind the Next button.
                 withAnimation(Theme.Motion.reveal) {
-                    proxy.scrollTo(questionExplanationID, anchor: .bottom)
+                    proxy.scrollTo(questionExplanationID, anchor: pinsExplanation ? .top : .bottom)
                 }
             }
             }
         }
         .questionDensity($density)
+        .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { viewportHeight = $0 }
         .environment(\.questionDensity, density)
     }
 }
@@ -368,7 +380,7 @@ struct MissNoteView: View {
                 Text("WHAT HAPPENED")
                     .font(Theme.eyebrow)
                     .kerning(Theme.eyebrowKerning)
-                    .foregroundStyle(Theme.copper)
+                    .foregroundStyle(Theme.copperInk)
                 Text(note)
                     .font(.subheadline)
                     .foregroundStyle(Theme.ink)
@@ -475,7 +487,8 @@ struct ReportIssueButton: View {
                 .foregroundStyle(Theme.inkTertiary)
         }
         .buttonStyle(.plain)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+        .contentShape(Rectangle())
         .confirmationDialog("Report a possible issue", isPresented: $showingCategories, titleVisibility: .visible) {
             ForEach(ContentReport.Category.allCases) { category in
                 Button(category.displayName) { report(category) }
