@@ -546,7 +546,7 @@ struct HomeView: View {
                         .foregroundStyle(Theme.voltage)
                     Text((profile.daysUntilExam ?? 0) == 1 ? "day" : "days")
                         .font(.caption2.weight(.semibold))
-                        .foregroundStyle(Theme.inkTertiary)
+                        .foregroundStyle(Theme.inkSecondary)
                 }
                 .frame(width: 46, height: 46)
                 .background(Theme.voltage.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
