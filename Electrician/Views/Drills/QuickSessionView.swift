@@ -133,10 +133,7 @@ struct QuickSessionView: View {
                 footer
             }
             .id(item.id)
-            .transition(.asymmetric(
-                insertion: .move(edge: .trailing).combined(with: .opacity),
-                removal: .move(edge: .leading).combined(with: .opacity)
-            ))
+            .transition(Theme.Motion.advance)
         }
         .padding()
         .frame(maxWidth: Theme.readableContentWidth)
@@ -156,7 +153,7 @@ struct QuickSessionView: View {
             if let streakBannerText {
                 StreakBanner(text: streakBannerText)
                     .padding(.top, 6)
-                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .transition(Theme.Motion.dropIn)
             }
         }
         .navigationTitle(purpose.navigationTitle)

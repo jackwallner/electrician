@@ -133,10 +133,7 @@ struct PracticeRunView: View {
                 footer
             }
             .id(item.id)
-            .transition(.asymmetric(
-                insertion: .move(edge: .trailing).combined(with: .opacity),
-                removal: .move(edge: .leading).combined(with: .opacity)
-            ))
+            .transition(Theme.Motion.advance)
         }
         .padding()
         .frame(maxWidth: Theme.readableContentWidth)

@@ -59,10 +59,7 @@ struct FeatureTourView: View {
             .themedCard(corner: 22)
             .shine(trigger: shineTrigger, corner: 22)
             .id(index)
-            .transition(.asymmetric(
-                insertion: .move(edge: .trailing).combined(with: .opacity),
-                removal: .move(edge: .leading).combined(with: .opacity)
-            ))
+            .transition(Theme.Motion.advance)
             Spacer(minLength: 0)
             // The escape hatch is offered on EVERY page, not just at the
             // session prompt: by the time someone has tapped through a trial

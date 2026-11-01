@@ -276,6 +276,12 @@ enum Theme {
             )
         }
 
+        /// A banner arriving from the top edge.
+        static var dropIn: AnyTransition {
+            guard !reduced else { return .opacity }
+            return .move(edge: .top).combined(with: .opacity)
+        }
+
         /// Something arriving under what is already there.
         static var riseIn: AnyTransition {
             guard !reduced else { return .opacity }

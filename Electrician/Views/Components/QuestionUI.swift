@@ -441,7 +441,7 @@ struct WorkedStepsView: View {
             RoundedRectangle(cornerRadius: 14)
                 .strokeBorder(Theme.worksheetEdge, lineWidth: 1)
         )
-        .transition(.opacity.combined(with: .move(edge: .bottom)))
+        .transition(Theme.Motion.riseIn)
     }
 }
 

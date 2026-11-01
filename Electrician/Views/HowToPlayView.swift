@@ -38,16 +38,7 @@ struct HowToPlayView: View {
                 .id(page.id)
                 .offset(x: drag)
                 .rotationEffect(.degrees(Double(drag / 40)), anchor: .bottom)
-                .transition(goingForward
-                    ? .asymmetric(
-                        insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .move(edge: .leading).combined(with: .opacity)
-                    )
-                    : .asymmetric(
-                        insertion: .move(edge: .leading).combined(with: .opacity),
-                        removal: .move(edge: .trailing).combined(with: .opacity)
-                    )
-                )
+                .transition(goingForward ? Theme.Motion.advance : Theme.Motion.retreat)
                 .gesture(pageSwipe)
             Spacer(minLength: 0)
             footer
