@@ -85,15 +85,16 @@ struct DrillProgressHeader: View {
             ProgressView(value: Double(index + (answered ? 1 : 0)), total: Double(max(total, 1)))
                 .tint(Theme.voltage)
                 .animation(Theme.Motion.meter, value: answered)
+                .accessibilityHidden(true)
+            // The label rides on the Text, which stays static text. A combined or
+            // ignored container still reached the audit as a 20pt-tall "Other"
+            // element it judged as a control it could not hit.
             Text("\(index + 1) of \(total)")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(Theme.inkTertiary)
                 .monospacedDigit()
+                .accessibilityLabel("Question \(index + 1) of \(total)")
         }
-        // .ignore, not .combine: combining kept the ProgressView's adjustable
-        // trait, so the audit read a 20pt-tall control it could not tap.
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Question \(index + 1) of \(total)")
     }
 }
 
