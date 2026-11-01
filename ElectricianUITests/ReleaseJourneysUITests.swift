@@ -61,6 +61,46 @@ final class ReleaseJourneysUITests: XCTestCase {
         home("home-after-relaunch", in: app)
     }
 
+    func testCoreLoopCodeMinuteAnswersSavesAndSurvivesRelaunch() {
+        let app = XCUIApplication(bundleIdentifier: "com.jackwallner.electrician")
+        QA.launch(app, arguments: ["-DuoSeed", "-electrician.suppressWhatsNew"])
+        home("home", in: app)
+        openCodeMinute(in: app)
+        QA.checkpoint(app, "code-minute")
+        XCTAssertFalse(app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@", "View Today's")).firstMatch.exists)
+        tap("Start Today's Challenge", in: app)
+        for question in 1...5 {
+            let choice = app.buttons["choice.0"].firstMatch
+            XCTAssertTrue(choice.waitForExistence(timeout: 15), "question \(question)")
+            choice.tap()
+            QA.checkpoint(app, "answered-\(question)")
+            tap(question < 5 ? "Next" : "Finish", in: app)
+        }
+        let score = app.staticTexts.matching(NSPredicate(format: "label MATCHES %@", "[0-5]/5")).firstMatch
+        XCTAssertTrue(score.waitForExistence(timeout: 15))
+        let result = score.label
+        QA.checkpoint(app, "code-minute-result")
+        tap("Done", in: app)
+        assertSaved(result, in: app)
+        QA.checkpoint(app, "code-minute-saved")
+        QA.relaunch(app)
+        home("home-after-relaunch", in: app)
+        openCodeMinute(in: app)
+        assertSaved(result, in: app)
+        QA.checkpoint(app, "code-minute-after-relaunch")
+    }
+
+    private func openCodeMinute(in app: XCUIApplication) {
+        let tile = reveal(app.buttons.containing(NSPredicate(format: "label CONTAINS %@", "Code")).containing(NSPredicate(format: "label CONTAINS %@", "Minute")).firstMatch, in: app)
+        tile.tap()
+        XCTAssertTrue(app.navigationBars["Code Minute"].waitForExistence(timeout: 15))
+    }
+
+    private func assertSaved(_ result: String, in app: XCUIApplication) {
+        let saved = app.buttons["View Today's \(result)"].firstMatch
+        XCTAssertTrue(saved.waitForExistence(timeout: 15), "today's \(result) is listed")
+    }
+
     private func tap(_ label: String, in app: XCUIApplication) {
         let button = app.buttons[label].firstMatch
         XCTAssertTrue(button.waitForExistence(timeout: 15))
@@ -78,7 +118,7 @@ final class ReleaseJourneysUITests: XCTestCase {
     private func reveal(_ element: XCUIElement, in app: XCUIApplication) -> XCUIElement {
         var tries = 0
         while !(element.exists && element.isHittable) && tries < 8 {
-            app.swipeUp()
+            QA.swipe(app.scrollViews.firstMatch.exists ? app.scrollViews.firstMatch : app, .up)
             tries += 1
         }
         XCTAssertTrue(element.isHittable)
