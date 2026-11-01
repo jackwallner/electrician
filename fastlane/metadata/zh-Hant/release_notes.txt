@@ -1,2 +1,1 @@
-• 可直接在設定中為 Electrician 評分。
-• 錯誤修正與改進。
+進行了背景優化與錯誤修復，讓 Electrician Exam Practice 運行更順暢。感謝一路有你。

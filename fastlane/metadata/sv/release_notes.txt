@@ -1,2 +1,1 @@
-• Betygsätt Electrician direkt från Inställningar.
-• Buggfixar och förbättringar.
+Förbättringar bakom kulisserna och buggfixar så att Electrician Exam Practice fungerar smidigt. Tack för att du är här.

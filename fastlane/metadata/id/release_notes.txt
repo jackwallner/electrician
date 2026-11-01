@@ -1,2 +1,1 @@
-• Beri nilai Electrician langsung dari Pengaturan.
-• Perbaikan bug dan peningkatan.
+Peningkatan di balik layar dan perbaikan bug agar Electrician Exam Practice berjalan lancar. Terima kasih telah hadir.

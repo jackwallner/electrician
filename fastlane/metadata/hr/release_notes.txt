@@ -1,2 +1,1 @@
-• Ocijenite Electrician izravno iz Postavki.
-• Ispravci pogrešaka i poboljšanja.
+Poboljšanja u pozadini i ispravci grešaka kako bi Electrician Exam Practice radio glatko. Hvala što ste tu.

@@ -1,2 +1,1 @@
-• Valora Electrician directament des de Configuració.
-• Correccions d'errors i millores.
+Millores internes i correccions d'errors perquè Electrician Exam Practice funcioni bé. Gràcies per ser aquí.
