@@ -74,7 +74,7 @@ struct ArticleMatchQuestion: Identifiable, Sendable {
     /// review rejected (2026-10-23). Every runner shows this, never `scenario`.
     var prompt: String { "\(scenario)\n\(Self.ask)" }
 
-    static let ask = "Which article do you open?"
+    static var ask: String { String(localized: "Which article do you open?") }
 }
 
 /// A named candidate mistake: the reasoning error that produces one specific

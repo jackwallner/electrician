@@ -60,7 +60,7 @@ extension FieldCalculators {
             electrodeConductor: required,
             electrodeConductorFromTable: fromTable,
             cappedByElectrode: required != fromTable,
-            citation: "Table 250.122, Table 250.66, \(electrode.citation)"
+            citation: String(localized: "Table 250.122, Table 250.66, \(electrode.citation)")
         )
     }
 
@@ -113,7 +113,7 @@ extension FieldCalculators {
             overloadAt115: nameplateFLA * 1.15,
             overloadAt125: nameplateFLA * 1.25,
             equipmentGround: NECTables.equipmentGroundingConductor(ocpd: ocpd, material: .copper),
-            citation: "430.22, \(supply.citation), 430.52, 430.32, Table 250.122"
+            citation: String(localized: "430.22, \(supply.citation), 430.52, 430.32, Table 250.122")
         )
     }
 
@@ -252,7 +252,7 @@ extension FieldCalculators {
             amps: amps,
             serviceRating: rating,
             floorApplied: rating > unclamped,
-            citation: "220.41, Table 220.45, 220.52, 220.53, 220.54, Table 220.55, 220.60, 230.79(C)"
+            citation: String(localized: "220.41, Table 220.45, 220.52, 220.53, 220.54, Table 220.55, 220.60, 230.79(C)")
         )
     }
 }

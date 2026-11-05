@@ -27,39 +27,39 @@ struct Given: Hashable, Codable, Sendable, Identifiable {
     // Shorthand for the conditions that recur across nearly every problem.
 
     static func conductor(_ size: String, _ insulation: String) -> Given {
-        Given("Conductor", "\(size) \(insulation)")
+        Given(String(localized: "Conductor"), "\(size) \(insulation)")
     }
 
     static func material(_ metal: ConductorMaterial) -> Given {
-        Given("Material", metal.displayName)
+        Given(String(localized: "Material"), metal.displayName)
     }
 
     static func ambient(_ celsius: Int) -> Given {
-        Given("Ambient", "\(celsius)", unit: "°C")
+        Given(String(localized: "Ambient"), "\(celsius)", unit: "°C")
     }
 
     static func currentCarrying(_ count: Int) -> Given {
-        Given("Current-carrying", "\(count)", unit: count == 1 ? "conductor" : "conductors")
+        Given(String(localized: "Current-carrying"), "\(count)", unit: PluralLabel.conductors(count))
     }
 
     static func terminals(_ rating: TemperatureRating) -> Given {
-        Given("Terminals", rating.displayName)
+        Given(String(localized: "Terminals"), rating.displayName)
     }
 
     static func load(_ amps: Double) -> Given {
-        Given("Load", amps.trimmedAmps, unit: "A")
+        Given(String(localized: "Load"), amps.trimmedAmps, unit: "A")
     }
 
     static func length(_ feet: Int) -> Given {
-        Given("One-way length", "\(feet)", unit: "ft")
+        Given(String(localized: "One-way length"), "\(feet)", unit: "ft")
     }
 
     static func voltage(_ volts: Int, phase: Phase) -> Given {
-        Given("System", "\(volts)V \(phase.displayName)")
+        Given(String(localized: "System"), "\(volts)V \(phase.displayName)")
     }
 
     static func raceway(_ type: String, _ trade: String) -> Given {
-        Given("Raceway", "\(trade) \(type)")
+        Given(String(localized: "Raceway"), "\(trade) \(type)")
     }
 
     var spokenLabel: String {
@@ -74,8 +74,16 @@ enum ConductorMaterial: String, Codable, CaseIterable, Sendable {
 
     var displayName: String {
         switch self {
-        case .copper: return "Copper"
-        case .aluminum: return "Aluminum"
+        case .copper: return String(localized: "Copper")
+        case .aluminum: return String(localized: "Aluminum")
+        }
+    }
+
+    /// The name as it reads in the middle of a sentence.
+    var inlineName: String {
+        switch self {
+        case .copper: return String(localized: "copper")
+        case .aluminum: return String(localized: "aluminum")
         }
     }
 

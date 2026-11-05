@@ -28,56 +28,56 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
     /// The article number as an electrician would cite it out loud.
     var citation: String {
         switch self {
-        case .definitions: return "Art. 100"
-        case .generalRequirements: return "Art. 110"
-        case .services: return "Art. 230"
-        case .wiringMethods: return "Art. 300"
-        case .branchCircuits: return "Art. 210"
-        case .loadCalculations: return "Art. 220"
-        case .overcurrent: return "Art. 240"
-        case .grounding: return "Art. 250"
-        case .conductors: return "Art. 310"
-        case .boxes: return "Art. 314"
-        case .raceways: return "Ch. 9"
-        case .motors: return "Art. 430"
-        case .emt: return "Art. 358"
+        case .definitions: return String(localized: "Art. 100")
+        case .generalRequirements: return String(localized: "Art. 110")
+        case .services: return String(localized: "Art. 230")
+        case .wiringMethods: return String(localized: "Art. 300")
+        case .branchCircuits: return String(localized: "Art. 210")
+        case .loadCalculations: return String(localized: "Art. 220")
+        case .overcurrent: return String(localized: "Art. 240")
+        case .grounding: return String(localized: "Art. 250")
+        case .conductors: return String(localized: "Art. 310")
+        case .boxes: return String(localized: "Art. 314")
+        case .raceways: return String(localized: "Ch. 9")
+        case .motors: return String(localized: "Art. 430")
+        case .emt: return String(localized: "Art. 358")
         }
     }
 
     var displayName: String {
         switch self {
-        case .definitions: return "Definitions"
-        case .generalRequirements: return "General Requirements"
-        case .services: return "Services"
-        case .wiringMethods: return "Wiring Methods"
-        case .branchCircuits: return "Branch Circuits"
-        case .loadCalculations: return "Load Calculations"
-        case .overcurrent: return "Overcurrent Protection"
-        case .grounding: return "Grounding & Bonding"
-        case .conductors: return "Conductors & Ampacity"
-        case .boxes: return "Boxes & Enclosures"
-        case .raceways: return "Raceway Fill"
-        case .motors: return "Motors"
-        case .emt: return "Electrical Metallic Tubing"
+        case .definitions: return String(localized: "Definitions")
+        case .generalRequirements: return String(localized: "General Requirements")
+        case .services: return String(localized: "Services")
+        case .wiringMethods: return String(localized: "Wiring Methods")
+        case .branchCircuits: return String(localized: "Branch Circuits")
+        case .loadCalculations: return String(localized: "Load Calculations")
+        case .overcurrent: return String(localized: "Overcurrent Protection")
+        case .grounding: return String(localized: "Grounding & Bonding")
+        case .conductors: return String(localized: "Conductors & Ampacity")
+        case .boxes: return String(localized: "Boxes & Enclosures")
+        case .raceways: return String(localized: "Raceway Fill")
+        case .motors: return String(localized: "Motors")
+        case .emt: return String(localized: "Electrical Metallic Tubing")
         }
     }
 
     /// Short label for a choice chip, where the citation carries the meaning.
     var shortName: String {
         switch self {
-        case .definitions: return "100 Definitions"
-        case .generalRequirements: return "110 General"
-        case .services: return "230 Services"
-        case .wiringMethods: return "300 Wiring"
-        case .branchCircuits: return "210 Branch Ckts"
-        case .loadCalculations: return "220 Load Calc"
-        case .overcurrent: return "240 Overcurrent"
-        case .grounding: return "250 Grounding"
-        case .conductors: return "310 Conductors"
-        case .boxes: return "314 Boxes"
-        case .raceways: return "Ch. 9 Fill"
-        case .motors: return "430 Motors"
-        case .emt: return "358 EMT"
+        case .definitions: return String(localized: "100 Definitions")
+        case .generalRequirements: return String(localized: "110 General")
+        case .services: return String(localized: "230 Services")
+        case .wiringMethods: return String(localized: "300 Wiring")
+        case .branchCircuits: return String(localized: "210 Branch Ckts")
+        case .loadCalculations: return String(localized: "220 Load Calc")
+        case .overcurrent: return String(localized: "240 Overcurrent")
+        case .grounding: return String(localized: "250 Grounding")
+        case .conductors: return String(localized: "310 Conductors")
+        case .boxes: return String(localized: "314 Boxes")
+        case .raceways: return String(localized: "Ch. 9 Fill")
+        case .motors: return String(localized: "430 Motors")
+        case .emt: return String(localized: "358 EMT")
         }
     }
 
@@ -86,31 +86,31 @@ enum CodeArticle: String, Codable, CaseIterable, Identifiable, Sendable {
     var howToSpot: String {
         switch self {
         case .definitions:
-            return "The question turns on what a word means rather than on a number. If you are arguing about whether something counts as a dwelling unit, a device, or readily accessible, the answer is in the definitions and nowhere else."
+            return String(localized: "The question turns on what a word means rather than on a number. If you are arguing about whether something counts as a dwelling unit, a device, or readily accessible, the answer is in the definitions and nowhere else.")
         case .branchCircuits:
-            return "Anything about what a circuit is allowed to serve and how outlets get placed: receptacle spacing, required small-appliance circuits, GFCI and AFCI coverage, the 15 and 20 amp rules."
+            return String(localized: "Anything about what a circuit is allowed to serve and how outlets get placed: receptacle spacing, required small-appliance circuits, GFCI and AFCI coverage, the 15 and 20 amp rules.")
         case .loadCalculations:
-            return "The question hands you square footage, appliance nameplates, or a list of loads and wants a service or feeder size. If you are adding VA together, you are in load calculations."
+            return String(localized: "The question hands you square footage, appliance nameplates, or a list of loads and wants a service or feeder size. If you are adding VA together, you are in load calculations.")
         case .overcurrent:
-            return "Sizing or placing the protection itself: breaker and fuse ratings, the standard sizes, the next-size-up rule, and the small-conductor ceiling that overrides the ampacity table."
+            return String(localized: "Sizing or placing the protection itself: breaker and fuse ratings, the standard sizes, the next-size-up rule, and the small-conductor ceiling that overrides the ampacity table.")
         case .grounding:
-            return "Anything with the word grounding, bonding, electrode, or equipment ground in it. The most-failed section on the exam, because the vocabulary is precise and close terms mean different things."
+            return String(localized: "Anything with the word grounding, bonding, electrode, or equipment ground in it. The most-failed section on the exam, because the vocabulary is precise and close terms mean different things.")
         case .conductors:
-            return "The conductor itself: allowable ampacity, the temperature columns, ambient correction, and the adjustment for bundling more than three current-carrying conductors."
+            return String(localized: "The conductor itself: allowable ampacity, the temperature columns, ambient correction, and the adjustment for bundling more than three current-carrying conductors.")
         case .boxes:
-            return "How much fits in the box, and what the box has to be. Volume allowances per conductor, what a device or clamp counts as, and support requirements."
+            return String(localized: "How much fits in the box, and what the box has to be. Volume allowances per conductor, what a device or clamp counts as, and support requirements.")
         case .raceways:
-            return "How many conductors fit in a pipe. The fill percentages and the conductor and raceway area tables all live in Chapter 9, not in the raceway articles themselves, which is the part people miss."
+            return String(localized: "How many conductors fit in a pipe. The fill percentages and the conductor and raceway area tables all live in Chapter 9, not in the raceway articles themselves, which is the part people miss.")
         case .motors:
-            return "Motors run on their own rules. The tables replace the nameplate for conductor sizing, the overload and short-circuit protection are separate calculations, and the numbers do not match anything in the ampacity table."
+            return String(localized: "Motors run on their own rules. The tables replace the nameplate for conductor sizing, the overload and short-circuit protection are separate calculations, and the numbers do not match anything in the ampacity table.")
         case .emt:
-            return "Installing EMT: permitted uses, securing, support spacing and bends between pull points. Article 358 supplies these installation rules; Chapter 9 supplies fill areas."
+            return String(localized: "Installing EMT: permitted uses, securing, support spacing and bends between pull points. Article 358 supplies these installation rules; Chapter 9 supplies fill areas.")
         case .generalRequirements:
-            return "Access and clearance rather than a wiring method: how much room you must be able to stand in, how much headroom, what may be above the panel, how conductors are terminated and marked, and what temperature column a termination lets you use."
+            return String(localized: "Access and clearance rather than a wiring method: how much room you must be able to stand in, how much headroom, what may be above the panel, how conductors are terminated and marked, and what temperature column a termination lets you use.")
         case .services:
-            return "Everything from the utility connection up to and including the service disconnecting means: how many disconnects, where they may be, overhead and underground clearances, and what may be connected ahead of them."
+            return String(localized: "Everything from the utility connection up to and including the service disconnecting means: how many disconnects, where they may be, overhead and underground clearances, and what may be connected ahead of them.")
         case .wiringMethods:
-            return "The rules that apply to EVERY method rather than to one: burial depth, protection from physical damage, conductors of different systems in the same enclosure, and sleeving through a wall. Reaching for the individual raceway article and not finding it is the tell that the answer is here."
+            return String(localized: "The rules that apply to EVERY method rather than to one: burial depth, protection from physical damage, conductors of different systems in the same enclosure, and sleeving through a wall. Reaching for the individual raceway article and not finding it is the tell that the answer is here.")
         }
     }
 }

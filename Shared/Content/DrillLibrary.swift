@@ -16,46 +16,46 @@ enum DrillLibrary {
     static let rooms: [Room] = [
         Room(
             id: "basics-room",
-            name: "Code Basics",
-            tagline: "How the book works before what it says",
+            name: String(localized: "Code Basics"),
+            tagline: String(localized: "How the book works before what it says"),
             icon: "book.closed.fill",
             isFree: true,
             drills: [
                 Drill(
                     id: "meet-the-code",
-                    title: "How the Book Is Built",
-                    subtitle: "Flashcards: chapters, mandatory language, and the words that decide answers",
+                    title: String(localized: "How the Book Is Built"),
+                    subtitle: String(localized: "Flashcards: chapters, mandatory language, and the words that decide answers"),
                     kind: .flashcards(CodeBasicsContent.meetTheCode)
                 ),
                 Drill(
                     id: "navigation-quiz",
-                    title: "Find It Fast",
-                    subtitle: "Quiz: where each kind of question actually lives",
+                    title: String(localized: "Find It Fast"),
+                    subtitle: String(localized: "Quiz: where each kind of question actually lives"),
                     kind: .quiz(CodeBasicsContent.navigationQuiz)
                 ),
                 Drill(
                     id: "article-cards",
-                    title: "Know the Articles",
-                    subtitle: "Flashcards: every article family and the tell that sends you there",
+                    title: String(localized: "Know the Articles"),
+                    subtitle: String(localized: "Flashcards: every article family and the tell that sends you there"),
                     kind: .flashcards(ArticleContent.articleCards)
                 ),
                 Drill(
                     id: "article-match",
-                    title: "Which Article?",
-                    subtitle: "Read a scenario, name the article, before you open the book",
+                    title: String(localized: "Which Article?"),
+                    subtitle: String(localized: "Read a scenario, name the article, before you open the book"),
                     kind: .articleMatch(ArticleContent.articleMatch)
                 ),
                 Drill(
                     id: "plus-basics-extras",
-                    title: "Find It Fast: Extra Reps",
-                    subtitle: "Four more on scope, the double 125%, and Annex C",
+                    title: String(localized: "Find It Fast: Extra Reps"),
+                    subtitle: String(localized: "Four more on scope, the double 125%, and Annex C"),
                     kind: .quiz(PlusContent.basicsExtras),
                     isPlus: true
                 ),
                 Drill(
                     id: "plus-article-extras",
-                    title: "Which Article? Extra Reps",
-                    subtitle: "Taps, GFCI placement, and support spacing",
+                    title: String(localized: "Which Article? Extra Reps"),
+                    subtitle: String(localized: "Taps, GFCI placement, and support spacing"),
                     kind: .articleMatch(PlusContent.articleExtras),
                     isPlus: true
                 ),
@@ -63,27 +63,27 @@ enum DrillLibrary {
         ),
         Room(
             id: "conductors-room",
-            name: "Conductors & Ampacity",
-            tagline: "Three columns, two factors, one cap",
+            name: String(localized: "Conductors & Ampacity"),
+            tagline: String(localized: "Three columns, two factors, one cap"),
             icon: "cable.connector",
             isFree: true,
             drills: [
                 Drill(
                     id: "ampacity-cards",
-                    title: "Reading the Table",
-                    subtitle: "Flashcards: the columns, the corrections, and 240.4(D)",
+                    title: String(localized: "Reading the Table"),
+                    subtitle: String(localized: "Flashcards: the columns, the corrections, and 240.4(D)"),
                     kind: .flashcards(ConductorContent.ampacityCards)
                 ),
                 Drill(
                     id: "ampacity-quiz",
-                    title: "Ampacity Check",
-                    subtitle: "Quiz: terminations, counting conductors, and the small-conductor cap",
+                    title: String(localized: "Ampacity Check"),
+                    subtitle: String(localized: "Quiz: terminations, counting conductors, and the small-conductor cap"),
                     kind: .quiz(ConductorContent.ampacityQuiz)
                 ),
                 Drill(
                     id: "plus-conductor-extras",
-                    title: "Ampacity Check: Extra Reps",
-                    subtitle: "Combining factors, paralleling, and aluminum's own numbers",
+                    title: String(localized: "Ampacity Check: Extra Reps"),
+                    subtitle: String(localized: "Combining factors, paralleling, and aluminum's own numbers"),
                     kind: .quiz(PlusContent.conductorExtras),
                     isPlus: true
                 ),
@@ -91,108 +91,108 @@ enum DrillLibrary {
         ),
         Room(
             id: "install-room",
-            name: "Installation Rules",
-            tagline: "Working space, cover, support, spacing",
+            name: String(localized: "Installation Rules"),
+            tagline: String(localized: "Working space, cover, support, spacing"),
             icon: "ruler.fill",
             isFree: true,
             drills: [
                 Drill(
                     id: "workspace-cards",
-                    title: "Room to Work",
-                    subtitle: "Flashcards: depth, width, headroom, and the space above the panel",
+                    title: String(localized: "Room to Work"),
+                    subtitle: String(localized: "Flashcards: depth, width, headroom, and the space above the panel"),
                     kind: .flashcards(InstallContent.workingSpaceCards)
                 ),
                 Drill(
                     id: "cover-support-cards",
-                    title: "Depth and Straps",
-                    subtitle: "Flashcards: burial cover, support spacing, and the 360 degree rule",
+                    title: String(localized: "Depth and Straps"),
+                    subtitle: String(localized: "Flashcards: burial cover, support spacing, and the 360 degree rule"),
                     kind: .flashcards(InstallContent.coverAndSupportCards)
                 ),
                 Drill(
                     id: "install-quiz",
-                    title: "Rules Check",
-                    subtitle: "Quiz: the numbers that are worth the most per minute on the paper",
+                    title: String(localized: "Rules Check"),
+                    subtitle: String(localized: "Quiz: the numbers that are worth the most per minute on the paper"),
                     kind: .quiz(InstallContent.installQuiz)
                 ),
                 Drill(
                     id: "install-match",
-                    title: "Which Article? Installation",
-                    subtitle: "Article 110, 230 and 300 against the ones they get confused with",
+                    title: String(localized: "Which Article? Installation"),
+                    subtitle: String(localized: "Article 110, 230 and 300 against the ones they get confused with"),
                     kind: .articleMatch(InstallContent.installArticleMatch)
                 ),
             ]
         ),
         Room(
             id: "calc-room",
-            name: "Worked Calculations",
-            tagline: "One number out, and the steps that got there",
+            name: String(localized: "Worked Calculations"),
+            tagline: String(localized: "One number out, and the steps that got there"),
             icon: "function",
             isFree: false,
             drills: [
                 Drill(
                     id: "worked-examples",
-                    title: "The Five Shapes",
-                    subtitle: "Derating, breaker sizing, conduit fill, box fill, voltage drop",
+                    title: String(localized: "The Five Shapes"),
+                    subtitle: String(localized: "Derating, breaker sizing, conduit fill, box fill, voltage drop"),
                     kind: .calc(CalcContent.workedExamples)
                 ),
             ]
         ),
         Room(
             id: "loads-room",
-            name: "Service & Load Calc",
-            tagline: "The longest question on the paper",
+            name: String(localized: "Service & Load Calc"),
+            tagline: String(localized: "The longest question on the paper"),
             icon: "house.fill",
             isFree: false,
             drills: [
                 Drill(
                     id: "load-cards",
-                    title: "What Goes Where",
-                    subtitle: "Flashcards: which loads take a demand factor and which have their own table",
+                    title: String(localized: "What Goes Where"),
+                    subtitle: String(localized: "Flashcards: which loads take a demand factor and which have their own table"),
                     kind: .flashcards(LoadContent.loadCards)
                 ),
                 Drill(
                     id: "load-quiz",
-                    title: "Load Check",
-                    subtitle: "Quiz: the eight steps, one at a time",
+                    title: String(localized: "Load Check"),
+                    subtitle: String(localized: "Quiz: the eight steps, one at a time"),
                     kind: .quiz(LoadContent.loadQuiz)
                 ),
                 Drill(
                     id: "load-worked",
-                    title: "One House, Both Methods",
-                    subtitle: "The same dwelling worked standard and optional, so the difference is visible",
+                    title: String(localized: "One House, Both Methods"),
+                    subtitle: String(localized: "The same dwelling worked standard and optional, so the difference is visible"),
                     kind: .calc(LoadContent.workedExamples)
                 ),
             ]
         ),
         Room(
             id: "grounding-room",
-            name: "Grounding & Motors",
-            tagline: "The two articles that decide a pass",
+            name: String(localized: "Grounding & Motors"),
+            tagline: String(localized: "The two articles that decide a pass"),
             icon: "bolt.horizontal.circle.fill",
             isFree: false,
             drills: [
                 Drill(
                     id: "grounding-cards",
-                    title: "Four Terms, Four Meanings",
-                    subtitle: "Flashcards: grounded, grounding, electrode, equipment",
+                    title: String(localized: "Four Terms, Four Meanings"),
+                    subtitle: String(localized: "Flashcards: grounded, grounding, electrode, equipment"),
                     kind: .flashcards(ProContent.groundingCards)
                 ),
                 Drill(
                     id: "grounding-quiz",
-                    title: "Grounding Check",
-                    subtitle: "Quiz: sizing from the right table, and the rod ceiling",
+                    title: String(localized: "Grounding Check"),
+                    subtitle: String(localized: "Quiz: sizing from the right table, and the rod ceiling"),
                     kind: .quiz(ProContent.groundingQuiz)
                 ),
                 Drill(
                     id: "motor-cards",
-                    title: "Nameplate or Table",
-                    subtitle: "Flashcards: the reversal at the centre of Article 430",
+                    title: String(localized: "Nameplate or Table"),
+                    subtitle: String(localized: "Flashcards: the reversal at the centre of Article 430"),
                     kind: .flashcards(ProContent.motorCards)
                 ),
                 Drill(
                     id: "motor-quiz",
-                    title: "Motor Check",
-                    subtitle: "Quiz: conductors, overload, and which value feeds which",
+                    title: String(localized: "Motor Check"),
+                    subtitle: String(localized: "Quiz: conductors, overload, and which value feeds which"),
                     kind: .quiz(ProContent.motorQuiz)
                 ),
             ]

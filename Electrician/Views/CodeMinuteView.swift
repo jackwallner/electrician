@@ -67,7 +67,7 @@ struct CodeMinuteView: View {
                         .font(Theme.eyebrow)
                         .kerning(Theme.eyebrowKerning)
                         .foregroundStyle(Theme.inkSecondary)
-                    Text(completed >= 5 ? "Weekly goal complete" : "\(completed) of 5 practiced")
+                    Text(completed >= 5 ? String(localized: "Weekly goal complete") : String(localized: "\(completed) of 5 practiced"))
                         .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                 }
@@ -135,7 +135,7 @@ struct CodeMinuteView: View {
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(Theme.ink)
                 Spacer()
-                Text(result.map { "\($0.score)/\($0.total)" } ?? "Play")
+                Text(result.map { "\($0.score)/\($0.total)" } ?? String(localized: "Play"))
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(result == nil ? Theme.copper : Theme.voltage)
                     .monospacedDigit()
@@ -208,10 +208,10 @@ struct CodeMinuteResultView: View {
                         .foregroundStyle(Theme.inkSecondary)
                 }
             }
-            Text(result.score == result.total ? "Perfect minute!" : "Minute complete")
+            Text(result.score == result.total ? String(localized: "Perfect minute!") : String(localized: "Minute complete"))
                 .font(Theme.screenTitle)
                 .foregroundStyle(Theme.ink)
-            Text("Code Minute \(result.shortDate)")
+            Text("Code Minute \(result.displayDate)")
                 .font(.subheadline)
                 .foregroundStyle(Theme.inkSecondary)
         }
@@ -253,7 +253,7 @@ struct CodeMinuteResultView: View {
                 .frame(width: 38, height: 38)
                 .background((completed >= 5 ? Theme.voltage : Theme.copper).opacity(0.12), in: Circle())
             VStack(alignment: .leading, spacing: 2) {
-                Text(completed >= 5 ? "Weekly goal complete" : "\(completed) of 5 this week")
+                Text(completed >= 5 ? String(localized: "Weekly goal complete") : String(localized: "\(completed) of 5 this week"))
                     .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
                 Text("Any five days keep the rhythm going.")

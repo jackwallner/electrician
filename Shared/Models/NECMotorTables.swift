@@ -160,10 +160,20 @@ extension NECTables {
 
         var displayName: String {
             switch self {
-            case .nonTimeDelayFuse: return "Nontime-delay fuse"
-            case .dualElementFuse: return "Dual-element fuse (not Class CC)"
-            case .instantaneousTrip: return "Instantaneous-trip breaker"
-            case .inverseTimeBreaker: return "Inverse-time breaker (nonadjustable)"
+            case .nonTimeDelayFuse: return String(localized: "Nontime-delay fuse")
+            case .dualElementFuse: return String(localized: "Dual-element fuse (not Class CC)")
+            case .instantaneousTrip: return String(localized: "Instantaneous-trip breaker")
+            case .inverseTimeBreaker: return String(localized: "Inverse-time breaker (nonadjustable)")
+            }
+        }
+
+        /// The name as it reads in the middle of a sentence.
+        var inlineName: String {
+            switch self {
+            case .nonTimeDelayFuse: return String(localized: "nontime-delay fuse")
+            case .dualElementFuse: return String(localized: "dual-element fuse (not class cc)")
+            case .instantaneousTrip: return String(localized: "instantaneous-trip breaker")
+            case .inverseTimeBreaker: return String(localized: "inverse-time breaker (nonadjustable)")
             }
         }
 

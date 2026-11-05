@@ -33,12 +33,12 @@ enum NECEdition: Int, CaseIterable, Identifiable, Sendable, Comparable {
     var driftFromApp: String {
         let app = NECEdition.app
         if self == app {
-            return "This is the edition every table and answer in the app is built from."
+            return String(localized: "This is the edition every table and answer in the app is built from.")
         }
         if self < app {
-            return "Older than the app's \(app.displayName). Many calculation values match, but the 10 A standard breaker rating was added in 2023, and Article 220, ambient-correction and motor-protection citations moved. GFCI and AFCI coverage and receptacle placement also differ. Check the edition and amendments listed by your exam board."
+            return String(localized: "Older than the app's \(app.displayName). Many calculation values match, but the 10 A standard breaker rating was added in 2023, and Article 220, ambient-correction and motor-protection citations moved. GFCI and AFCI coverage and receptacle placement also differ. Check the edition and amendments listed by your exam board.")
         }
-        return "Newer than the app's \(app.displayName). Conductor ampacity and overcurrent sizing carry forward; the newer cycle expands protection and equipment-disconnect requirements. Verify those against your own book."
+        return String(localized: "Newer than the app's \(app.displayName). Conductor ampacity and overcurrent sizing carry forward; the newer cycle expands protection and equipment-disconnect requirements. Verify those against your own book.")
     }
 }
 
@@ -55,9 +55,9 @@ enum LicensePath: String, Sendable {
 
     var summary: String {
         switch self {
-        case .statewide: return "Licensed by the state"
-        case .contractorOnly: return "State licenses contractors; local for journeyman"
-        case .local: return "Licensed locally, not by the state"
+        case .statewide: return String(localized: "Licensed by the state")
+        case .contractorOnly: return String(localized: "State licenses contractors; local for journeyman")
+        case .local: return String(localized: "Licensed locally, not by the state")
         }
     }
 }
@@ -85,19 +85,79 @@ struct Jurisdiction: Identifiable, Hashable, Sendable {
     let examProvider: String?
     let path: LicensePath
 
+    /// `name` is the persisted English key (the profile stores it and `named` looks
+    /// it up), so it is never shown directly. Screens show this instead.
+    var displayName: String {
+        switch id {
+        case "AL": return String(localized: "Alabama")
+        case "AK": return String(localized: "Alaska")
+        case "AZ": return String(localized: "Arizona")
+        case "AR": return String(localized: "Arkansas")
+        case "CA": return String(localized: "California")
+        case "CO": return String(localized: "Colorado")
+        case "CT": return String(localized: "Connecticut")
+        case "DE": return String(localized: "Delaware")
+        case "DC": return String(localized: "District of Columbia")
+        case "FL": return String(localized: "Florida")
+        case "GA": return String(localized: "Georgia")
+        case "HI": return String(localized: "Hawaii")
+        case "ID": return String(localized: "Idaho")
+        case "IL": return String(localized: "Illinois")
+        case "IN": return String(localized: "Indiana")
+        case "IA": return String(localized: "Iowa")
+        case "KS": return String(localized: "Kansas")
+        case "KY": return String(localized: "Kentucky")
+        case "LA": return String(localized: "Louisiana")
+        case "ME": return String(localized: "Maine")
+        case "MD": return String(localized: "Maryland")
+        case "MA": return String(localized: "Massachusetts")
+        case "MI": return String(localized: "Michigan")
+        case "MN": return String(localized: "Minnesota")
+        case "MS": return String(localized: "Mississippi")
+        case "MO": return String(localized: "Missouri")
+        case "MT": return String(localized: "Montana")
+        case "NE": return String(localized: "Nebraska")
+        case "NV": return String(localized: "Nevada")
+        case "NH": return String(localized: "New Hampshire")
+        case "NJ": return String(localized: "New Jersey")
+        case "NM": return String(localized: "New Mexico")
+        case "NY": return String(localized: "New York")
+        case "NC": return String(localized: "North Carolina")
+        case "ND": return String(localized: "North Dakota")
+        case "OH": return String(localized: "Ohio")
+        case "OK": return String(localized: "Oklahoma")
+        case "OR": return String(localized: "Oregon")
+        case "PA": return String(localized: "Pennsylvania")
+        case "RI": return String(localized: "Rhode Island")
+        case "SC": return String(localized: "South Carolina")
+        case "SD": return String(localized: "South Dakota")
+        case "TN": return String(localized: "Tennessee")
+        case "TX": return String(localized: "Texas")
+        case "UT": return String(localized: "Utah")
+        case "VT": return String(localized: "Vermont")
+        case "VA": return String(localized: "Virginia")
+        case "WA": return String(localized: "Washington")
+        case "WV": return String(localized: "West Virginia")
+        case "WI": return String(localized: "Wisconsin")
+        case "WY": return String(localized: "Wyoming")
+        case "PR": return String(localized: "Puerto Rico")
+        default: return String(localized: "Not listed")
+        }
+    }
+
     var editionLabel: String {
-        commonEdition?.displayName ?? "Adopted locally"
+        commonEdition?.displayName ?? String(localized: "Adopted locally")
     }
 
     var providerLabel: String {
-        examProvider ?? "Varies by jurisdiction"
+        examProvider ?? String(localized: "Varies by jurisdiction")
     }
 }
 
 enum Jurisdictions {
     /// When this table was last checked. Rendered in the UI: a candidate
     /// deciding whether to trust a suggestion is entitled to know how old it is.
-    static let reviewed = "August 2026"
+    static let reviewed = String(localized: "August 2026")
 
     /// The sentinel for anyone outside the list, including candidates outside
     /// the United States. Selecting it never suppresses a step; it just means
@@ -106,167 +166,167 @@ enum Jurisdictions {
         id: "XX",
         name: "Not listed",
         commonEdition: nil,
-        authority: "Your local authority having jurisdiction",
+        authority: String(localized: "Your local authority having jurisdiction"),
         examProvider: nil,
         path: .local
     )
 
     static let all: [Jurisdiction] = [
         Jurisdiction(id: "AL", name: "Alabama", commonEdition: .nec2020,
-                     authority: "Alabama Electrical Contractors Board",
+                     authority: String(localized: "Alabama Electrical Contractors Board"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "AK", name: "Alaska", commonEdition: .nec2020,
-                     authority: "Dept. of Labor, Mechanical Inspection",
-                     examProvider: "State-administered", path: .statewide),
+                     authority: String(localized: "Dept. of Labor, Mechanical Inspection"),
+                     examProvider: String(localized: "State-administered"), path: .statewide),
         Jurisdiction(id: "AZ", name: "Arizona", commonEdition: .nec2017,
-                     authority: "Registrar of Contractors",
+                     authority: String(localized: "Registrar of Contractors"),
                      examProvider: nil, path: .contractorOnly),
         Jurisdiction(id: "AR", name: "Arkansas", commonEdition: .nec2020,
-                     authority: "Board of Electrical Examiners",
+                     authority: String(localized: "Board of Electrical Examiners"),
                      examProvider: "Prov", path: .statewide),
         Jurisdiction(id: "CA", name: "California", commonEdition: .nec2020,
-                     authority: "Dept. of Industrial Relations (certification)",
+                     authority: String(localized: "Dept. of Industrial Relations (certification)"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "CO", name: "Colorado", commonEdition: .nec2023,
-                     authority: "State Electrical Board (DORA)",
+                     authority: String(localized: "State Electrical Board (DORA)"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "CT", name: "Connecticut", commonEdition: .nec2020,
-                     authority: "Dept. of Consumer Protection",
+                     authority: String(localized: "Dept. of Consumer Protection"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "DE", name: "Delaware", commonEdition: .nec2023,
-                     authority: "Board of Electrical Examiners",
+                     authority: String(localized: "Board of Electrical Examiners"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "DC", name: "District of Columbia", commonEdition: .nec2017,
-                     authority: "Dept. of Licensing and Consumer Protection",
+                     authority: String(localized: "Dept. of Licensing and Consumer Protection"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "FL", name: "Florida", commonEdition: .nec2020,
-                     authority: "Electrical Contractors' Licensing Board",
+                     authority: String(localized: "Electrical Contractors' Licensing Board"),
                      examProvider: "Pearson VUE", path: .contractorOnly),
         Jurisdiction(id: "GA", name: "Georgia", commonEdition: .nec2020,
-                     authority: "Construction Industry Licensing Board",
+                     authority: String(localized: "Construction Industry Licensing Board"),
                      examProvider: "PSI", path: .contractorOnly),
         Jurisdiction(id: "HI", name: "Hawaii", commonEdition: .nec2017,
-                     authority: "Board of Electricians and Plumbers",
+                     authority: String(localized: "Board of Electricians and Plumbers"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "ID", name: "Idaho", commonEdition: .nec2023,
-                     authority: "Division of Occupational and Professional Licenses",
-                     examProvider: "State-administered", path: .statewide),
+                     authority: String(localized: "Division of Occupational and Professional Licenses"),
+                     examProvider: String(localized: "State-administered"), path: .statewide),
         Jurisdiction(id: "IL", name: "Illinois", commonEdition: nil,
-                     authority: "City or county (Chicago has its own code)",
+                     authority: String(localized: "City or county (Chicago has its own code)"),
                      examProvider: nil, path: .local),
         Jurisdiction(id: "IN", name: "Indiana", commonEdition: .nec2011,
-                     authority: "City or county",
+                     authority: String(localized: "City or county"),
                      examProvider: nil, path: .local),
         Jurisdiction(id: "IA", name: "Iowa", commonEdition: .nec2020,
-                     authority: "Iowa Electrical Examining Board",
+                     authority: String(localized: "Iowa Electrical Examining Board"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "KS", name: "Kansas", commonEdition: nil,
-                     authority: "City or county",
+                     authority: String(localized: "City or county"),
                      examProvider: nil, path: .local),
         Jurisdiction(id: "KY", name: "Kentucky", commonEdition: .nec2020,
-                     authority: "Dept. of Housing, Buildings and Construction",
+                     authority: String(localized: "Dept. of Housing, Buildings and Construction"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "LA", name: "Louisiana", commonEdition: .nec2020,
-                     authority: "State Licensing Board for Contractors",
+                     authority: String(localized: "State Licensing Board for Contractors"),
                      examProvider: "Prov", path: .contractorOnly),
         Jurisdiction(id: "ME", name: "Maine", commonEdition: .nec2023,
-                     authority: "Electricians' Examining Board",
+                     authority: String(localized: "Electricians' Examining Board"),
                      examProvider: "Prov", path: .statewide),
         Jurisdiction(id: "MD", name: "Maryland", commonEdition: .nec2023,
-                     authority: "Board of Master Electricians",
+                     authority: String(localized: "Board of Master Electricians"),
                      examProvider: "PSI", path: .contractorOnly),
         Jurisdiction(id: "MA", name: "Massachusetts", commonEdition: .nec2023,
-                     authority: "Board of State Examiners of Electricians",
+                     authority: String(localized: "Board of State Examiners of Electricians"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "MI", name: "Michigan", commonEdition: .nec2020,
-                     authority: "LARA Electrical Administrative Board",
+                     authority: String(localized: "LARA Electrical Administrative Board"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "MN", name: "Minnesota", commonEdition: .nec2023,
-                     authority: "Dept. of Labor and Industry",
+                     authority: String(localized: "Dept. of Labor and Industry"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "MS", name: "Mississippi", commonEdition: .nec2020,
-                     authority: "State Board of Contractors",
+                     authority: String(localized: "State Board of Contractors"),
                      examProvider: "Prov", path: .contractorOnly),
         Jurisdiction(id: "MO", name: "Missouri", commonEdition: nil,
-                     authority: "City or county",
+                     authority: String(localized: "City or county"),
                      examProvider: nil, path: .local),
         Jurisdiction(id: "MT", name: "Montana", commonEdition: .nec2023,
-                     authority: "State Electrical Board",
+                     authority: String(localized: "State Electrical Board"),
                      examProvider: "Prov", path: .statewide),
         Jurisdiction(id: "NE", name: "Nebraska", commonEdition: .nec2023,
-                     authority: "State Electrical Division",
-                     examProvider: "State-administered", path: .statewide),
+                     authority: String(localized: "State Electrical Division"),
+                     examProvider: String(localized: "State-administered"), path: .statewide),
         Jurisdiction(id: "NV", name: "Nevada", commonEdition: .nec2020,
-                     authority: "State Contractors Board; county journeyman cards",
+                     authority: String(localized: "State Contractors Board; county journeyman cards"),
                      examProvider: "PSI", path: .contractorOnly),
         Jurisdiction(id: "NH", name: "New Hampshire", commonEdition: .nec2023,
-                     authority: "Electricians' Board",
+                     authority: String(localized: "Electricians' Board"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "NJ", name: "New Jersey", commonEdition: .nec2020,
-                     authority: "Board of Examiners of Electrical Contractors",
+                     authority: String(localized: "Board of Examiners of Electrical Contractors"),
                      examProvider: "PSI", path: .contractorOnly),
         Jurisdiction(id: "NM", name: "New Mexico", commonEdition: .nec2023,
-                     authority: "Construction Industries Division",
+                     authority: String(localized: "Construction Industries Division"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "NY", name: "New York", commonEdition: .nec2020,
-                     authority: "City or county (New York City has its own code)",
+                     authority: String(localized: "City or county (New York City has its own code)"),
                      examProvider: nil, path: .local),
         Jurisdiction(id: "NC", name: "North Carolina", commonEdition: .nec2023,
-                     authority: "State Board of Examiners of Electrical Contractors",
-                     examProvider: "State board", path: .contractorOnly),
+                     authority: String(localized: "State Board of Examiners of Electrical Contractors"),
+                     examProvider: String(localized: "State board"), path: .contractorOnly),
         Jurisdiction(id: "ND", name: "North Dakota", commonEdition: .nec2023,
-                     authority: "State Electrical Board",
-                     examProvider: "State-administered", path: .statewide),
+                     authority: String(localized: "State Electrical Board"),
+                     examProvider: String(localized: "State-administered"), path: .statewide),
         Jurisdiction(id: "OH", name: "Ohio", commonEdition: .nec2023,
-                     authority: "Construction Industry Licensing Board",
+                     authority: String(localized: "Construction Industry Licensing Board"),
                      examProvider: "PSI", path: .contractorOnly),
         Jurisdiction(id: "OK", name: "Oklahoma", commonEdition: .nec2020,
-                     authority: "Construction Industries Board",
+                     authority: String(localized: "Construction Industries Board"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "OR", name: "Oregon", commonEdition: .nec2023,
-                     authority: "Building Codes Division",
-                     examProvider: "State-administered", path: .statewide),
+                     authority: String(localized: "Building Codes Division"),
+                     examProvider: String(localized: "State-administered"), path: .statewide),
         Jurisdiction(id: "PA", name: "Pennsylvania", commonEdition: .nec2020,
-                     authority: "City or county (UCC sets the code)",
+                     authority: String(localized: "City or county (UCC sets the code)"),
                      examProvider: nil, path: .local),
         Jurisdiction(id: "RI", name: "Rhode Island", commonEdition: .nec2023,
-                     authority: "Division of Professional Regulation",
+                     authority: String(localized: "Division of Professional Regulation"),
                      examProvider: "Prov", path: .statewide),
         Jurisdiction(id: "SC", name: "South Carolina", commonEdition: .nec2023,
-                     authority: "Contractor's Licensing Board",
+                     authority: String(localized: "Contractor's Licensing Board"),
                      examProvider: "PSI", path: .contractorOnly),
         Jurisdiction(id: "SD", name: "South Dakota", commonEdition: .nec2023,
-                     authority: "State Electrical Commission",
-                     examProvider: "State-administered", path: .statewide),
+                     authority: String(localized: "State Electrical Commission"),
+                     examProvider: String(localized: "State-administered"), path: .statewide),
         Jurisdiction(id: "TN", name: "Tennessee", commonEdition: .nec2020,
-                     authority: "Board for Licensing Contractors",
+                     authority: String(localized: "Board for Licensing Contractors"),
                      examProvider: "PSI", path: .contractorOnly),
         Jurisdiction(id: "TX", name: "Texas", commonEdition: .nec2023,
-                     authority: "Dept. of Licensing and Regulation (TDLR)",
+                     authority: String(localized: "Dept. of Licensing and Regulation (TDLR)"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "UT", name: "Utah", commonEdition: .nec2023,
-                     authority: "Division of Professional Licensing",
+                     authority: String(localized: "Division of Professional Licensing"),
                      examProvider: "Pearson VUE", path: .statewide),
         Jurisdiction(id: "VT", name: "Vermont", commonEdition: .nec2023,
-                     authority: "Electricians Licensing Board",
+                     authority: String(localized: "Electricians Licensing Board"),
                      examProvider: "Prov", path: .statewide),
         Jurisdiction(id: "VA", name: "Virginia", commonEdition: .nec2023,
-                     authority: "Dept. of Professional and Occupational Regulation",
+                     authority: String(localized: "Dept. of Professional and Occupational Regulation"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "WA", name: "Washington", commonEdition: .nec2023,
-                     authority: "Dept. of Labor and Industries",
-                     examProvider: "State-administered", path: .statewide),
+                     authority: String(localized: "Dept. of Labor and Industries"),
+                     examProvider: String(localized: "State-administered"), path: .statewide),
         Jurisdiction(id: "WV", name: "West Virginia", commonEdition: .nec2023,
-                     authority: "State Fire Marshal",
+                     authority: String(localized: "State Fire Marshal"),
                      examProvider: "Prov", path: .statewide),
         Jurisdiction(id: "WI", name: "Wisconsin", commonEdition: .nec2023,
-                     authority: "Dept. of Safety and Professional Services",
+                     authority: String(localized: "Dept. of Safety and Professional Services"),
                      examProvider: "PSI", path: .statewide),
         Jurisdiction(id: "WY", name: "Wyoming", commonEdition: .nec2023,
-                     authority: "State Electrical Board",
-                     examProvider: "State-administered", path: .statewide),
+                     authority: String(localized: "State Electrical Board"),
+                     examProvider: String(localized: "State-administered"), path: .statewide),
         Jurisdiction(id: "PR", name: "Puerto Rico", commonEdition: .nec2020,
-                     authority: "Colegio de Peritos Electricistas",
+                     authority: String(localized: "Colegio de Peritos Electricistas"),
                      examProvider: nil, path: .statewide),
         other,
     ]
@@ -288,6 +348,7 @@ enum Jurisdictions {
         guard !trimmed.isEmpty else { return all }
         return all.filter {
             $0.name.localizedCaseInsensitiveContains(trimmed)
+                || $0.displayName.localizedCaseInsensitiveContains(trimmed)
                 || $0.id.localizedCaseInsensitiveContains(trimmed)
         }
     }

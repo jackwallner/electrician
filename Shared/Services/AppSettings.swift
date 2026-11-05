@@ -14,9 +14,9 @@ final class AppSettings: ObservableObject {
 
         var displayName: String {
             switch self {
-            case .light: return "Light"
-            case .dark: return "Dark"
-            case .system: return "Match Device"
+            case .light: return String(localized: "Light")
+            case .dark: return String(localized: "Dark")
+            case .system: return String(localized: "Match Device")
             }
         }
 
@@ -34,16 +34,9 @@ final class AppSettings: ObservableObject {
 
         var id: Int { rawValue }
 
+        /// The weekday as the calendar spells it in the reader's language.
         var displayName: String {
-            switch self {
-            case .sunday: return "Sunday"
-            case .monday: return "Monday"
-            case .tuesday: return "Tuesday"
-            case .wednesday: return "Wednesday"
-            case .thursday: return "Thursday"
-            case .friday: return "Friday"
-            case .saturday: return "Saturday"
-            }
+            Calendar.current.weekdaySymbols[rawValue - 1]
         }
     }
 

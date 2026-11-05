@@ -113,7 +113,7 @@ struct CalcDrillView: View {
     }
 
     private var footer: some View {
-        DrillNextButton(title: index == scenarios.count - 1 ? "Finish" : "Next", enabled: answered, action: advance)
+        DrillNextButton(title: index == scenarios.count - 1 ? String(localized: "Finish") : String(localized: "Next"), enabled: answered, action: advance)
     }
 
     private func select(_ pick: Int) {

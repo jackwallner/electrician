@@ -172,10 +172,10 @@ struct FlashcardDrillView: View {
     }
 
     private var swipeAccessibilityHint: String {
-        guard isFlipped else { return "Tap to reveal the answer" }
+        guard isFlipped else { return String(localized: "Tap to reveal the answer") }
         return choiceAnswered
-            ? "Tap Next to continue"
-            : "Use the Knew it and Again buttons, or swipe right for knew it and left to see it again"
+            ? String(localized: "Tap Next to continue")
+            : String(localized: "Use the Knew it and Again buttons, or swipe right for knew it and left to see it again")
     }
 
     /// KNEW IT / AGAIN stamps fade in with the drag so the swipe directions
@@ -184,10 +184,10 @@ struct FlashcardDrillView: View {
     private var verdictStamps: some View {
         ZStack {
             if !choiceAnswered {
-                stamp("KNEW IT", color: Theme.voltage, angle: -12)
+                stamp(String(localized: "KNEW IT"), color: Theme.voltage, angle: -12)
                     .opacity(isFlipped ? stampOpacity(forDirection: 1) : 0)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                stamp("AGAIN", color: Theme.copper, angle: 12)
+                stamp(String(localized: "AGAIN"), color: Theme.copper, angle: 12)
                     .opacity(isFlipped ? stampOpacity(forDirection: -1) : 0)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             }
@@ -477,7 +477,7 @@ struct FlipCardFace: View {
     }
 
     private var back: some View {
-        ElectricianCardFace(accent: accent, eyebrow: "THE CALL") {
+        ElectricianCardFace(accent: accent, eyebrow: String(localized: "THE CALL")) {
             VStack(spacing: 14) {
                 if let verdict {
                     verdictBanner(verdict)
@@ -527,7 +527,7 @@ struct FlipCardFace: View {
     private var backAccessibilityLabel: String {
         var parts = ["\(card.backTitle). \(card.backBody)"]
         if let citation = card.citation {
-            parts.append("Look it up: \(citation), \(NECTables.edition).")
+            parts.append(String(localized: "Look it up: \(citation), \(NECTables.edition)."))
         }
         return parts.joined(separator: " ")
     }
@@ -539,14 +539,14 @@ struct FlipCardFace: View {
         HStack(spacing: 10) {
             if let onAgain {
                 Button(action: onAgain) {
-                    gradeLabel("Again", systemImage: "arrow.uturn.left", color: Theme.copper)
+                    gradeLabel(String(localized: "Again"), systemImage: "arrow.uturn.left", color: Theme.copper)
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Brings this card back later in the session")
             }
             if let onKnewIt {
                 Button(action: onKnewIt) {
-                    gradeLabel("Knew it", systemImage: "checkmark", color: Theme.voltage)
+                    gradeLabel(String(localized: "Knew it"), systemImage: "checkmark", color: Theme.voltage)
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Removes this card from the session")
@@ -570,13 +570,13 @@ struct FlipCardFace: View {
     private var verdict: (text: String, correct: Bool)? {
         guard let choice = card.choice, let pick = choicePick else { return nil }
         let correct = pick == choice.answerIndex
-        return ("You said \"\(choice.options[pick])\"", correct)
+        return (String(localized: "You said \"\(choice.options[pick])\""), correct)
     }
 
     private func verdictBanner(_ verdict: (text: String, correct: Bool)) -> some View {
         HStack(spacing: 8) {
             Image(systemName: verdict.correct ? "checkmark.circle.fill" : "xmark.circle.fill")
-            Text(verdict.correct ? "\(verdict.text). Right!" : "\(verdict.text). Not this time.")
+            Text(verdict.correct ? String(localized: "\(verdict.text). Right!") : String(localized: "\(verdict.text). Not this time."))
                 .font(.footnote.weight(.semibold))
         }
         .foregroundStyle(verdict.correct ? Theme.voltage : Theme.copper)

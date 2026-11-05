@@ -104,9 +104,9 @@ struct PracticeReadinessView: View {
 
     private var metricCard: some View {
         VStack(alignment: .leading, spacing: 14) {
-            metricRow(title: "Accuracy", value: metrics.accuracyText, progress: metrics.accuracy)
-            metricRow(title: "Room coverage", value: metrics.coverageText, progress: metrics.coverage)
-            metricRow(title: "Questions answered", value: "\(metrics.attempts)", progress: min(1, Double(metrics.attempts) / 30))
+            metricRow(title: String(localized: "Accuracy"), value: metrics.accuracyText, progress: metrics.accuracy)
+            metricRow(title: String(localized: "Room coverage"), value: metrics.coverageText, progress: metrics.coverage)
+            metricRow(title: String(localized: "Questions answered"), value: "\(metrics.attempts)", progress: min(1, Double(metrics.attempts) / 30))
         }
         .padding(16)
         .themedCard()

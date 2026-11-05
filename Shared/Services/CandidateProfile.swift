@@ -14,37 +14,37 @@ enum LicenseTrack: String, CaseIterable, Identifiable, Sendable {
 
     var displayName: String {
         switch self {
-        case .apprentice: return "Apprentice"
-        case .residential: return "Residential"
-        case .journeyman: return "Journeyman"
-        case .master: return "Master"
-        case .contractor: return "Contractor"
+        case .apprentice: return String(localized: "Apprentice")
+        case .residential: return String(localized: "Residential")
+        case .journeyman: return String(localized: "Journeyman")
+        case .master: return String(localized: "Master")
+        case .contractor: return String(localized: "Contractor")
         }
     }
 
     /// Short enough for a segmented control on a 375pt phone.
     var shortName: String {
         switch self {
-        case .apprentice: return "App."
-        case .residential: return "Res."
-        case .journeyman: return "Jrny."
-        case .master: return "Master"
-        case .contractor: return "Contr."
+        case .apprentice: return String(localized: "App.")
+        case .residential: return String(localized: "Res.")
+        case .journeyman: return String(localized: "Jrny.")
+        case .master: return String(localized: "Master")
+        case .contractor: return String(localized: "Contr.")
         }
     }
 
     var detail: String {
         switch self {
         case .apprentice:
-            return "Working toward the hours, or sitting an entrance/aptitude test"
+            return String(localized: "Working toward the hours, or sitting an entrance/aptitude test")
         case .residential:
-            return "Residential wireman or limited residential licence"
+            return String(localized: "Residential wireman or limited residential licence")
         case .journeyman:
-            return "The full journeyman/electrician licence exam"
+            return String(localized: "The full journeyman/electrician licence exam")
         case .master:
-            return "Master electrician, usually journeyman plus added years"
+            return String(localized: "Master electrician, usually journeyman plus added years")
         case .contractor:
-            return "Electrical contractor, often a business-and-law paper as well"
+            return String(localized: "Electrical contractor, often a business-and-law paper as well")
         }
     }
 
@@ -53,15 +53,15 @@ enum LicenseTrack: String, CaseIterable, Identifiable, Sendable {
     var emphasis: String {
         switch self {
         case .apprentice:
-            return "Expect mostly code navigation and arithmetic. Live in Code Basics first."
+            return String(localized: "Expect mostly code navigation and arithmetic. Live in Code Basics first.")
         case .residential:
-            return "Branch circuits, box fill, and dwelling-unit receptacle and GFCI rules carry the most weight."
+            return String(localized: "Branch circuits, box fill, and dwelling-unit receptacle and GFCI rules carry the most weight.")
         case .journeyman:
-            return "Ampacity and derating, overcurrent sizing, conduit and box fill, grounding and motors. That is what this app drills."
+            return String(localized: "Ampacity and derating, overcurrent sizing, conduit and box fill, grounding and motors. That is what this app drills.")
         case .master:
-            return "Everything the journeyman paper covers, plus heavier calculation and more Chapter 2 and Chapter 3 lookup under time."
+            return String(localized: "Everything the journeyman paper covers, plus heavier calculation and more Chapter 2 and Chapter 3 lookup under time.")
         case .contractor:
-            return "The technical paper overlaps the master exam. The business-and-law paper is separate and this app does not cover it."
+            return String(localized: "The technical paper overlaps the master exam. The business-and-law paper is separate and this app does not cover it.")
         }
     }
 }
@@ -106,18 +106,18 @@ enum CandidateEdition: String, CaseIterable, Identifiable, Sendable {
 
     var displayName: String {
         switch self {
-        case .unsure: return "I'm not sure"
-        case .different: return "Another edition"
-        default: return edition?.displayName ?? "Another edition"
+        case .unsure: return String(localized: "I'm not sure")
+        case .different: return String(localized: "Another edition")
+        default: return edition?.displayName ?? String(localized: "Another edition")
         }
     }
 
     var note: String {
         switch self {
         case .unsure:
-            return "We will use your state's commonly adopted edition and tell you where it differs from this app's tables."
+            return String(localized: "We will use your state's commonly adopted edition and tell you where it differs from this app's tables.")
         case .different:
-            return "Use this app for navigation and method practice, then verify every value against the code in force where you work."
+            return String(localized: "Use this app for navigation and method practice, then verify every value against the code in force where you work.")
         default:
             return edition?.driftFromApp ?? ""
         }
@@ -138,21 +138,21 @@ enum ExperienceLevel: String, CaseIterable, Identifiable, Sendable {
 
     var title: String {
         switch self {
-        case .new: return "Just starting"
-        case .apprentice: return "In the apprenticeship"
-        case .working: return "Sitting the exam soon"
-        case .retaking: return "Retaking it"
-        case .renewing: return "Licensed already"
+        case .new: return String(localized: "Just starting")
+        case .apprentice: return String(localized: "In the apprenticeship")
+        case .working: return String(localized: "Sitting the exam soon")
+        case .retaking: return String(localized: "Retaking it")
+        case .renewing: return String(localized: "Licensed already")
         }
     }
 
     var detail: String {
         switch self {
-        case .new: return "New to the code book and how the exam works"
-        case .apprentice: return "Comfortable in the field, slow in the book"
-        case .working: return "Want the articles that actually fail people"
-        case .retaking: return "Been once. Want the calculations drilled hard"
-        case .renewing: return "Keeping sharp, or working through continuing education"
+        case .new: return String(localized: "New to the code book and how the exam works")
+        case .apprentice: return String(localized: "Comfortable in the field, slow in the book")
+        case .working: return String(localized: "Want the articles that actually fail people")
+        case .retaking: return String(localized: "Been once. Want the calculations drilled hard")
+        case .renewing: return String(localized: "Keeping sharp, or working through continuing education")
         }
     }
 
@@ -185,11 +185,11 @@ enum StudyPace: String, CaseIterable, Identifiable, Sendable {
 
     var title: String {
         switch self {
-        case .cram: return "Cram plan"
-        case .sprint: return "Sprint plan"
-        case .build: return "Build plan"
-        case .foundation: return "Foundation plan"
-        case .undated: return "Steady plan"
+        case .cram: return String(localized: "Cram plan")
+        case .sprint: return String(localized: "Sprint plan")
+        case .build: return String(localized: "Build plan")
+        case .foundation: return String(localized: "Foundation plan")
+        case .undated: return String(localized: "Steady plan")
         }
     }
 
@@ -197,15 +197,15 @@ enum StudyPace: String, CaseIterable, Identifiable, Sendable {
     var summary: String {
         switch self {
         case .cram:
-            return "There is no time to cover everything, so do not try. Calculations only, then the mistakes you repeat. Navigation practice is the first thing to drop."
+            return String(localized: "There is no time to cover everything, so do not try. Calculations only, then the mistakes you repeat. Navigation practice is the first thing to drop.")
         case .sprint:
-            return "Enough time to see every problem shape at least twice. Work each one until you can do it without the steps, then let Fix My Mistakes chase what is left."
+            return String(localized: "Enough time to see every problem shape at least twice. Work each one until you can do it without the steps, then let Fix My Mistakes chase what is left.")
         case .build:
-            return "Enough time to cover the whole syllabus and then repeat the parts that fight back. Start with navigation, because it makes everything else faster."
+            return String(localized: "Enough time to cover the whole syllabus and then repeat the parts that fight back. Start with navigation, because it makes everything else faster.")
         case .foundation:
-            return "Time to build the habit properly. Learn how the book is organised first; the calculations get much easier once you can find things."
+            return String(localized: "Time to build the habit properly. Learn how the book is organised first; the calculations get much easier once you can find things.")
         case .undated:
-            return "No date yet, so the goal is steady reps. Set a date whenever you book it and the plan sharpens up."
+            return String(localized: "No date yet, so the goal is steady reps. Set a date whenever you book it and the plan sharpens up.")
         }
     }
 
@@ -215,30 +215,30 @@ enum StudyPace: String, CaseIterable, Identifiable, Sendable {
         switch self {
         case .cram:
             return [
-                "Derating, breaker sizing and conduit fill. These are the most-failed shapes and the most generatable, so they are where a day buys the most.",
-                "Fix My Mistakes, twice a day. It is the only thing here that gets more valuable the less time you have.",
-                "Skim the grounding vocabulary. Four terms, four meanings, and it is free points.",
-                "Do not start anything new the night before. Re-run the shapes you already got right.",
+                String(localized: "Derating, breaker sizing and conduit fill. These are the most-failed shapes and the most generatable, so they are where a day buys the most."),
+                String(localized: "Fix My Mistakes, twice a day. It is the only thing here that gets more valuable the less time you have."),
+                String(localized: "Skim the grounding vocabulary. Four terms, four meanings, and it is free points."),
+                String(localized: "Do not start anything new the night before. Re-run the shapes you already got right."),
             ]
         case .sprint:
             return [
-                "One pass through every problem shape in Endless Practice, so nothing on the paper is unfamiliar.",
-                "Worked Calculations for anything you missed, because a miss is almost always one skipped step.",
-                "Grounding and motors: the two articles that decide the most papers.",
-                "One timed run every few days, to rehearse the clock rather than the content.",
+                String(localized: "One pass through every problem shape in Endless Practice, so nothing on the paper is unfamiliar."),
+                String(localized: "Worked Calculations for anything you missed, because a miss is almost always one skipped step."),
+                String(localized: "Grounding and motors: the two articles that decide the most papers."),
+                String(localized: "One timed run every few days, to rehearse the clock rather than the content."),
             ]
         case .build:
             return [
-                "Code Basics first. Knowing where a question lives is worth more than knowing any single answer.",
-                "Then one room a week, all the way through.",
-                "Endless Practice daily on whichever shape you are weakest at.",
-                "Timed Challenge weekly, once the content is solid.",
+                String(localized: "Code Basics first. Knowing where a question lives is worth more than knowing any single answer."),
+                String(localized: "Then one room a week, all the way through."),
+                String(localized: "Endless Practice daily on whichever shape you are weakest at."),
+                String(localized: "Timed Challenge weekly, once the content is solid."),
             ]
         case .foundation, .undated:
             return [
-                "How the book is built, then the article families. This is the part that pays off for the rest of your career, not just the exam.",
-                "One Code Minute a day. The habit matters more than the volume right now.",
-                "Add a calculation room once navigation feels quick.",
+                String(localized: "How the book is built, then the article families. This is the part that pays off for the rest of your career, not just the exam."),
+                String(localized: "One Code Minute a day. The habit matters more than the volume right now."),
+                String(localized: "Add a calculation room once navigation feels quick."),
             ]
         }
     }
@@ -338,9 +338,15 @@ final class CandidateProfile: ObservableObject {
         !trimmedJurisdiction.isEmpty
     }
 
+    /// The saved state, translated for display. The stored value stays the
+    /// English name so it keeps matching `Jurisdictions.named`.
+    var displayJurisdiction: String {
+        jurisdictionRecord?.displayName ?? trimmedJurisdiction
+    }
+
     var targetSummary: String {
-        guard setupComplete else { return "Set your exam target" }
-        return "\(licenseTrack.displayName) · \(trimmedJurisdiction)"
+        guard setupComplete else { return String(localized: "Set your exam target") }
+        return "\(licenseTrack.displayName) · \(displayJurisdiction)"
     }
 
     // MARK: - Edition
@@ -358,9 +364,9 @@ final class CandidateProfile: ObservableObject {
 
     var editionSummary: String {
         if let resolved = resolvedEdition {
-            return edition == .unsure ? "\(resolved.displayName) (from \(trimmedJurisdiction))" : resolved.displayName
+            return edition == .unsure ? String(localized: "\(resolved.displayName) (from \(displayJurisdiction))") : resolved.displayName
         }
-        return edition == .different ? "Another edition" : "Edition not set"
+        return edition == .different ? String(localized: "Another edition") : String(localized: "Edition not set")
     }
 
     /// The edition alone, with no "(from Georgia)" attribution.
@@ -371,7 +377,7 @@ final class CandidateProfile: ObservableObject {
     /// "2020 NEC (from Georgia) · Georgia".
     var editionShortSummary: String {
         if let resolved = resolvedEdition { return resolved.displayName }
-        return edition == .different ? "Another edition" : "Edition not set"
+        return edition == .different ? String(localized: "Another edition") : String(localized: "Edition not set")
     }
 
     /// True only when we know the edition AND it is the one the app's tables
@@ -384,7 +390,7 @@ final class CandidateProfile: ObservableObject {
     /// Settings: does this app's arithmetic land on their exam or not.
     var editionAdvice: String {
         guard let resolved = resolvedEdition else {
-            return "Set your code edition so we can tell you where this app's \(NECTables.edition) values differ from your exam."
+            return String(localized: "Set your code edition so we can tell you where this app's \(NECTables.edition) values differ from your exam.")
         }
         return resolved.driftFromApp
     }
@@ -409,9 +415,8 @@ final class CandidateProfile: ObservableObject {
     var examCountdownSummary: String? {
         guard let days = daysUntilExam else { return nil }
         switch days {
-        case 0: return "Exam today"
-        case 1: return "1 day out"
-        default: return "\(days) days out"
+        case 0: return String(localized: "Exam today")
+        default: return String(localized: "\(days) days out")
         }
     }
 

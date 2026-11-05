@@ -73,11 +73,11 @@ struct StatsView: View {
 
     private var summaryCard: some View {
         HStack(spacing: 0) {
-            metric(value: percent(records.overallAccuracy), caption: "accuracy", color: Theme.voltage)
+            metric(value: percent(records.overallAccuracy), caption: String(localized: "accuracy"), color: Theme.voltage)
             divider
-            metric(value: "\(records.totalAttempts)", caption: "answered", color: Theme.ink)
+            metric(value: "\(records.totalAttempts)", caption: String(localized: "answered"), color: Theme.ink)
             divider
-            metric(value: "\(records.bestChallengeScore)", caption: "best challenge", color: Theme.copper)
+            metric(value: "\(records.bestChallengeScore)", caption: String(localized: "best challenge"), color: Theme.copper)
         }
         .padding(.vertical, 18)
         .frame(maxWidth: .infinity)
@@ -260,7 +260,7 @@ struct StatsView: View {
                 Text("\(progress.currentStreak())-day streak")
                     .font(Theme.cardTitle)
                     .foregroundStyle(Theme.ink)
-                Text("\(progress.totalSessions) drill\(progress.totalSessions == 1 ? "" : "s") finished")
+                Text("\(progress.totalSessions) drills finished")
                     .font(.caption)
                     .foregroundStyle(Theme.inkSecondary)
             }

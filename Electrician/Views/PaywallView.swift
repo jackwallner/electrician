@@ -9,9 +9,9 @@ enum PaywallPlan: String, CaseIterable {
     /// promising them a free trial is a promise the store refuses at the
     /// confirmation sheet.
     func ctaTitle(trial: String?) -> String {
-        guard self != .lifetime else { return "Unlock \(Membership.name) Forever" }
-        guard let trial else { return "Subscribe to \(Membership.name)" }
-        return "Start \(trial) free"
+        guard self != .lifetime else { return String(localized: "Unlock \(Membership.name) Forever") }
+        guard let trial else { return String(localized: "Subscribe to \(Membership.name)") }
+        return String(localized: "Start \(trial) free")
     }
 
     var packageType: PackageType {
@@ -66,16 +66,16 @@ struct PaywallContent: View {
             // hardest one to compare.
             planCards
             VStack(alignment: .leading, spacing: 9) {
-                benefit("Endless Practice: \(PracticeSkill.allCases.count) calculation shapes generated fresh, so you learn a method instead of memorising a question")
+                benefit(String(localized: "Endless Practice: \(PracticeSkill.allCases.count) calculation shapes generated fresh, so you learn a method instead of memorising a question"))
                 // Precise on purpose. Generated questions are one-offs and can
                 // never return as themselves; what returns is a NEW problem
                 // that sets the same trap. Saying "the exact questions come
                 // back" would describe a feature the generator cannot have.
-                benefit("Fix My Mistakes: every wrong answer is a named error, and new problems set the same trap until you stop falling for it")
-                benefit("Exam Warm-Up: a short session built from your own weak spots, for the morning of")
-                benefit("\(DrillLibrary.membershipItemCount) more authored questions: the worked dwelling calculation, grounding, motors, and extra sets in every room")
-                benefit("Code Minute: the shared five-question daily challenge")
-                benefit("Timed Challenge: 90 seconds, chase your best")
+                benefit(String(localized: "Fix My Mistakes: every wrong answer is a named error, and new problems set the same trap until you stop falling for it"))
+                benefit(String(localized: "Exam Warm-Up: a short session built from your own weak spots, for the morning of"))
+                benefit(String(localized: "\(DrillLibrary.membershipItemCount) more authored questions: the worked dwelling calculation, grounding, motors, and extra sets in every room"))
+                benefit(String(localized: "Code Minute: the shared five-question daily challenge"))
+                benefit(String(localized: "Timed Challenge: 90 seconds, chase your best"))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -83,9 +83,9 @@ struct PaywallContent: View {
 
     private var subhead: String {
         guard let countdown = profile.examCountdownSummary else {
-            return "Everything you have stays free. \(Membership.name) is the half that does not run out."
+            return String(localized: "Everything you have stays free. \(Membership.name) is the half that does not run out.")
         }
-        return "\(countdown). Everything you have stays free; \(Membership.name) is the half that does not run out before then."
+        return String(localized: "\(countdown). Everything you have stays free; \(Membership.name) is the half that does not run out before then.")
     }
 
     /// The same arithmetic the onboarding trial step makes, for the reader who
@@ -122,9 +122,9 @@ struct PaywallContent: View {
         let daily = profile.suggestedDailyQuestions
         let days = max(1, Int((Double(free) / Double(max(daily, 1))).rounded(.up)))
         if profile.pace == .cram {
-            return "More questions is not what decides an exam this close. Every wrong answer here is a named error, and \(Membership.name) builds fresh problems that set the same trap until you stop falling for it."
+            return String(localized: "More questions is not what decides an exam this close. Every wrong answer here is a named error, and \(Membership.name) builds fresh problems that set the same trap until you stop falling for it.")
         }
-        return "The free rooms hold \(free) questions. At \(daily) a day that is about \(days == 1 ? "1 day" : "\(days) days"), and after that you are re-reading answers you already remember. The generator is what makes the reps keep counting."
+        return String(localized: "The free rooms hold \(free) questions. At \(daily) a day that is about \(days) days, and after that you are re-reading answers you already remember. The generator is what makes the reps keep counting.")
     }
 
     private func benefit(_ text: String) -> some View {
@@ -151,20 +151,20 @@ struct PaywallContent: View {
         // is the next line down. Lifetime is a different decision (own it vs rent
         // it) and belongs after that comparison, not inside it.
         VStack(spacing: 10) {
-            planCard(.yearly, title: "Yearly", price: PaywallPricing.priceText(subscriptions, .yearly),
+            planCard(.yearly, title: String(localized: "Yearly"), price: PaywallPricing.priceText(subscriptions, .yearly),
                      perMonth: PaywallPricing.perMonthEquivalent(subscriptions),
                      anchor: PaywallPricing.monthlyAnchor(subscriptions),
-                     detail: trial(.yearly).map { "\($0) free, then billed yearly. Auto-renews." }
-                         ?? "Billed yearly. Auto-renews.",
+                     detail: trial(.yearly).map { String(localized: "\($0) free, then billed yearly. Auto-renews.") }
+                         ?? String(localized: "Billed yearly. Auto-renews."),
                      badge: PaywallPricing.savingsBadge(subscriptions))
-            planCard(.monthly, title: "Monthly", price: PaywallPricing.priceText(subscriptions, .monthly),
+            planCard(.monthly, title: String(localized: "Monthly"), price: PaywallPricing.priceText(subscriptions, .monthly),
                      perMonth: nil, anchor: nil,
-                     detail: trial(.monthly).map { "\($0) free, then billed monthly. Auto-renews." }
-                         ?? "Billed monthly. Auto-renews.",
+                     detail: trial(.monthly).map { String(localized: "\($0) free, then billed monthly. Auto-renews.") }
+                         ?? String(localized: "Billed monthly. Auto-renews."),
                      badge: nil)
-            planCard(.lifetime, title: "Lifetime", price: PaywallPricing.priceText(subscriptions, .lifetime),
+            planCard(.lifetime, title: String(localized: "Lifetime"), price: PaywallPricing.priceText(subscriptions, .lifetime),
                      perMonth: nil, anchor: nil,
-                     detail: "One payment. No subscription, nothing renews.", badge: "NO SUBSCRIPTION")
+                     detail: String(localized: "One payment. No subscription, nothing renews."), badge: String(localized: "NO SUBSCRIPTION"))
         }
     }
 
@@ -244,7 +244,7 @@ struct PaywallContent: View {
 @MainActor
 enum PaywallPricing {
     /// Shown in the amount's place until StoreKit answers.
-    static let placeholder = "Loading price…"
+    static let placeholder = String(localized: "Loading price…")
 
     /// The localized billed amount, or nil while the product is still in flight.
     static func price(_ subscriptions: SubscriptionService, _ plan: PaywallPlan) -> String? {
@@ -252,8 +252,8 @@ enum PaywallPricing {
             return nil
         }
         switch plan {
-        case .yearly: return "\(base)/year"
-        case .monthly: return "\(base)/month"
+        case .yearly: return String(localized: "\(base)/year")
+        case .monthly: return String(localized: "\(base)/month")
         case .lifetime: return base
         }
     }
@@ -275,7 +275,7 @@ enum PaywallPricing {
         fmt.numberStyle = .currency
         fmt.locale = product.locale
         guard let text = fmt.string(from: monthly as NSDecimalNumber) else { return nil }
-        return "\(text)/mo"
+        return String(localized: "\(text)/mo")
     }
 
     /// The monthly plan's own price restated as a per-month anchor, e.g.
@@ -283,7 +283,7 @@ enum PaywallPricing {
     /// struck through beside the yearly per-month figure.
     static func monthlyAnchor(_ subscriptions: SubscriptionService) -> String? {
         guard let product = subscriptions.paywallPrice(for: .monthly) else { return nil }
-        return "\(product.localized)/mo"
+        return String(localized: "\(product.localized)/mo")
     }
 
     /// Whole-percent saving of the yearly plan against twelve months of the
@@ -306,8 +306,8 @@ enum PaywallPricing {
     /// otherwise the generic claim. "SAVE 67%" outsells "BEST VALUE" because it
     /// says what the value is.
     static func savingsBadge(_ subscriptions: SubscriptionService) -> String {
-        guard let percent = savingsPercent(subscriptions) else { return "BEST VALUE" }
-        return "SAVE \(percent)%"
+        guard let percent = savingsPercent(subscriptions) else { return String(localized: "BEST VALUE") }
+        return String(localized: "SAVE \(percent)%")
     }
 
     /// One concise point-of-purchase line: price, trial, auto-renew, cancel.
@@ -324,18 +324,18 @@ enum PaywallPricing {
         guard let amount = price(subscriptions, plan) else {
             switch plan {
             case .lifetime:
-                return "One-time purchase. Not a subscription, nothing renews."
+                return String(localized: "One-time purchase. Not a subscription, nothing renews.")
             case .yearly, .monthly:
-                guard let trial else { return "Auto-renews until canceled." }
-                return "Includes \(trial) free. Auto-renews until canceled."
+                guard let trial else { return String(localized: "Auto-renews until canceled.") }
+                return String(localized: "Includes \(trial) free. Auto-renews until canceled.")
             }
         }
         switch plan {
         case .lifetime:
-            return "\(amount) one-time. Not a subscription, nothing renews."
+            return String(localized: "\(amount) one-time. Not a subscription, nothing renews.")
         case .yearly, .monthly:
-            guard let trial else { return "\(amount). Auto-renews until canceled." }
-            return "\(trial) free, then \(amount). Auto-renews until canceled."
+            guard let trial else { return String(localized: "\(amount). Auto-renews until canceled.") }
+            return String(localized: "\(trial) free, then \(amount). Auto-renews until canceled.")
         }
     }
 }
@@ -486,7 +486,7 @@ struct PaywallView: View {
                 // point at Restore, rather than leaving someone who just paid
                 // looking at the paywall that charged them.
                 if await !subscriptions.confirmEntitlement() {
-                    message = "Your purchase went through, but \(Membership.name) hasn't unlocked yet. Give it a moment, then tap Restore. You will not be charged twice."
+                    message = String(localized: "Your purchase went through, but \(Membership.name) hasn't unlocked yet. Give it a moment, then tap Restore. You will not be charged twice.")
                 }
             } catch let error as PurchaseError {
                 // A cancel never lands here (it's an outcome, not a throw), so
@@ -506,7 +506,7 @@ struct PaywallView: View {
             do {
                 try await subscriptions.restore()
                 if !subscriptions.isPro {
-                    message = "No previous purchase found on this Apple Account."
+                    message = String(localized: "No previous purchase found on this Apple Account.")
                 }
             } catch {
                 message = error.localizedDescription

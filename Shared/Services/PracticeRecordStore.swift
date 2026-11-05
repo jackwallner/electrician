@@ -138,6 +138,9 @@ final class PracticeRecordStore: ObservableObject {
                 return lhs.lastMissed > rhs.lastMissed
             }
             .prefix(limit)
+            // The stored pattern carries the summary as it was worded when the
+            // miss was recorded. Resolve the live catalogue entry by its stable
+            // id so the text follows the current language.
             .map { CandidateMistake.pattern(id: $0.pattern.id) ?? $0.pattern }
     }
 

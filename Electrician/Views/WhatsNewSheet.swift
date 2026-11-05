@@ -107,7 +107,7 @@ struct WhatsNewSheet: View {
             Button {
                 close()
             } label: {
-                Text(lockedItems.isEmpty ? "Start practising" : "Keep practising free")
+                Text(lockedItems.isEmpty ? String(localized: "Start practising") : String(localized: "Keep practising free"))
                     .font(Theme.cardTitle)
                     .foregroundStyle(lockedItems.isEmpty ? .white : Theme.inkSecondary)
                     .frame(maxWidth: .infinity)

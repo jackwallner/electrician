@@ -21,7 +21,7 @@ struct CandidateProfileView: View {
                             .listRowInsets(EdgeInsets())
                             .listRowBackground(Color.clear)
                     } header: {
-                        Text("What we know about \(record.name)")
+                        Text("What we know about \(record.displayName)")
                     }
                 }
 
@@ -86,7 +86,7 @@ struct CandidateProfileFields: View {
             JurisdictionPickerView()
         } label: {
             LabeledContent("State or jurisdiction") {
-                Text(profile.trimmedJurisdiction.isEmpty ? "Choose" : profile.trimmedJurisdiction)
+                Text(profile.trimmedJurisdiction.isEmpty ? String(localized: "Choose") : profile.displayJurisdiction)
                     .foregroundStyle(profile.trimmedJurisdiction.isEmpty ? Theme.inkTertiary : Theme.inkSecondary)
             }
         }
@@ -138,7 +138,7 @@ struct CandidateProfileFields: View {
         guard edition == .unsure, let suggested = profile.suggestedEdition else {
             return edition.displayName
         }
-        return "Not sure, use \(suggested.displayName)"
+        return String(localized: "Not sure, use \(suggested.displayName)")
     }
 }
 
@@ -164,7 +164,7 @@ struct JurisdictionPickerView: View {
                         dismiss()
                     } label: {
                         HStack {
-                            Text(record.name)
+                            Text(record.displayName)
                                 .foregroundStyle(Theme.ink)
                             Spacer()
                             Text(record.editionLabel)
@@ -181,7 +181,7 @@ struct JurisdictionPickerView: View {
                 Text("Editions and exam vendors were checked \(Jurisdictions.reviewed). Confirm with your own board.")
             }
         }
-        .searchable(text: $query, prompt: "Search states")
+        .searchable(text: $query, prompt: String(localized: "Search states"))
         .scrollContentBackground(.hidden)
         .background(Theme.background)
         .navigationTitle("Jurisdiction")

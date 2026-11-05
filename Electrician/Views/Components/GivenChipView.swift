@@ -17,7 +17,8 @@ struct GivenChipView: View {
             // deliberate control over that height. The FACES still come from
             // the type system: label in the eyebrow role, value in the numeric
             // one, unit in ordinary text.
-            Text(given.label.uppercased())
+            Text(given.label)
+                .textCase(.uppercase)
                 .font(.system(size: 9 * scale, weight: .heavy))
                 .kerning(0.6)
                 .foregroundStyle(Theme.worksheetInkTertiary)

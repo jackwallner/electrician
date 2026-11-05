@@ -46,19 +46,19 @@ enum NECTables {
         switch years.count {
         case 0: return edition
         case 1: return "\(years[0]) NEC"
-        case 2: return "\(years[0]) and \(years[1]) NEC"
-        default: return "\(years[0]) through \(years[years.count - 1]) NEC"
+        case 2: return String(localized: "\(years[0]) and \(years[1]) NEC")
+        default: return String(localized: "\(years[0]) through \(years[years.count - 1]) NEC")
         }
     }
 
     /// One line, for footers and result screens.
-    static let editionNote = "Values follow the \(edition). Your jurisdiction may have adopted a different edition or amended it locally."
+    static let editionNote = String(localized: "Values follow the \(edition). Your jurisdiction may have adopted a different edition or amended it locally.")
 
     /// The longer version, for Settings and the edition screen. States the
     /// coverage AND the limit of it, because the second half is what makes the
     /// first half trustworthy.
     static var coverageNote: String {
-        "Values and citations follow the 2023 NEC. Most calculation tables also apply in 2020, but 2023 adds the 10 A standard breaker rating and renumbers several sections. Use the edition and amendments named by your exam board; state adoption and exam editions can differ."
+        String(localized: "Values and citations follow the 2023 NEC. Most calculation tables also apply in 2020, but 2023 adds the 10 A standard breaker rating and renumbers several sections. Use the edition and amendments named by your exam board; state adoption and exam editions can differ.")
     }
 
     // MARK: - Conductor sizes

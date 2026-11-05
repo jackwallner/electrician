@@ -88,8 +88,8 @@ struct QuickSessionView: View {
             // completion screen congratulated people on a run of zero questions,
             // which is both a lie and a dead end.
             SessionEmptyView(
-                title: "Nothing to practise here yet",
-                message: "This session could not find any questions. Open a room and answer a few, then try again.",
+                title: String(localized: "Nothing to practise here yet"),
+                message: String(localized: "This session could not find any questions. Open a room and answer a few, then try again."),
                 onDone: onClose
             )
         } else if finished {
@@ -124,7 +124,7 @@ struct QuickSessionView: View {
                     missNote: missNote,
                     reportContext: answered ? reportContext : nil,
                     answered: answered,
-                    eyebrow: item.sourceLabel.uppercased()
+                    eyebrow: item.sourceLabel
                 ) {
                     ChoiceList(labels: item.choices, selection: selection, answerIndex: item.answerIndex) { pick in
                         grade(pick)
@@ -169,7 +169,7 @@ struct QuickSessionView: View {
     }
 
     private var footer: some View {
-        DrillNextButton(title: index + 1 < items.count ? "Next" : "Finish", enabled: answered, action: advance)
+        DrillNextButton(title: index + 1 < items.count ? String(localized: "Next") : String(localized: "Finish"), enabled: answered, action: advance)
     }
 
     // MARK: - Grading
@@ -264,7 +264,7 @@ struct QuickSessionView: View {
         streakBannerTrigger += 1
         let trigger = streakBannerTrigger
         withAnimation(Theme.Motion.celebrate) {
-            streakBannerText = "\(streak) in a row!"
+            streakBannerText = String(localized: "\(streak) in a row!")
         }
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 1_600_000_000)

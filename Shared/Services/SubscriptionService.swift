@@ -46,11 +46,11 @@ enum PurchaseError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .notConfigured:
-            return "Purchases are not available in this build."
+            return String(localized: "Purchases are not available in this build.")
         case .offeringsUnavailable:
-            return "The App Store isn't reachable right now. Check your connection and try again."
+            return String(localized: "The App Store isn't reachable right now. Check your connection and try again.")
         case .packageMissing:
-            return "That plan isn't available right now. Try another plan, or Restore if you have already bought it."
+            return String(localized: "That plan isn't available right now. Try another plan, or Restore if you have already bought it.")
         }
     }
 
@@ -58,9 +58,9 @@ enum PurchaseError: LocalizedError {
     /// answerable.
     var diagnosticDescription: String {
         switch self {
-        case .notConfigured: return "RevenueCat not configured"
-        case .offeringsUnavailable: return "no current offering"
-        case .packageMissing(let plan): return "offering has no \(plan.rawValue) package"
+        case .notConfigured: return "RevenueCat not configured" // l10n:ignore
+        case .offeringsUnavailable: return "no current offering" // l10n:ignore
+        case .packageMissing(let plan): return "offering has no \(plan.rawValue) package" // l10n:ignore
         }
     }
 }
@@ -302,19 +302,16 @@ final class SubscriptionService: NSObject, ObservableObject {
     /// follows it instead of quietly lying.
     func trialLengthText(for plan: PaywallPlan) -> String {
         guard let period = package(for: plan)?.storeProduct.introductoryDiscount?.subscriptionPeriod else {
-            return "7 days"
+            return String(localized: "7 days")
         }
         let value = period.value
-        let unit: String
         switch period.unit {
-        case .day: unit = "day"
-        case .week: unit = value == 1 ? "7 days" : "week"
-        case .month: unit = "month"
-        case .year: unit = "year"
-        @unknown default: unit = "day"
+        case .day: return String(localized: "\(value) days")
+        case .week: return value == 1 ? String(localized: "7 days") : String(localized: "\(value) weeks")
+        case .month: return String(localized: "\(value) months")
+        case .year: return String(localized: "\(value) years")
+        @unknown default: return String(localized: "\(value) days")
         }
-        if period.unit == .week, value == 1 { return "7 days" }
-        return "\(value) \(unit)\(value == 1 ? "" : "s")"
     }
 
     func package(for plan: PaywallPlan) -> Package? {

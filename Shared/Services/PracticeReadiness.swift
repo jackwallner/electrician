@@ -30,20 +30,20 @@ struct PracticeReadinessMetrics: Equatable, Sendable {
 
     var title: String {
         switch level {
-        case .notStarted: return "Set a baseline"
-        case .building: return "Build consistency"
-        case .consistent: return "Consistent practice"
+        case .notStarted: return String(localized: "Set a baseline")
+        case .building: return String(localized: "Build consistency")
+        case .consistent: return String(localized: "Consistent practice")
         }
     }
 
     var message: String {
         switch level {
         case .notStarted:
-            return "Answer ten questions to see where you stand."
+            return String(localized: "Answer ten questions to see where you stand.")
         case .building:
-            return "Keep rotating through the available rooms until your weak spots settle down."
+            return String(localized: "Keep rotating through the available rooms until your weak spots settle down.")
         case .consistent:
-            return "Your recent practice is consistent across the rooms you have opened."
+            return String(localized: "Your recent practice is consistent across the rooms you have opened.")
         }
     }
 
@@ -52,6 +52,6 @@ struct PracticeReadinessMetrics: Equatable, Sendable {
     }
 
     var coverageText: String {
-        "\(practicedRooms) of \(availableRooms) rooms"
+        String(localized: "\(practicedRooms) of \(availableRooms) rooms")
     }
 }

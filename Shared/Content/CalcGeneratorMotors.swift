@@ -19,33 +19,33 @@ extension CandidateMistake {
     static let motorUsedNameplateForConductors = MistakePattern(
         id: "motor-nameplate-for-conductors",
         skill: PracticeSkill.motorConductor.rawValue,
-        summary: "You sized from the nameplate current. Branch-circuit conductors come off the full-load current in Table 430.248 or 430.250, whatever the nameplate says. The nameplate is only used for the overload device."
+        summary: String(localized: "You sized from the nameplate current. Branch-circuit conductors come off the full-load current in Table 430.248 or 430.250, whatever the nameplate says. The nameplate is only used for the overload device.")
     )
     static let motorForgot125 = MistakePattern(
         id: "motor-forgot-125",
         skill: PracticeSkill.motorConductor.rawValue,
-        summary: "You used the full-load current straight. 430.22 puts branch-circuit conductors for a single continuous-duty motor at 125% of it."
+        summary: String(localized: "You used the full-load current straight. 430.22 puts branch-circuit conductors for a single continuous-duty motor at 125% of it.")
     )
     static let motorWrongVoltageRow = MistakePattern(
         id: "motor-wrong-voltage-row",
         skill: PracticeSkill.motorConductor.rawValue,
-        summary: "You read the wrong voltage column. The same horsepower draws roughly half the current at twice the voltage, so picking the wrong column is a 2x error, not a rounding one."
+        summary: String(localized: "You read the wrong voltage column. The same horsepower draws roughly half the current at twice the voltage, so picking the wrong column is a 2x error, not a rounding one.")
     )
 
     static let motorRoundedOCPDDown = MistakePattern(
         id: "motor-rounded-ocpd-down",
         skill: PracticeSkill.motorProtection.rawValue,
-        summary: "You selected less than the permitted maximum. 430.52(C)(1)(a) allows the next standard rating above a table calculation, and it also permits a 15 A nonadjustable breaker when the next standard rating would be smaller."
+        summary: String(localized: "You selected less than the permitted maximum. 430.52(C)(1)(a) allows the next standard rating above a table calculation, and it also permits a 15 A nonadjustable breaker when the next standard rating would be smaller.")
     )
     static let motorWrongDevicePercent = MistakePattern(
         id: "motor-wrong-device-percent",
         skill: PracticeSkill.motorProtection.rawValue,
-        summary: "You used another device's percentage. For these ordinary motors, Table 430.52(C)(1) uses 300% for nontime-delay fuses, 175% for dual-element fuses other than Class CC, and 250% for inverse-time breakers. Instantaneous-trip settings require the applicable motor design and listed combination controller."
+        summary: String(localized: "You used another device's percentage. For these ordinary motors, Table 430.52(C)(1) uses 300% for nontime-delay fuses, 175% for dual-element fuses other than Class CC, and 250% for inverse-time breakers. Instantaneous-trip settings require the applicable motor design and listed combination controller.")
     )
     static let motorUsedOverloadPercent = MistakePattern(
         id: "motor-used-overload-percent",
         skill: PracticeSkill.motorProtection.rawValue,
-        summary: "That is an overload calculation, not short-circuit protection. The two are separate devices with separate rules: overload runs at 115% or 125% of the NAMEPLATE, while the branch-circuit device runs at the Table 430.52(C)(1) percentage of the TABLE current."
+        summary: String(localized: "That is an overload calculation, not short-circuit protection. The two are separate devices with separate rules: overload runs at 115% or 125% of the NAMEPLATE, while the branch-circuit device runs at the Table 430.52(C)(1) percentage of the TABLE current.")
     )
 }
 
@@ -107,10 +107,10 @@ extension CalcGenerator {
         )
 
         let steps = [
-            "The nameplate is not the number here. Branch-circuit conductors for a single motor are sized from the full-load current in Table \(motor.supply.phase == .single ? "430.248" : "430.250"), which for a \(motor.rating.label) motor at \(motor.supply.displayName) is \(motor.tableFLC.factorText) A.",
-            "430.22 puts the conductors at 125% of that: \(motor.tableFLC.factorText) × 1.25 = \(answer.factorText) A before rounding.",
-            "The unrounded minimum is \(answer.factorText) A after correction and adjustment. The option is reported to the nearest 0.1 A; select actual conductors using the unrounded minimum and Table 310.16.",
-            "The nameplate \(motor.nameplateFLA.factorText) A is still used, but only for the separate overload device under 430.32.",
+            String(localized: "The nameplate is not the number here. Branch-circuit conductors for a single motor are sized from the full-load current in Table \(motor.supply.phase == .single ? "430.248" : "430.250"), which for a \(motor.rating.label) motor at \(motor.supply.displayName) is \(motor.tableFLC.factorText) A."),
+            String(localized: "430.22 puts the conductors at 125% of that: \(motor.tableFLC.factorText) × 1.25 = \(answer.factorText) A before rounding."),
+            String(localized: "The unrounded minimum is \(answer.factorText) A after correction and adjustment. The option is reported to the nearest 0.1 A; select actual conductors using the unrounded minimum and Table 310.16."),
+            String(localized: "The nameplate \(motor.nameplateFLA.factorText) A is still used, but only for the separate overload device under 430.32."),
         ]
 
         let mistakes = mistakeMap(answerLabel: format(answer), choices: choices.labels, [
@@ -121,11 +121,11 @@ extension CalcGenerator {
 
         return CalcScenario(
             id: "gen-motorConductor-\(UUID().uuidString)",
-            situation: "For this single, ordinary single-speed continuous-duty motor of usual speed and torque characteristics, what minimum branch-circuit conductor ampacity does 430.22(A) require? Report the calculated minimum to the nearest 0.1 A.",
+            situation: String(localized: "For this single, ordinary single-speed continuous-duty motor of usual speed and torque characteristics, what minimum branch-circuit conductor ampacity does 430.22(A) require? Report the calculated minimum to the nearest 0.1 A."),
             givens: [
-                Given("Motor", motor.rating.label),
-                Given("Supply", motor.supply.displayName),
-                Given("Nameplate", motor.nameplateFLA.factorText, unit: "A"),
+                Given(String(localized: "Motor"), motor.rating.label),
+                Given(String(localized: "Supply"), motor.supply.displayName),
+                Given(String(localized: "Nameplate"), motor.nameplateFLA.factorText, unit: "A"),
             ],
             choices: choices.labels,
             answerIndex: choices.answerIndex,
@@ -173,17 +173,17 @@ extension CalcGenerator {
         )
 
         var steps = [
-            "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: \(motor.rating.label) at \(motor.supply.displayName) is \(motor.tableFLC.factorText) A in Table \(motor.supply.phase == .single ? "430.248" : "430.250").",
-            "Table 430.52(C)(1) allows a \(protection.displayName.lowercased()) up to \(protection.percentLabel) of that: \(motor.tableFLC.factorText) × \(protection.percent.factorText) = \(calculated.factorText) A.",
+            String(localized: "Short-circuit and ground-fault protection is sized from the TABLE full-load current, not the nameplate: \(motor.rating.label) at \(motor.supply.displayName) is \(motor.tableFLC.factorText) A in Table \(motor.supply.phase == .single ? "430.248" : "430.250")."),
+            String(localized: "Table 430.52(C)(1) allows a \(protection.inlineName) up to \(protection.percentLabel) of that: \(motor.tableFLC.factorText) × \(protection.percent.factorText) = \(calculated.factorText) A."),
         ]
         if protection == .inverseTimeBreaker && calculated < 15 {
-            steps.append("430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A.")
+            steps.append(String(localized: "430.52(C)(1)(a) permits a 15 A nonadjustable breaker when the next standard rating is below 15 A. NEC 2023 adds 10 A to the standard table, but this motor permission still allows 15 A."))
         } else if Double(answer) > calculated {
-            steps.append("\(calculated.factorText) A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so \(answer) A.")
+            steps.append(String(localized: "\(calculated.factorText) A is not a standard rating. The next-rating permission applies here: 430.52(C)(1)(a) permits the next standard size, so \(answer) A."))
         } else {
-            steps.append("\(calculated.factorText) A is itself a standard rating in 240.6(A), so \(answer) A is the answer with no rounding needed.")
+            steps.append(String(localized: "\(calculated.factorText) A is itself a standard rating in 240.6(A), so \(answer) A is the answer with no rounding needed."))
         }
-        steps.append("This device does not protect against overload. That is a separate device sized from the nameplate \(motor.nameplateFLA.factorText) A under 430.32.")
+        steps.append(String(localized: "This device does not protect against overload. That is a separate device sized from the nameplate \(motor.nameplateFLA.factorText) A under 430.32."))
 
         let mistakes = mistakeMap(answerLabel: format(Double(answer)), choices: choices.labels, [
             (format(Double(roundedDown)), CandidateMistake.motorRoundedOCPDDown),
@@ -193,17 +193,17 @@ extension CalcGenerator {
 
         return CalcScenario(
             id: "gen-motorProtection-\(UUID().uuidString)",
-            situation: "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances.",
+            situation: String(localized: "For an ordinary single-speed motor of usual speed and torque characteristics, what is the largest standard branch-circuit short-circuit and ground-fault device rating under the table and next-rating permission? Assume the selected device permits starting; do not apply the increased starting-current allowances."),
             givens: [
-                Given("Motor", motor.rating.label),
-                Given("Supply", motor.supply.displayName),
-                Given("Nameplate", motor.nameplateFLA.factorText, unit: "A"),
-                Given("Device", protection.displayName),
+                Given(String(localized: "Motor"), motor.rating.label),
+                Given(String(localized: "Supply"), motor.supply.displayName),
+                Given(String(localized: "Nameplate"), motor.nameplateFLA.factorText, unit: "A"),
+                Given(String(localized: "Device"), protection.displayName),
             ],
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "430.52, Table 430.52(C)(1), 430.52(C)(1)(a) (Ex. 1 in 2020), 240.6(A)",
+            citation: String(localized: "430.52, Table 430.52(C)(1), 430.52(C)(1)(a) (Ex. 1 in 2020), 240.6(A)"),
             mistakes: mistakes
         )
     }
