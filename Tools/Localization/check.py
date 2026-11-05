@@ -28,7 +28,7 @@ import sys
 
 ROOT = os.getcwd()
 DIRS = ['Electrician', 'Shared']
-LANGS = []
+LANGS = ['ru', 'de', 'zh-Hans', 'es', 'vi', 'uk']
 UI_FUNCS = {'Text', 'Button', 'Label', 'Section', 'Toggle', 'TextField', 'navigationTitle', 'accessibilityLabel',
             'alert', 'DatePicker', 'Stepper', 'Link', 'confirmationDialog', 'Picker', 'accessibilityHint',
             'SecureField', 'LabeledContent', 'LocalizedStringKey', 'accessibilityValue'}
@@ -206,6 +206,10 @@ def specs(value, subs=None):
             auto += 1
             pos = auto
         found.append((pos, m.group(2)))
+    for sub in (subs or {}).values():  # a substitution branch may carry its own numbered argument
+        for unit in sub['variations']['plural'].values():
+            for n, kind in re.findall(r'%(\d+)\$(lld|@|lf)', unit['stringUnit']['value']):
+                found.append((int(n), kind))
     return sorted(set(found))
 
 

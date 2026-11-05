@@ -124,4 +124,27 @@ final class LocalizationTests: XCTestCase {
             XCTAssertFalse(category.englishName.isEmpty)
         }
     }
+
+    static let languages = ["ru", "de", "zh-Hans", "es", "vi", "uk"]
+
+    func testEveryShippedLanguageCompiled() {
+        for language in Self.languages {
+            let found = ([Bundle.main] + Bundle.allBundles).contains { $0.path(forResource: language, ofType: "lproj") != nil }
+            XCTAssertTrue(found, "\(language).lproj is missing")
+        }
+    }
+
+    func testEveryLanguageKeepsBothCountsInTheGoalSentence() throws {
+        for language in Self.languages {
+            let host = try XCTUnwrap(bundle(language), language)
+            let locale = Locale(identifier: language)
+            let text = String(
+                localized: "\("Exam"). At \(27) questions a day you will have worked roughly \(621) problems before you sit it. \("621")",
+                bundle: host, locale: locale
+            )
+            XCTAssertTrue(text.contains("27") && text.contains("621"), "\(language): \(text)")
+            XCTAssertFalse(text.contains("#@"), "\(language): \(text)")
+            XCTAssertFalse(text.contains("%"), "\(language): \(text)")
+        }
+    }
 }
