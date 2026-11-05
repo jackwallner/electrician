@@ -49,6 +49,7 @@ Condensed from the deep notes below; the reasoning and the bugs behind each one 
 - `Room.accents` has no `default` case. Every animation comes from `Theme.Motion`, titles use the five semantic type tokens, and anything painting a solid accent behind white text uses `Theme.voltageFill` / `Theme.copperFill`.
 - Onboarding is a step machine: do not reintroduce a pager. Persisted raw values (`LicenseTrack`, `CandidateEdition`, `electrician.skillLevel`) must not be renamed.
 - IAP setup is three scripts in order: `asc-setup-release.py`, `asc-equalize-sub-prices.py`, `asc-finish-products.py --screenshot`. Re-run `scripts/rc-setup.py` after touching products or offerings, then probe offerings with `X-Platform: ios`.
+- User-facing copy goes through `Shared/Localizable.xcstrings` with whole-sentence keys (`String(localized:)` for anything held in a `String`); persisted values stay English and are translated at display time. `python3 Tools/Localization/check.py` must pass.
 - Every localized description carries a functional Terms of Use (EULA) link and a privacy link, in all 50 locales.
 
 ## Deep notes (load on demand)
@@ -62,6 +63,7 @@ These files load automatically when you read a file matching their `paths:`. Age
 | `.claude/rules/onboarding-and-pitch.md` | The step machine, jurisdictions, persisted keys, study pace, the `Electrician+` pitch | Onboarding, candidate profile, Home's pace card, the paywall pitch |
 | `.claude/rules/release-and-iap.md` | IAP setup scripts, the RevenueCat probe | ASC product scripts, RevenueCat, StoreKit config |
 | `.claude/rules/listing-and-localization.md` | Store name, marketing site, 50 locales, the EULA link, ASO | Metadata, localizations, `docs/` |
+| `.claude/rules/localization.md` | String catalog, `String(localized:)` rules, plurals, stored values translated at display time, `check.py` | Any user-facing string, `Shared/Localizable.xcstrings`, `Tools/Localization/` |
 | `.claude/rules/android.md` | Native Android identifiers, content export, calculation parity and current build scope | `android/`, Android exporter scripts |
 | `.claude/rules/iphone-duo.md` | Unfolded Duo split (Home beside Your Progress), split math, DEBUG seed and capture tour | `HomeView`, `UnfoldedSplit`, `DuoScreenshotMode`, `StatsView`, `SettingsView` |
 

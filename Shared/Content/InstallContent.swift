@@ -21,43 +21,43 @@ enum InstallContent {
     static let workingSpaceCards: [Flashcard] = [
         Flashcard(
             id: "install-card-depth",
-            frontTitle: "How deep does the working space in front of a panel have to be?",
-            givens: [Given("System", "120/240V"), Given("Condition", "1")],
-            frontSubtitle: "From exposed live parts, or the enclosure front when enclosed",
-            backTitle: "Three feet, and at 120/240 V it is three feet whatever the condition",
-            backBody: "The depth table is graded by condition: nothing live or grounded facing the equipment, grounded parts facing it, or live parts on both sides. Below 151 volts to ground all three land on the same three feet, so the grading only starts to bite on a 277/480 system, where the same three conditions run three, three and a half, and four feet. Candidates memorise the 480 volt row and then apply it to a house panel, which is the wrong direction to be wrong in.",
+            frontTitle: String(localized: "How deep does the working space in front of a panel have to be?"),
+            givens: [Given(String(localized: "System"), "120/240V"), Given(String(localized: "Condition"), "1")],
+            frontSubtitle: String(localized: "From exposed live parts, or the enclosure front when enclosed"),
+            backTitle: String(localized: "Three feet, and at 120/240 V it is three feet whatever the condition"),
+            backBody: String(localized: "The depth table is graded by condition: nothing live or grounded facing the equipment, grounded parts facing it, or live parts on both sides. Below 151 volts to ground all three land on the same three feet, so the grading only starts to bite on a 277/480 system, where the same three conditions run three, three and a half, and four feet. Candidates memorise the 480 volt row and then apply it to a house panel, which is the wrong direction to be wrong in."),
             citation: "110.26(A)(1)",
             choice: CardChoice("3 ft", "3.5 ft", answerIndex: 0)
         ),
         Flashcard(
             id: "install-card-width",
-            frontTitle: "What is the minimum working-space width for a panel 24 inches wide?",
-            frontSubtitle: "Assume its door can open at least 90 degrees",
-            backTitle: "Thirty inches, or the width of the equipment, whichever is greater",
-            backBody: "The thirty inches does not have to be centred on the equipment, and it may overlap the working space of adjacent equipment. What it may not do is be blocked by a door: the space has to allow any equipment door or hinged panel to open at least ninety degrees. A panel in a closet that only opens sixty degrees fails on the door, not on the thirty inches.",
+            frontTitle: String(localized: "What is the minimum working-space width for a panel 24 inches wide?"),
+            frontSubtitle: String(localized: "Assume its door can open at least 90 degrees"),
+            backTitle: String(localized: "Thirty inches, or the width of the equipment, whichever is greater"),
+            backBody: String(localized: "The thirty inches does not have to be centred on the equipment, and it may overlap the working space of adjacent equipment. What it may not do is be blocked by a door: the space has to allow any equipment door or hinged panel to open at least ninety degrees. A panel in a closet that only opens sixty degrees fails on the door, not on the thirty inches."),
             citation: "110.26(A)(2)",
             choice: CardChoice("30 in.", "36 in.", answerIndex: 0)
         ),
         Flashcard(
             id: "install-card-height",
-            frontTitle: "How much headroom does a working space need?",
-            backTitle: "Six and a half feet, or the height of the equipment where it is taller",
-            backBody: "The usual clear height is 6.5 feet or the equipment height if greater. Existing dwelling installations at 200 A or less have a specific exception. Dedicated space above the equipment is a separate rule; do not treat the whole room above the working space as that dedicated column.",
+            frontTitle: String(localized: "How much headroom does a working space need?"),
+            backTitle: String(localized: "Six and a half feet, or the height of the equipment where it is taller"),
+            backBody: String(localized: "The usual clear height is 6.5 feet or the equipment height if greater. Existing dwelling installations at 200 A or less have a specific exception. Dedicated space above the equipment is a separate rule; do not treat the whole room above the working space as that dedicated column."),
             citation: "110.26(A)(3), 110.26(E)"
         ),
         Flashcard(
             id: "install-card-entrances",
-            frontTitle: "What is the general two-entrance trigger for large equipment containing switching, overcurrent or control devices?",
-            givens: [Given("Equipment", "1200 A"), Given("Width", "Over 6 ft")],
-            backTitle: "At 1200 amperes or more, and over six feet wide",
-            backBody: "The general trigger is both 1200 A or more and over 6 feet wide, for equipment containing switching, overcurrent or control devices. Each entrance is at least 24 inches wide and 6.5 feet high. A single entrance can qualify where unobstructed egress or double working-space depth satisfies the specific alternatives in 110.26(C)(2).",
+            frontTitle: String(localized: "What is the general two-entrance trigger for large equipment containing switching, overcurrent or control devices?"),
+            givens: [Given(String(localized: "Equipment"), "1200 A"), Given(String(localized: "Width"), String(localized: "Over 6 ft"))],
+            backTitle: String(localized: "At 1200 amperes or more, and over six feet wide"),
+            backBody: String(localized: "The general trigger is both 1200 A or more and over 6 feet wide, for equipment containing switching, overcurrent or control devices. Each entrance is at least 24 inches wide and 6.5 feet high. A single entrance can qualify where unobstructed egress or double working-space depth satisfies the specific alternatives in 110.26(C)(2)."),
             citation: "110.26(C)(2)"
         ),
         Flashcard(
             id: "install-card-dedicated",
-            frontTitle: "What is the dedicated space above a panel, and how far up does it go?",
-            backTitle: "The footprint of the equipment, from the floor to six feet above it or to the structural ceiling, whichever is lower",
-            backBody: "This is a different rule from the working space and gets confused with it constantly. The working space is where a person stands, in front. The dedicated space is the column directly above and below the equipment footprint, and it is reserved from foreign systems: no plumbing, no ductwork, no leaks from above. Sprinkler protection is allowed, and a suspended ceiling does not count as a structural ceiling.",
+            frontTitle: String(localized: "What is the dedicated space above a panel, and how far up does it go?"),
+            backTitle: String(localized: "The footprint of the equipment, from the floor to six feet above it or to the structural ceiling, whichever is lower"),
+            backBody: String(localized: "This is a different rule from the working space and gets confused with it constantly. The working space is where a person stands, in front. The dedicated space is the column directly above and below the equipment footprint, and it is reserved from foreign systems: no plumbing, no ductwork, no leaks from above. Sprinkler protection is allowed, and a suspended ceiling does not count as a structural ceiling."),
             citation: "110.26(E)(1)"
         ),
     ]
@@ -65,48 +65,48 @@ enum InstallContent {
     static let coverAndSupportCards: [Flashcard] = [
         Flashcard(
             id: "install-card-burial-direct",
-            frontTitle: "Minimum cover for a 240 V direct-buried cable in a yard without concrete cover or vehicle traffic?",
-            givens: [Given("Method", "Direct burial"), Given("Location", "Open trench")],
-            backTitle: "Twenty-four inches",
-            backBody: "Cover is measured from the top of the wiring method to the finished grade, not from the bottom of the trench. Twenty-four inches is the baseline for direct burial; putting the same conductors inside rigid or intermediate metal conduit drops it to six, and a nonmetallic raceway listed for the purpose sits between them at eighteen.",
-            citation: "Table 300.5(A) (Table 300.5 in 2020)",
+            frontTitle: String(localized: "Minimum cover for a 240 V direct-buried cable in a yard without concrete cover or vehicle traffic?"),
+            givens: [Given(String(localized: "Method"), String(localized: "Direct burial")), Given(String(localized: "Location"), String(localized: "Open trench"))],
+            backTitle: String(localized: "Twenty-four inches"),
+            backBody: String(localized: "Cover is measured from the top of the wiring method to the finished grade, not from the bottom of the trench. Twenty-four inches is the baseline for direct burial; putting the same conductors inside rigid or intermediate metal conduit drops it to six, and a nonmetallic raceway listed for the purpose sits between them at eighteen."),
+            citation: String(localized: "Table 300.5(A) (Table 300.5 in 2020)"),
             choice: CardChoice("24 in.", "18 in.", answerIndex: 0)
         ),
         Flashcard(
             id: "install-card-burial-residential",
-            frontTitle: "The 12-inch burial row: what has to be true to use it?",
-            backTitle: "Residential branch circuit, 120 volts or less, 20 amperes or less, and GFCI protected",
-            backBody: "Every one of the four conditions has to hold. This is the row that lets a homeowner's yard light go in at a foot, and it is the row candidates quote for a 240 volt circuit or a 30 ampere one, where it does not apply. Miss any condition and the run goes back to its own column.",
-            citation: "Table 300.5(A) (Table 300.5 in 2020)"
+            frontTitle: String(localized: "The 12-inch burial row: what has to be true to use it?"),
+            backTitle: String(localized: "Residential branch circuit, 120 volts or less, 20 amperes or less, and GFCI protected"),
+            backBody: String(localized: "Every one of the four conditions has to hold. This is the row that lets a homeowner's yard light go in at a foot, and it is the row candidates quote for a 240 volt circuit or a 30 ampere one, where it does not apply. Miss any condition and the run goes back to its own column."),
+            citation: String(localized: "Table 300.5(A) (Table 300.5 in 2020)")
         ),
         Flashcard(
             id: "install-card-burial-traffic",
-            frontTitle: "Minimum cover under a public street or commercial parking lot?",
-            backTitle: "Twenty-four inches in the general vehicle-traffic row",
-            backBody: "The general streets, roads, alleys, driveways and parking-lots row requires 24 inches. One- and two-family dwelling driveways used only for dwelling purposes have a separate row: 18 inches for the ordinary cable and raceway columns, 12 inches for the qualifying GFCI residential branch circuit, and 6 inches for qualifying low-voltage lighting. Concrete-cover rows and table notes must also be checked.",
-            citation: "Table 300.5(A) (Table 300.5 in 2020)",
+            frontTitle: String(localized: "Minimum cover under a public street or commercial parking lot?"),
+            backTitle: String(localized: "Twenty-four inches in the general vehicle-traffic row"),
+            backBody: String(localized: "The general streets, roads, alleys, driveways and parking-lots row requires 24 inches. One- and two-family dwelling driveways used only for dwelling purposes have a separate row: 18 inches for the ordinary cable and raceway columns, 12 inches for the qualifying GFCI residential branch circuit, and 6 inches for qualifying low-voltage lighting. Concrete-cover rows and table notes must also be checked."),
+            citation: String(localized: "Table 300.5(A) (Table 300.5 in 2020)"),
             choice: CardChoice("24 in.", "18 in.", answerIndex: 0)
         ),
         Flashcard(
             id: "install-card-support-emt",
-            frontTitle: "What is the general maximum support interval for EMT with no support exception?",
-            backTitle: "Within three feet of each box, then every ten feet",
-            backBody: "Raceway is measured in feet at both ends of that sentence. Cable is not: type NM is secured within twelve INCHES of a box and supported every four and a half feet. Mixing the two pairs is the most common way this question is missed, and the tell is the unit: inches means cable, feet means pipe.",
+            frontTitle: String(localized: "What is the general maximum support interval for EMT with no support exception?"),
+            backTitle: String(localized: "Within three feet of each box, then every ten feet"),
+            backBody: String(localized: "Raceway is measured in feet at both ends of that sentence. Cable is not: type NM is secured within twelve INCHES of a box and supported every four and a half feet. Mixing the two pairs is the most common way this question is missed, and the tell is the unit: inches means cable, feet means pipe."),
             citation: "358.30(A), (B)",
             choice: CardChoice("10 ft", "8 ft", answerIndex: 0)
         ),
         Flashcard(
             id: "install-card-support-nm",
-            frontTitle: "How is type NM cable secured and supported?",
-            backTitle: "Within twelve inches of a box, then every four and a half feet",
-            backBody: "The twelve inches is measured to the cable entry and assumes the box has a clamp. A single-gang nonmetallic box without a clamp gets its own allowance: the cable is secured within eight inches of the box instead, measured along the sheath, with a length of sheath inside the box.",
+            frontTitle: String(localized: "How is type NM cable secured and supported?"),
+            backTitle: String(localized: "Within twelve inches of a box, then every four and a half feet"),
+            backBody: String(localized: "The twelve inches is measured to the cable entry and assumes the box has a clamp. A single-gang nonmetallic box without a clamp gets its own allowance: the cable is secured within eight inches of the box instead, measured along the sheath, with a length of sheath inside the box."),
             citation: "334.30, 314.17(B)(2)"
         ),
         Flashcard(
             id: "install-card-bends",
-            frontTitle: "How many bends are allowed between pull points?",
-            backTitle: "Three hundred and sixty degrees, in every raceway article that has the rule",
-            backBody: "Four quarter bends, and offsets count. It is the same number for EMT, rigid, intermediate and PVC, which makes it one of the few facts in Chapter 3 that does not need to be looked up per method. The bends between pull points are what the rule counts, not the bends in the run, so adding a pull box resets the tally.",
+            frontTitle: String(localized: "How many bends are allowed between pull points?"),
+            backTitle: String(localized: "Three hundred and sixty degrees, in every raceway article that has the rule"),
+            backBody: String(localized: "Four quarter bends, and offsets count. It is the same number for EMT, rigid, intermediate and PVC, which makes it one of the few facts in Chapter 3 that does not need to be looked up per method. The bends between pull points are what the rule counts, not the bends in the run, so adding a pull box resets the tally."),
             citation: "358.26, 344.26, 352.26",
             choice: CardChoice("360°", "270°", answerIndex: 0)
         ),
@@ -117,115 +117,115 @@ enum InstallContent {
     static let installQuiz: [QuizQuestion] = [
         QuizQuestion(
             id: "install-quiz-depth-480",
-            prompt: "A 277/480 V panelboard faces a grounded metal wall across the aisle. What is the minimum clear working depth?",
-            givens: [Given("System", "277/480V"), Given("Opposite", "Grounded surface")],
+            prompt: String(localized: "A 277/480 V panelboard faces a grounded metal wall across the aisle. What is the minimum clear working depth?"),
+            givens: [Given(String(localized: "System"), "277/480V"), Given(String(localized: "Opposite"), String(localized: "Grounded surface"))],
             choices: ["3 ft", "3.5 ft", "4 ft", "4.5 ft"],
             answerIndex: 1,
-            explanation: "Live parts on one side with grounded parts facing them is condition 2, and above 150 volts to ground condition 2 is three and a half feet. A grounded metal wall, concrete, or plaster and lath all count as the grounded side, which is what turns an ordinary three-foot answer into three and a half.",
+            explanation: String(localized: "Live parts on one side with grounded parts facing them is condition 2, and above 150 volts to ground condition 2 is three and a half feet. A grounded metal wall, concrete, or plaster and lath all count as the grounded side, which is what turns an ordinary three-foot answer into three and a half."),
             citation: "110.26(A)(1)"
         ),
         QuizQuestion(
             id: "install-quiz-depth-house",
-            prompt: "The same panel is a 120/240 V loadcentre in a garage with a concrete wall opposite. Minimum working depth?",
-            givens: [Given("System", "120/240V"), Given("Opposite", "Concrete wall")],
+            prompt: String(localized: "The same panel is a 120/240 V loadcentre in a garage with a concrete wall opposite. Minimum working depth?"),
+            givens: [Given(String(localized: "System"), "120/240V"), Given(String(localized: "Opposite"), String(localized: "Concrete wall"))],
             choices: ["3 ft", "3.5 ft", "4 ft", "30 in."],
             answerIndex: 0,
-            explanation: "Below 151 volts to ground the condition does not change the answer: all three conditions are three feet. The grading of conditions only produces different numbers above that, which is why the same physical arrangement gives a different answer at 480 volts than at 240.",
+            explanation: String(localized: "Below 151 volts to ground the condition does not change the answer: all three conditions are three feet. The grading of conditions only produces different numbers above that, which is why the same physical arrangement gives a different answer at 480 volts than at 240."),
             citation: "110.26(A)(1)"
         ),
         QuizQuestion(
             id: "install-quiz-width-equipment",
-            prompt: "A switchboard is 42 inches wide. What is the minimum width of the working space in front of it?",
-            givens: [Given("Equipment width", "42", unit: "in.")],
+            prompt: String(localized: "A switchboard is 42 inches wide. What is the minimum width of the working space in front of it?"),
+            givens: [Given(String(localized: "Equipment width"), "42", unit: "in.")],
             choices: ["30 in.", "36 in.", "42 in.", "48 in."],
             answerIndex: 2,
-            explanation: "The width is thirty inches or the width of the equipment, whichever is greater, so equipment wider than thirty inches sets its own working space. The thirty inches is a floor, not the answer.",
+            explanation: String(localized: "The width is thirty inches or the width of the equipment, whichever is greater, so equipment wider than thirty inches sets its own working space. The thirty inches is a floor, not the answer."),
             citation: "110.26(A)(2)"
         ),
         QuizQuestion(
             id: "install-quiz-cover-rmc",
-            prompt: "A circuit is run in rigid metal conduit through an open field. What is the minimum cover?",
-            givens: [Given("Raceway", "Rigid metal conduit")],
+            prompt: String(localized: "A circuit is run in rigid metal conduit through an open field. What is the minimum cover?"),
+            givens: [Given(String(localized: "Raceway"), String(localized: "Rigid metal conduit"))],
             choices: ["6 in.", "12 in.", "18 in.", "24 in."],
             answerIndex: 0,
-            explanation: "Rigid and intermediate metal conduit have their own column at six inches, because the raceway itself is the physical protection the cover would otherwise be providing. The twenty-four inch figure people quote for everything is the direct-burial column.",
-            citation: "Table 300.5(A) (Table 300.5 in 2020)"
+            explanation: String(localized: "Rigid and intermediate metal conduit have their own column at six inches, because the raceway itself is the physical protection the cover would otherwise be providing. The twenty-four inch figure people quote for everything is the direct-burial column."),
+            citation: String(localized: "Table 300.5(A) (Table 300.5 in 2020)")
         ),
         QuizQuestion(
             id: "install-quiz-cover-pvc",
-            prompt: "The same run is in PVC listed for direct burial, still in an open field. Minimum cover?",
-            givens: [Given("Raceway", "PVC, direct burial listed")],
+            prompt: String(localized: "The same run is in PVC listed for direct burial, still in an open field. Minimum cover?"),
+            givens: [Given(String(localized: "Raceway"), String(localized: "PVC, direct burial listed"))],
             choices: ["6 in.", "12 in.", "18 in.", "24 in."],
             answerIndex: 2,
-            explanation: "Nonmetallic raceways sit between the two: eighteen inches, because the raceway resists damage but not the way a steel one does. Reading the metal-conduit six inches for PVC is the mistake this pair is here to separate.",
-            citation: "Table 300.5(A) (Table 300.5 in 2020)"
+            explanation: String(localized: "Nonmetallic raceways sit between the two: eighteen inches, because the raceway resists damage but not the way a steel one does. Reading the metal-conduit six inches for PVC is the mistake this pair is here to separate."),
+            citation: String(localized: "Table 300.5(A) (Table 300.5 in 2020)")
         ),
         QuizQuestion(
             id: "install-quiz-support-nm",
-            prompt: "Type NM cable enters a box with an internal cable clamp and runs along framing with no support exception. What are the maximum securing distance from the box and support interval?",
+            prompt: String(localized: "Type NM cable enters a box with an internal cable clamp and runs along framing with no support exception. What are the maximum securing distance from the box and support interval?"),
             choices: [
-                "Within 12 in. of the box, then every 4.5 ft",
-                "Within 3 ft of the box, then every 10 ft",
-                "Within 12 in. of the box, then every 6 ft",
-                "Within 8 in. of the box, then every 4.5 ft",
+                String(localized: "Within 12 in. of the box, then every 4.5 ft"),
+                String(localized: "Within 3 ft of the box, then every 10 ft"),
+                String(localized: "Within 12 in. of the box, then every 6 ft"),
+                String(localized: "Within 8 in. of the box, then every 4.5 ft"),
             ],
             answerIndex: 0,
-            explanation: "Cable is measured in inches at the box and feet along the run: twelve inches, then four and a half feet. The eight-inch answer is the separate allowance for a single-gang nonmetallic box with no clamp, and the three-foot-then-ten-foot answer is EMT.",
+            explanation: String(localized: "Cable is measured in inches at the box and feet along the run: twelve inches, then four and a half feet. The eight-inch answer is the separate allowance for a single-gang nonmetallic box with no clamp, and the three-foot-then-ten-foot answer is EMT."),
             citation: "334.30"
         ),
         QuizQuestion(
             id: "install-quiz-receptacle-spacing",
-            prompt: "In a dwelling living room, how far along the wall may a point be from the nearest receptacle outlet?",
+            prompt: String(localized: "In a dwelling living room, how far along the wall may a point be from the nearest receptacle outlet?"),
             choices: ["4 ft", "6 ft", "8 ft", "12 ft"],
             answerIndex: 1,
-            explanation: "No point measured horizontally along the floor line of any wall space may be more than six feet from a receptacle, which is why receptacles land about twelve feet apart: a cord can reach either way. The six-foot figure is the rule; the twelve-foot spacing is its consequence, and questions ask for whichever one you are less ready for.",
+            explanation: String(localized: "No point measured horizontally along the floor line of any wall space may be more than six feet from a receptacle, which is why receptacles land about twelve feet apart: a cord can reach either way. The six-foot figure is the rule; the twelve-foot spacing is its consequence, and questions ask for whichever one you are less ready for."),
             citation: "210.52(A)(1)"
         ),
         QuizQuestion(
             id: "install-quiz-wall-space",
-            prompt: "In a dwelling living room, what is the minimum width of an uninterrupted wall space that falls under the general receptacle-spacing rule?",
+            prompt: String(localized: "In a dwelling living room, what is the minimum width of an uninterrupted wall space that falls under the general receptacle-spacing rule?"),
             choices: ["12 in.", "18 in.", "2 ft", "3 ft"],
             answerIndex: 2,
-            explanation: "The general threshold is 2 feet, including measurements around corners. Fixed wall panels can count, while sliding panels and interruptions such as doorways, fireplaces and fixed cabinets are treated differently. A qualifying wall space needs coverage within 6 feet; it does not necessarily require a separate receptacle centered on each section.",
+            explanation: String(localized: "The general threshold is 2 feet, including measurements around corners. Fixed wall panels can count, while sliding panels and interruptions such as doorways, fireplaces and fixed cabinets are treated differently. A qualifying wall space needs coverage within 6 feet; it does not necessarily require a separate receptacle centered on each section."),
             citation: "210.52(A)(2)"
         ),
         QuizQuestion(
             id: "install-quiz-counter-spacing",
-            prompt: "Along a kitchen countertop wall, how far may a point be from the nearest receptacle?",
+            prompt: String(localized: "Along a kitchen countertop wall, how far may a point be from the nearest receptacle?"),
             choices: ["12 in.", "24 in.", "4 ft", "6 ft"],
             answerIndex: 1,
-            explanation: "Twenty-four inches from any point along the wall line, which puts receptacles about four feet apart. It is a different number from the six-foot general rule for a reason: an appliance cord on a counter is shorter than a lamp cord in a living room. A counter space twelve inches or wider is what triggers the requirement.",
+            explanation: String(localized: "Twenty-four inches from any point along the wall line, which puts receptacles about four feet apart. It is a different number from the six-foot general rule for a reason: an appliance cord on a counter is shorter than a lamp cord in a living room. A counter space twelve inches or wider is what triggers the requirement."),
             citation: "210.52(C)(1)"
         ),
         QuizQuestion(
             id: "install-quiz-bends",
-            prompt: "An EMT run between pull points contains exactly two 90-degree bends and two 45-degree bends. How many more degrees of bend are allowed?",
-            givens: [Given("Bends so far", "90 + 90 + 45 + 45")],
+            prompt: String(localized: "An EMT run between pull points contains exactly two 90-degree bends and two 45-degree bends. How many more degrees of bend are allowed?"),
+            givens: [Given(String(localized: "Bends so far"), "90 + 90 + 45 + 45")],
             choices: ["0°", "90°", "180°", "270°"],
             answerIndex: 1,
-            explanation: "Two ninety-degree bends and two forty-fives are 270 degrees, and the limit between pull points is 360, so ninety degrees remain. Offsets count toward the total, which is the part that catches people: it is the sum of all bends, not the number of elbows.",
+            explanation: String(localized: "Two ninety-degree bends and two forty-fives are 270 degrees, and the limit between pull points is 360, so ninety degrees remain. Offsets count toward the total, which is the part that catches people: it is the sum of all bends, not the number of elbows."),
             citation: "358.26"
         ),
         QuizQuestion(
             id: "install-quiz-continuous",
-            prompt: "An ordinary branch circuit supplies only a 44 A continuous load. The listed 100%-rated assembly exception does not apply. What is the minimum standard inverse-time circuit-breaker rating?",
-            givens: [Given("Load", "44", unit: "A"), Given("Duty", "Continuous")],
+            prompt: String(localized: "An ordinary branch circuit supplies only a 44 A continuous load. The listed 100%-rated assembly exception does not apply. What is the minimum standard inverse-time circuit-breaker rating?"),
+            givens: [Given(String(localized: "Load"), "44", unit: "A"), Given(String(localized: "Duty"), String(localized: "Continuous"))],
             choices: ["44 A", "50 A", "55 A", "60 A"],
             answerIndex: 3,
-            explanation: "44 × 1.25 = 55 A is the minimum calculated rating. A 55 A breaker is not a standard rating in Table 240.6(A), so select 60 A. Conductors must meet their separate ampacity, correction, adjustment and protection requirements; this question asks only for the standard breaker rating.",
+            explanation: String(localized: "44 × 1.25 = 55 A is the minimum calculated rating. A 55 A breaker is not a standard rating in Table 240.6(A), so select 60 A. Conductors must meet their separate ampacity, correction, adjustment and protection requirements; this question asks only for the standard breaker rating."),
             citation: "210.20(A), Table 240.6(A)"
         ),
         QuizQuestion(
             id: "install-quiz-dedicated-space",
-            prompt: "A water pipe runs 30 inches above an indoor panelboard, inside its footprint and below the structural ceiling. Is that permitted?",
+            prompt: String(localized: "A water pipe runs 30 inches above an indoor panelboard, inside its footprint and below the structural ceiling. Is that permitted?"),
             choices: [
-                "No, it is in the dedicated space above the equipment",
-                "Yes, the dedicated space is only 6 in. deep",
-                "Yes, dedicated space applies only to switchboards",
-                "No, it violates the working space depth",
+                String(localized: "No, it is in the dedicated space above the equipment"),
+                String(localized: "Yes, the dedicated space is only 6 in. deep"),
+                String(localized: "Yes, dedicated space applies only to switchboards"),
+                String(localized: "No, it violates the working space depth"),
             ],
             answerIndex: 0,
-            explanation: "The dedicated space is the column directly above the equipment footprint, running to six feet above the equipment or to the structural ceiling, whichever is lower, and foreign systems are excluded from it. It is a separate rule from the working space in front, which is where the fourth answer goes wrong.",
+            explanation: String(localized: "The dedicated space is the column directly above the equipment footprint, running to six feet above the equipment or to the structural ceiling, whichever is lower, and foreign systems are excluded from it. It is a separate rule from the working space in front, which is where the fourth answer goes wrong."),
             citation: "110.26(E)(1)"
         ),
     ]
@@ -235,45 +235,45 @@ enum InstallContent {
     static let installArticleMatch: [ArticleMatchQuestion] = [
         ArticleMatchQuestion(
             id: "install-match-workspace",
-            scenario: "You need to know how much clear space has to be left in front of a 480 V switchboard.",
+            scenario: String(localized: "You need to know how much clear space has to be left in front of a 480 V switchboard."),
             choices: [.generalRequirements, .services, .wiringMethods, .branchCircuits],
             answer: .generalRequirements,
-            explanation: "Working space, headroom, illumination and the dedicated space above equipment are all in Article 110, which is the general-requirements article and the first place to look for anything about access and clearance rather than about a specific wiring method."
+            explanation: String(localized: "Working space, headroom, illumination and the dedicated space above equipment are all in Article 110, which is the general-requirements article and the first place to look for anything about access and clearance rather than about a specific wiring method.")
         ),
         ArticleMatchQuestion(
             id: "install-match-cover",
-            scenario: "A feeder is buried across a yard and you need the minimum depth of cover.",
+            scenario: String(localized: "A feeder is buried across a yard and you need the minimum depth of cover."),
             choices: [.wiringMethods, .conductors, .services, .grounding],
             answer: .wiringMethods,
-            explanation: "Burial depth is in the general wiring-methods article, not in the article for whichever raceway is being buried. That is the pattern worth learning: Article 300 carries the rules that apply to every method, and the individual method articles carry only what is peculiar to that method."
+            explanation: String(localized: "Burial depth is in the general wiring-methods article, not in the article for whichever raceway is being buried. That is the pattern worth learning: Article 300 carries the rules that apply to every method, and the individual method articles carry only what is peculiar to that method.")
         ),
         ArticleMatchQuestion(
             id: "install-match-service-disconnect",
-            scenario: "You need to know how many disconnects a service is allowed and where they may be located.",
+            scenario: String(localized: "You need to know how many disconnects a service is allowed and where they may be located."),
             choices: [.services, .overcurrent, .generalRequirements, .loadCalculations],
             answer: .services,
-            explanation: "Everything from the utility connection to the service disconnecting means is Article 230: the number of disconnects, where they may be, clearances for overhead conductors, and what may be tapped ahead of them."
+            explanation: String(localized: "Everything from the utility connection to the service disconnecting means is Article 230: the number of disconnects, where they may be, clearances for overhead conductors, and what may be tapped ahead of them.")
         ),
         ArticleMatchQuestion(
             id: "install-match-receptacle-spacing",
-            scenario: "A dwelling living room wall is 14 feet long and you need to know how many receptacles it takes.",
+            scenario: String(localized: "A dwelling living room wall is 14 feet long and you need to know how many receptacles it takes."),
             choices: [.branchCircuits, .boxes, .loadCalculations, .definitions],
             answer: .branchCircuits,
-            explanation: "Where outlets have to be placed is Article 210. Article 220 tells you what those outlets are worth in volt-amperes once they exist, which is the distinction between the two articles and the one candidates blur."
+            explanation: String(localized: "Where outlets have to be placed is Article 210. Article 220 tells you what those outlets are worth in volt-amperes once they exist, which is the distinction between the two articles and the one candidates blur.")
         ),
         ArticleMatchQuestion(
             id: "install-match-support",
-            scenario: "You need the maximum spacing between straps on a run of 1 inch EMT.",
+            scenario: String(localized: "You need the maximum spacing between straps on a run of 1 inch EMT."),
             choices: [.emt, .generalRequirements, .raceways, .boxes],
             answer: .emt,
-            explanation: "Support spacing for a raceway lives in that raceway's own article in Chapter 3, which is where the wiring-method articles are. Chapter 9 is only the tables, and it has nothing to say about how a pipe is fastened."
+            explanation: String(localized: "Support spacing for a raceway lives in that raceway's own article in Chapter 3, which is where the wiring-method articles are. Chapter 9 is only the tables, and it has nothing to say about how a pipe is fastened.")
         ),
         ArticleMatchQuestion(
             id: "install-match-readily-accessible",
-            scenario: "A disconnect has to be readily accessible, and you are arguing about whether one behind a locked door qualifies.",
+            scenario: String(localized: "A disconnect has to be readily accessible, and you are arguing about whether one behind a locked door qualifies."),
             choices: [.definitions, .services, .generalRequirements, .overcurrent],
             answer: .definitions,
-            explanation: "When the whole question turns on what a phrase means, the answer is in Article 100 and nowhere else. Readily accessible, accessible, in sight from, and dwelling unit are all defined terms, and an argument about one of them is settled by the definition rather than by the article using it."
+            explanation: String(localized: "When the whole question turns on what a phrase means, the answer is in Article 100 and nowhere else. Readily accessible, accessible, in sight from, and dwelling unit are all defined terms, and an argument about one of them is settled by the definition rather than by the article using it.")
         ),
     ]
 }

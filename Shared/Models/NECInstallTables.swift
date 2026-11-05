@@ -25,23 +25,23 @@ extension NECTables {
     /// marked on it, which is itself a tested fact: the table is not the only
     /// place a volume can come from.
     static let boxSizes: [BoxSize] = [
-        BoxSize(name: "3x2x2 device", cubicInches: 10.0),
-        BoxSize(name: "3x2x2-1/4 device", cubicInches: 10.5),
-        BoxSize(name: "3x2x2-1/2 device", cubicInches: 12.5),
-        BoxSize(name: "3x2x2-3/4 device", cubicInches: 14.0),
-        BoxSize(name: "3x2x3-1/2 device", cubicInches: 18.0),
-        BoxSize(name: "4x2-1/8x1-1/2 device", cubicInches: 10.3),
-        BoxSize(name: "4x2-1/8x1-7/8 device", cubicInches: 13.0),
-        BoxSize(name: "4x2-1/8x2-1/8 device", cubicInches: 14.5),
-        BoxSize(name: "4x1-1/4 round/octagonal", cubicInches: 12.5),
-        BoxSize(name: "4x1-1/2 round/octagonal", cubicInches: 15.5),
-        BoxSize(name: "4x2-1/8 round/octagonal", cubicInches: 21.5),
-        BoxSize(name: "4x1-1/4 square", cubicInches: 18.0),
-        BoxSize(name: "4x1-1/2 square", cubicInches: 21.0),
-        BoxSize(name: "4x2-1/8 square", cubicInches: 30.3),
-        BoxSize(name: "4-11/16x1-1/4 square", cubicInches: 25.5),
-        BoxSize(name: "4-11/16x1-1/2 square", cubicInches: 29.5),
-        BoxSize(name: "4-11/16x2-1/8 square", cubicInches: 42.0),
+        BoxSize(name: String(localized: "3x2x2 device"), cubicInches: 10.0),
+        BoxSize(name: String(localized: "3x2x2-1/4 device"), cubicInches: 10.5),
+        BoxSize(name: String(localized: "3x2x2-1/2 device"), cubicInches: 12.5),
+        BoxSize(name: String(localized: "3x2x2-3/4 device"), cubicInches: 14.0),
+        BoxSize(name: String(localized: "3x2x3-1/2 device"), cubicInches: 18.0),
+        BoxSize(name: String(localized: "4x2-1/8x1-1/2 device"), cubicInches: 10.3),
+        BoxSize(name: String(localized: "4x2-1/8x1-7/8 device"), cubicInches: 13.0),
+        BoxSize(name: String(localized: "4x2-1/8x2-1/8 device"), cubicInches: 14.5),
+        BoxSize(name: String(localized: "4x1-1/4 round/octagonal"), cubicInches: 12.5),
+        BoxSize(name: String(localized: "4x1-1/2 round/octagonal"), cubicInches: 15.5),
+        BoxSize(name: String(localized: "4x2-1/8 round/octagonal"), cubicInches: 21.5),
+        BoxSize(name: String(localized: "4x1-1/4 square"), cubicInches: 18.0),
+        BoxSize(name: String(localized: "4x1-1/2 square"), cubicInches: 21.0),
+        BoxSize(name: String(localized: "4x2-1/8 square"), cubicInches: 30.3),
+        BoxSize(name: String(localized: "4-11/16x1-1/4 square"), cubicInches: 25.5),
+        BoxSize(name: String(localized: "4-11/16x1-1/2 square"), cubicInches: 29.5),
+        BoxSize(name: String(localized: "4-11/16x2-1/8 square"), cubicInches: 42.0),
     ]
 
     /// The smallest listed box that holds a computed fill.
@@ -71,13 +71,13 @@ extension NECTables {
 
         var displayName: String {
             switch self {
-            case .conductorThrough: return "A conductor passing through"
-            case .conductorTerminating: return "A conductor ending in the box"
-            case .conductorOriginating: return "A pigtail made up inside the box"
-            case .allClamps: return "Internal cable clamps, however many"
-            case .supportFitting: return "Each fixture stud or hickey"
-            case .deviceYoke: return "Each device or equipment yoke"
-            case .allGrounds: return "Up to four entering equipment grounds"
+            case .conductorThrough: return String(localized: "A conductor passing through")
+            case .conductorTerminating: return String(localized: "A conductor ending in the box")
+            case .conductorOriginating: return String(localized: "A pigtail made up inside the box")
+            case .allClamps: return String(localized: "Internal cable clamps, however many")
+            case .supportFitting: return String(localized: "Each fixture stud or hickey")
+            case .deviceYoke: return String(localized: "Each device or equipment yoke")
+            case .allGrounds: return String(localized: "Up to four entering equipment grounds")
             }
         }
 
@@ -98,13 +98,13 @@ extension NECTables {
         var sizedBy: String {
             switch self {
             case .conductorThrough, .conductorTerminating, .conductorOriginating:
-                return "its own size"
+                return String(localized: "its own size")
             case .allClamps, .supportFitting:
-                return "the largest conductor in the box"
+                return String(localized: "the largest conductor in the box")
             case .deviceYoke:
-                return "the largest conductor connected to that device"
+                return String(localized: "the largest conductor connected to that device")
             case .allGrounds:
-                return "the largest entering equipment ground; add 1/4 allowance for each beyond four"
+                return String(localized: "the largest entering equipment ground; add 1/4 allowance for each beyond four")
             }
         }
 
@@ -139,13 +139,13 @@ extension NECTables {
 
         var id: Int { rawValue }
 
-        var displayName: String { "Condition \(rawValue)" }
+        var displayName: String { String(localized: "Condition \(rawValue)") }
 
         var detail: String {
             switch self {
-            case .one: return "Live parts on one side, nothing live or grounded facing them"
-            case .two: return "Live parts on one side, grounded parts on the other"
-            case .three: return "Live parts on both sides of where you stand"
+            case .one: return String(localized: "Live parts on one side, nothing live or grounded facing them")
+            case .two: return String(localized: "Live parts on one side, grounded parts on the other")
+            case .three: return String(localized: "Live parts on both sides of where you stand")
             }
         }
     }
@@ -186,11 +186,11 @@ extension NECTables {
 
         var displayName: String {
             switch self {
-            case .directBurial: return "Direct-buried cable or conductors"
-            case .rigidOrIMC: return "Rigid metal or intermediate metal conduit"
-            case .nonmetallicRaceway: return "Nonmetallic raceway listed for direct burial"
-            case .residentialBranch: return "Residential branch circuit, 120V, 20A, GFCI protected"
-            case .lowVoltageLighting: return "Irrigation and landscape lighting, 30V or less"
+            case .directBurial: return String(localized: "Direct-buried cable or conductors")
+            case .rigidOrIMC: return String(localized: "Rigid metal or intermediate metal conduit")
+            case .nonmetallicRaceway: return String(localized: "Nonmetallic raceway listed for direct burial")
+            case .residentialBranch: return String(localized: "Residential branch circuit, 120V, 20A, GFCI protected")
+            case .lowVoltageLighting: return String(localized: "Irrigation and landscape lighting, 30V or less")
             }
         }
 
@@ -229,17 +229,17 @@ extension NECTables {
     /// run, raceway in feet for both.
     static let supportRules: [SupportRule] = [
         SupportRule(method: "EMT", withinOfBoxInches: 36, intervalFeet: 10, citation: "358.30"),
-        SupportRule(method: "Rigid metal conduit, 1/2 to 3/4 in.", withinOfBoxInches: 36, intervalFeet: 10, citation: "344.30"),
-        SupportRule(method: "Rigid metal conduit, 1 in.", withinOfBoxInches: 36, intervalFeet: 12, citation: "344.30"),
-        SupportRule(method: "Rigid metal conduit, 1-1/4 to 1-1/2 in.", withinOfBoxInches: 36, intervalFeet: 14, citation: "344.30"),
-        SupportRule(method: "Rigid metal conduit, 2 to 2-1/2 in.", withinOfBoxInches: 36, intervalFeet: 16, citation: "344.30"),
-        SupportRule(method: "Rigid metal conduit, 3 in. and larger", withinOfBoxInches: 36, intervalFeet: 20, citation: "344.30"),
-        SupportRule(method: "PVC conduit, 1/2 to 1 in.", withinOfBoxInches: 36, intervalFeet: 3, citation: "352.30"),
-        SupportRule(method: "PVC conduit, 1-1/4 to 2 in.", withinOfBoxInches: 36, intervalFeet: 5, citation: "352.30"),
-        SupportRule(method: "PVC conduit, 2-1/2 to 3 in.", withinOfBoxInches: 36, intervalFeet: 6, citation: "352.30"),
-        SupportRule(method: "Type NM cable", withinOfBoxInches: 12, intervalFeet: 4.5, citation: "334.30"),
-        SupportRule(method: "Type AC cable", withinOfBoxInches: 12, intervalFeet: 4.5, citation: "320.30"),
-        SupportRule(method: "Type MC cable", withinOfBoxInches: 12, intervalFeet: 6, citation: "330.30"),
+        SupportRule(method: String(localized: "Rigid metal conduit, 1/2 to 3/4 in."), withinOfBoxInches: 36, intervalFeet: 10, citation: "344.30"),
+        SupportRule(method: String(localized: "Rigid metal conduit, 1 in."), withinOfBoxInches: 36, intervalFeet: 12, citation: "344.30"),
+        SupportRule(method: String(localized: "Rigid metal conduit, 1-1/4 to 1-1/2 in."), withinOfBoxInches: 36, intervalFeet: 14, citation: "344.30"),
+        SupportRule(method: String(localized: "Rigid metal conduit, 2 to 2-1/2 in."), withinOfBoxInches: 36, intervalFeet: 16, citation: "344.30"),
+        SupportRule(method: String(localized: "Rigid metal conduit, 3 in. and larger"), withinOfBoxInches: 36, intervalFeet: 20, citation: "344.30"),
+        SupportRule(method: String(localized: "PVC conduit, 1/2 to 1 in."), withinOfBoxInches: 36, intervalFeet: 3, citation: "352.30"),
+        SupportRule(method: String(localized: "PVC conduit, 1-1/4 to 2 in."), withinOfBoxInches: 36, intervalFeet: 5, citation: "352.30"),
+        SupportRule(method: String(localized: "PVC conduit, 2-1/2 to 3 in."), withinOfBoxInches: 36, intervalFeet: 6, citation: "352.30"),
+        SupportRule(method: String(localized: "Type NM cable"), withinOfBoxInches: 12, intervalFeet: 4.5, citation: "334.30"),
+        SupportRule(method: String(localized: "Type AC cable"), withinOfBoxInches: 12, intervalFeet: 4.5, citation: "320.30"),
+        SupportRule(method: String(localized: "Type MC cable"), withinOfBoxInches: 12, intervalFeet: 6, citation: "330.30"),
     ]
 
     /// Total bends between pull points, for every raceway article that has the

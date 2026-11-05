@@ -15,43 +15,43 @@ extension CandidateMistake {
     static let usedGECTableForEGC = MistakePattern(
         id: "egc-used-250-66",
         skill: PracticeSkill.egcSizing.rawValue,
-        summary: "You sized this from Table 250.66. That table sizes the conductor to the electrode, and it is read from the service conductor. An equipment ground running with a circuit comes from Table 250.122, read from the overcurrent device."
+        summary: String(localized: "You sized this from Table 250.66. That table sizes the conductor to the electrode, and it is read from the service conductor. An equipment ground running with a circuit comes from Table 250.122, read from the overcurrent device.")
     )
     static let egcWrongMaterialColumn = MistakePattern(
         id: "egc-wrong-material-column",
         skill: PracticeSkill.egcSizing.rawValue,
-        summary: "You read the other metal's column. Aluminum needs more area than copper for the same job, so the two columns are never the same size on a row."
+        summary: String(localized: "You read the other metal's column. Aluminum needs more area than copper for the same job, so the two columns are never the same size on a row.")
     )
     static let egcReadRowBelow = MistakePattern(
         id: "egc-read-row-below",
         skill: PracticeSkill.egcSizing.rawValue,
-        summary: "You dropped to the row below. Table 250.122 is a set of not-exceeding bands: a rating between two rows reads the row ABOVE it, so a 45 A device takes the 60 A row."
+        summary: String(localized: "You dropped to the row below. Table 250.122 is a set of not-exceeding bands: a rating between two rows reads the row ABOVE it, so a 45 A device takes the 60 A row.")
     )
     static let egcUsedCircuitConductor = MistakePattern(
         id: "egc-used-circuit-conductor",
         skill: PracticeSkill.egcSizing.rawValue,
-        summary: "That is the circuit conductor size, not the equipment ground. The ground is sized independently from the device rating and is almost always smaller."
+        summary: String(localized: "That is the circuit conductor size, not the equipment ground. The ground is sized independently from the device rating and is almost always smaller.")
     )
 
     static let usedEGCTableForGEC = MistakePattern(
         id: "gec-used-250-122",
         skill: PracticeSkill.gecSizing.rawValue,
-        summary: "You sized this from Table 250.122, which is read from the overcurrent device and sizes an equipment ground. The conductor to the electrode comes from Table 250.66, read from the largest ungrounded service conductor."
+        summary: String(localized: "You sized this from Table 250.122, which is read from the overcurrent device and sizes an equipment ground. The conductor to the electrode comes from Table 250.66, read from the largest ungrounded service conductor.")
     )
     static let gecIgnoredElectrodeCeiling = MistakePattern(
         id: "gec-ignored-electrode-ceiling",
         skill: PracticeSkill.gecSizing.rawValue,
-        summary: "That is the table value, but the electrode caps it. A rod, pipe or plate never requires more than 6 AWG copper, a concrete-encased electrode more than 4 AWG, and a ground ring more than the ring conductor itself."
+        summary: String(localized: "That is the table value, but the electrode caps it. A rod, pipe or plate never requires more than 6 AWG copper, a concrete-encased electrode more than 4 AWG, and a ground ring more than the ring conductor itself.")
     )
     static let gecWrongServiceColumn = MistakePattern(
         id: "gec-wrong-service-column",
         skill: PracticeSkill.gecSizing.rawValue,
-        summary: "You read the copper service bands for an aluminum service, or the reverse. Table 250.66 has a separate set of bands for each service metal, and they do not line up."
+        summary: String(localized: "You read the copper service bands for an aluminum service, or the reverse. Table 250.66 has a separate set of bands for each service metal, and they do not line up.")
     )
     static let gecMissedParallelSet = MistakePattern(
         id: "gec-missed-parallel-set",
         skill: PracticeSkill.gecSizing.rawValue,
-        summary: "You read the table on one conductor of the parallel set. The table is entered on the EQUIVALENT area of the whole set: two 250 kcmil in parallel is read as 500 kcmil."
+        summary: String(localized: "You read the table on one conductor of the parallel set. The table is entered on the EQUIVALENT area of the whole set: two 250 kcmil in parallel is read as 500 kcmil.")
     )
 }
 
@@ -113,15 +113,15 @@ extension CalcGenerator {
         )
 
         var steps = [
-            "The equipment grounding conductor is sized from the rating of the overcurrent device ahead of the circuit, not from the circuit conductors. That rating is \(ocpd) A.",
+            String(localized: "The equipment grounding conductor is sized from the rating of the overcurrent device ahead of the circuit, not from the circuit conductors. That rating is \(ocpd) A."),
         ]
         if ocpd == band {
-            steps.append("Table 250.122 has a row at \(band) A, so read it directly.")
+            steps.append(String(localized: "Table 250.122 has a row at \(band) A, so read it directly."))
         } else {
-            steps.append("Table 250.122 has no \(ocpd) A row. The rows are not-exceeding bands, so \(ocpd) A reads the \(band) A row.")
+            steps.append(String(localized: "Table 250.122 has no \(ocpd) A row. The rows are not-exceeding bands, so \(ocpd) A reads the \(band) A row."))
         }
-        steps.append("In the \(material.displayName.lowercased()) column that row calls for \(answer).")
-        steps.append("This is the Table 250.122 minimum for the stated ordinary circuit. Increasing ungrounded conductors beyond the minimum sufficient ampacity can also require a proportional wire EGC increase under 250.122(B).")
+        steps.append(String(localized: "In the \(material.inlineName) column that row calls for \(answer)."))
+        steps.append(String(localized: "This is the Table 250.122 minimum for the stated ordinary circuit. Increasing ungrounded conductors beyond the minimum sufficient ampacity can also require a proportional wire EGC increase under 250.122(B)."))
 
         let mistakes = mistakeMap(answerLabel: answer, choices: choices.labels, [
             (fromGECTable, CandidateMistake.usedGECTableForEGC),
@@ -132,16 +132,16 @@ extension CalcGenerator {
 
         return CalcScenario(
             id: "gen-egcSizing-\(UUID().uuidString)",
-            situation: "For an ordinary circuit with conductors not increased in size and no parallel raceways, what is the minimum wire equipment grounding conductor from Table 250.122?",
+            situation: String(localized: "For an ordinary circuit with conductors not increased in size and no parallel raceways, what is the minimum wire equipment grounding conductor from Table 250.122?"),
             givens: [
-                Given("Protected at", "\(ocpd)", unit: "A"),
+                Given(String(localized: "Protected at"), "\(ocpd)", unit: "A"),
                 .material(material),
-                Given("Conductor", "Run in a raceway"),
+                Given(String(localized: "Conductor"), String(localized: "Run in a raceway")),
             ],
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "250.122, Table 250.122, 250.122(B)",
+            citation: String(localized: "250.122, Table 250.122, 250.122(B)"),
             mistakes: mistakes
         )
     }
@@ -208,16 +208,16 @@ extension CalcGenerator {
 
         var steps: [String] = []
         if sets > 1 {
-            steps.append("Parallel sets are read on the equivalent area of the whole set, not on one conductor: \(sets) × \(serviceSize).")
+            steps.append(String(localized: "Parallel sets are read on the equivalent area of the whole set, not on one conductor: \(sets) × \(serviceSize)."))
         }
-        steps.append("Table 250.66 is entered on the largest ungrounded SERVICE conductor, and the \(serviceMaterial.displayName.lowercased()) service bands are their own set of rows.")
-        steps.append("Those bands call for \(fromTable) copper.")
+        steps.append(String(localized: "Table 250.66 is entered on the largest ungrounded SERVICE conductor, and the \(serviceMaterial.inlineName) service bands are their own set of rows."))
+        steps.append(String(localized: "Those bands call for \(fromTable) copper."))
         if answer != fromTable {
-            steps.append("\(electrode.citation) then caps it: a \(electrode.displayName.lowercased()) electrode never requires more than \(electrode.copperCeiling ?? fromTable) copper, so the run to it is \(answer).")
+            steps.append(String(localized: "\(electrode.citation) then caps it: a \(electrode.inlineName) electrode never requires more than \(electrode.copperCeiling ?? fromTable) copper, so the run to it is \(answer)."))
         } else if let ceiling = electrode.copperCeiling {
-            steps.append("\(electrode.citation) caps a \(electrode.displayName.lowercased()) electrode at \(ceiling) copper, and the table value is already at or below that, so \(answer) stands.")
+            steps.append(String(localized: "\(electrode.citation) caps a \(electrode.inlineName) electrode at \(ceiling) copper, and the table value is already at or below that, so \(answer) stands."))
         } else {
-            steps.append("A metal water pipe electrode has no ceiling of its own, so the table value stands: \(answer).")
+            steps.append(String(localized: "A metal water pipe electrode has no ceiling of its own, so the table value stands: \(answer)."))
         }
 
         let mistakes = mistakeMap(answerLabel: answer, choices: choices.labels, [
@@ -228,20 +228,20 @@ extension CalcGenerator {
         ])
 
         var givens: [Given] = [
-            Given("Service conductor", sets > 1 ? "\(sets) × \(serviceSize)" : serviceSize),
+            Given(String(localized: "Service conductor"), sets > 1 ? "\(sets) × \(serviceSize)" : serviceSize),
             .material(serviceMaterial),
-            Given("Electrode", electrode.displayName),
+            Given(String(localized: "Electrode"), electrode.displayName),
         ]
-        givens.append(Given("Electrode conductor", "Copper"))
+        givens.append(Given(String(localized: "Electrode conductor"), String(localized: "Copper")))
 
         return CalcScenario(
             id: "gen-gecSizing-\(UUID().uuidString)",
-            situation: "What minimum copper grounding electrode conductor connects this service only to the stated electrode, without continuing to another electrode? For a ground ring, assume a 2 AWG copper ring. Assume physical protection where required by 250.64(B).",
+            situation: String(localized: "What minimum copper grounding electrode conductor connects this service only to the stated electrode, without continuing to another electrode? For a ground ring, assume a 2 AWG copper ring. Assume physical protection where required by 250.64(B)."),
             givens: givens,
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "250.66, Table 250.66, \(electrode.citation)",
+            citation: String(localized: "250.66, Table 250.66, \(electrode.citation)"),
             mistakes: mistakes
         )
     }

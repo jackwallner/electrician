@@ -94,11 +94,11 @@ struct DrillCompleteView: View {
     /// card-game vocabulary inherited from the app this shell was ported from,
     /// and a journeyman candidate reading them can tell.
     private var headline: String {
-        guard let score else { return "Session complete" }
+        guard let score else { return String(localized: "Session complete") }
         let fraction = Double(score) / Double(max(total, 1))
-        if fraction >= 1 { return "All correct" }
-        if fraction >= 0.7 { return "Good progress" }
-        return "Review the misses"
+        if fraction >= 1 { return String(localized: "All correct") }
+        if fraction >= 0.7 { return String(localized: "Good progress") }
+        return String(localized: "Review the misses")
     }
 
     private var subheadline: String {

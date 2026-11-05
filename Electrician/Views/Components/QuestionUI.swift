@@ -162,6 +162,7 @@ struct QuestionPager<Choices: View>: View {
             VStack(spacing: density == .compact ? 14 : 20) {
                 if let eyebrow {
                     Text(eyebrow)
+                        .textCase(.uppercase)
                         .font(Theme.eyebrow)
                         .kerning(Theme.eyebrowKerning)
                         .foregroundStyle(Theme.inkTertiary)

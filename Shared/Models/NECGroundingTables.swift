@@ -119,10 +119,20 @@ extension NECTables {
 
         var displayName: String {
             switch self {
-            case .rodPipePlate: return "Rod, pipe or plate"
-            case .concreteEncased: return "Concrete-encased"
-            case .groundRing: return "Ground ring"
-            case .waterPipe: return "Metal water pipe"
+            case .rodPipePlate: return String(localized: "Rod, pipe or plate")
+            case .concreteEncased: return String(localized: "Concrete-encased")
+            case .groundRing: return String(localized: "Ground ring")
+            case .waterPipe: return String(localized: "Metal water pipe")
+            }
+        }
+
+        /// The name as it reads in the middle of a sentence.
+        var inlineName: String {
+            switch self {
+            case .rodPipePlate: return String(localized: "rod, pipe or plate")
+            case .concreteEncased: return String(localized: "concrete-encased")
+            case .groundRing: return String(localized: "ground ring")
+            case .waterPipe: return String(localized: "metal water pipe")
             }
         }
 

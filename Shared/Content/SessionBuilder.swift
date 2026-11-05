@@ -80,15 +80,15 @@ enum SessionBuilder {
 
     static let sessionDrill = Drill(
         id: "quick-session",
-        title: "Quick Session",
-        subtitle: "A short mix of what you need next",
+        title: String(localized: "Quick Session"),
+        subtitle: String(localized: "A short mix of what you need next"),
         kind: .flashcards([])
     )
 
     static let reviewDrill = Drill(
         id: "review-session",
-        title: "Fix My Mistakes",
-        subtitle: "The questions you keep getting wrong",
+        title: String(localized: "Fix My Mistakes"),
+        subtitle: String(localized: "The questions you keep getting wrong"),
         kind: .flashcards([])
     )
 
@@ -97,8 +97,8 @@ enum SessionBuilder {
         // already on device, so it stays put while the symbol gets the honest
         // name.
         id: "game-night-prep",
-        title: "Exam Warm-Up",
-        subtitle: "A short targeted mix before the exam",
+        title: String(localized: "Exam Warm-Up"),
+        subtitle: String(localized: "A short targeted mix before the exam"),
         kind: .flashcards([])
     )
 

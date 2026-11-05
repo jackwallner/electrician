@@ -27,31 +27,31 @@ enum PracticeSkill: String, CaseIterable, Identifiable, Sendable {
 
     var title: String {
         switch self {
-        case .ampacity: return "Derate the Conductor"
-        case .overcurrent: return "Size the Breaker"
-        case .conduitFill: return "Fill the Pipe"
-        case .boxFill: return "Fill the Box"
-        case .voltageDrop: return "Drop the Voltage"
-        case .egcSizing: return "Size the Ground"
-        case .gecSizing: return "Reach the Electrode"
-        case .motorConductor: return "Feed the Motor"
-        case .motorProtection: return "Protect the Motor"
-        case .dwellingLoad: return "Size the Service"
+        case .ampacity: return String(localized: "Derate the Conductor")
+        case .overcurrent: return String(localized: "Size the Breaker")
+        case .conduitFill: return String(localized: "Fill the Pipe")
+        case .boxFill: return String(localized: "Fill the Box")
+        case .voltageDrop: return String(localized: "Drop the Voltage")
+        case .egcSizing: return String(localized: "Size the Ground")
+        case .gecSizing: return String(localized: "Reach the Electrode")
+        case .motorConductor: return String(localized: "Feed the Motor")
+        case .motorProtection: return String(localized: "Protect the Motor")
+        case .dwellingLoad: return String(localized: "Size the Service")
         }
     }
 
     var subtitle: String {
         switch self {
-        case .ampacity: return "Heat and bundling, unlimited reps"
-        case .overcurrent: return "Where 240.4(D) beats the table"
-        case .conduitFill: return "Smallest raceway that works"
-        case .boxFill: return "Counting allowances, not wires"
-        case .voltageDrop: return "The field calculation, drilled"
-        case .egcSizing: return "Table 250.122, read from the breaker"
-        case .gecSizing: return "Table 250.66, and the rod's own ceiling"
-        case .motorConductor: return "Table current for ordinary motors"
-        case .motorProtection: return "Device percentages and standard ratings"
-        case .dwellingLoad: return "The full dwelling calculation"
+        case .ampacity: return String(localized: "Heat and bundling, unlimited reps")
+        case .overcurrent: return String(localized: "Where 240.4(D) beats the table")
+        case .conduitFill: return String(localized: "Smallest raceway that works")
+        case .boxFill: return String(localized: "Counting allowances, not wires")
+        case .voltageDrop: return String(localized: "The field calculation, drilled")
+        case .egcSizing: return String(localized: "Table 250.122, read from the breaker")
+        case .gecSizing: return String(localized: "Table 250.66, and the rod's own ceiling")
+        case .motorConductor: return String(localized: "Table current for ordinary motors")
+        case .motorProtection: return String(localized: "Device percentages and standard ratings")
+        case .dwellingLoad: return String(localized: "The full dwelling calculation")
         }
     }
 
@@ -98,8 +98,8 @@ enum EndlessPractice {
 
     static let challengeDrill = Drill(
         id: "timed-challenge",
-        title: "Timed Challenge",
-        subtitle: "Beat the clock",
+        title: String(localized: "Timed Challenge"),
+        subtitle: String(localized: "Beat the clock"),
         kind: .quiz([])
     )
 
@@ -122,7 +122,7 @@ enum EndlessPractice {
     /// Calculations room does best: a miss is almost never bad arithmetic, it
     /// is one skipped step, and a paragraph hides which one. The generator is
     /// the paid tier, so it gets the better explanation, not the worse one.
-    static func item(from scenario: CalcScenario, skill: PracticeSkill, sourceLabel: String = "Endless Practice") -> QuickItem {
+    static func item(from scenario: CalcScenario, skill: PracticeSkill, sourceLabel: String = String(localized: "Endless Practice")) -> QuickItem {
         QuickItem(
             id: skill.itemPrefix + UUID().uuidString,
             prompt: scenario.situation,
@@ -140,7 +140,7 @@ enum EndlessPractice {
     }
 
     /// One freshly generated problem for a skill.
-    static func item(for skill: PracticeSkill, using rng: inout RandomNumberGenerator, sourceLabel: String = "Endless Practice") -> QuickItem {
+    static func item(for skill: PracticeSkill, using rng: inout RandomNumberGenerator, sourceLabel: String = String(localized: "Endless Practice")) -> QuickItem {
         item(from: scenario(for: skill, using: &rng), skill: skill, sourceLabel: sourceLabel)
     }
 
@@ -186,10 +186,10 @@ enum EndlessPractice {
             for _ in 0..<24 {
                 let candidate = scenario(for: skill, using: &rng)
                 guard candidate.mistakes.values.contains(pattern) else { continue }
-                made = item(from: candidate, skill: skill, sourceLabel: "Targeted Practice")
+                made = item(from: candidate, skill: skill, sourceLabel: String(localized: "Targeted Practice"))
                 break
             }
-            items.append(made ?? item(for: skill, using: &rng, sourceLabel: "Targeted Practice"))
+            items.append(made ?? item(for: skill, using: &rng, sourceLabel: String(localized: "Targeted Practice")))
         }
         return items
     }

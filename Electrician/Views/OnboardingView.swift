@@ -156,24 +156,24 @@ struct OnboardingView: View {
                 infoPage(
                     icon: "book.closed.fill",
                     tint: Theme.voltage,
-                    title: "The exam is open book",
-                    body: "Which means it is not testing what you remember. It is testing how fast you find it. Short drills on where each kind of question actually lives.",
+                    title: String(localized: "The exam is open book"),
+                    body: String(localized: "Which means it is not testing what you remember. It is testing how fast you find it. Short drills on where each kind of question actually lives."),
                     givens: []
                 )
             case .whatFails:
                 infoPage(
                     icon: "thermometer.medium",
                     tint: Theme.copper,
-                    title: "The problems that fail people",
-                    body: "Derating, breaker sizing, conduit and box fill, grounding conductors, motor circuits, the whole dwelling service. Every one is a pure calculation, so we generate them forever instead of shipping the same fifty questions.",
+                    title: String(localized: "The problems that fail people"),
+                    body: String(localized: "Derating, breaker sizing, conduit and box fill, grounding conductors, motor circuits, the whole dwelling service. Every one is a pure calculation, so we generate them forever instead of shipping the same fifty questions."),
                     givens: [.conductor("6 AWG", "THHN"), .ambient(45), .currentCarrying(6)]
                 )
             case .walkInReady:
                 infoPage(
                     icon: "checkmark.seal.fill",
                     tint: Theme.ground,
-                    title: "Walk in ready",
-                    body: "Know the small-conductor cap, size a motor off the table and not the nameplate, and stop reading Table 250.66 where 250.122 was wanted. Sitting it this week? Tell us the date and we will tell you what to skip.",
+                    title: String(localized: "Walk in ready"),
+                    body: String(localized: "Know the small-conductor cap, size a motor off the table and not the nameplate, and stop reading Table 250.66 where 250.122 was wanted. Sitting it this week? Tell us the date and we will tell you what to skip."),
                     givens: []
                 )
             case .track: trackStep
@@ -327,8 +327,8 @@ struct OnboardingView: View {
 
     private var trackStep: some View {
         setupStep(
-            title: "Which licence?",
-            subtitle: "It changes what we put in front of you first."
+            title: String(localized: "Which licence?"),
+            subtitle: String(localized: "It changes what we put in front of you first.")
         ) {
             VStack(spacing: 10) {
                 ForEach(LicenseTrack.allCases) { track in
@@ -352,8 +352,8 @@ struct OnboardingView: View {
 
     private var jurisdictionStep: some View {
         setupStep(
-            title: "Where are you sitting it?",
-            subtitle: "We use this to work out which code edition your exam is written against, and who actually issues your licence."
+            title: String(localized: "Where are you sitting it?"),
+            subtitle: String(localized: "We use this to work out which code edition your exam is written against, and who actually issues your licence.")
         ) {
             if showsStateList {
                 stateSearchField
@@ -366,7 +366,7 @@ struct OnboardingView: View {
             if showsStateList {
                 let matches = Jurisdictions.matching(jurisdictionQuery)
                 if matches.isEmpty {
-                    Text("No match. Choose \(Jurisdictions.other.name) and set your edition by hand on the next step.")
+                    Text("No match. Choose \(Jurisdictions.other.displayName) and set your edition by hand on the next step.")
                         .font(.footnote)
                         .foregroundStyle(Theme.inkSecondary)
                 }
@@ -431,7 +431,7 @@ struct OnboardingView: View {
                         selected ? Theme.voltageFill : Theme.well,
                         in: RoundedRectangle(cornerRadius: 7, style: .continuous)
                     )
-                Text(record.name)
+                Text(record.displayName)
                     .font(.body.weight(selected ? .semibold : .regular))
                     .foregroundStyle(Theme.ink)
                 Spacer()
@@ -458,8 +458,8 @@ struct OnboardingView: View {
 
     private var editionStep: some View {
         setupStep(
-            title: "Which code edition?",
-            subtitle: "Exams are written against one cycle. This app's numbers are \(NECTables.edition), and we would rather tell you where that differs than let you find out in the exam."
+            title: String(localized: "Which code edition?"),
+            subtitle: String(localized: "Exams are written against one cycle. This app's numbers are \(NECTables.edition), and we would rather tell you where that differs than let you find out in the exam.")
         ) {
             VStack(spacing: 10) {
                 choiceRow(
@@ -474,7 +474,7 @@ struct OnboardingView: View {
                 ForEach(offeredEditions, id: \.self) { candidate in
                     choiceRow(
                         title: candidate.displayName,
-                        detail: candidate == .nec2023 ? "Matches this app's tables exactly" : nil,
+                        detail: candidate == .nec2023 ? String(localized: "Matches this app's tables exactly") : nil,
                         icon: nil,
                         selected: profile.edition == candidate
                     ) {
@@ -483,7 +483,7 @@ struct OnboardingView: View {
                 }
                 choiceRow(
                     title: CandidateEdition.different.displayName,
-                    detail: "Older than 2014, or a state code with heavy local amendments",
+                    detail: String(localized: "Older than 2014, or a state code with heavy local amendments"),
                     icon: nil,
                     selected: profile.edition == .different
                 ) {
@@ -506,23 +506,23 @@ struct OnboardingView: View {
     }
 
     private var suggestedEditionTitle: String {
-        guard let suggested = profile.suggestedEdition else { return "I'm not sure" }
-        return "I'm not sure, use \(suggested.displayName)"
+        guard let suggested = profile.suggestedEdition else { return String(localized: "I'm not sure") }
+        return String(localized: "I'm not sure, use \(suggested.displayName)")
     }
 
     private var suggestedEditionDetail: String {
         guard let record = profile.jurisdictionRecord, record.commonEdition != nil else {
-            return "Pick a state on the previous step and we can suggest one. Otherwise check with your board."
+            return String(localized: "Pick a state on the previous step and we can suggest one. Otherwise check with your board.")
         }
-        return "Commonly adopted in \(record.name) as of \(Jurisdictions.reviewed). Confirm with \(record.authority)."
+        return String(localized: "Commonly adopted in \(record.displayName) as of \(Jurisdictions.reviewed). Confirm with \(record.authority).")
     }
 
     // MARK: Exam date
 
     private var examDateStep: some View {
         setupStep(
-            title: "When is the exam?",
-            subtitle: "The date changes what we put in front of you, not just what the countdown says. Sitting it this week gets a different plan from sitting it in the spring. You can skip it."
+            title: String(localized: "When is the exam?"),
+            subtitle: String(localized: "The date changes what we put in front of you, not just what the countdown says. Sitting it this week gets a different plan from sitting it in the spring. You can skip it.")
         ) {
             VStack(spacing: 10) {
                 ForEach(datePresets, id: \.label) { preset in
@@ -555,7 +555,7 @@ struct OnboardingView: View {
                         Divider().overlay(Theme.rule)
                         HStack(spacing: 14) {
                             statPill(value: "\(profile.daysUntilExam ?? 0)", caption: countdownCaption)
-                            statPill(value: "\(profile.suggestedDailyQuestions)", caption: "Questions a day")
+                            statPill(value: "\(profile.suggestedDailyQuestions)", caption: String(localized: "Questions a day"))
                         }
                     }
                 }
@@ -593,17 +593,17 @@ struct OnboardingView: View {
     /// what to skip.
     private var datePresets: [DatePreset] {
         [
-            DatePreset(label: "Tomorrow", detail: "No time to cover everything. We will tell you what to skip.",
+            DatePreset(label: String(localized: "Tomorrow"), detail: String(localized: "No time to cover everything. We will tell you what to skip."),
                        days: 1, tolerance: 0),
-            DatePreset(label: "Later this week", detail: "Triage: calculations, then the mistakes you repeat.",
+            DatePreset(label: String(localized: "Later this week"), detail: String(localized: "Triage: calculations, then the mistakes you repeat."),
                        days: 5, tolerance: 2),
-            DatePreset(label: "In about 2 weeks", detail: "Every problem shape twice, then the weak ones.",
+            DatePreset(label: String(localized: "In about 2 weeks"), detail: String(localized: "Every problem shape twice, then the weak ones."),
                        days: 14, tolerance: 3),
-            DatePreset(label: "In about a month", detail: "Enough to cover every room twice.",
+            DatePreset(label: String(localized: "In about a month"), detail: String(localized: "Enough to cover every room twice."),
                        days: 30, tolerance: 5),
-            DatePreset(label: "In about 3 months", detail: "Comfortable. Build the navigation habit first.",
+            DatePreset(label: String(localized: "In about 3 months"), detail: String(localized: "Comfortable. Build the navigation habit first."),
                        days: 90, tolerance: 20),
-            DatePreset(label: "No date yet", detail: "Study now, book later. Nothing is locked by this.",
+            DatePreset(label: String(localized: "No date yet"), detail: String(localized: "Study now, book later. Nothing is locked by this."),
                        days: nil, tolerance: 0),
         ]
     }
@@ -620,7 +620,7 @@ struct OnboardingView: View {
     }
 
     private var countdownCaption: String {
-        (profile.daysUntilExam ?? 0) == 1 ? "Day out" : "Days out"
+        PluralLabel.daysOut(profile.daysUntilExam ?? 0)
     }
 
     private func statPill(value: String, caption: String) -> some View {
@@ -639,8 +639,8 @@ struct OnboardingView: View {
 
     private var experienceStep: some View {
         setupStep(
-            title: "Where are you starting from?",
-            subtitle: "This decides which room we open first and whether you get the primer."
+            title: String(localized: "Where are you starting from?"),
+            subtitle: String(localized: "This decides which room we open first and whether you get the primer.")
         ) {
             VStack(spacing: 10) {
                 ForEach(ExperienceLevel.allCases) { level in
@@ -661,8 +661,8 @@ struct OnboardingView: View {
 
     private var focusStep: some View {
         setupStep(
-            title: "What do you want to hit hardest?",
-            subtitle: "Pick as many as you like, or none. We surface these first on Home; everything stays available either way."
+            title: String(localized: "What do you want to hit hardest?"),
+            subtitle: String(localized: "Pick as many as you like, or none. We surface these first on Home; everything stays available either way.")
         ) {
             VStack(spacing: 10) {
                 ForEach(DrillLibrary.rooms) { room in
@@ -681,7 +681,7 @@ struct OnboardingView: View {
             infoCard(
                 icon: "infinity",
                 tint: Theme.conduit,
-                text: "Whatever you pick, Endless Practice generates \(PracticeSkill.allCases.count) calculation shapes without limit, so no room ever runs out of questions."
+                text: String(localized: "Whatever you pick, Endless Practice generates \(PracticeSkill.allCases.count) calculation shapes without limit, so no room ever runs out of questions.")
             )
         }
     }
@@ -690,21 +690,21 @@ struct OnboardingView: View {
 
     private var reminderStep: some View {
         setupStep(
-            title: "One nudge a day?",
-            subtitle: "Code Minute is five questions. The candidates who pass are the ones who did it on the days they did not feel like it."
+            title: String(localized: "One nudge a day?"),
+            subtitle: String(localized: "Code Minute is five questions. The candidates who pass are the ones who did it on the days they did not feel like it.")
         ) {
             VStack(spacing: 10) {
                 choiceRow(
-                    title: "Remind me daily",
-                    detail: "One notification, at a time you choose",
+                    title: String(localized: "Remind me daily"),
+                    detail: String(localized: "One notification, at a time you choose"),
                     icon: "bell.badge.fill",
                     selected: settings.reminderEnabled
                 ) {
                     settings.reminderEnabled = true
                 }
                 choiceRow(
-                    title: "No reminders",
-                    detail: "You can switch this on later in Settings",
+                    title: String(localized: "No reminders"),
+                    detail: String(localized: "You can switch this on later in Settings"),
                     icon: "bell.slash",
                     selected: !settings.reminderEnabled
                 ) {
@@ -726,7 +726,7 @@ struct OnboardingView: View {
                 infoCard(
                     icon: "exclamationmark.triangle.fill",
                     tint: Theme.brass,
-                    text: "Notifications are turned off for this app in iOS Settings. Turn them on there and we will schedule it."
+                    text: String(localized: "Notifications are turned off for this app in iOS Settings. Turn them on there and we will schedule it.")
                 )
             }
             if let goalTarget = goalSuggestion {
@@ -738,7 +738,7 @@ struct OnboardingView: View {
     private var goalSuggestion: String? {
         guard let countdown = profile.examCountdownSummary,
               let planned = profile.plannedQuestions else { return nil }
-        return "\(countdown). At \(profile.suggestedDailyQuestions) questions a day you will have worked roughly \(planned.groupedText) problems before you sit it."
+        return String(localized: "\(countdown). At \(profile.suggestedDailyQuestions) questions a day you will have worked roughly \(planned.groupedText) problems before you sit it.")
     }
 
     // MARK: Plan recap
@@ -747,33 +747,33 @@ struct OnboardingView: View {
     /// the seven questions feel like they bought something.
     private var planStep: some View {
         setupStep(
-            title: "Your plan",
-            subtitle: "Change any of it later in Exam Target and Settings."
+            title: String(localized: "Your plan"),
+            subtitle: String(localized: "Change any of it later in Exam Target and Settings.")
         ) {
             VStack(spacing: 0) {
-                planRow(icon: "person.text.rectangle", label: "Licence",
+                planRow(icon: "person.text.rectangle", label: String(localized: "Licence"),
                         value: profile.licenseTrack.displayName)
                 planDivider
-                planRow(icon: "mappin.and.ellipse", label: "Jurisdiction",
-                        value: profile.trimmedJurisdiction.isEmpty ? "Not set" : profile.trimmedJurisdiction,
+                planRow(icon: "mappin.and.ellipse", label: String(localized: "Jurisdiction"),
+                        value: profile.trimmedJurisdiction.isEmpty ? String(localized: "Not set") : profile.displayJurisdiction,
                         detail: profile.jurisdictionRecord.map {
-                            "\($0.path.summary). Exam via \($0.providerLabel)."
+                            String(localized: "\($0.path.summary). Exam via \($0.providerLabel).")
                         })
                 planDivider
-                planRow(icon: "books.vertical", label: "Code edition",
+                planRow(icon: "books.vertical", label: String(localized: "Code edition"),
                         value: profile.editionSummary,
                         detail: profile.editionMatchesApp
-                            ? "Every answer in the app is built from this edition."
+                            ? String(localized: "Every answer in the app is built from this edition.")
                             : profile.editionAdvice)
                 planDivider
-                planRow(icon: "calendar", label: "Exam date",
-                        value: profile.examCountdownSummary ?? "No date set",
-                        detail: "\(profile.pace.title): \(profile.suggestedDailyQuestions) questions a day.")
+                planRow(icon: "calendar", label: String(localized: "Exam date"),
+                        value: profile.examCountdownSummary ?? String(localized: "No date set"),
+                        detail: String(localized: "\(profile.pace.title): \(profile.suggestedDailyQuestions) questions a day."))
                 planDivider
-                planRow(icon: "figure.stand", label: "Starting from",
-                        value: ExperienceLevel(rawValue: skillLevel)?.title ?? "Not set")
+                planRow(icon: "figure.stand", label: String(localized: "Starting from"),
+                        value: ExperienceLevel(rawValue: skillLevel)?.title ?? String(localized: "Not set"))
                 planDivider
-                planRow(icon: "scope", label: "Focus",
+                planRow(icon: "scope", label: String(localized: "Focus"),
                         value: focusSummary)
             }
             .padding(4)
@@ -786,7 +786,7 @@ struct OnboardingView: View {
             infoCard(
                 icon: "shield.lefthalf.filled",
                 tint: Theme.conduit,
-                text: "This app teaches the numbers, the article citations and the method. It never reproduces NEC text, which is NFPA's copyright. Keep your own code book beside you."
+                text: String(localized: "This app teaches the numbers, the article citations and the method. It never reproduces NEC text, which is NFPA's copyright. Keep your own code book beside you.")
             )
         }
     }
@@ -799,7 +799,7 @@ struct OnboardingView: View {
         let names = DrillLibrary.rooms
             .filter { profile.focusAreas.contains($0.id) }
             .map(\.name)
-        return names.isEmpty ? "Everything" : names.joined(separator: ", ")
+        return names.isEmpty ? String(localized: "Everything") : names.joined(separator: ", ")
     }
 
     private func planRow(icon: String, label: String, value: String, detail: String? = nil) -> some View {
@@ -909,13 +909,14 @@ struct OnboardingView: View {
     private var trialHeadline: String {
         switch profile.pace {
         case .cram:
+            let countdown = profile.examCountdownSummary ?? String(localized: "Exam soon")
             return trialLength == nil
-                ? "\(profile.examCountdownSummary ?? "Exam soon"). Make it count."
-                : "\(profile.examCountdownSummary ?? "Exam soon"). Try it free."
+                ? String(localized: "\(countdown). Make it count.")
+                : String(localized: "\(countdown). Try it free.")
         case .sprint:
-            return trialLength == nil ? "Two weeks is enough, if you spend it right" : "Try \(Membership.name) free"
+            return trialLength == nil ? String(localized: "Two weeks is enough, if you spend it right") : String(localized: "Try \(Membership.name) free")
         default:
-            return trialLength == nil ? "Get \(Membership.name)" : "Try \(Membership.name) free"
+            return trialLength == nil ? String(localized: "Get \(Membership.name)") : String(localized: "Try \(Membership.name) free")
         }
     }
 
@@ -970,28 +971,28 @@ struct OnboardingView: View {
         // long is left, and repeating it two lines down reads as a template
         // filled in twice rather than as an argument.
         if profile.pace == .cram {
-            return "More questions is not what decides an exam this close."
+            return String(localized: "More questions is not what decides an exam this close.")
         }
         guard let until = profile.daysUntilExam else {
-            return "The free rooms hold \(free) questions. At \(profile.suggestedDailyQuestions) a day that is about \(dayCount(daysOfFreeContent)) of practice, and then you are re-reading answers you remember."
+            return String(localized: "The free rooms hold \(free) questions. At \(profile.suggestedDailyQuestions) a day that is about \(dayCount(daysOfFreeContent)) of practice, and then you are re-reading answers you remember.")
         }
         if daysOfFreeContent >= until {
-            return "The free rooms hold \(free) questions, about \(dayCount(daysOfFreeContent)) at \(profile.suggestedDailyQuestions) a day. That barely covers your \(dayCount(until)), once, with nothing left to repeat."
+            return String(localized: "The free rooms hold \(free) questions, about \(dayCount(daysOfFreeContent)) at \(profile.suggestedDailyQuestions) a day. That barely covers your \(dayCount(until)), once, with nothing left to repeat.")
         }
-        return "The free rooms hold \(free) questions. At \(profile.suggestedDailyQuestions) a day you finish them in about \(dayCount(daysOfFreeContent)), with \(dayCount(until - daysOfFreeContent)) still to go."
+        return String(localized: "The free rooms hold \(free) questions. At \(profile.suggestedDailyQuestions) a day you finish them in about \(dayCount(daysOfFreeContent)), with \(dayCount(until - daysOfFreeContent)) still to go.")
     }
 
     private var runsOutDetail: String {
         if profile.pace == .cram {
-            return "Every wrong answer here is a named error. Fix My Mistakes builds fresh problems that set the same trap until you stop falling for it, and that is what moves a score overnight."
+            return String(localized: "Every wrong answer here is a named error. Fix My Mistakes builds fresh problems that set the same trap until you stop falling for it, and that is what moves a score overnight.")
         }
-        return "\(Membership.name) generates the calculations instead of storing them. \(PracticeSkill.allCases.count) problem shapes, new numbers every time, so the practice cannot run out before the exam does."
+        return String(localized: "\(Membership.name) generates the calculations instead of storing them. \(PracticeSkill.allCases.count) problem shapes, new numbers every time, so the practice cannot run out before the exam does.")
     }
 
     /// "1 day" / "12 days". Written out rather than interpolated at each call
     /// site, because "your 1 days" is the kind of thing that ships.
     private func dayCount(_ days: Int) -> String {
-        days == 1 ? "1 day" : "\(days) days"
+        String(localized: "\(days) days")
     }
 
     private struct TrialBenefit {
@@ -1005,23 +1006,23 @@ struct OnboardingView: View {
     private var trialBenefits: [TrialBenefit] {
         let endless = TrialBenefit(
             icon: "infinity",
-            text: "Endless Practice: ten calculation shapes, generated fresh, so you never memorise a question instead of a method."
+            text: String(localized: "Endless Practice: ten calculation shapes, generated fresh, so you never memorise a question instead of a method.")
         )
         let fix = TrialBenefit(
             icon: "arrow.counterclockwise",
-            text: "Fix My Mistakes: every wrong answer is a NAMED error, and this builds new problems that set the same trap until you stop falling for it."
+            text: String(localized: "Fix My Mistakes: every wrong answer is a NAMED error, and this builds new problems that set the same trap until you stop falling for it.")
         )
         let warmUp = TrialBenefit(
             icon: "person.2.fill",
-            text: "Exam Warm-Up: a short session built from your own weak spots, for the morning of."
+            text: String(localized: "Exam Warm-Up: a short session built from your own weak spots, for the morning of.")
         )
         let rooms = TrialBenefit(
             icon: "square.grid.2x2.fill",
-            text: "\(DrillLibrary.membershipItemCount) more authored questions: the worked dwelling calculation, grounding, motors, and extra sets in every room."
+            text: String(localized: "\(DrillLibrary.membershipItemCount) more authored questions: the worked dwelling calculation, grounding, motors, and extra sets in every room.")
         )
         let minute = TrialBenefit(
             icon: "calendar.badge.clock",
-            text: "Code Minute: five questions a day, for the days you would otherwise skip."
+            text: String(localized: "Code Minute: five questions a day, for the days you would otherwise skip.")
         )
 
         // Four at most. This screen has a hero, an argument card, a price
@@ -1074,16 +1075,16 @@ struct OnboardingView: View {
     /// invent one.
     private var trialDisclosure: String {
         guard let price = PaywallPricing.price(subscriptions, .monthly) else {
-            guard let trialLength else { return "Auto-renews until canceled." }
-            return "Includes \(trialLength) free. Auto-renews until canceled."
+            guard let trialLength else { return String(localized: "Auto-renews until canceled.") }
+            return String(localized: "Includes \(trialLength) free. Auto-renews until canceled.")
         }
-        guard let trialLength else { return "\(price). Auto-renews until canceled." }
-        return "\(trialLength) free, then \(price). Auto-renews until canceled."
+        guard let trialLength else { return String(localized: "\(price). Auto-renews until canceled.") }
+        return String(localized: "\(trialLength) free, then \(price). Auto-renews until canceled.")
     }
 
     private var trialCTATitle: String {
-        guard let trialLength else { return "Subscribe to \(Membership.name)" }
-        return "Start \(trialLength) free"
+        guard let trialLength else { return String(localized: "Subscribe to \(Membership.name)") }
+        return String(localized: "Start \(trialLength) free")
     }
 
     // MARK: - Footer
@@ -1156,9 +1157,9 @@ struct OnboardingView: View {
     private var primaryTitle: String {
         switch step {
         case .trial: return trialCTATitle
-        case .plan: return "Looks right"
-        case .walkInReady: return "Set up my exam"
-        default: return "Continue"
+        case .plan: return String(localized: "Looks right")
+        case .walkInReady: return String(localized: "Set up my exam")
+        default: return String(localized: "Continue")
         }
     }
 
@@ -1168,7 +1169,7 @@ struct OnboardingView: View {
     /// the setup reads from.
     private var skipTitle: String? {
         switch step {
-        case .examDate, .focus, .reminder: return "Skip"
+        case .examDate, .focus, .reminder: return String(localized: "Skip")
         default: return nil
         }
     }
@@ -1287,15 +1288,15 @@ struct JurisdictionFactsCard: View {
                     .foregroundStyle(.white)
                     .frame(width: 34, height: 24)
                     .background(Theme.voltageFill, in: RoundedRectangle(cornerRadius: 7, style: .continuous))
-                Text(record.name)
+                Text(record.displayName)
                     .font(Theme.cardTitle)
                     .foregroundStyle(Theme.worksheetInk)
                 Spacer()
             }
-            factRow(label: "Commonly adopted", value: record.editionLabel)
-            factRow(label: "Licence issued by", value: record.authority)
-            factRow(label: "Licence route", value: record.path.summary)
-            factRow(label: "Exam delivered by", value: record.providerLabel)
+            factRow(label: String(localized: "Commonly adopted"), value: record.editionLabel)
+            factRow(label: String(localized: "Licence issued by"), value: record.authority)
+            factRow(label: String(localized: "Licence route"), value: record.path.summary)
+            factRow(label: String(localized: "Exam delivered by"), value: record.providerLabel)
             Text("Checked \(Jurisdictions.reviewed). Adoption and vendors change, and local amendments are common. Confirm with \(record.authority) before you rely on it.")
                 .font(.caption2)
                 .foregroundStyle(Theme.worksheetInkTertiary)

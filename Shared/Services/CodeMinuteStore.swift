@@ -9,6 +9,9 @@ struct CodeMinuteResult: Codable, Identifiable, Sendable {
     let totalByCategory: [String: Int]
 
     var id: String { dayKey }
+    /// `shortDate` as saved is frozen in the language of the day it was
+    /// written. This formats the same day in the current one.
+    var displayDate: String { CodeMinuteContent.shortDate(forKey: dayKey, fallback: shortDate) }
     var score: Int { answers.filter { $0 }.count }
     var total: Int { answers.count }
 
@@ -22,11 +25,11 @@ struct CodeMinuteResult: Codable, Identifiable, Sendable {
 
     var shareText: String {
         let grid = answers.map { $0 ? "🟩" : "⬜️" }.joined()
-        let base = "Code Minute \(shortDate): \(score)/\(total)\n\(grid)"
+        let base = String(localized: "Code Minute \(displayDate): \(score)/\(total)\n\(grid)")
         // `productURL` is nil until the listing is live, so a pre-launch share
         // is the score and the grid, not the score and a 404.
         guard let url = AppStoreLinks.productURL else { return base }
-        return base + "\nCan you beat me? \(url.absoluteString)"
+        return base + "\n" + String(localized: "Can you beat me? \(url.absoluteString)")
     }
 }
 

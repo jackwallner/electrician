@@ -42,81 +42,81 @@ enum CandidateMistake {
     static let derateFrom75 = MistakePattern(
         id: "ampacity-derate-from-75",
         skill: PracticeSkill.ampacity.rawValue,
-        summary: "You derated from the 75°C column. Corrections and adjustments start in the conductor's own insulation column, and 75°C only comes back at the end as the termination cap."
+        summary: String(localized: "You derated from the 75°C column. Corrections and adjustments start in the conductor's own insulation column, and 75°C only comes back at the end as the termination cap.")
     )
     static let ignoredBundling = MistakePattern(
         id: "ampacity-ignored-bundling",
         skill: PracticeSkill.ampacity.rawValue,
-        summary: "You applied the ambient correction but not the bundling adjustment. Four or more current-carrying conductors derate again, and the two factors multiply."
+        summary: String(localized: "You applied the ambient correction but not the bundling adjustment. Four or more current-carrying conductors derate again, and the two factors multiply.")
     )
     static let ignoredTerminationCap = MistakePattern(
         id: "ampacity-ignored-termination",
         skill: PracticeSkill.ampacity.rawValue,
-        summary: "You derated correctly and then stopped. The result still has to be capped at the termination column, which is usually 75°C."
+        summary: String(localized: "You derated correctly and then stopped. The result still has to be capped at the termination column, which is usually 75°C.")
     )
 
     static let ignoredSmallConductorCap = MistakePattern(
         id: "ocpd-ignored-240-4-d",
         skill: PracticeSkill.overcurrent.rawValue,
-        summary: "You protected at the ampacity table value and missed 240.4(D). For 14, 12 and 10 AWG the small-conductor ceiling overrides the table."
+        summary: String(localized: "You protected at the ampacity table value and missed 240.4(D). For 14, 12 and 10 AWG the small-conductor ceiling overrides the table.")
     )
     static let roundedOCPDUp = MistakePattern(
         id: "ocpd-rounded-up",
         skill: PracticeSkill.overcurrent.rawValue,
-        summary: "You rounded up to the next standard rating. Without a next-size-up allowance the protection goes to the largest standard rating at or BELOW the conductor's usable ampacity."
+        summary: String(localized: "You rounded up to the next standard rating. Without a next-size-up allowance the protection goes to the largest standard rating at or BELOW the conductor's usable ampacity.")
     )
     static let sizedOCPDFrom90 = MistakePattern(
         id: "ocpd-from-90",
         skill: PracticeSkill.overcurrent.rawValue,
-        summary: "You sized from the 90°C column. The 90°C value is a starting point for derating, never the number equipment terminations let you protect at."
+        summary: String(localized: "You sized from the 90°C column. The 90°C value is a starting point for derating, never the number equipment terminations let you protect at.")
     )
 
     static let usedFiftyThreePercentFill = MistakePattern(
         id: "fill-used-53-percent",
         skill: PracticeSkill.conduitFill.rawValue,
-        summary: "You used 53% fill. That is the allowance for ONE conductor. Over two conductors the allowance is 40%."
+        summary: String(localized: "You used 53% fill. That is the allowance for ONE conductor. Over two conductors the allowance is 40%.")
     )
     static let racewayTooSmall = MistakePattern(
         id: "fill-raceway-too-small",
         skill: PracticeSkill.conduitFill.rawValue,
-        summary: "That raceway does not hold the bundle. Compare the bundle area against the allowance for the trade size, not against the raceway's full interior area."
+        summary: String(localized: "That raceway does not hold the bundle. Compare the bundle area against the allowance for the trade size, not against the raceway's full interior area.")
     )
     static let racewayOversized = MistakePattern(
         id: "fill-raceway-oversized",
         skill: PracticeSkill.conduitFill.rawValue,
-        summary: "That size works but it is not the smallest that works. The question asks for the smallest trade size the bundle fits in."
+        summary: String(localized: "That size works but it is not the smallest that works. The question asks for the smallest trade size the bundle fits in.")
     )
 
     static let countedGroundsIndividually = MistakePattern(
         id: "boxfill-counted-grounds-individually",
         skill: PracticeSkill.boxFill.rawValue,
-        summary: "You counted each equipment ground separately. Up to four entering equipment grounds use one allowance. Each additional entering ground or bonding jumper adds a quarter allowance. Internal pigtails do not count."
+        summary: String(localized: "You counted each equipment ground separately. Up to four entering equipment grounds use one allowance. Each additional entering ground or bonding jumper adds a quarter allowance. Internal pigtails do not count.")
     )
     static let forgotDeviceYokes = MistakePattern(
         id: "boxfill-forgot-yokes",
         skill: PracticeSkill.boxFill.rawValue,
-        summary: "You left the devices out. Each device yoke takes volume in the box."
+        summary: String(localized: "You left the devices out. Each device yoke takes volume in the box.")
     )
     static let countedYokeAsOne = MistakePattern(
         id: "boxfill-yoke-as-one",
         skill: PracticeSkill.boxFill.rawValue,
-        summary: "You counted each yoke as one allowance. A device yoke counts as TWO."
+        summary: String(localized: "You counted each yoke as one allowance. A device yoke counts as TWO.")
     )
 
     static let wrongPhaseFactor = MistakePattern(
         id: "vdrop-wrong-phase-factor",
         skill: PracticeSkill.voltageDrop.rawValue,
-        summary: "You used the other phase's factor. Single-phase uses 2 because the current goes out and back; three-phase uses 1.732."
+        summary: String(localized: "You used the other phase's factor. Single-phase uses 2 because the current goes out and back; three-phase uses 1.732.")
     )
     static let forgotPhaseFactor = MistakePattern(
         id: "vdrop-forgot-phase-factor",
         skill: PracticeSkill.voltageDrop.rawValue,
-        summary: "You left the phase factor out entirely, so the drop is only the one-way figure."
+        summary: String(localized: "You left the phase factor out entirely, so the drop is only the one-way figure.")
     )
     static let wrongMaterialK = MistakePattern(
         id: "vdrop-wrong-material-k",
         skill: PracticeSkill.voltageDrop.rawValue,
-        summary: "You used the other metal's K. Copper and aluminum have different resistivity constants and swapping them moves the answer by about 60%."
+        summary: String(localized: "You used the other metal's K. Copper and aluminum have different resistivity constants and swapping them moves the answer by about 60%.")
     )
 
     /// Every pattern, for the tests and for the targeted-practice lookup.
@@ -201,17 +201,17 @@ enum CalcGenerator {
         }
 
         var steps = [
-            "Start in the 90°C column, because that is the conductor's own rating: \(size) \(material.displayName) is \(Int(base)) A.",
-            "Ambient \(ambient)°C corrects by \(correction.factorText): \(Int(base)) × \(correction.factorText) = \((base * correction).factorText) A.",
-            "\(ccc) current-carrying conductors adjust by \(adjustment.factorText): \((base * correction).factorText) × \(adjustment.factorText) = \(derated.factorText) A.",
+            String(localized: "Start in the 90°C column, because that is the conductor's own rating: \(size) \(material.displayName) is \(Int(base)) A."),
+            String(localized: "Ambient \(ambient)°C corrects by \(correction.factorText): \(Int(base)) × \(correction.factorText) = \((base * correction).factorText) A."),
+            String(localized: "\(ccc) current-carrying conductors adjust by \(adjustment.factorText): \((base * correction).factorText) × \(adjustment.factorText) = \(derated.factorText) A."),
         ]
         if answer < derated {
-            steps.append("The 75°C termination limits it to \(Int(terminalLimit)) A, and the lower number wins, so the answer is \(answer.factorText) A.")
+            steps.append(String(localized: "The 75°C termination limits it to \(Int(terminalLimit)) A, and the lower number wins, so the answer is \(answer.factorText) A."))
         } else {
-            steps.append("That is still under the \(Int(terminalLimit)) A termination limit, so the derated value stands: \(answer.factorText) A.")
+            steps.append(String(localized: "That is still under the \(Int(terminalLimit)) A termination limit, so the derated value stands: \(answer.factorText) A."))
         }
 
-        steps.append("Report \(answer.factorText) A as \(answer.roundedAmpsText) A to the nearest 0.1 A. Compare actual loads against the unrounded allowable ampacity.")
+        steps.append(String(localized: "Report \(answer.factorText) A as \(answer.roundedAmpsText) A to the nearest 0.1 A. Compare actual loads against the unrounded allowable ampacity."))
 
         let amps: (Double) -> String = { "\($0.roundedAmpsText) A" }
         let mistakes = mistakeMap(answerLabel: amps(answer), [
@@ -222,7 +222,7 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-ampacity-\(UUID().uuidString)",
-            situation: "Find the allowable ampacity in this dry-location raceway, longer than 24 inches, with no adjustment exception. Report the calculated limit to the nearest 0.1 A.",
+            situation: String(localized: "Find the allowable ampacity in this dry-location raceway, longer than 24 inches, with no adjustment exception. Report the calculated limit to the nearest 0.1 A."),
             givens: [
                 .conductor(size, "THHN"),
                 .material(material),
@@ -283,12 +283,12 @@ enum CalcGenerator {
         ) { "\(Int($0)) A" }
 
         var steps = [
-            "Terminations are 75°C, so read the 75°C column: \(size) \(material.displayName) is \(Int(tableAmpacity)) A.",
+            String(localized: "Terminations are 75°C, so read the 75°C column: \(size) \(material.displayName) is \(Int(tableAmpacity)) A."),
         ]
         if let ceiling, Double(ceiling) < tableAmpacity {
-            steps.append("240.4(D) caps this size at \(ceiling) A regardless of the table. That cap is the number to protect at, not \(Int(tableAmpacity)) A.")
+            steps.append(String(localized: "240.4(D) caps this size at \(ceiling) A regardless of the table. That cap is the number to protect at, not \(Int(tableAmpacity)) A."))
         }
-        steps.append("The largest standard rating in 240.6(A) at or below \(Int(usable)) A is \(Int(answer)) A.")
+        steps.append(String(localized: "The largest standard rating in 240.6(A) at or below \(Int(usable)) A is \(Int(answer)) A."))
 
         let ocpdLabel: (Double) -> String = { "\(Int($0)) A" }
         let mistakes = mistakeMap(answerLabel: ocpdLabel(answer), [
@@ -304,7 +304,7 @@ enum CalcGenerator {
             // the load calculation, the continuous-load multiplier and the
             // equipment's own marked limits; teaching this lookup as if it were
             // the whole workflow would train an incomplete mental model.
-            situation: "Conductor protection only: the load is already settled and no next-size-up allowance applies. What is the largest standard overcurrent device this conductor may be protected at?",
+            situation: String(localized: "Conductor protection only: the load is already settled and no next-size-up allowance applies. What is the largest standard overcurrent device this conductor may be protected at?"),
             givens: [
                 .conductor(size, "THWN-2"),
                 .material(material),
@@ -373,21 +373,21 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-conduitfill-\(UUID().uuidString)",
-            situation: "Pick the smallest trade size of EMT for these conductors in a run longer than 24 inches, using the Chapter 9 Table 5 conductor areas.",
+            situation: String(localized: "Pick the smallest trade size of EMT for these conductors in a run longer than 24 inches, using the Chapter 9 Table 5 conductor areas."),
             givens: [
                 .conductor(size, "THHN"),
-                Given("Quantity", "\(count)", unit: "conductors"),
+                Given(String(localized: "Quantity"), "\(count)", unit: PluralLabel.conductors(count)),
                 .raceway("EMT", "?"),
             ],
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: [
-                "One \(size) THHN is \(area.factorText) in². \(count) of them is \(bundle.factorText) in².",
-                "Over two conductors the allowance is \(Int(percent * 100))%, not 53% or 31%.",
-                "\(answerTrade) EMT is \((NECTables.emtArea[answerTrade] ?? 0).factorText) in² interior, and \(Int(percent * 100))% of that is \(allowance.factorText) in².",
-                "\(allowance.factorText) in² covers the \(bundle.factorText) in² bundle, and the next size down does not, so \(answerTrade) is the answer.",
+                String(localized: "One \(size) THHN is \(area.factorText) in². \(count) of them is \(bundle.factorText) in²."),
+                String(localized: "Over two conductors the allowance is \(Int(percent * 100))%, not 53% or 31%."),
+                String(localized: "\(answerTrade) EMT is \((NECTables.emtArea[answerTrade] ?? 0).factorText) in² interior, and \(Int(percent * 100))% of that is \(allowance.factorText) in²."),
+                String(localized: "\(allowance.factorText) in² covers the \(bundle.factorText) in² bundle, and the next size down does not, so \(answerTrade) is the answer."),
             ],
-            citation: "Ch. 9 Table 1, Table 4, Table 5",
+            citation: String(localized: "Ch. 9 Table 1, Table 4, Table 5"),
             mistakes: mistakes
         )
     }
@@ -432,20 +432,20 @@ enum CalcGenerator {
 
         var givens: [Given] = [
             .conductor(size, "THHN"),
-            Given("Insulated", "\(currentCarrying)", unit: "conductors"),
-            Given("Grounds", "\(groundCount)", unit: "wires"),
-            Given("Devices", "\(devices)", unit: devices == 1 ? "yoke" : "yokes"),
+            Given(String(localized: "Insulated"), "\(currentCarrying)", unit: PluralLabel.conductors(currentCarrying)),
+            Given(String(localized: "Grounds"), "\(groundCount)", unit: PluralLabel.wires(groundCount)),
+            Given(String(localized: "Devices"), "\(devices)", unit: PluralLabel.yokes(devices)),
         ]
-        if hasClamp { givens.append(Given("Internal clamps", "yes")) }
+        if hasClamp { givens.append(Given(String(localized: "Internal clamps"), "yes")) }
 
         var steps = [
-            "Each allowance for \(size) is \(volume.volumeText) in³, so this is a counting problem first and a multiplication problem second.",
-            "\(currentCarrying) insulated conductors is \(currentCarrying) allowances.",
-            "Up to four entering grounds count as one allowance; each additional entering ground adds 0.25. These \(groundCount) grounds use \(groundUnits.factorText) allowances.",
+            String(localized: "Each allowance for \(size) is \(volume.volumeText) in³, so this is a counting problem first and a multiplication problem second."),
+            String(localized: "\(currentCarrying) insulated conductors is \(currentCarrying) allowances."),
+            String(localized: "Up to four entering grounds count as one allowance; each additional entering ground adds 0.25. These \(groundCount) grounds use \(groundUnits.factorText) allowances."),
         ]
-        if hasClamp { steps.append("Internal clamps count as one allowance no matter how many there are.") }
-        steps.append("Each device yoke counts as two, so \(devices) yoke\(devices == 1 ? "" : "s") is \(deviceUnits).")
-        steps.append("\(totalUnits.factorText) allowances × \(volume.volumeText) in³ = \(required.factorText) in³ before rounding. Report \(required.volumeText) in³ to the nearest 0.01 in³; use the unrounded minimum when selecting a physical box.")
+        if hasClamp { steps.append(String(localized: "Internal clamps count as one allowance no matter how many there are.")) }
+        steps.append(String(localized: "Each device yoke counts as two, so \(devices) yokes is \(deviceUnits)."))
+        steps.append(String(localized: "\(totalUnits.factorText) allowances × \(volume.volumeText) in³ = \(required.factorText) in³ before rounding. Report \(required.volumeText) in³ to the nearest 0.01 in³; use the unrounded minimum when selecting a physical box."))
 
         let volumeLabel: (Double) -> String = { "\($0.volumeText) in³" }
         let mistakes = mistakeMap(answerLabel: volumeLabel(required), [
@@ -456,7 +456,7 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-boxfill-\(UUID().uuidString)",
-            situation: "All insulated conductors and grounds listed enter the box and have the stated size. Each single-gang yoke connects to that size; there are no other fill allowances. Find the minimum box volume. Report the calculated minimum to the nearest 0.01 in³.",
+            situation: String(localized: "All insulated conductors and grounds listed enter the box and have the stated size. Each single-gang yoke connects to that size; there are no other fill allowances. Find the minimum box volume. Report the calculated minimum to the nearest 0.01 in³."),
             givens: givens,
             choices: choices.labels,
             answerIndex: choices.answerIndex,
@@ -511,7 +511,7 @@ enum CalcGenerator {
 
         return CalcScenario(
             id: "gen-vdrop-\(UUID().uuidString)",
-            situation: "Estimate voltage drop using K = 12.9 for copper or 21.2 for aluminum in ohm-cmil/ft. Use the resistive formula, neglect reactance and power-factor effects, and round to 0.1 V.",
+            situation: String(localized: "Estimate voltage drop using K = 12.9 for copper or 21.2 for aluminum in ohm-cmil/ft. Use the resistive formula, neglect reactance and power-factor effects, and round to 0.1 V."),
             givens: [
                 .conductor(size, "THHN"),
                 .material(material),
@@ -522,12 +522,16 @@ enum CalcGenerator {
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: [
-                "\(phase == .single ? "Single-phase uses 2" : "Three-phase uses 1.732") as the factor, because that is the path the current actually takes.",
-                "K for \(material.displayName.lowercased()) is \(k.factorText), and \(size) is \(Int(cm)) circular mils.",
-                "VD = \(phase.voltageDropFactor.factorText) × \(k.factorText) × \(amps.trimmedAmps) A × \(feet) ft ÷ \(Int(cm)) cmil ≈ \(drop.voltsText) V.",
-                "That is \(percent.voltsText)% of \(volts) V, so it is \(percent <= 3 ? "within" : "past") the 3% figure the informational note suggests for a branch circuit.",
+                phase == .single
+                    ? String(localized: "Single-phase uses 2 as the factor, because that is the path the current actually takes.")
+                    : String(localized: "Three-phase uses 1.732 as the factor, because that is the path the current actually takes."),
+                String(localized: "K for \(material.inlineName) is \(k.factorText), and \(size) is \(Int(cm)) circular mils."),
+                String(localized: "VD = \(phase.voltageDropFactor.factorText) × \(k.factorText) × \(amps.trimmedAmps) A × \(feet) ft ÷ \(Int(cm)) cmil ≈ \(drop.voltsText) V."),
+                percent <= 3
+                    ? String(localized: "That is \(percent.voltsText)% of \(volts) V, so it is within the 3% figure the informational note suggests for a branch circuit.")
+                    : String(localized: "That is \(percent.voltsText)% of \(volts) V, so it is past the 3% figure the informational note suggests for a branch circuit."),
             ],
-            citation: "210.19(A) Informational Note, Ch. 9 Table 8",
+            citation: String(localized: "210.19(A) Informational Note, Ch. 9 Table 8"),
             mistakes: mistakes
         )
     }

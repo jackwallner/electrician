@@ -75,7 +75,7 @@ struct ExamWarmUpView: View {
                         .font(Theme.eyebrow)
                         .kerning(Theme.eyebrowKerning)
                         .foregroundStyle(Theme.inkSecondary)
-                    Text(settings.examWarmUpReminderEnabled ? "Prep is scheduled" : "Choose your study day")
+                    Text(settings.examWarmUpReminderEnabled ? String(localized: "Prep is scheduled") : String(localized: "Choose your study day"))
                         .font(Theme.cardTitle)
                         .foregroundStyle(Theme.ink)
                 }
@@ -128,14 +128,14 @@ struct ExamWarmUpView: View {
 
     private func personalizationCopy(_ weakest: PracticeRecordStore.RoomStat?) -> String {
         if records.dueCount > 0, let weakest {
-            return "\(records.dueCount) due mistake\(records.dueCount == 1 ? "" : "s") first, then extra work in \(weakest.name)."
+            return String(localized: "\(records.dueCount) due mistakes first, then extra work in \(weakest.name).")
         }
         if records.dueCount > 0 {
-            return "\(records.dueCount) due mistake\(records.dueCount == 1 ? "" : "s") first, followed by material you have not seen yet."
+            return String(localized: "\(records.dueCount) due mistakes first, followed by material you have not seen yet.")
         }
         if let weakest {
-            return "Extra work in \(weakest.name), followed by a balanced mix from the other rooms."
+            return String(localized: "Extra work in \(weakest.name), followed by a balanced mix from the other rooms.")
         }
-        return "A balanced member mix now. As you answer more questions, this session will zero in on your real weak spots."
+        return String(localized: "A balanced member mix now. As you answer more questions, this session will zero in on your real weak spots.")
     }
 }

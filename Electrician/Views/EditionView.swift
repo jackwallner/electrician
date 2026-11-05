@@ -94,34 +94,34 @@ struct EditionView: View {
 
     private var stableTables: [StableTable] {
         [
-            StableTable(title: "310.16 allowable ampacity",
-                        detail: "The three temperature columns for copper and aluminum. The table this app derates from, and the one an exam question hands you a conductor and asks about."),
-            StableTable(title: "310.15(B)(1)(1) and 310.15(C)(1)",
-                        detail: "Ambient correction and current-carrying conductor adjustment. In 2020, the 30°C-basis ambient table is 310.15(B)(1)."),
-            StableTable(title: "240.6(A) standard ratings, and 240.4(D)",
-                        detail: "Standard fuse and breaker sizes, including the 10 A standard breaker rating added in 2023, and ordinary small-conductor protection limits."),
-            StableTable(title: "Chapter 9 Tables 1, 4 and 5",
-                        detail: "Raceway fill percentages, raceway interior areas and conductor areas."),
-            StableTable(title: "314.16(A) and 314.16(B)",
-                        detail: "Box volumes and the volume allowance each conductor, clamp, yoke and ground takes."),
-            StableTable(title: "Tables 430.248 and 430.250",
-                        detail: "Motor full-load current, which is what a motor circuit is sized from rather than the nameplate."),
-            StableTable(title: "Tables 250.66 and 250.122",
-                        detail: "Grounding electrode conductor sizing from the service conductor, and equipment grounding conductor sizing from the overcurrent device."),
-            StableTable(title: "Article 220 dwelling demand factors",
-                        detail: "3 VA per square foot, the 3000 VA and 35% bands, the range and dryer tables, and the 75% appliance factor. Article 220 was renumbered for the 2023 cycle; the values did not change, and both section numbers are cited."),
+            StableTable(title: String(localized: "310.16 allowable ampacity"),
+                        detail: String(localized: "The three temperature columns for copper and aluminum. The table this app derates from, and the one an exam question hands you a conductor and asks about.")),
+            StableTable(title: String(localized: "310.15(B)(1)(1) and 310.15(C)(1)"),
+                        detail: String(localized: "Ambient correction and current-carrying conductor adjustment. In 2020, the 30°C-basis ambient table is 310.15(B)(1).")),
+            StableTable(title: String(localized: "240.6(A) standard ratings, and 240.4(D)"),
+                        detail: String(localized: "Standard fuse and breaker sizes, including the 10 A standard breaker rating added in 2023, and ordinary small-conductor protection limits.")),
+            StableTable(title: String(localized: "Chapter 9 Tables 1, 4 and 5"),
+                        detail: String(localized: "Raceway fill percentages, raceway interior areas and conductor areas.")),
+            StableTable(title: String(localized: "314.16(A) and 314.16(B)"),
+                        detail: String(localized: "Box volumes and the volume allowance each conductor, clamp, yoke and ground takes.")),
+            StableTable(title: String(localized: "Tables 430.248 and 430.250"),
+                        detail: String(localized: "Motor full-load current, which is what a motor circuit is sized from rather than the nameplate.")),
+            StableTable(title: String(localized: "Tables 250.66 and 250.122"),
+                        detail: String(localized: "Grounding electrode conductor sizing from the service conductor, and equipment grounding conductor sizing from the overcurrent device.")),
+            StableTable(title: String(localized: "Article 220 dwelling demand factors"),
+                        detail: String(localized: "3 VA per square foot, the 3000 VA and 35% bands, the range and dryer tables, and the 75% appliance factor. Article 220 was renumbered for the 2023 cycle; the values did not change, and both section numbers are cited.")),
         ]
     }
 
     private var movingAreas: [String] {
         [
-            "GFCI protection: which locations and what ratings",
-            "AFCI protection: which rooms and which circuits",
-            "Surge protection at dwelling services",
-            "Emergency and outdoor equipment disconnects",
-            "Receptacle placement at islands and peninsulas",
-            "Electric vehicle supply equipment",
-            "Reconditioned equipment and listing requirements",
+            String(localized: "GFCI protection: which locations and what ratings"),
+            String(localized: "AFCI protection: which rooms and which circuits"),
+            String(localized: "Surge protection at dwelling services"),
+            String(localized: "Emergency and outdoor equipment disconnects"),
+            String(localized: "Receptacle placement at islands and peninsulas"),
+            String(localized: "Electric vehicle supply equipment"),
+            String(localized: "Reconditioned equipment and listing requirements"),
         ]
     }
 }

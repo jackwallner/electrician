@@ -57,7 +57,7 @@ struct GroundingToolView: View {
                     LabeledContent("Copper", value: result.electrodeConductor)
                     if result.cappedByElectrode {
                         LabeledContent("From the table", value: result.electrodeConductorFromTable)
-                        Text("\(electrode.citation) caps a \(electrode.displayName.lowercased()) electrode, so the run to it is smaller than the table alone would say.")
+                        Text("\(electrode.citation) caps a \(electrode.inlineName) electrode, so the run to it is smaller than the table alone would say.")
                             .font(.caption)
                             .foregroundStyle(Theme.inkSecondary)
                     } else {
@@ -282,7 +282,7 @@ struct DwellingLoadToolView: View {
                     LabeledContent("Range", value: "\(Int(result.rangeDemand)) VA")
                     LabeledContent("Dryer", value: "\(Int(result.dryerDemand)) VA")
                     LabeledContent(
-                        applianceCount >= 4 ? "Appliances, at 75%" : "Appliances, at 100%",
+                        applianceCount >= 4 ? String(localized: "Appliances, at 75%") : String(localized: "Appliances, at 100%"),
                         value: "\(Int(result.applianceAfterDemand.rounded())) VA"
                     )
                     LabeledContent("Heat or cooling, larger", value: "\(Int(result.climate)) VA")

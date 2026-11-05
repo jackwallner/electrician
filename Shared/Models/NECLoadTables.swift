@@ -39,11 +39,11 @@ extension NECTables {
     /// one-line change rather than a hunt through the content files.
     enum LoadCitation {
         static let generalLighting = "220.41 (220.12 in 2020)"
-        static let lightingDemand = "Table 220.45 (Table 220.42 in 2020)"
+        static let lightingDemand = String(localized: "Table 220.45 (Table 220.42 in 2020)")
         static let smallAppliance = "220.52"
         static let applianceDemand = "220.53"
         static let dryer = "220.54"
-        static let range = "Table 220.55"
+        static let range = String(localized: "Table 220.55")
         static let heatingVsCooling = "220.60"
         static let optionalMethod = "220.82"
         static let neutral = "220.61"

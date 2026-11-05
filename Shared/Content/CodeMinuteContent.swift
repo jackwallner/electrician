@@ -9,9 +9,9 @@ enum CodeMinuteCategory: String, CaseIterable, Codable, Identifiable, Sendable {
 
     var title: String {
         switch self {
-        case .navigation: return "Navigation"
-        case .ampacity: return "Ampacity"
-        case .calculation: return "Calculation"
+        case .navigation: return String(localized: "Navigation")
+        case .ampacity: return String(localized: "Ampacity")
+        case .calculation: return String(localized: "Calculation")
         }
     }
 
@@ -65,8 +65,8 @@ enum CodeMinuteContent {
 
     static let drill = Drill(
         id: "code-minute",
-        title: "Code Minute",
-        subtitle: "Today's shared five-question challenge",
+        title: String(localized: "Code Minute"),
+        subtitle: String(localized: "Today's shared five-question challenge"),
         kind: .quiz([]),
         isPlus: true
     )
@@ -96,7 +96,7 @@ enum CodeMinuteContent {
                     explanation: scenario.steps.first ?? "",
                     steps: scenario.steps,
                     citation: scenario.citation,
-                    sourceLabel: "Code Minute",
+                    sourceLabel: String(localized: "Code Minute"),
                     roomID: shape.0 == .ampacity ? "conductors-room" : "calc-room",
                     trackingID: "code-minute-rollup",
                     isReviewable: false,
@@ -164,6 +164,17 @@ enum CodeMinuteContent {
         return day.formatted(style)
     }
 
+    /// The short date for a stored `dayKey`, in the reader's language. The
+    /// result record keeps the string it was saved with, which is whatever
+    /// language was active then, so screens format from the key instead.
+    static func shortDate(forKey dayKey: String, fallback: String) -> String {
+        let parts = dayKey.split(separator: "-").compactMap { Int($0) }
+        guard parts.count == 3,
+              let day = dayCalendar.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2], hour: 12))
+        else { return fallback }
+        return shortDate(for: day)
+    }
+
     private static func shortDate(for day: Date, calendar: Calendar = dayCalendar) -> String {
         let formatter = DateFormatter()
         formatter.calendar = calendar
@@ -172,7 +183,7 @@ enum CodeMinuteContent {
         // was computed from, which is exactly the bug the fixed boundary exists
         // to prevent.
         formatter.timeZone = calendar.timeZone
-        formatter.dateFormat = "MMM d"
+        formatter.setLocalizedDateFormatFromTemplate("MMMd")
         return formatter.string(from: day)
     }
 

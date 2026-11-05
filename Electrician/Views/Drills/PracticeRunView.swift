@@ -75,10 +75,10 @@ struct PracticeRunView: View {
             // filtered-out locked item, a deep link that outlived its items).
             // Sending it to the completion screen faked a finished session.
             SessionEmptyView(
-                title: mode == .review ? "Nothing due right now" : "Nothing to practise yet",
+                title: mode == .review ? String(localized: "Nothing due right now") : String(localized: "Nothing to practise yet"),
                 message: mode == .review
-                    ? "You have no mistakes waiting. Answer a few questions and anything you miss will show up here."
-                    : "This run could not build any questions. Try again in a moment."
+                    ? String(localized: "You have no mistakes waiting. Answer a few questions and anything you miss will show up here.")
+                    : String(localized: "This run could not build any questions. Try again in a moment.")
             )
         } else if finished {
             DrillCompleteView(drill: completedDrill, score: score, total: gradedTotal)
@@ -104,8 +104,8 @@ struct PracticeRunView: View {
     private var title: String {
         switch mode {
         case .endless(let skill): return skill.title
-        case .timed: return "Timed Challenge"
-        case .review: return "Fix My Mistakes"
+        case .timed: return String(localized: "Timed Challenge")
+        case .review: return String(localized: "Fix My Mistakes")
         }
     }
 
@@ -124,7 +124,7 @@ struct PracticeRunView: View {
                     missNote: missNote,
                     reportContext: answered ? reportContext : nil,
                     answered: answered,
-                    eyebrow: item.sourceLabel.uppercased()
+                    eyebrow: item.sourceLabel
                 ) {
                     ChoiceList(labels: item.choices, selection: selection, answerIndex: item.answerIndex) { pick in
                         grade(pick)
@@ -155,7 +155,7 @@ struct PracticeRunView: View {
             // An endless run has no natural end, so it must always offer one.
             if mode != .timed {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(mode == .review ? "Close" : "Finish") { finish() }
+                    Button(mode == .review ? String(localized: "Close") : String(localized: "Finish")) { finish() }
                         .foregroundStyle(Theme.voltage)
                 }
             }
@@ -204,7 +204,7 @@ struct PracticeRunView: View {
     }
 
     private var footer: some View {
-        DrillNextButton(title: isLastItem ? "Finish" : "Next", enabled: answered, action: advance)
+        DrillNextButton(title: isLastItem ? String(localized: "Finish") : String(localized: "Next"), enabled: answered, action: advance)
     }
 
     private var isLastItem: Bool {

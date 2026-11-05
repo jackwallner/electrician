@@ -69,7 +69,7 @@ struct QuizDrillView: View {
     }
 
     private var footer: some View {
-        DrillNextButton(title: index + 1 < questions.count ? "Next Question" : "Finish", enabled: answered, action: advance)
+        DrillNextButton(title: index + 1 < questions.count ? String(localized: "Next Question") : String(localized: "Finish"), enabled: answered, action: advance)
     }
 
     private var reportContext: ContentReport.Context {

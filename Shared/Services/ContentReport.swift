@@ -44,12 +44,23 @@ enum ContentReport {
 
         var id: String { rawValue }
 
+        /// The label written into the email body and subject. Support reads these in
+        /// English whatever language the reader picked, so it is not localized.
+        var englishName: String {
+            switch self {
+            case .wrongAnswer: return "The answer looks wrong" // l10n:ignore
+            case .unclearExplanation: return "The explanation is unclear" // l10n:ignore
+            case .editionMismatch: return "Wrong code edition for my area" // l10n:ignore
+            case .typo: return "Typo or formatting" // l10n:ignore
+            }
+        }
+
         var displayName: String {
             switch self {
-            case .wrongAnswer: return "The answer looks wrong"
-            case .unclearExplanation: return "The explanation is unclear"
-            case .editionMismatch: return "Wrong code edition for my area"
-            case .typo: return "Typo or formatting"
+            case .wrongAnswer: return String(localized: "The answer looks wrong")
+            case .unclearExplanation: return String(localized: "The explanation is unclear")
+            case .editionMismatch: return String(localized: "Wrong code edition for my area")
+            case .typo: return String(localized: "Typo or formatting")
             }
         }
     }
@@ -63,7 +74,7 @@ enum ContentReport {
             "",
             "",
             "----- please leave the details below -----",
-            "Issue: \(category.displayName)",
+            "Issue: \(category.englishName)",
             "Item: \(context.itemID)",
             "Edition: \(NECTables.edition)",
             "Citation: \(context.citation ?? "none")",
@@ -76,7 +87,7 @@ enum ContentReport {
         lines.append("Question: \(context.prompt)")
 
         components.queryItems = [
-            URLQueryItem(name: "subject", value: "Electrician content report: \(category.displayName)"),
+            URLQueryItem(name: "subject", value: "Electrician content report: \(category.englishName)"),
             URLQueryItem(name: "body", value: lines.joined(separator: "\n")),
         ]
         return components.url

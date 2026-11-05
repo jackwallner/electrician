@@ -186,7 +186,7 @@ extension HomeView {
         guard DuoScreenshotMode.wantsTour else { return }
         // The inner display's screenshots are slower, so it may want a longer dwell.
         let unfolded = split != nil
-        let stepKey = unfolded ? "-DuoTourStepRegular" : "-DuoTourStep"
+        let stepKey = unfolded ? "-DuoTourStepRegular" : "-DuoTourStep"  // l10n:ignore
         let step = Double(DuoScreenshotMode.value(stepKey) ?? DuoScreenshotMode.value("-DuoTourStep") ?? "") ?? 10
         let first = Double(DuoScreenshotMode.value("-DuoTourFirst") ?? "") ?? 2
         let routes = (DuoScreenshotMode.value("-DuoRoutes") ?? Self.defaultDuoRoutes)

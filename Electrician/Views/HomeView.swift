@@ -377,15 +377,15 @@ struct HomeView: View {
             } label: {
                 HStack(spacing: 8) {
                     statChip(value: progress.currentStreak(), icon: "flame.fill", color: Theme.copper,
-                             label: "\(progress.currentStreak()) day streak")
+                             label: String(localized: "\(progress.currentStreak()) day streak"))
                     statChip(value: progress.totalSessions, icon: "checkmark.seal.fill", color: Theme.voltage,
-                             label: "\(progress.totalSessions) drills done")
+                             label: String(localized: "\(progress.totalSessions) drills done"))
                 }
             }
             .buttonStyle(.plain)
             // Unfolded, the breakdown is already open beside Home.
             .allowsHitTesting(split == nil)
-            .accessibilityHint(split == nil ? "Opens your progress breakdown" : "")
+            .accessibilityHint(split == nil ? String(localized: "Opens your progress breakdown") : "")
             .padding(.top, 4)
         }
         .padding(.top, 2)
@@ -400,16 +400,16 @@ struct HomeView: View {
     /// setup turns it into a statement of what they are here to do, and it is
     /// another place the setup answers keep paying off.
     private var headerTitle: String {
-        guard profile.setupComplete, profile.hasSelectedTrack else { return "Exam Prep" }
-        return "\(profile.licenseTrack.displayName) Prep"
+        guard profile.setupComplete, profile.hasSelectedTrack else { return String(localized: "Exam Prep") }
+        return String(localized: "\(profile.licenseTrack.displayName) Prep")
     }
 
     private var headerSubtitle: String {
         let place = profile.trimmedJurisdiction
         guard profile.setupComplete, !place.isEmpty, place != Jurisdictions.other.name else {
-            return "Code navigation and calculations"
+            return String(localized: "Code navigation and calculations")
         }
-        return "\(profile.editionShortSummary) · \(place)"
+        return "\(profile.editionShortSummary) · \(profile.displayJurisdiction)"
     }
 
     private func statChip(value: Int, icon: String, color: Color, label: String) -> some View {
@@ -544,7 +544,7 @@ struct HomeView: View {
                     Text("\(profile.daysUntilExam ?? 0)")
                         .font(Theme.numeric(.title3, weight: .bold))
                         .foregroundStyle(Theme.voltage)
-                    Text((profile.daysUntilExam ?? 0) == 1 ? "day" : "days")
+                    Text(PluralLabel.days(profile.daysUntilExam ?? 0))
                         .font(.caption2.weight(.semibold))
                         .foregroundStyle(Theme.inkSecondary)
                 }
@@ -635,7 +635,7 @@ struct HomeView: View {
             practicedRooms: practiced,
             availableRooms: availableIDs.count
         )
-        return metrics.attempts == 0 ? "Start a 10-question baseline" : "\(metrics.title) · \(metrics.accuracyText) accuracy"
+        return metrics.attempts == 0 ? String(localized: "Start a 10-question baseline") : String(localized: "\(metrics.title) · \(metrics.accuracyText) accuracy")
     }
 
     private var fieldToolsSection: some View {
@@ -712,7 +712,7 @@ struct HomeView: View {
     @ViewBuilder
     private var trainingTiles: some View {
         trainingTile(
-            title: "Endless\nPractice",
+            title: String(localized: "Endless\nPractice"),
             icon: "infinity",
             color: Theme.voltage,
             badge: nil
@@ -720,26 +720,26 @@ struct HomeView: View {
             EndlessPickerView()
         }
         trainingTile(
-            title: "Code\nMinute",
+            title: String(localized: "Code\nMinute"),
             icon: "calendar.badge.clock",
             color: Theme.copper,
-            badge: minuteStore.result(for: Date()).map { "\($0.score)/\($0.total) today" } ?? "Daily"
+            badge: minuteStore.result(for: Date()).map { String(localized: "\($0.score)/\($0.total) today") } ?? String(localized: "Daily")
         ) {
             CodeMinuteView()
         }
         trainingTile(
-            title: "Exam\nWarm-Up",
+            title: String(localized: "Exam\nWarm-Up"),
             icon: "person.2.fill",
             color: Theme.conduit,
-            badge: settings.examWarmUpReminderEnabled ? settings.examWarmUpDay.displayName : "Weekly"
+            badge: settings.examWarmUpReminderEnabled ? settings.examWarmUpDay.displayName : String(localized: "Weekly")
         ) {
             ExamWarmUpView()
         }
         trainingTile(
-            title: "Timed\nChallenge",
+            title: String(localized: "Timed\nChallenge"),
             icon: "timer",
             color: Theme.copper,
-            badge: records.bestChallengeScore > 0 ? "Best \(records.bestChallengeScore)" : nil
+            badge: records.bestChallengeScore > 0 ? String(localized: "Best \(records.bestChallengeScore)") : nil
         ) {
             PracticeRunView(mode: .timed)
         }
@@ -754,10 +754,10 @@ struct HomeView: View {
         // have.
         if records.fixableCount > 0 {
             trainingTile(
-                title: "Fix My\nMistakes",
+                title: String(localized: "Fix My\nMistakes"),
                 icon: "arrow.counterclockwise",
                 color: Theme.conduit,
-                badge: subscriptions.isPro ? "\(records.fixableCount) to fix" : "Unlock"
+                badge: subscriptions.isPro ? String(localized: "\(records.fixableCount) to fix") : String(localized: "Unlock")
             ) {
                 PracticeRunView(mode: .review, items: fixMyMistakesItems)
             }
@@ -895,8 +895,8 @@ struct HomeView: View {
         }
         .buttonStyle(PressableCardStyle())
         .accessibilityHint(locked
-            ? "Locked. \(total) drills, included with \(Membership.name)"
-            : "\(done) of \(total) drills done")
+            ? String(localized: "Locked. \(total) drills, included with \(Membership.name)")
+            : String(localized: "\(done) of \(total) drills done"))
         .id(room.id)
     }
 
@@ -990,12 +990,14 @@ extension DrillKind {
         }
     }
 
-    var unitName: String {
+    /// "12 cards", "1 question". One whole key per kind so the noun inflects
+    /// with the count.
+    func itemCountLabel(_ count: Int) -> String {
         switch self {
-        case .flashcards: return "cards"
-        case .quiz: return "questions"
-        case .articleMatch: return "scenarios"
-        case .calc: return "problems"
+        case .flashcards: return String(localized: "\(count) cards")
+        case .quiz: return String(localized: "\(count) questions")
+        case .articleMatch: return String(localized: "\(count) scenarios")
+        case .calc: return String(localized: "\(count) problems")
         }
     }
 }

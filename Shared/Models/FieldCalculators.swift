@@ -97,7 +97,7 @@ enum FieldCalculators {
             actualPercent: bundle / raceway,
             fits: bundle <= allowedArea + 0.0000001,
             smallestFitting: smallest,
-            citation: "Ch. 9 Table 1, Table 4, Table 5"
+            citation: String(localized: "Ch. 9 Table 1, Table 4, Table 5")
         )
     }
 
@@ -116,14 +116,14 @@ enum FieldCalculators {
         /// omissions is the difference between a study estimate and a number
         /// someone pulls wire against.
         static let assumptions = [
-            "Resistive only: reactance and power factor are not included.",
-            "Conductor at its table resistance, not at operating temperature.",
-            "Uncoated conductor in a non-magnetic raceway.",
-            "One-way length doubled (or × 1.732) by the phase factor, not a measured circuit path.",
+            String(localized: "Resistive only: reactance and power factor are not included."),
+            String(localized: "Conductor at its table resistance, not at operating temperature."),
+            String(localized: "Uncoated conductor in a non-magnetic raceway."),
+            String(localized: "One-way length doubled (or × 1.732) by the phase factor, not a measured circuit path."),
         ]
         /// The 3% figure is an informational note, not a general mandate, and
         /// reading it as an enforceable limit is a common exam-day error.
-        static let threePercentNote = "3% is the figure the informational note suggests for a branch circuit. It is a recommendation, not a general requirement, though some jurisdictions do enforce it."
+        static let threePercentNote = String(localized: "3% is the figure the informational note suggests for a branch circuit. It is a recommendation, not a general requirement, though some jurisdictions do enforce it.")
     }
 
     static func voltageDrop(
@@ -144,7 +144,7 @@ enum FieldCalculators {
             volts: drop,
             percent: percent,
             withinThreePercent: percent <= 3.0001,
-            citation: "210.19(A) Informational Note, Ch. 9 Table 8"
+            citation: String(localized: "210.19(A) Informational Note, Ch. 9 Table 8")
         )
     }
 
@@ -187,18 +187,18 @@ enum FieldCalculators {
         let solved: (volts: Double, amps: Double, ohms: Double, watts: Double, basis: String)
         switch (v, i, r, p) {
         case let (v?, i?, _, _):
-            solved = (v, i, v / i, v * i, "V and I")
+            solved = (v, i, v / i, v * i, String(localized: "V and I"))
         case let (v?, _, r?, _):
-            solved = (v, v / r, r, v * v / r, "V and R")
+            solved = (v, v / r, r, v * v / r, String(localized: "V and R"))
         case let (_, i?, r?, _):
-            solved = (i * r, i, r, i * i * r, "I and R")
+            solved = (i * r, i, r, i * i * r, String(localized: "I and R"))
         case let (v?, _, _, p?):
-            solved = (v, p / v, v * v / p, p, "V and P")
+            solved = (v, p / v, v * v / p, p, String(localized: "V and P"))
         case let (_, i?, _, p?):
-            solved = (p / i, i, p / (i * i), p, "I and P")
+            solved = (p / i, i, p / (i * i), p, String(localized: "I and P"))
         case let (_, _, r?, p?):
             let volts = sqrt(p * r)
-            solved = (volts, volts / r, r, p, "R and P")
+            solved = (volts, volts / r, r, p, String(localized: "R and P"))
         default:
             return nil
         }
@@ -250,14 +250,11 @@ extension FieldCalculators {
     /// which is wrong exactly where someone checks a small current or a
     /// conductor's resistance. Large readings keep one decimal.
     static func readingText(_ value: Double) -> String {
-        guard value.isFinite else { return "n/a" }
-        guard value != 0 else { return "0" }
+        guard value.isFinite else { return String(localized: "n/a") }
+        guard value != 0 else { return 0.formatted(.number) }
         let leadingDigit = Int(floor(log10(abs(value))))
         let decimals = min(6, max(1, 3 - leadingDigit))
-        var text = String(format: "%.\(decimals)f", value)
-        while text.contains("."), text.hasSuffix("0") { text.removeLast() }
-        if text.hasSuffix(".") { text.removeLast() }
-        return text
+        return value.formatted(.number.precision(.fractionLength(0...decimals)).grouping(.never))
     }
 }
 

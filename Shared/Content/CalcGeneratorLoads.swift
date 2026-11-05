@@ -14,27 +14,27 @@ extension CandidateMistake {
     static let loadForgotLightingDemand = MistakePattern(
         id: "load-forgot-lighting-demand",
         skill: PracticeSkill.dwellingLoad.rawValue,
-        summary: "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one."
+        summary: String(localized: "You carried the general lighting at 100%. Only the first 3000 VA stays whole; the rest of it up to 120,000 VA comes in at 35%. That demand factor is most of the difference between a 200 A service and a 400 A one.")
     )
     static let loadForgotSmallAppliance = MistakePattern(
         id: "load-forgot-small-appliance",
         skill: PracticeSkill.dwellingLoad.rawValue,
-        summary: "You left out the small-appliance and laundry circuits. A dwelling carries two 1500 VA small-appliance circuits and a 1500 VA laundry circuit, and they go INSIDE the general lighting total before the demand factor, not after it."
+        summary: String(localized: "You left out the small-appliance and laundry circuits. A dwelling carries two 1500 VA small-appliance circuits and a 1500 VA laundry circuit, and they go INSIDE the general lighting total before the demand factor, not after it.")
     )
     static let loadUsedRangeNameplate = MistakePattern(
         id: "load-used-range-nameplate",
         skill: PracticeSkill.dwellingLoad.rawValue,
-        summary: "You used the range nameplate. A household range has its own demand table: one range not over 12 kW is taken at 8 kW, however big the nameplate says it is."
+        summary: String(localized: "You used the range nameplate. A household range has its own demand table: one range not over 12 kW is taken at 8 kW, however big the nameplate says it is.")
     )
     static let loadAddedHeatAndCooling = MistakePattern(
         id: "load-added-heat-and-cooling",
         skill: PracticeSkill.dwellingLoad.rawValue,
-        summary: "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation."
+        summary: String(localized: "You added the heating and the air conditioning together. 220.60 calls them noncoincident: they cannot run at once, so only the larger of the two goes into the calculation.")
     )
     static let loadForgotApplianceDemand = MistakePattern(
         id: "load-forgot-appliance-demand",
         skill: PracticeSkill.dwellingLoad.rawValue,
-        summary: "You carried the fastened-in-place appliances at 100%. Four or more of them on the same service come in at 75% under 220.53, and the range, dryer, heating and air conditioning are not part of that count."
+        summary: String(localized: "You carried the fastened-in-place appliances at 100%. Four or more of them on the same service come in at 75% under 220.53, and the range, dryer, heating and air conditioning are not part of that count.")
     )
 }
 
@@ -145,18 +145,20 @@ extension CalcGenerator {
         )
 
         var steps = [
-            "General lighting and general-use receptacles: \(Int(area)) ft² × 3 VA = \(Int(lighting).groupedText) VA.",
-            "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so \(Int(lighting).groupedText) + \(Int(circuits).groupedText) = \(Int(generalTotal).groupedText) VA.",
-            "Apply the demand factor to that subtotal only: the first 3000 VA at 100%, the remaining \(Int(generalTotal - 3000).groupedText) VA at 35%, giving \(Int(generalDemand.rounded()).groupedText) VA.",
-            "The range has its own table. \(rangeKW.factorText) kW\(rangeKW > 12 ? ", which is over 12 kW, so column C's 8 kW rises 5% per kW above 12" : " is not over 12 kW, so column C reads 8 kW flat"): \(Int(rangeVA).groupedText) VA.",
-            "The dryer is the greater of its nameplate and 5000 VA: \(Int(dryerNameplate).groupedText) against 5000, so \(Int(dryerVA).groupedText) VA.",
-            "Four fastened-in-place appliances (\(Int(waterHeater)) + \(Int(dishwasher)) + \(Int(disposal)) + \(Int(compactor)) = \(Int(applianceTotal).groupedText) VA) reach the four-appliance threshold, so 220.53 takes them at 75%: \(Int(applianceDemand.rounded()).groupedText) VA.",
-            "Heat and air conditioning cannot run together, so 220.60 counts only the larger: \(Int(climate).groupedText) VA.",
-            "Add 25% of the largest retained motor under 220.50 and 430.24: \(Int(disposal)) × 0.25 = \(Int(motorAllowance)) VA.",
-            "Total \(Int(generalDemand.rounded()).groupedText) + \(Int(rangeVA).groupedText) + \(Int(dryerVA).groupedText) + \(Int(applianceDemand.rounded()).groupedText) + \(Int(climate).groupedText) + \(Int(motorAllowance)) = \(Int(total.rounded()).groupedText) VA.",
+            String(localized: "General lighting and general-use receptacles: \(Int(area)) ft² × 3 VA = \(Int(lighting).groupedText) VA."),
+            String(localized: "Add the circuits that belong inside that total: two small-appliance circuits at 1500 VA and one laundry circuit at 1500 VA, so \(Int(lighting).groupedText) + \(Int(circuits).groupedText) = \(Int(generalTotal).groupedText) VA."),
+            String(localized: "Apply the demand factor to that subtotal only: the first 3000 VA at 100%, the remaining \(Int(generalTotal - 3000).groupedText) VA at 35%, giving \(Int(generalDemand.rounded()).groupedText) VA."),
+            rangeKW > 12
+                ? String(localized: "The range has its own table. \(rangeKW.factorText) kW, which is over 12 kW, so column C's 8 kW rises 5% per kW above 12: \(Int(rangeVA).groupedText) VA.")
+                : String(localized: "The range has its own table. \(rangeKW.factorText) kW is not over 12 kW, so column C reads 8 kW flat: \(Int(rangeVA).groupedText) VA."),
+            String(localized: "The dryer is the greater of its nameplate and 5000 VA: \(Int(dryerNameplate).groupedText) against 5000, so \(Int(dryerVA).groupedText) VA."),
+            String(localized: "Four fastened-in-place appliances (\(Int(waterHeater)) + \(Int(dishwasher)) + \(Int(disposal)) + \(Int(compactor)) = \(Int(applianceTotal).groupedText) VA) reach the four-appliance threshold, so 220.53 takes them at 75%: \(Int(applianceDemand.rounded()).groupedText) VA."),
+            String(localized: "Heat and air conditioning cannot run together, so 220.60 counts only the larger: \(Int(climate).groupedText) VA."),
+            String(localized: "Add 25% of the largest retained motor under 220.50 and 430.24: \(Int(disposal)) × 0.25 = \(Int(motorAllowance)) VA."),
+            String(localized: "Total \(Int(generalDemand.rounded()).groupedText) + \(Int(rangeVA).groupedText) + \(Int(dryerVA).groupedText) + \(Int(applianceDemand.rounded()).groupedText) + \(Int(climate).groupedText) + \(Int(motorAllowance)) = \(Int(total.rounded()).groupedText) VA."),
         ]
         if asksForService {
-            steps.append("\(Int(total.rounded()).groupedText) VA ÷ 240 V ≈ \(amps.roundedAmpsText) A. Use the unrounded current to select the smallest standard rating that carries it: \(rating) A.")
+            steps.append(String(localized: "\(Int(total.rounded()).groupedText) VA ÷ 240 V ≈ \(amps.roundedAmpsText) A. Use the unrounded current to select the smallest standard rating that carries it: \(rating) A."))
         }
 
         let mistakes = mistakeMap(answerLabel: format(answerValue), choices: choices.labels, [
@@ -170,23 +172,23 @@ extension CalcGenerator {
         return CalcScenario(
             id: "gen-dwellingLoad-\(UUID().uuidString)",
             situation: asksForService
-                ? "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?"
-                : "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?",
+                ? String(localized: "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the minimum standard service rating?")
+                : String(localized: "Standard method, 120/240 V one-family dwelling with two small-appliance circuits, one laundry circuit and no other loads. Use Table 220.55 column C for the range. Heat and cooling are interlocked; cooling including its motor allowance is below heating. The disposal is the largest motor running with heat. What is the calculated load?"),
             givens: [
-                Given("Floor area", "\(Int(area))", unit: "ft²"),
-                Given("Range", rangeKW.factorText, unit: "kW"),
-                Given("Dryer", "\(Int(dryerNameplate))", unit: "VA"),
-                Given("Water heater", "\(Int(waterHeater))", unit: "VA"),
-                Given("Dishwasher", "\(Int(dishwasher))", unit: "VA"),
-                Given("Disposal", "\(Int(disposal))", unit: "VA"),
-                Given("Compactor", "\(Int(compactor))", unit: "VA"),
-                Given("Air conditioning", "\(Int(coolingVA))", unit: "VA"),
-                Given("Electric heat", "\(Int(heatingVA))", unit: "VA"),
+                Given(String(localized: "Floor area"), "\(Int(area))", unit: "ft²"),
+                Given(String(localized: "Range"), rangeKW.factorText, unit: "kW"),
+                Given(String(localized: "Dryer"), "\(Int(dryerNameplate))", unit: "VA"),
+                Given(String(localized: "Water heater"), "\(Int(waterHeater))", unit: "VA"),
+                Given(String(localized: "Dishwasher"), "\(Int(dishwasher))", unit: "VA"),
+                Given(String(localized: "Disposal"), "\(Int(disposal))", unit: "VA"),
+                Given(String(localized: "Compactor"), "\(Int(compactor))", unit: "VA"),
+                Given(String(localized: "Air conditioning"), "\(Int(coolingVA))", unit: "VA"),
+                Given(String(localized: "Electric heat"), "\(Int(heatingVA))", unit: "VA"),
             ],
             choices: choices.labels,
             answerIndex: choices.answerIndex,
             steps: steps,
-            citation: "220.41, Table 220.45, 220.50, 430.24, 220.52, 220.53, 220.54, Table 220.55, 220.60, 230.79(C)",
+            citation: String(localized: "220.41, Table 220.45, 220.50, 430.24, 220.52, 220.53, 220.54, Table 220.55, 220.60, 230.79(C)"),
             mistakes: mistakes
         )
     }

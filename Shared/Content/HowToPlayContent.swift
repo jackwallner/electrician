@@ -32,59 +32,59 @@ enum HowToPlayContent {
         HowToPlayPage(
             id: "htp-openbook",
             icon: "book.closed.fill",
-            title: "It is an open-book exam",
-            body: "You bring the code book in with you. That sounds like relief and it is actually the whole difficulty: the exam is timed, and a question you have to hunt for costs you two more you never reach. What is being tested is navigation speed, not memory.",
-            tip: "Tab your book. Candidates who tab and candidates who do not are not taking the same test."
+            title: String(localized: "It is an open-book exam"),
+            body: String(localized: "You bring the code book in with you. That sounds like relief and it is actually the whole difficulty: the exam is timed, and a question you have to hunt for costs you two more you never reach. What is being tested is navigation speed, not memory."),
+            tip: String(localized: "Tab your book. Candidates who tab and candidates who do not are not taking the same test.")
         ),
         HowToPlayPage(
             id: "htp-structure",
             icon: "list.number",
-            title: "Nine chapters, in an order that matters",
-            body: "Chapters 1 through 4 apply everywhere. Chapters 5, 6 and 7 cover special occupancies, equipment and conditions, and they modify the general chapters. Chapter 8 is communications. Chapter 9 is nothing but tables, and it is where the fill math lives even though people look for it in the raceway articles.",
-            tip: "When a special rule and a general rule disagree, the special rule wins."
+            title: String(localized: "Nine chapters, in an order that matters"),
+            body: String(localized: "Chapters 1 through 4 apply everywhere. Chapters 5, 6 and 7 cover special occupancies, equipment and conditions, and they modify the general chapters. Chapter 8 is communications. Chapter 9 is nothing but tables, and it is where the fill math lives even though people look for it in the raceway articles."),
+            tip: String(localized: "When a special rule and a general rule disagree, the special rule wins.")
         ),
         HowToPlayPage(
             id: "htp-columns",
             icon: "cable.connector",
-            title: "Three temperature columns",
-            body: "A conductor's insulation picks which column you read. The equipment it lands on picks which column you may finish in, with 60°C or 75°C limits unless a different rating is identified. For the stated 90°C wire and 75°C terminals here, correct and adjust from 90°C, then cap the result at the 75°C ampacity.",
+            title: String(localized: "Three temperature columns"),
+            body: String(localized: "A conductor's insulation picks which column you read. The equipment it lands on picks which column you may finish in, with 60°C or 75°C limits unless a different rating is identified. For the stated 90°C wire and 75°C terminals here, correct and adjust from 90°C, then cap the result at the 75°C ampacity."),
             givens: [.conductor("6 AWG", "THHN"), .terminals(.c75)],
-            tip: "Starting the derate from the 75°C value gives a wrong answer that looks right."
+            tip: String(localized: "Starting the derate from the 75°C value gives a wrong answer that looks right.")
         ),
         HowToPlayPage(
             id: "htp-two-factors",
             icon: "thermometer.medium",
-            title: "Heat and crowding both cost you",
-            body: "The ampacity table assumes 30°C and no more than three current-carrying conductors. Hotter air multiplies the number down. Four or more current-carrying conductors multiplies it down again. Both apply together, and they multiply rather than add.",
+            title: String(localized: "Heat and crowding both cost you"),
+            body: String(localized: "The ampacity table assumes 30°C and no more than three current-carrying conductors. Hotter air multiplies the number down. Four or more current-carrying conductors multiplies it down again. Both apply together, and they multiply rather than add."),
             givens: [.ambient(45), .currentCarrying(6)],
-            tip: "An equipment grounding conductor is never current-carrying. Count it and you get the wrong factor."
+            tip: String(localized: "An equipment grounding conductor is never current-carrying. Count it and you get the wrong factor.")
         ),
         HowToPlayPage(
             id: "htp-240-4-d",
             icon: "bolt.shield.fill",
-            title: "The rule that beats the table",
-            body: "14, 12 and 10 AWG copper are capped at 15, 20 and 30 amps for ordinary general-purpose overcurrent protection unless a specific code permission applies. Aluminum 12 and 10 cap at 15 and 25. More candidates lose points to this one rule than to any other in the book.",
+            title: String(localized: "The rule that beats the table"),
+            body: String(localized: "14, 12 and 10 AWG copper are capped at 15, 20 and 30 amps for ordinary general-purpose overcurrent protection unless a specific code permission applies. Aluminum 12 and 10 cap at 15 and 25. More candidates lose points to this one rule than to any other in the book."),
             givens: [.conductor("12 AWG", "THWN-2"), .material(.copper)],
-            tip: "If a question hands you a small conductor, check 240.4(D) before you answer."
+            tip: String(localized: "If a question hands you a small conductor, check 240.4(D) before you answer.")
         ),
         HowToPlayPage(
             id: "htp-practice",
             icon: "infinity",
-            title: "Why this app generates problems",
-            body: "Derating, breaker sizing, conduit fill, box fill and voltage drop are pure calculations: same inputs, same answer, every time. That means they can be generated endlessly instead of shipped as a fixed question bank you memorise the shape of. Every wrong choice you see is the number you get from one specific, common mistake.",
-            tip: "Read the steps after a miss. The step you skipped is the one that will cost you again."
+            title: String(localized: "Why this app generates problems"),
+            body: String(localized: "Derating, breaker sizing, conduit fill, box fill and voltage drop are pure calculations: same inputs, same answer, every time. That means they can be generated endlessly instead of shipped as a fixed question bank you memorise the shape of. Every wrong choice you see is the number you get from one specific, common mistake."),
+            tip: String(localized: "Read the steps after a miss. The step you skipped is the one that will cost you again.")
         ),
         HowToPlayPage(
             id: "htp-coverage",
             icon: "checklist",
-            title: "What this app covers today",
+            title: String(localized: "What this app covers today"),
             // The page before this one describes the whole code book, which is
             // an easy thing to mistake for a claim about the app. It is not.
             // Saying where the drills actually go is more useful than implying
             // a curriculum that does not exist yet, and a candidate who finds
             // the gap themselves after paying is right to be annoyed.
-            body: "Six rooms: how the book is organized and how to find an article, conductors and ampacity, the installation rules you look up on site, the worked calculations, dwelling service and load calculations, and grounding with motors. On top of those the generator runs \(PracticeSkill.allCases.count) calculation shapes without limit. That is deliberately the part of the exam that is pure calculation and pure navigation.",
-            tip: "This is selected calculation and navigation practice, not a complete exam curriculum. Special occupancies and many equipment-specific installation rules need separate study. Keep studying those from your own book."
+            body: String(localized: "Six rooms: how the book is organized and how to find an article, conductors and ampacity, the installation rules you look up on site, the worked calculations, dwelling service and load calculations, and grounding with motors. On top of those the generator runs \(PracticeSkill.allCases.count) calculation shapes without limit. That is deliberately the part of the exam that is pure calculation and pure navigation."),
+            tip: String(localized: "This is selected calculation and navigation practice, not a complete exam curriculum. Special occupancies and many equipment-specific installation rules need separate study. Keep studying those from your own book.")
         ),
     ]
 }

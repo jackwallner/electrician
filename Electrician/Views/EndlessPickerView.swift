@@ -28,7 +28,8 @@ struct EndlessPickerView: View {
                 intro
                 ForEach(groups, id: \.room.id) { group in
                     VStack(alignment: .leading, spacing: 10) {
-                        Text(group.room.name.uppercased())
+                        Text(group.room.name)
+                            .textCase(.uppercase)
                             .font(Theme.eyebrow)
                             .kerning(Theme.eyebrowKerning)
                             .foregroundStyle(group.room.accent)

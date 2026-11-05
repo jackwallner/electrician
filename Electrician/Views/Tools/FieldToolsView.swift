@@ -24,32 +24,32 @@ struct FieldToolsView: View {
             }
             Section("Conductors") {
                 NavigationLink { AmpacityToolView() } label: {
-                    toolRow("bolt.fill", "Ampacity", "Derate, then cap, then 240.4(D)")
+                    toolRow("bolt.fill", String(localized: "Ampacity"), String(localized: "Derate, then cap, then 240.4(D)"))
                 }
                 NavigationLink { ConduitFillToolView() } label: {
-                    toolRow("circle.hexagongrid.fill", "Conduit fill", "THHN in EMT, Chapter 9")
+                    toolRow("circle.hexagongrid.fill", String(localized: "Conduit fill"), String(localized: "THHN in EMT, Chapter 9"))
                 }
                 NavigationLink { BoxFillToolView() } label: {
-                    toolRow("shippingbox.fill", "Box fill", "Allowances, not wires, 314.16")
+                    toolRow("shippingbox.fill", String(localized: "Box fill"), String(localized: "Allowances, not wires, 314.16"))
                 }
                 NavigationLink { VoltageDropToolView() } label: {
-                    toolRow("waveform.path.ecg", "Voltage drop", "Resistive estimate, informational note")
+                    toolRow("waveform.path.ecg", String(localized: "Voltage drop"), String(localized: "Resistive estimate, informational note"))
                 }
             }
             Section("Systems") {
                 NavigationLink { GroundingToolView() } label: {
-                    toolRow("leaf.fill", "Grounding", "Both conductors, and what each is sized from")
+                    toolRow("leaf.fill", String(localized: "Grounding"), String(localized: "Both conductors, and what each is sized from"))
                 }
                 NavigationLink { MotorToolView() } label: {
-                    toolRow("fan.fill", "Motor circuit", "Table current in, whole circuit out")
+                    toolRow("fan.fill", String(localized: "Motor circuit"), String(localized: "Table current in, whole circuit out"))
                 }
                 NavigationLink { DwellingLoadToolView() } label: {
-                    toolRow("house.fill", "Dwelling load", "Standard method, step by step")
+                    toolRow("house.fill", String(localized: "Dwelling load"), String(localized: "Standard method, step by step"))
                 }
             }
             Section("Bench") {
                 NavigationLink { OhmsLawToolView() } label: {
-                    toolRow("plus.forwardslash.minus", "Ohm's law", "Any two of V, I, R, P")
+                    toolRow("plus.forwardslash.minus", String(localized: "Ohm's law"), String(localized: "Any two of V, I, R, P"))
                 }
             }
         }
@@ -162,8 +162,8 @@ private struct ConduitFillToolView: View {
             }
             if let result {
                 Section("Result") {
-                    LabeledContent("Fill", value: String(format: "%.2f%% of allowed %.0f%%", result.actualPercent * 100, result.allowedPercent * 100))
-                    LabeledContent("This size", value: result.fits ? "Fits" : "Does not fit")
+                    LabeledContent("Fill", value: String(localized: "\(result.actualPercent.formatted(.percent.precision(.fractionLength(2)))) of allowed \(result.allowedPercent.formatted(.percent.precision(.fractionLength(0))))"))
+                    LabeledContent("This size", value: result.fits ? String(localized: "Fits") : String(localized: "Does not fit"))
                     if let smallest = result.smallestFitting {
                         LabeledContent("Smallest EMT", value: smallest)
                     }
@@ -240,8 +240,8 @@ private struct VoltageDropToolView: View {
             }
             if let result {
                 Section("Estimate") {
-                    LabeledContent("Drop", value: String(format: "%.2f V (%.2f%%)", result.volts, result.percent))
-                    LabeledContent("3% note", value: result.withinThreePercent ? "Within" : "Over")
+                    LabeledContent("Drop", value: String(localized: "\(result.volts.formatted(.number.precision(.fractionLength(2)).grouping(.never))) V (\((result.percent / 100).formatted(.percent.precision(.fractionLength(2)))))"))
+                    LabeledContent("3% note", value: result.withinThreePercent ? String(localized: "Within") : String(localized: "Over"))
                     Text("\(result.citation) · \(NECTables.edition)")
                         .font(.caption)
                         .foregroundStyle(Theme.inkSecondary)
@@ -283,10 +283,10 @@ private struct OhmsLawToolView: View {
     var body: some View {
         Form {
             Section("Enter any two") {
-                field("Volts", text: $voltsText)
-                field("Amps", text: $ampsText)
-                field("Ohms", text: $ohmsText)
-                field("Watts", text: $wattsText)
+                field(String(localized: "Volts"), text: $voltsText)
+                field(String(localized: "Amps"), text: $ampsText)
+                field(String(localized: "Ohms"), text: $ohmsText)
+                field(String(localized: "Watts"), text: $wattsText)
             }
             if let result {
                 Section("Result") {
@@ -306,7 +306,7 @@ private struct OhmsLawToolView: View {
                     // electrician finds out about at the panel.
                     Section("Check your inputs") {
                         Label(
-                            "\(result.conflicts.joined(separator: ", ")) \(result.conflicts.count == 1 ? "does" : "do") not agree with \(result.basis). The result above is solved from \(result.basis); clear or correct the others.",
+                            conflictMessage(result),
                             systemImage: "exclamationmark.triangle.fill"
                         )
                         .font(.caption)
@@ -322,6 +322,14 @@ private struct OhmsLawToolView: View {
         }
         .navigationTitle("Ohm's law")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func conflictMessage(_ result: FieldCalculators.OhmsLawResult) -> String {
+        let names = result.conflicts.joined(separator: ", ")
+        if result.conflicts.count == 1 {
+            return String(localized: "\(names) does not agree with \(result.basis). The result above is solved from \(result.basis); clear or correct the others.")
+        }
+        return String(localized: "\(names) do not agree with \(result.basis). The result above is solved from \(result.basis); clear or correct the others.")
     }
 
     private func field(_ title: String, text: Binding<String>) -> some View {
