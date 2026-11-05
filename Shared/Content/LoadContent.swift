@@ -25,7 +25,7 @@ enum LoadContent {
             frontSubtitle: String(localized: "And what area is it measured over"),
             backTitle: String(localized: "Three volt-amperes per square foot, over the outside dimensions"),
             backBody: String(localized: "The area is computed from the outside dimensions of the dwelling, and it excludes open porches, garages and unfinished spaces not adaptable for future use. An unfinished basement that could be finished is IN. That last part is where the square footage a question gives you and the square footage you should use diverge, and it is deliberate."),
-            citation: "220.41 (220.12 in 2020)",
+            citation: String(localized: "220.41 (220.12 in 2020)"),
             choice: CardChoice("3 VA/ft²", "1.5 VA/ft²", answerIndex: 0)
         ),
         Flashcard(
@@ -112,7 +112,7 @@ enum LoadContent {
             choices: ["5400 VA", "2700 VA", "9000 VA", "1800 VA"],
             answerIndex: 0,
             explanation: String(localized: "1800 × 3 VA = 5400 VA. The 3 VA per square foot covers the lighting AND the general-use receptacle outlets together, which is why a dwelling calculation never counts living-room receptacles individually."),
-            citation: "220.41 (220.12 in 2020)"
+            citation: String(localized: "220.41 (220.12 in 2020)")
         ),
         QuizQuestion(
             id: "load-quiz-demand",

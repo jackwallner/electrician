@@ -69,7 +69,7 @@ enum ProContent {
         QuizQuestion(
             id: "gnd-q-rod-cap",
             prompt: String(localized: "Table 250.66 calls for 1/0 AWG copper for a service. A conductor connects only to a driven rod and does not continue to another electrode. What minimum copper size does 250.66(A) permit?"),
-            givens: [Given(String(localized: "Table GEC"), "1/0 AWG copper"), Given(String(localized: "Electrode"), String(localized: "ground rod"))],
+            givens: [Given(String(localized: "Table GEC"), String(localized: "1/0 AWG copper")), Given(String(localized: "Electrode"), String(localized: "ground rod"))],
             choices: ["6 AWG", "1/0 AWG", "4 AWG", "2 AWG"],
             answerIndex: 0,
             explanation: String(localized: "The size from the service conductors would be much larger, but the rod exception caps it: a conductor to a rod, pipe or plate electrode is never required to be larger than 6 AWG copper."),

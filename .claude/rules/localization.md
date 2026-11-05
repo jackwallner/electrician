@@ -48,6 +48,15 @@ languages.
   `"%lld plural category"` key for the CLDR category and picks one whole key per
   category. The `(few)` and `(many)` keys carry English wording until a language
   needs them.
+- A count inside a sentence is passed raw (`\(days) days`), never as an already
+  translated `"%lld days"` string: each sentence key carries its own plural
+  substitution, because the case of "days" differs per sentence. When the
+  English display needs thousands separators, the key ends with an extra
+  `\(n.groupedText)` argument that the variants print as `%4$@` (see the
+  goal-suggestion key). Authored chips take their unit from `PluralLabel`
+  (`PluralLabel.wires(3)`), never one fixed key; `check.py` rejects the latter.
+  Chip values and citations that hold a word (`yes`, `1/0 AWG copper`,
+  `210.20(A), Table 240.6(A)`) are whole `String(localized:)` keys.
 - Mid-sentence names use `inlineName` (`ConductorMaterial`, grounding electrode,
   motor protection device) with their own keys. Never `.lowercased()` or
   `.capitalized` translated text; uppercase through `.textCase(.uppercase)`.

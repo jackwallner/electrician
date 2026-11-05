@@ -397,24 +397,55 @@
         }
       }
     },
-    "%@. At %lld questions a day you will have worked roughly %@ problems before you sit it.": {
+    "%@. At %lld questions a day you will have worked roughly %lld problems before you sit it. %@": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@. At %lld questions a day you will have worked roughly %@ problems before you sit it."
-          }
-        }
-      }
-    },
-    "%@. At %lld questions a day you will have worked roughly 600 problems before you sit it.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@. At %lld questions a day you will have worked roughly 600 problems before you sit it."
+            "value": "%1$@. At %#@questions@ a day you will have worked roughly %#@problems@ before you sit it."
+          },
+          "substitutions": {
+            "questions": {
+              "argNum": 2,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg question"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg questions"
+                    }
+                  }
+                }
+              }
+            },
+            "problems": {
+              "argNum": 3,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%4$@ problem"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%4$@ problems"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1148,6 +1179,17 @@
         }
       }
     },
+    "1/0 AWG copper": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1/0 AWG copper"
+          }
+        }
+      }
+    },
     "1/0 AWG is the general floor for paralleling, and the paralleled conductors have to match each other in length, material, size, insulation and termination. There are narrow exceptions for specific applications, but the general rule is 1/0.": {
       "extractionState": "manual",
       "localizations": {
@@ -1357,6 +1399,17 @@
         }
       }
     },
+    "210.20(A), Table 240.6(A)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "210.20(A), Table 240.6(A)"
+          }
+        }
+      }
+    },
     "220 Load Calc": {
       "extractionState": "manual",
       "localizations": {
@@ -1364,6 +1417,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "220 Load Calc"
+          }
+        }
+      }
+    },
+    "220.41 (220.12 in 2020)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "220.41 (220.12 in 2020)"
           }
         }
       }
@@ -15041,46 +15105,254 @@
         }
       }
     },
-    "The free rooms hold %lld questions, about %@ at %lld a day. That barely covers your %@, once, with nothing left to repeat.": {
+    "The free rooms hold %lld questions, about %lld days at %lld a day. That barely covers your %lld days, once, with nothing left to repeat.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The free rooms hold %lld questions, about %@ at %lld a day. That barely covers your %@, once, with nothing left to repeat."
+            "value": "The free rooms hold %#@questions@, about %#@free@ at %3$lld a day. That barely covers your %#@until@, once, with nothing left to repeat."
+          },
+          "substitutions": {
+            "questions": {
+              "argNum": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg question"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg questions"
+                    }
+                  }
+                }
+              }
+            },
+            "free": {
+              "argNum": 2,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg day"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg days"
+                    }
+                  }
+                }
+              }
+            },
+            "until": {
+              "argNum": 4,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg day"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg days"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "The free rooms hold %lld questions. At %lld a day that is about %@ of practice, and then you are re-reading answers you remember.": {
+    "The free rooms hold %lld questions. At %lld a day that is about %lld days of practice, and then you are re-reading answers you remember.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The free rooms hold %lld questions. At %lld a day that is about %@ of practice, and then you are re-reading answers you remember."
+            "value": "The free rooms hold %#@questions@. At %2$lld a day that is about %#@days@ of practice, and then you are re-reading answers you remember."
+          },
+          "substitutions": {
+            "questions": {
+              "argNum": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg question"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg questions"
+                    }
+                  }
+                }
+              }
+            },
+            "days": {
+              "argNum": 3,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg day"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg days"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "The free rooms hold %lld questions. At %lld a day that is about %@, and after that you are re-reading answers you already remember. The generator is what makes the reps keep counting.": {
+    "The free rooms hold %lld questions. At %lld a day that is about %lld days, and after that you are re-reading answers you already remember. The generator is what makes the reps keep counting.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The free rooms hold %lld questions. At %lld a day that is about %@, and after that you are re-reading answers you already remember. The generator is what makes the reps keep counting."
+            "value": "The free rooms hold %#@questions@. At %2$lld a day that is about %#@days@, and after that you are re-reading answers you already remember. The generator is what makes the reps keep counting."
+          },
+          "substitutions": {
+            "questions": {
+              "argNum": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg question"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg questions"
+                    }
+                  }
+                }
+              }
+            },
+            "days": {
+              "argNum": 3,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg day"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg days"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "The free rooms hold %lld questions. At %lld a day you finish them in about %@, with %@ still to go.": {
+    "The free rooms hold %lld questions. At %lld a day you finish them in about %lld days, with %lld days still to go.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The free rooms hold %lld questions. At %lld a day you finish them in about %@, with %@ still to go."
+            "value": "The free rooms hold %#@questions@. At %2$lld a day you finish them in about %#@free@, with %#@left@ still to go."
+          },
+          "substitutions": {
+            "questions": {
+              "argNum": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg question"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg questions"
+                    }
+                  }
+                }
+              }
+            },
+            "free": {
+              "argNum": 3,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg day"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg days"
+                    }
+                  }
+                }
+              }
+            },
+            "left": {
+              "argNum": 4,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg day"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%arg days"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -19063,6 +19335,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "wires (many)"
+          }
+        }
+      }
+    },
+    "yes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "yes"
           }
         }
       }

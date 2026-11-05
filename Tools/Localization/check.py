@@ -252,6 +252,25 @@ def check_source(catalog_loose, problems):
                     problems.append(f'{rel}:{lit["line"]}: ternary literal "{literal_text(segs)[:50]}" needs String(localized:)')
 
 
+# Count labels have one key per plural category, chosen by PluralLabel. A chip unit
+# written as one fixed key serves every count with a single translation.
+PLURAL_NOUNS = r'(?:conductors?|wires?|yokes?|days?)'
+
+
+def check_patterns(problems):
+    for path in source_files():
+        rel = os.path.relpath(path, ROOT)
+        if rel.endswith('PluralLabel.swift'):
+            continue
+        for number, line in enumerate(open(path).read().split('\n'), 1):
+            if IGNORE_MARK in line:
+                continue
+            if re.search(r'unit:\s*String\(localized:\s*"' + PLURAL_NOUNS + r'"\)', line):
+                problems.append(f'{rel}:{number}: count label must come from PluralLabel, not a fixed key')
+            if re.search(r'citation:\s*"[^"]*\b(?:Table|Art\.|Ch\.|in)\b', line):
+                problems.append(f'{rel}:{number}: citation holds an English word outside String(localized:)')
+
+
 def check_catalog(catalog, problems):
     for key, entry in catalog.items():
         locs = entry.get('localizations', {})
@@ -284,6 +303,7 @@ def main():
     catalog = json.load(open(os.path.join(ROOT, 'Shared', 'Localizable.xcstrings')))['strings']
     problems = []
     check_source({loose(k) for k in catalog}, problems)
+    check_patterns(problems)
     check_catalog(catalog, problems)
     for p in problems:
         print(p)

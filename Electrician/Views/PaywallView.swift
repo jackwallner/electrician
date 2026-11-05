@@ -121,11 +121,10 @@ struct PaywallContent: View {
         let free = DrillLibrary.freeItemCount
         let daily = profile.suggestedDailyQuestions
         let days = max(1, Int((Double(free) / Double(max(daily, 1))).rounded(.up)))
-        let dayText = String(localized: "\(days) days")
         if profile.pace == .cram {
             return String(localized: "More questions is not what decides an exam this close. Every wrong answer here is a named error, and \(Membership.name) builds fresh problems that set the same trap until you stop falling for it.")
         }
-        return String(localized: "The free rooms hold \(free) questions. At \(daily) a day that is about \(dayText), and after that you are re-reading answers you already remember. The generator is what makes the reps keep counting.")
+        return String(localized: "The free rooms hold \(free) questions. At \(daily) a day that is about \(days) days, and after that you are re-reading answers you already remember. The generator is what makes the reps keep counting.")
     }
 
     private func benefit(_ text: String) -> some View {

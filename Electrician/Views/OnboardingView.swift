@@ -738,7 +738,10 @@ struct OnboardingView: View {
     private var goalSuggestion: String? {
         guard let countdown = profile.examCountdownSummary,
               let planned = profile.plannedQuestions else { return nil }
-        return String(localized: "\(countdown). At \(profile.suggestedDailyQuestions) questions a day you will have worked roughly \(planned.groupedText) problems before you sit it.")
+        // Both counts are numeric so the catalog can pick a plural form for each.
+        // The last argument is the same total with thousands separators: the
+        // catalog's "problems" variants print it instead of the bare number.
+        return String(localized: "\(countdown). At \(profile.suggestedDailyQuestions) questions a day you will have worked roughly \(planned) problems before you sit it. \(planned.groupedText)")
     }
 
     // MARK: Plan recap
@@ -973,13 +976,17 @@ struct OnboardingView: View {
         if profile.pace == .cram {
             return String(localized: "More questions is not what decides an exam this close.")
         }
+        // Raw day counts go into whole-sentence keys, each with its own plural
+        // substitution, because the grammatical case of "days" differs per sentence.
+        let daily = profile.suggestedDailyQuestions
+        let freeDays = daysOfFreeContent
         guard let until = profile.daysUntilExam else {
-            return String(localized: "The free rooms hold \(free) questions. At \(profile.suggestedDailyQuestions) a day that is about \(dayCount(daysOfFreeContent)) of practice, and then you are re-reading answers you remember.")
+            return String(localized: "The free rooms hold \(free) questions. At \(daily) a day that is about \(freeDays) days of practice, and then you are re-reading answers you remember.")
         }
-        if daysOfFreeContent >= until {
-            return String(localized: "The free rooms hold \(free) questions, about \(dayCount(daysOfFreeContent)) at \(profile.suggestedDailyQuestions) a day. That barely covers your \(dayCount(until)), once, with nothing left to repeat.")
+        if freeDays >= until {
+            return String(localized: "The free rooms hold \(free) questions, about \(freeDays) days at \(daily) a day. That barely covers your \(until) days, once, with nothing left to repeat.")
         }
-        return String(localized: "The free rooms hold \(free) questions. At \(profile.suggestedDailyQuestions) a day you finish them in about \(dayCount(daysOfFreeContent)), with \(dayCount(until - daysOfFreeContent)) still to go.")
+        return String(localized: "The free rooms hold \(free) questions. At \(daily) a day you finish them in about \(freeDays) days, with \(until - freeDays) days still to go.")
     }
 
     private var runsOutDetail: String {
@@ -987,12 +994,6 @@ struct OnboardingView: View {
             return String(localized: "Every wrong answer here is a named error. Fix My Mistakes builds fresh problems that set the same trap until you stop falling for it, and that is what moves a score overnight.")
         }
         return String(localized: "\(Membership.name) generates the calculations instead of storing them. \(PracticeSkill.allCases.count) problem shapes, new numbers every time, so the practice cannot run out before the exam does.")
-    }
-
-    /// "1 day" / "12 days". Written out rather than interpolated at each call
-    /// site, because "your 1 days" is the kind of thing that ships.
-    private func dayCount(_ days: Int) -> String {
-        String(localized: "\(days) days")
     }
 
     private struct TrialBenefit {

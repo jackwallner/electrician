@@ -436,7 +436,7 @@ enum CalcGenerator {
             Given(String(localized: "Grounds"), "\(groundCount)", unit: PluralLabel.wires(groundCount)),
             Given(String(localized: "Devices"), "\(devices)", unit: PluralLabel.yokes(devices)),
         ]
-        if hasClamp { givens.append(Given(String(localized: "Internal clamps"), "yes")) }
+        if hasClamp { givens.append(Given(String(localized: "Internal clamps"), String(localized: "yes"))) }
 
         var steps = [
             String(localized: "Each allowance for \(size) is \(volume.volumeText) in³, so this is a counting problem first and a multiplication problem second."),

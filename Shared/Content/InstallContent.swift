@@ -213,7 +213,7 @@ enum InstallContent {
             choices: ["44 A", "50 A", "55 A", "60 A"],
             answerIndex: 3,
             explanation: String(localized: "44 × 1.25 = 55 A is the minimum calculated rating. A 55 A breaker is not a standard rating in Table 240.6(A), so select 60 A. Conductors must meet their separate ampacity, correction, adjustment and protection requirements; this question asks only for the standard breaker rating."),
-            citation: "210.20(A), Table 240.6(A)"
+            citation: String(localized: "210.20(A), Table 240.6(A)")
         ),
         QuizQuestion(
             id: "install-quiz-dedicated-space",

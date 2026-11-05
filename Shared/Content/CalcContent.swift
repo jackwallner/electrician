@@ -53,7 +53,7 @@ enum CalcContent {
             situation: String(localized: "Nine 10 AWG THHN conductors need to run in EMT. Pick the smallest trade size."),
             givens: [
                 .conductor("10 AWG", "THHN"),
-                Given(String(localized: "Quantity"), "9", unit: String(localized: "conductors")),
+                Given(String(localized: "Quantity"), "9", unit: PluralLabel.conductors(9)),
                 .raceway("EMT", "?"),
             ],
             choices: ["3/4\"", "1/2\"", "1\"", "1-1/4\""],
@@ -71,10 +71,10 @@ enum CalcContent {
             situation: String(localized: "Six 12 AWG insulated conductors and three 12 AWG equipment grounds enter a box. It has internal cable clamps and one single-gang device yoke connected to 12 AWG conductors, with no other fill allowances. Find the minimum volume."),
             givens: [
                 .conductor("12 AWG", "THHN"),
-                Given(String(localized: "Insulated"), "6", unit: String(localized: "conductors")),
-                Given(String(localized: "Grounds"), "3", unit: String(localized: "wires")),
-                Given(String(localized: "Internal clamps"), "yes"),
-                Given(String(localized: "Devices"), "1", unit: String(localized: "yoke")),
+                Given(String(localized: "Insulated"), "6", unit: PluralLabel.conductors(6)),
+                Given(String(localized: "Grounds"), "3", unit: PluralLabel.wires(3)),
+                Given(String(localized: "Internal clamps"), String(localized: "yes")),
+                Given(String(localized: "Devices"), "1", unit: PluralLabel.yokes(1)),
             ],
             choices: ["22.5 in³", "20.25 in³", "27 in³", "18 in³"],
             answerIndex: 0,
