@@ -38,6 +38,7 @@ struct OnboardingView: View {
 
     private enum Stage: Equatable { case steps, tour, howToPlay }
     @State private var stage: Stage = .steps
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// The order of the flow, and the only place it is written down.
     private enum Step: Int, CaseIterable, Comparable {
@@ -78,8 +79,10 @@ struct OnboardingView: View {
             content
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .clipped()
-            footer
-                .layoutPriority(1)
+            if !footerScrolls {
+                footer
+                    .layoutPriority(1)
+            }
         }
         .background(Theme.background)
         .task {
@@ -108,6 +111,13 @@ struct OnboardingView: View {
         } message: {
             Text(purchaseError ?? "")
         }
+    }
+
+    /// At accessibility sizes the choice rows outgrow the space above a docked
+    /// footer and slide under Continue, so on the setup steps the footer
+    /// scrolls with the content instead.
+    private var footerScrolls: Bool {
+        dynamicTypeSize.isAccessibilitySize && step.isSetup
     }
 
     /// Back arrow, a bus-bar progress line, and the step count. Only the setup
@@ -257,10 +267,13 @@ struct OnboardingView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 content()
+                if footerScrolls {
+                    footer.padding(.horizontal, -24)
+                }
             }
             .padding(.horizontal, 22)
             .padding(.top, 14)
-            .padding(.bottom, 24)
+            .padding(.bottom, footerScrolls ? 0 : 24)
         }
         .scrollDismissesKeyboard(.interactively)
     }
