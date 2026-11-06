@@ -1,1 +1,1 @@
-Electrician Exam Practice'ın sorunsuz çalışması için arka planda iyileştirmeler ve hata düzeltmeleri. Burada olduğun için teşekkürler.
+Electrician artık Rusça, Almanca, Çince, İspanyolca, Vietnamca ve Ukraynaca dillerinde kullanılabilir. Ayrıca düzeltmeler ve iyileştirmeler içerir.

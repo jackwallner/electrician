@@ -1,1 +1,1 @@
-Améliorations en coulisses et corrections de bugs pour que Electrician Exam Practice reste fluide. Merci d'être là.
+Electrician est maintenant offert en russe, allemand, chinois, espagnol, vietnamien et ukrainien. Cette version comprend aussi des correctifs et des améliorations.

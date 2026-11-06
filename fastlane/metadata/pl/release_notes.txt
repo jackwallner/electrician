@@ -1,1 +1,1 @@
-Ulepszenia w tle i poprawki błędów, aby Electrician Exam Practice działał płynnie. Dziękujemy, że jesteś.
+Aplikacja Electrician jest już dostępna w językach: rosyjski, niemiecki, chiński, hiszpański, wietnamski i ukraiński. Ta wersja zawiera też poprawki i ulepszenia.

@@ -1,1 +1,1 @@
-Behind-the-scenes improvements and fixes to keep Electrician Exam Practice running smoothly. Thank you for being here.
+Electrician is now available in Russian, German, Chinese, Spanish, Vietnamese and Ukrainian. Also includes fixes and improvements.

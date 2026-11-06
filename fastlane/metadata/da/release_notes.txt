@@ -1,1 +1,1 @@
-Forbedringer bag kulisserne og fejlrettelser, så Electrician Exam Practice kører glat. Tak fordi du er her.
+Electrician er nu tilgængelig på russisk, tysk, kinesisk, spansk, vietnamesisk og ukrainsk. Indeholder også rettelser og forbedringer.

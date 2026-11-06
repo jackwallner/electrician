@@ -1,1 +1,1 @@
-Vylepšenia na pozadí a opravy chýb, aby Electrician Exam Practice fungoval hladko. Ďakujeme, že ste tu.
+Electrician je teraz k dispozícii v týchto jazykoch: ruština, nemčina, čínština, španielčina, vietnamčina a ukrajinčina. Obsahuje aj opravy a vylepšenia.
