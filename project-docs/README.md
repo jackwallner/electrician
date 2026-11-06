@@ -5,6 +5,7 @@ Developer notes and historical audits for this repository. The published site re
 ## Audits
 
 - [NEC 2023 question-bank audit](audits/nec2023-question-bank-2026-10-22.md): item register, corrections, citations and cross-platform validation
+- [State machine audit 2026-11-06](audits/state-machines-2026-11-06.md): 7 state bugs (2 proved by test, 5 code path), machines and transition tables
 
 - [aso827.md](audits/aso827.md): Electrician ASO Audit
 - [audit824.md](audits/audit824.md): Electrician end-to-end product audit
