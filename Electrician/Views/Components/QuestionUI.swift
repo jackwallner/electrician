@@ -146,14 +146,7 @@ struct QuestionPager<Choices: View>: View {
 
     @State private var density = QuestionDensity.regular
     @State private var viewportHeight: CGFloat = 0
-    @Environment(\.dynamicTypeSize) private var typeSize
-
-    /// On a short pane or at accessibility sizes the question and its coaching
-    /// note cannot share the screen. Scrolling to the note's bottom then leaves
-    /// the prompt cut mid-line under the progress header, so the note is pinned
-    /// to the top edge instead and padded so that position is always reachable.
-    private var pinsExplanation: Bool { density == .compact || typeSize.isAccessibilitySize }
-
+    @State private var viewportFrame: CGRect = .zero
     var body: some View {
         // Centering, not top-aligned: on a 13-inch iPad a three-choice question
         // used to sit in the top quarter of the screen. See CenteringScrollView.
@@ -173,6 +166,7 @@ struct QuestionPager<Choices: View>: View {
                     .foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.center)
                     .padding(.top, 8)
+                    .modifier(ScrollAccessibilityVisibility(viewport: viewportFrame))
                 if !givens.isEmpty {
                     GivensView(givens: givens, scale: density.givensScale)
                         .padding(.horizontal, 4)
@@ -205,7 +199,8 @@ struct QuestionPager<Choices: View>: View {
                             ReportIssueButton(context: reportContext)
                         }
                     }
-                    .frame(minHeight: pinsExplanation ? max(0, viewportHeight - 20) : nil, alignment: .top)
+                    // Leave enough room to pin the note at the top after grading.
+                    .frame(minHeight: max(0, viewportHeight - 20), alignment: .top)
                     .id(questionExplanationID)
                 }
             }
@@ -223,7 +218,7 @@ struct QuestionPager<Choices: View>: View {
                 // Bring the coaching note into view rather than leaving it
                 // parked below the fold behind the Next button.
                 withAnimation(Theme.Motion.reveal) {
-                    proxy.scrollTo(questionExplanationID, anchor: pinsExplanation ? .top : .bottom)
+                    proxy.scrollTo(questionExplanationID, anchor: .top)
                 }
             }
             }
@@ -231,6 +226,7 @@ struct QuestionPager<Choices: View>: View {
         .clipped()
         .questionDensity($density)
         .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { viewportHeight = $0 }
+        .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { viewportFrame = $0 }
         .environment(\.questionDensity, density)
     }
 }

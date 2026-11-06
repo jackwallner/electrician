@@ -15,6 +15,7 @@ struct HomeView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var profile: CandidateProfile
     @Environment(\.horizontalSizeClass) private var windowSizeClass
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @StateObject private var records = PracticeRecordStore.shared
     @StateObject private var minuteStore = CodeMinuteStore.shared
     @State private var path: [AppDestination] = []
@@ -358,19 +359,21 @@ struct HomeView: View {
     // MARK: - Header (title left, stats right, one row total)
 
     private var header: some View {
-        HStack(alignment: .top) {
+        let layout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+            : AnyLayout(HStackLayout(alignment: .top))
+        return layout {
             VStack(alignment: .leading, spacing: 4) {
                 Text(headerTitle)
                     .font(Theme.screenTitle)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.6)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundStyle(Theme.ink)
                 Text(headerSubtitle)
                     .font(.subheadline)
                     .foregroundStyle(Theme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            Spacer(minLength: 8)
+            if !dynamicTypeSize.isAccessibilitySize { Spacer(minLength: 8) }
             // The chips were already the honest summary of practice, so they
             // are also the door to the full breakdown rather than yet another
             // row competing with the rooms.
@@ -422,6 +425,7 @@ struct HomeView: View {
             Text("\(value)")
                 .font(Theme.numeric(.subheadline, weight: .bold))
                 .foregroundStyle(Theme.ink)
+                .fixedSize()
         }
         .padding(.horizontal, 9)
         .padding(.vertical, 6)
