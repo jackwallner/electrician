@@ -362,6 +362,8 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(headerTitle)
                     .font(Theme.screenTitle)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
                     .foregroundStyle(Theme.ink)
                 Text(headerSubtitle)
                     .font(.subheadline)

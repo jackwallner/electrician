@@ -228,6 +228,7 @@ struct QuestionPager<Choices: View>: View {
             }
             }
         }
+        .clipped()
         .questionDensity($density)
         .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { viewportHeight = $0 }
         .environment(\.questionDensity, density)

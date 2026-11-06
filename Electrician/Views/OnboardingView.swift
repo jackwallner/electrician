@@ -381,10 +381,14 @@ struct OnboardingView: View {
                     }
                 }
             } else {
-                Button("Choose a different state") { pickingState = true }
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(Theme.voltage)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                Button { pickingState = true } label: {
+                    Text("Choose a different state")
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(Theme.voltage)
+                        .frame(minHeight: 44)
+                        .contentShape(Rectangle())
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
@@ -1107,8 +1111,9 @@ struct OnboardingView: View {
                     Text("Get Started")
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(Theme.inkSecondary)
+                        .frame(minWidth: 44, minHeight: 44)
+                        .contentShape(Rectangle())
                 }
-                .frame(height: 30)
 
                 Text(trialDisclosure)
                     .font(.caption2)
@@ -1134,26 +1139,35 @@ struct OnboardingView: View {
 
             if step == .trial {
                 HStack(spacing: 14) {
-                    Link("Terms", destination: PaywallLinks.terms)
-                    Link("Privacy", destination: PaywallLinks.privacy)
-                    Button("Restore") {
+                    Link(destination: PaywallLinks.terms) {
+                        Text("Terms").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
+                    }
+                    Link(destination: PaywallLinks.privacy) {
+                        Text("Privacy").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
+                    }
+                    Button {
                         Task { try? await subscriptions.restore() }
+                    } label: {
+                        Text("Restore").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
                     }
                 }
                 .font(.caption2)
                 .foregroundStyle(Theme.inkTertiary)
-                .frame(height: 20)
             } else if let skip = skipTitle {
-                Button(skip) { advance() }
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(Theme.inkTertiary)
-                    .frame(minHeight: 44)
+                Button { advance() } label: {
+                    Text(skip)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(Theme.inkTertiary)
+                        .frame(minWidth: 44, minHeight: 44)
+                        .contentShape(Rectangle())
+                }
             } else {
-                Color.clear.frame(height: 20)
+                Color.clear.frame(height: 44)
             }
         }
         .padding(.horizontal, 24)
         .padding(.bottom, 10)
+        .background(Theme.background)
         .animation(Theme.Motion.screen, value: step)
     }
 

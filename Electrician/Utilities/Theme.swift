@@ -202,27 +202,27 @@ enum Theme {
         /// A whole screen or step changing. The one curve every page-level
         /// change uses, so a header, its content and its footer move together.
         static var screen: Animation {
-            reduced ? .easeOut(duration: 0.16) : .spring(response: 0.32, dampingFraction: 0.92)
+            reduced ? .linear(duration: 0) : .spring(response: 0.32, dampingFraction: 0.92)
         }
 
         /// A card or row changing state in place.
         static var card: Animation {
-            reduced ? .easeOut(duration: 0.14) : .spring(response: 0.26, dampingFraction: 0.86)
+            reduced ? .linear(duration: 0) : .spring(response: 0.26, dampingFraction: 0.86)
         }
 
         /// Content appearing after a grade: the working, the coaching note.
         static var reveal: Animation {
-            reduced ? .easeOut(duration: 0.12) : .easeOut(duration: 0.22)
+            reduced ? .linear(duration: 0) : .easeOut(duration: 0.22)
         }
 
         /// A progress bar or ring moving to a new value.
         static var meter: Animation {
-            reduced ? .easeOut(duration: 0.16) : .easeOut(duration: 0.28)
+            reduced ? .linear(duration: 0) : .easeOut(duration: 0.28)
         }
 
         /// The one bouncy curve, reserved for a correct answer landing.
         static var celebrate: Animation {
-            reduced ? .easeOut(duration: 0.16) : .spring(response: 0.34, dampingFraction: 0.58)
+            reduced ? .linear(duration: 0) : .spring(response: 0.34, dampingFraction: 0.58)
         }
 
         /// A flashcard turning over. Physical rather than UI, so it keeps a
@@ -230,17 +230,17 @@ enum Theme {
         /// hundred times in a study session and every extra tenth of a second
         /// is paid on every one of them.
         static var flip: Animation {
-            reduced ? .easeOut(duration: 0.16) : .spring(response: 0.40, dampingFraction: 0.86)
+            reduced ? .linear(duration: 0) : .spring(response: 0.40, dampingFraction: 0.86)
         }
 
         /// A card being thrown off the deck. Ease IN, because it is leaving.
         static var fling: Animation {
-            reduced ? .easeOut(duration: 0.14) : .easeIn(duration: 0.28)
+            reduced ? .linear(duration: 0) : .easeIn(duration: 0.28)
         }
 
         /// The full-screen tint that flashes on a correct answer, fading out.
         static var flash: Animation {
-            reduced ? .easeOut(duration: 0.2) : .easeOut(duration: 0.45)
+            reduced ? .linear(duration: 0) : .easeOut(duration: 0.45)
         }
 
         /// Decoration that exists only to move: the wrong-answer shake, the
