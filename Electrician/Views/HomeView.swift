@@ -699,16 +699,22 @@ struct HomeView: View {
                 Spacer()
             }
             .padding(.horizontal, 4)
-            ScrollView(.horizontal, showsIndicators: false) {
-                TrainingTileLayout(wrapWidth: wrapsTraining ? trainingRowWidth - 8 : nil) {
-                    trainingTiles
+            // At accessibility text sizes a title cannot fit a 128 pt tile, so each
+            // tile takes the full width.
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(spacing: 10) { trainingTiles }
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    TrainingTileLayout(wrapWidth: wrapsTraining ? trainingRowWidth - 8 : nil) {
+                        trainingTiles
+                    }
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 2)
                 }
-                .padding(.horizontal, 4)
-                .padding(.vertical, 2)
+                .scrollDisabled(wrapsTraining)
+                .scrollClipDisabled(wrapsTraining)
+                .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { trainingRowWidth = $0 }
             }
-            .scrollDisabled(wrapsTraining)
-            .scrollClipDisabled(wrapsTraining)
-            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { trainingRowWidth = $0 }
         }
     }
 
@@ -830,8 +836,12 @@ struct HomeView: View {
             }
         }
         .padding(12)
-        .frame(width: wrapsTraining ? nil : 128, height: 118, alignment: .leading)
-        .frame(maxWidth: wrapsTraining ? .infinity : nil, alignment: .leading)
+        .frame(
+            width: wrapsTraining || dynamicTypeSize.isAccessibilitySize ? nil : 128,
+            height: dynamicTypeSize.isAccessibilitySize ? nil : 118,
+            alignment: .leading
+        )
+        .frame(maxWidth: wrapsTraining || dynamicTypeSize.isAccessibilitySize ? .infinity : nil, alignment: .leading)
         .themedCard(corner: 16)
     }
 
@@ -881,7 +891,7 @@ struct HomeView: View {
                     Text(room.tagline)
                         .font(.subheadline)
                         .foregroundStyle(Theme.inkSecondary)
-                        .lineLimit(2)
+                        .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 2)
                         .multilineTextAlignment(.leading)
                 }
                 Spacer(minLength: 4)

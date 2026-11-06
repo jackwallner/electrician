@@ -14,7 +14,6 @@ import SwiftUI
 /// and transitioning explicitly fixes all three: advancing is the only way
 /// forward, `canAdvance` gates it, and each step draws only its own chrome.
 struct OnboardingView: View {
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var subscriptions: SubscriptionService
     @EnvironmentObject private var profile: CandidateProfile
@@ -76,21 +75,11 @@ struct OnboardingView: View {
     private var stepsBody: some View {
         VStack(spacing: 0) {
             header
-            if scrollsWholeStep {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        content
-                        footer
-                    }
-                }
-                .scrollDismissesKeyboard(.interactively)
-            } else {
-                content
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .clipped()
-                footer
-                    .layoutPriority(1)
-            }
+            content
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .clipped()
+            footer
+                .layoutPriority(1)
         }
         .background(Theme.background)
         .task {
@@ -121,19 +110,6 @@ struct OnboardingView: View {
         }
     }
 
-    private var scrollsWholeStep: Bool {
-        dynamicTypeSize.isAccessibilitySize && (step == .focus || step == .trial)
-    }
-
-    @ViewBuilder
-    private func stepScroller<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-        if scrollsWholeStep {
-            content()
-        } else {
-            ScrollView { content() }
-        }
-    }
-
     /// Back arrow, a bus-bar progress line, and the step count. Only the setup
     /// run gets the count: "4 of 7" on a marketing page is a chore bar.
     private var header: some View {
@@ -157,7 +133,9 @@ struct OnboardingView: View {
             Text(stepCountLabel)
                 .font(.caption.weight(.semibold).monospacedDigit())
                 .foregroundStyle(Theme.inkTertiary)
-                .frame(width: 42, alignment: .trailing)
+                .lineLimit(1)
+                .frame(minWidth: 42, alignment: .trailing)
+                .fixedSize()
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
@@ -266,7 +244,7 @@ struct OnboardingView: View {
         subtitle: String,
         @ViewBuilder content: () -> Content
     ) -> some View {
-        stepScroller {
+        ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(title)
@@ -907,7 +885,7 @@ struct OnboardingView: View {
     /// candidate three days out does not need "extra practice sets", they need
     /// the thing that finds their repeated errors and re-traps them.
     private var trialStep: some View {
-        stepScroller {
+        ScrollView {
             VStack(spacing: 16) {
                 Image(systemName: "bolt.fill")
                     .font(.system(size: 27, weight: .semibold))
