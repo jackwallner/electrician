@@ -34,7 +34,7 @@ final class ReleaseJourneysUITests: XCTestCase {
         tap("Skip", in: app)
         checkpoint("plan", button: "Looks right", in: app)
         tap("Looks right", in: app)
-        XCTAssertTrue(app.buttons["Get Started"].waitForExistence(timeout: 20))
+        XCTAssertTrue(button("Get Started", in: app).waitForExistence(timeout: 20))
         QA.checkpoint(app, "onboarding-trial", paywall: true)
         tap("Get Started", in: app)
         home("first-home", in: app)
@@ -44,7 +44,7 @@ final class ReleaseJourneysUITests: XCTestCase {
         let app = XCUIApplication(bundleIdentifier: "com.jackwallner.electrician")
         QA.launch(app, arguments: ["-DuoSeed", "-electrician.suppressWhatsNew"])
         home("home", in: app)
-        let tools = reveal(app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@", "Field tools")).firstMatch, in: app)
+        let tools = reveal(app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@ OR label BEGINSWITH %@", "Field tools", "Praxis-Tools")).firstMatch, in: app)
         tools.tap()
         QA.checkpoint(app, "field-tools")
         app.navigationBars.buttons.firstMatch.tap()
@@ -67,7 +67,7 @@ final class ReleaseJourneysUITests: XCTestCase {
         home("home", in: app)
         openCodeMinute(in: app)
         QA.checkpoint(app, "code-minute")
-        XCTAssertFalse(app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@", "View Today's")).firstMatch.exists)
+        XCTAssertFalse(app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@ OR label BEGINSWITH %@", "View Today's", "Heute ansehen")).firstMatch.exists)
         tap("Start Today's Challenge", in: app)
         for question in 1...5 {
             let choice = app.buttons["choice.0"].firstMatch
@@ -80,10 +80,12 @@ final class ReleaseJourneysUITests: XCTestCase {
         XCTAssertTrue(score.waitForExistence(timeout: 15))
         let result = score.label
         QA.checkpoint(app, "code-minute-result")
-        // Apple's review sheet may rise over the result three seconds in.
-        let notNow = app.buttons["Not Now"].firstMatch
+        // The delayed review prompt can appear before or while scrolling.
+        let notNow = app.buttons.matching(NSPredicate(format: "label IN %@", ["Not Now", "Jetzt nicht"])).firstMatch
         if notNow.waitForExistence(timeout: 5) { notNow.tap() }
-        tap("Done", in: app)
+        let done = reveal(button("Done", in: app), in: app)
+        if notNow.waitForExistence(timeout: 2) { notNow.tap() }
+        done.tap()
         assertSaved(result, in: app)
         QA.checkpoint(app, "code-minute-saved")
         QA.relaunch(app)
@@ -94,25 +96,39 @@ final class ReleaseJourneysUITests: XCTestCase {
     }
 
     private func openCodeMinute(in app: XCUIApplication) {
-        let tile = reveal(app.buttons.containing(NSPredicate(format: "label CONTAINS %@", "Code")).containing(NSPredicate(format: "label CONTAINS %@", "Minute")).firstMatch, in: app)
+        let tile = reveal(app.buttons.containing(NSPredicate(format: "label CONTAINS %@ AND label CONTAINS %@", "Code", "Minute")).firstMatch, in: app)
         tile.tap()
-        XCTAssertTrue(app.navigationBars["Code Minute"].waitForExistence(timeout: 15))
+        XCTAssertTrue(app.navigationBars.matching(NSPredicate(format: "identifier IN %@", ["Code Minute", "Code-Minute"])).firstMatch.waitForExistence(timeout: 15))
     }
 
     private func assertSaved(_ result: String, in app: XCUIApplication) {
-        let saved = app.descendants(matching: .any).containing(NSPredicate(format: "label CONTAINS %@ AND label CONTAINS %@", "View Today's", result)).firstMatch
+        let saved = app.descendants(matching: .any).containing(NSPredicate(format: "(label CONTAINS %@ OR label CONTAINS %@) AND label CONTAINS %@", "View Today's", "Heute ansehen", result)).firstMatch
         let found = saved.waitForExistence(timeout: 15)
         XCTAssertTrue(found, "today's \(result) is listed. Tree:\n\(found ? "" : app.debugDescription)")
     }
 
+    private let german: [String: String] = [
+        "Continue": "Weiter", "Set up my exam": "Meine Prüfung einrichten",
+        "Skip": "Überspringen", "Sitting the exam soon": "Prüfung steht bald an",
+        "Looks right": "Sieht richtig aus", "Get Started": "Los geht's",
+        "Settings": "Einstellungen", "Done": "Fertig",
+        "Start Today's Challenge": "Tages-Challenge starten",
+        "Next": "Weiter", "Finish": "Fertig"
+    ]
+
+    private func button(_ label: String, in app: XCUIApplication) -> XCUIElement {
+        app.buttons.matching(NSPredicate(format: "identifier IN %@ OR label IN %@",
+                                        [label, german[label] ?? label], [label, german[label] ?? label])).firstMatch
+    }
+
     private func tap(_ label: String, in app: XCUIApplication) {
-        let button = app.buttons[label].firstMatch
+        let button = button(label, in: app)
         XCTAssertTrue(button.waitForExistence(timeout: 15))
-        button.tap()
+        reveal(button, in: app).tap()
     }
 
     private func choose(containing text: String, in app: XCUIApplication) {
-        let row = app.buttons.containing(NSPredicate(format: "label CONTAINS %@", text)).firstMatch
+        let row = app.buttons.containing(NSPredicate(format: "label CONTAINS %@ OR label CONTAINS %@", text, german[text] ?? text)).firstMatch
         XCTAssertTrue(row.waitForExistence(timeout: 15))
         reveal(row, in: app).tap()
     }
@@ -130,12 +146,12 @@ final class ReleaseJourneysUITests: XCTestCase {
     }
 
     private func checkpoint(_ name: String, button label: String, in app: XCUIApplication) {
-        XCTAssertTrue(app.buttons[label].firstMatch.waitForExistence(timeout: 15))
+        XCTAssertTrue(button(label, in: app).waitForExistence(timeout: 15))
         QA.checkpoint(app, name)
     }
 
     private func home(_ name: String, in app: XCUIApplication) {
-        XCTAssertTrue(app.buttons["Settings"].firstMatch.waitForExistence(timeout: 20))
+        XCTAssertTrue(button("Settings", in: app).waitForExistence(timeout: 20))
         QA.checkpoint(app, name)
     }
 }

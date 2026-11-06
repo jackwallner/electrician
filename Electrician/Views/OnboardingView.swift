@@ -77,7 +77,9 @@ struct OnboardingView: View {
             header
             content
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .clipped()
             footer
+                .layoutPriority(1)
         }
         .background(Theme.background)
         .task {
@@ -1145,7 +1147,7 @@ struct OnboardingView: View {
                 Button(skip) { advance() }
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(Theme.inkTertiary)
-                    .frame(height: 20)
+                    .frame(minHeight: 44)
             } else {
                 Color.clear.frame(height: 20)
             }
