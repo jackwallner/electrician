@@ -14,6 +14,7 @@ import SwiftUI
 /// and transitioning explicitly fixes all three: advancing is the only way
 /// forward, `canAdvance` gates it, and each step draws only its own chrome.
 struct OnboardingView: View {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject private var progress: ProgressStore
     @EnvironmentObject private var subscriptions: SubscriptionService
     @EnvironmentObject private var profile: CandidateProfile
@@ -75,11 +76,21 @@ struct OnboardingView: View {
     private var stepsBody: some View {
         VStack(spacing: 0) {
             header
-            content
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .clipped()
-            footer
-                .layoutPriority(1)
+            if scrollsWholeStep {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        content
+                        footer
+                    }
+                }
+                .scrollDismissesKeyboard(.interactively)
+            } else {
+                content
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+                footer
+                    .layoutPriority(1)
+            }
         }
         .background(Theme.background)
         .task {
@@ -107,6 +118,19 @@ struct OnboardingView: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text(purchaseError ?? "")
+        }
+    }
+
+    private var scrollsWholeStep: Bool {
+        dynamicTypeSize.isAccessibilitySize && (step == .focus || step == .trial)
+    }
+
+    @ViewBuilder
+    private func stepScroller<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        if scrollsWholeStep {
+            content()
+        } else {
+            ScrollView { content() }
         }
     }
 
@@ -242,7 +266,7 @@ struct OnboardingView: View {
         subtitle: String,
         @ViewBuilder content: () -> Content
     ) -> some View {
-        ScrollView {
+        stepScroller {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(title)
@@ -883,7 +907,7 @@ struct OnboardingView: View {
     /// candidate three days out does not need "extra practice sets", they need
     /// the thing that finds their repeated errors and re-traps them.
     private var trialStep: some View {
-        ScrollView {
+        stepScroller {
             VStack(spacing: 16) {
                 Image(systemName: "bolt.fill")
                     .font(.system(size: 27, weight: .semibold))
