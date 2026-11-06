@@ -146,7 +146,22 @@ struct QuestionPager<Choices: View>: View {
 
     @State private var density = QuestionDensity.regular
     @State private var viewportHeight: CGFloat = 0
-    @State private var viewportFrame: CGRect = .zero
+    @State private var contentHeight: CGFloat = 0
+    @State private var noteHeight: CGFloat = 0
+    @State private var noteFrameHeight: CGFloat = 0
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    /// When the question and its coaching note cannot share the screen,
+    /// scrolling to the note's bottom leaves the prompt cut mid-line under the
+    /// progress header, so the note is pinned to the top edge instead and padded
+    /// so that position is always reachable. A long language can overflow at any
+    /// text size, so the natural height decides, not just density.
+    private var pinsExplanation: Bool {
+        if density == .compact || typeSize.isAccessibilitySize { return true }
+        let naturalHeight = contentHeight - noteFrameHeight + noteHeight
+        return naturalHeight + 20 > viewportHeight
+    }
+
     var body: some View {
         // Centering, not top-aligned: on a 13-inch iPad a three-choice question
         // used to sit in the top quarter of the screen. See CenteringScrollView.
@@ -166,7 +181,6 @@ struct QuestionPager<Choices: View>: View {
                     .foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.center)
                     .padding(.top, 8)
-                    .modifier(ScrollAccessibilityVisibility(viewport: viewportFrame))
                 if !givens.isEmpty {
                     GivensView(givens: givens, scale: density.givensScale)
                         .padding(.horizontal, 4)
@@ -199,11 +213,13 @@ struct QuestionPager<Choices: View>: View {
                             ReportIssueButton(context: reportContext)
                         }
                     }
-                    // Leave enough room to pin the note at the top after grading.
-                    .frame(minHeight: max(0, viewportHeight - 20), alignment: .top)
+                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { noteHeight = $0 }
+                    .frame(minHeight: pinsExplanation ? max(0, viewportHeight - 20) : nil, alignment: .top)
+                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { noteFrameHeight = $0 }
                     .id(questionExplanationID)
                 }
             }
+            .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { contentHeight = $0 }
             // Headroom so the winning row's pop and glow have somewhere to go.
             // A ScrollView clips its content, so a row that scales up to the
             // full content width would get its sides sheared off (that was the
@@ -218,6 +234,12 @@ struct QuestionPager<Choices: View>: View {
                 // Bring the coaching note into view rather than leaving it
                 // parked below the fold behind the Next button.
                 withAnimation(Theme.Motion.reveal) {
+                    proxy.scrollTo(questionExplanationID, anchor: pinsExplanation ? .top : .bottom)
+                }
+            }
+            .onChange(of: pinsExplanation) { _, pins in
+                guard answered, pins else { return }
+                withAnimation(Theme.Motion.reveal) {
                     proxy.scrollTo(questionExplanationID, anchor: .top)
                 }
             }
@@ -226,7 +248,6 @@ struct QuestionPager<Choices: View>: View {
         .clipped()
         .questionDensity($density)
         .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { viewportHeight = $0 }
-        .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { viewportFrame = $0 }
         .environment(\.questionDensity, density)
     }
 }

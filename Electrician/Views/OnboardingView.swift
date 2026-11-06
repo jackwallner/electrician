@@ -30,7 +30,6 @@ struct OnboardingView: View {
     /// picked in order to read.
     @State private var pickingState = false
     @State private var editionPrefilled = false
-    @State private var setupViewport: CGRect = .zero
     /// Which way the last navigation went, so a Back tap slides back rather
     /// than forward. A step machine that always animates forward reads as if
     /// Back re-entered the previous screen instead of returning to it.
@@ -261,7 +260,6 @@ struct OnboardingView: View {
             .padding(.top, 14)
             .padding(.bottom, 24)
         }
-        .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { setupViewport = $0 }
         .scrollDismissesKeyboard(.interactively)
     }
 
@@ -320,7 +318,6 @@ struct OnboardingView: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(selected ? [.isSelected] : [])
-        .modifier(ScrollAccessibilityVisibility(viewport: setupViewport))
     }
 
     private func selectionIcon(selected: Bool, multi: Bool) -> String {

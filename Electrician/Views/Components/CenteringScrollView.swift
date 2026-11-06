@@ -31,20 +31,3 @@ struct CenteringScrollView<Content: View>: View {
         }
     }
 }
-
-/// Exclude partially clipped elements until scrolling reveals them fully.
-struct ScrollAccessibilityVisibility: ViewModifier {
-    let viewport: CGRect
-    @State private var frame: CGRect = .zero
-
-    func body(content: Content) -> some View {
-        content
-            .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { frame = $0 }
-            .accessibilityHidden(isClipped)
-    }
-
-    private var isClipped: Bool {
-        guard !viewport.isEmpty, !frame.isEmpty, frame.height <= viewport.height else { return false }
-        return frame.intersects(viewport) && (frame.minY < viewport.minY || frame.maxY > viewport.maxY)
-    }
-}

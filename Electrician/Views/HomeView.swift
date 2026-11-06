@@ -366,6 +366,8 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(headerTitle)
                     .font(Theme.screenTitle)
+                    .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 1)
+                    .minimumScaleFactor(0.6)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundStyle(Theme.ink)
                 Text(headerSubtitle)
