@@ -110,6 +110,14 @@ final class ProgressStore: ObservableObject {
         defaults.set(Array(missedItems), forKey: Keys.missedItems)
     }
 
+    /// Undo for `recordItem`: puts the item's seen and missed membership back.
+    func restoreItem(id: String, wasSeen: Bool, wasMissed: Bool) {
+        if wasSeen { seenItems.insert(id) } else { seenItems.remove(id) }
+        if wasMissed { missedItems.insert(id) } else { missedItems.remove(id) }
+        defaults.set(Array(seenItems), forKey: Keys.seenItems)
+        defaults.set(Array(missedItems), forKey: Keys.missedItems)
+    }
+
     // MARK: - Daily Quick Session
 
     /// Get Started is a once-a-day ritual: a fresh mix each day, and once

@@ -153,4 +153,58 @@ final class StateMachineRegressionTests: XCTestCase {
         settings.resumeDailyReminder(authorized: true)
         XCTAssertFalse(settings.reminderEnabled)
     }
+
+    // MARK: B3 - flashcard Undo
+
+    /// The store calls FlashcardDrillView makes for a plain card: Again, Undo,
+    /// Knew it. Only the final answer may count.
+    func testB3_undoneMissLeavesNoTrace() {
+        let records = PracticeRecordStore(defaults: suite)
+        let progress = ProgressStore(defaults: suite)
+        let id = "basics-chapters"
+        let room = "basics-room"
+        let t0 = Date(timeIntervalSince1970: 1_800_000_000)
+
+        let before = records.snapshot(itemID: id)
+        let wasSeen = progress.seenItems.contains(id)
+        let wasMissed = progress.missedItems.contains(id)
+        progress.recordItem(id: id, correct: false)
+        records.record(itemID: id, roomID: room, correct: false, now: t0)
+        XCTAssertEqual(records.records[id]?.attempts, 1, "precondition: Again recorded")
+
+        progress.restoreItem(id: id, wasSeen: wasSeen, wasMissed: wasMissed)
+        records.restore(itemID: id, to: before)
+
+        progress.recordItem(id: id, correct: true)
+        records.record(itemID: id, roomID: room, correct: true, now: t0.addingTimeInterval(30))
+
+        let r = records.records[id]!
+        XCTAssertEqual(r.attempts, 1)
+        XCTAssertEqual(r.correct, 1)
+        XCTAssertFalse(r.needsReview)
+        XCTAssertFalse(progress.missedItems.contains(id))
+        XCTAssertEqual(records.roomStats().first { $0.id == room }?.correct, 1)
+        // Persisted, not just in memory.
+        XCTAssertEqual(PracticeRecordStore(defaults: suite).records[id]?.attempts, 1)
+        XCTAssertFalse(ProgressStore(defaults: suite).missedItems.contains(id))
+    }
+
+    /// Undo puts back a card's earlier history, not an empty row.
+    func testB3_undoRestoresEarlierHistory() {
+        let records = PracticeRecordStore(defaults: suite)
+        let progress = ProgressStore(defaults: suite)
+        let id = "basics-chapters"
+        progress.recordItem(id: id, correct: false)
+        records.record(itemID: id, roomID: "basics-room", correct: false)
+        let before = records.snapshot(itemID: id)
+
+        progress.recordItem(id: id, correct: true)
+        records.record(itemID: id, roomID: "basics-room", correct: true)
+        progress.restoreItem(id: id, wasSeen: true, wasMissed: true)
+        records.restore(itemID: id, to: before)
+
+        XCTAssertEqual(records.records[id]?.attempts, 1)
+        XCTAssertEqual(records.records[id]?.correct, 0)
+        XCTAssertTrue(progress.missedItems.contains(id))
+    }
 }

@@ -34,6 +34,15 @@ struct FlashcardDrillView: View {
     private struct SwipeRecord {
         let card: Flashcard
         let gotIt: Bool
+        /// What a plain card's swipe overwrote, so Undo can put it back. Nil for
+        /// choice cards: their grade was the pick, made before the answer showed.
+        var before: Before?
+    }
+
+    private struct Before {
+        let record: PracticeRecord?
+        let wasSeen: Bool
+        let wasMissed: Bool
     }
 
     var body: some View {
@@ -353,14 +362,20 @@ struct FlashcardDrillView: View {
         // the graded answer (not the swipe direction) decides whether the
         // card comes back. Plain cards grade by swipe.
         let knewIt: Bool
+        var before: Before?
         if let choice = card.choice, let pick = choicePick {
             knewIt = pick == choice.answerIndex
         } else {
             knewIt = gotIt
+            before = Before(
+                record: PracticeRecordStore.shared.snapshot(itemID: card.id),
+                wasSeen: progress.seenItems.contains(card.id),
+                wasMissed: progress.missedItems.contains(card.id)
+            )
             progress.recordItem(id: card.id, correct: gotIt)
             PracticeRecordStore.shared.record(itemID: card.id, roomID: DrillLibrary.roomID(forDrillID: drill.id), correct: gotIt)
         }
-        lastSwipe = SwipeRecord(card: card, gotIt: knewIt)
+        lastSwipe = SwipeRecord(card: card, gotIt: knewIt, before: before)
         choicePick = nil
         queue.removeFirst()
         if !knewIt {
@@ -377,6 +392,10 @@ struct FlashcardDrillView: View {
         Haptics.impact(.light)
         lastSwipe = nil
         choicePick = nil
+        if let before = record.before {
+            progress.restoreItem(id: record.card.id, wasSeen: before.wasSeen, wasMissed: before.wasMissed)
+            PracticeRecordStore.shared.restore(itemID: record.card.id, to: before.record)
+        }
         withAnimation(Theme.Motion.screen) {
             if !record.gotIt, queue.last?.id == record.card.id {
                 queue.removeLast()
