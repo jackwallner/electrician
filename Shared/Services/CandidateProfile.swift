@@ -490,4 +490,36 @@ final class CandidateProfile: ObservableObject {
         guard canCompleteSetup else { return }
         setupComplete = true
     }
+
+    /// The fields Exam Target edits, as they stood when it opened. Its fields
+    /// write through, so Cancel puts this back.
+    struct Snapshot: Equatable {
+        let licenseTrack: LicenseTrack
+        let hasSelectedTrack: Bool
+        let jurisdiction: String
+        let edition: CandidateEdition
+        let examDate: Date?
+        let dailyGoal: Int
+    }
+
+    func snapshot() -> Snapshot {
+        Snapshot(
+            licenseTrack: licenseTrack,
+            hasSelectedTrack: hasSelectedTrack,
+            jurisdiction: jurisdiction,
+            edition: edition,
+            examDate: examDate,
+            dailyGoal: dailyGoal
+        )
+    }
+
+    /// Writes back only what changed, so an untouched key stays absent.
+    func restore(_ saved: Snapshot) {
+        if licenseTrack != saved.licenseTrack { licenseTrack = saved.licenseTrack }
+        if hasSelectedTrack != saved.hasSelectedTrack { hasSelectedTrack = saved.hasSelectedTrack }
+        if jurisdiction != saved.jurisdiction { jurisdiction = saved.jurisdiction }
+        if edition != saved.edition { edition = saved.edition }
+        if examDate != saved.examDate { examDate = saved.examDate }
+        if dailyGoal != saved.dailyGoal { dailyGoal = saved.dailyGoal }
+    }
 }

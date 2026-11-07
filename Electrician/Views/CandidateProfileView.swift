@@ -3,6 +3,7 @@ import SwiftUI
 struct CandidateProfileView: View {
     @EnvironmentObject private var profile: CandidateProfile
     @Environment(\.dismiss) private var dismiss
+    @State private var opened: CandidateProfile.Snapshot?
 
     var body: some View {
         NavigationStack {
@@ -50,9 +51,16 @@ struct CandidateProfileView: View {
             .tint(Theme.voltage)
             .navigationTitle("Exam Target")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                // Once: returning from the jurisdiction picker appears again.
+                if opened == nil { opened = profile.snapshot() }
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") {
+                        if let opened { profile.restore(opened) }
+                        dismiss()
+                    }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {

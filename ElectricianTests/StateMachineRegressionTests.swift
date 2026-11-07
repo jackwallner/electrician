@@ -207,4 +207,32 @@ final class StateMachineRegressionTests: XCTestCase {
         XCTAssertEqual(records.records[id]?.correct, 0)
         XCTAssertTrue(progress.missedItems.contains(id))
     }
+
+    // MARK: B4 - Exam Target Cancel
+
+    func testB4_cancelRestoresExamDate() {
+        let exam = Calendar.current.date(byAdding: .day, value: 12, to: Date())!
+        suite.set(exam, forKey: "candidate.examDate")
+        let profile = CandidateProfile(defaults: suite)
+        let opened = profile.snapshot()
+        profile.examDate = nil
+        profile.dailyGoal = 40
+        profile.restore(opened)
+        XCTAssertEqual(profile.examDate, exam)
+        let reloaded = CandidateProfile(defaults: suite)
+        XCTAssertEqual(reloaded.examDate, exam)
+        XCTAssertEqual(reloaded.dailyGoal, 15)
+    }
+
+    /// An install that predates the edition picker has no `candidate.edition`
+    /// key, which resolves to this app's edition. Cancel must leave it absent.
+    func testB4_cancelLeavesAbsentEditionKeyAbsent() {
+        let profile = CandidateProfile(defaults: suite)
+        XCTAssertNil(suite.object(forKey: "candidate.edition"), "precondition: legacy install")
+        let opened = profile.snapshot()
+        profile.edition = .unsure
+        profile.restore(opened)
+        XCTAssertEqual(CandidateProfile(defaults: suite).edition, .nec2023)
+        XCTAssertEqual(profile.snapshot(), opened)
+    }
 }
