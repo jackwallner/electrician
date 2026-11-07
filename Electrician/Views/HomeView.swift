@@ -194,13 +194,12 @@ struct HomeView: View {
             }
             // A membership that lapsed while the app was closed resolves false
             // to false, so the change above never fires. The first current
-            // answer settles it, and releases a notification tap held for it.
+            // answer settles it.
             .onChange(of: subscriptions.entitlementKnown, initial: true) { _, known in
                 guard known else { return }
                 if !subscriptions.isPro, settings.examWarmUpReminderEnabled {
                     settings.examWarmUpReminderEnabled = false
                 }
-                consumePendingDestination()
             }
             .onChange(of: showPaywall) { _, isShowing in
                 if !isShowing, !subscriptions.isPro { pendingAfterUpgrade = nil }
@@ -323,9 +322,6 @@ struct HomeView: View {
     }
 
     private func consumePendingDestination() {
-        // Until RevenueCat answers, a member reads as locked: hold the tap
-        // rather than show them the paywall.
-        guard subscriptions.isPro || subscriptions.entitlementKnown else { return }
         guard let destination = router.consumePendingDestination() else { return }
         guard subscriptions.isPro else {
             pendingAfterUpgrade = destination

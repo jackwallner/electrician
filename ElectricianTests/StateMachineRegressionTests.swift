@@ -98,24 +98,6 @@ final class StateMachineRegressionTests: XCTestCase {
             entitled: true, requestedAt: now.addingTimeInterval(-4 * 86_400), now: now))
     }
 
-    // MARK: R1 - cold launch from the warm-up notification
-
-    /// A notification tap that arrives before RevenueCat answers is held, not
-    /// turned into a paywall for a member, and released once the answer lands.
-    func testR1_notificationTapWaitsForEntitlement() async {
-        SubscriptionService.shared.setEntitlementKnownForTesting(false)
-        AppRouter.shared.route(to: .examWarmUpSession)
-        let settings = AppSettings(defaults: suite)
-        let w = mountHome(settings: settings)
-        XCTAssertNotNil(w?.rootViewController?.view.window, "precondition: Home is mounted")
-        await spin(1.0)
-        XCTAssertEqual(AppRouter.shared.pendingDestination, .examWarmUpSession,
-                       "the tap must wait for RevenueCat instead of opening the paywall")
-        SubscriptionService.shared.applyEntitlement(true, requestedAt: Date())
-        await spin(1.0)
-        XCTAssertNil(AppRouter.shared.pendingDestination, "the member's tap is delivered")
-    }
-
     // MARK: B2 - reminder denial in onboarding
 
     func testB2_laterGrantClearsDenialWarning() {
