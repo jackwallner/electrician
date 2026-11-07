@@ -88,3 +88,11 @@ languages.
 still pass), then `python3 scripts/sync-android-content.py --check` if content
 changed: the Android export compiles the same Shared sources without a catalog,
 so `String(localized:)` returns the English key there.
+
+## Language row
+Settings has a Language row that names the running localization in itself
+(`Bundle.main.preferredLocalizations`) and opens `openSettingsURLString`, Apple's
+route for a per-app language change. iOS hides the app's Language option on a
+device with one preferred language unless `UIPrefersShowingLanguageSettings` is
+YES in `Info.plist`, so keep that key. The simulator's Settings opens at its root
+for this link; check the landing on a real iPhone.
