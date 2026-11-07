@@ -96,7 +96,36 @@ struct SettingsView: View {
                     Text(appearance.displayName).tag(appearance)
                 }
             }
+            languageRow
         }
+    }
+
+    private var languageRow: some View {
+        Button {
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url)
+            }
+        } label: {
+            HStack {
+                Text("Language")
+                    .foregroundStyle(Theme.ink)
+                Spacer()
+                Text(Self.currentLanguageName)
+                    .foregroundStyle(Theme.inkSecondary)
+                Image(systemName: "arrow.up.forward")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(Theme.inkSecondary)
+                    .accessibilityHidden(true)
+            }
+        }
+        .accessibilityHint("Opens iOS Settings")
+    }
+
+    private static var currentLanguageName: String {
+        let code = Bundle.main.preferredLocalizations.first ?? "en"
+        let locale = Locale(identifier: code)
+        guard let name = locale.localizedString(forLanguageCode: code) else { return code }
+        return name.prefix(1).uppercased(with: locale) + name.dropFirst()
     }
 
     private var practiceSection: some View {
