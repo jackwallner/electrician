@@ -284,7 +284,7 @@ struct HomeView: View {
 
     @ViewBuilder
     private var todaySession: some View {
-        if progress.quickSessionCompletedToday() {
+        if progress.quickSessionCompletedToday(now: AppClock.now()) {
             getStartedDoneCard
         } else {
             getStartedCard
@@ -748,7 +748,7 @@ struct HomeView: View {
             title: String(localized: "Code\nMinute"),
             icon: "calendar.badge.clock",
             color: Theme.copper,
-            badge: minuteStore.result(for: Date()).map { String(localized: "\($0.score)/\($0.total) today") } ?? String(localized: "Daily")
+            badge: minuteStore.result(for: AppClock.now()).map { String(localized: "\($0.score)/\($0.total) today") } ?? String(localized: "Daily")
         ) {
             CodeMinuteView()
         }

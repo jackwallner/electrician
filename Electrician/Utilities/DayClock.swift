@@ -2,6 +2,11 @@ import Combine
 import Foundation
 import UIKit
 
+/// Home's source of "now". Only tests replace it, to move Home across midnight.
+enum AppClock {
+    nonisolated(unsafe) static var now: @Sendable () -> Date = { Date() }
+}
+
 /// Publishes the start of the current day and changes it only when the date
 /// rolls over. Home reads `Date()` in its body for "done today", the streak,
 /// the exam countdown and the Code Minute badge; observing this is what makes
@@ -14,7 +19,7 @@ final class DayClock: ObservableObject {
     private let now: () -> Date
     private var subscription: AnyCancellable?
 
-    init(center: NotificationCenter = .default, now: @escaping () -> Date = Date.init) {
+    init(center: NotificationCenter = .default, now: @escaping () -> Date = { AppClock.now() }) {
         self.now = now
         today = Calendar.current.startOfDay(for: now())
         let names: [Notification.Name] = [

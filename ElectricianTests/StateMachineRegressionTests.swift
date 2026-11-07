@@ -240,6 +240,45 @@ final class StateMachineRegressionTests: XCTestCase {
         watch.cancel()
     }
 
+    /// The review's settling test: Home open across midnight with today's Get
+    /// Started done. When the day turns, Home must evaluate "done today" again
+    /// against the new date, or the done card (which hides Get Started) stays up.
+    func testB5_homeLeavesTheDoneCardWhenTheDayTurns() async {
+        let key = "progress.lastQuickSessionDay"
+        let saved = UserDefaults.standard.object(forKey: key)
+        let evening = Calendar.current.date(bySettingHour: 23, minute: 55, second: 0, of: Date())!
+        let clock = SteppedClock(evening)
+        AppClock.now = { clock.now() }
+        defer {
+            AppClock.now = { Date() }
+            UserDefaults.standard.set(saved, forKey: key)
+        }
+        ProgressStore.shared.markQuickSessionCompleted(now: evening)
+
+        let w = mountHome(settings: AppSettings(defaults: suite))
+        XCTAssertNotNil(w?.rootViewController?.view.window, "precondition: Home is mounted")
+        // Home still redraws 3 to 5 seconds after mounting. Wait until it has
+        // been quiet for 2 seconds, or a late launch redraw passes for a
+        // day-change redraw.
+        await spin(6.0)
+        var reads = -1
+        for _ in 0..<5 where clock.reads != reads {
+            reads = clock.reads
+            await spin(2.0)
+        }
+        let shown = clock.lastRead
+        XCTAssertNotNil(shown, "precondition: Home read the clock")
+        XCTAssertTrue(ProgressStore.shared.quickSessionCompletedToday(now: shown ?? evening),
+                      "precondition: Home shows the done card")
+
+        clock.current = evening.addingTimeInterval(10 * 60)
+        NotificationCenter.default.post(name: .NSCalendarDayChanged, object: nil)
+        await spin(1.5)
+        let after = clock.lastRead ?? evening
+        XCTAssertFalse(ProgressStore.shared.quickSessionCompletedToday(now: after),
+                       "Home last judged the day at \(after), so the done card is still up")
+    }
+
     // MARK: B7 - trial attribution
 
     func testB7_ineligibleBuyerDidNotStartTrial() {
@@ -247,5 +286,20 @@ final class StateMachineRegressionTests: XCTestCase {
         XCTAssertTrue(SubscriptionService.purchaseStartsTrial(offersFreeTrial: true, eligible: true))
         XCTAssertTrue(SubscriptionService.purchaseStartsTrial(offersFreeTrial: true, eligible: nil))
         XCTAssertFalse(SubscriptionService.purchaseStartsTrial(offersFreeTrial: false, eligible: true))
+    }
+}
+
+/// A clock a test moves by hand, remembering the last time it handed out.
+private final class SteppedClock: @unchecked Sendable {
+    var current: Date
+    private(set) var lastRead: Date?
+    private(set) var reads = 0
+
+    init(_ start: Date) { current = start }
+
+    func now() -> Date {
+        reads += 1
+        lastRead = current
+        return current
     }
 }
