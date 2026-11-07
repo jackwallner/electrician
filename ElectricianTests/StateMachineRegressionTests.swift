@@ -236,6 +236,28 @@ final class StateMachineRegressionTests: XCTestCase {
         XCTAssertEqual(profile.snapshot(), opened)
     }
 
+    // MARK: B5 - Home across midnight
+
+    func testB5_dayClockPublishesWhenTheDayTurns() async {
+        let center = NotificationCenter()
+        let evening = Calendar.current.date(bySettingHour: 23, minute: 50, second: 0, of: Date())!
+        var current = evening
+        let clock = DayClock(center: center, now: { current })
+        let changed = expectation(description: "today changed")
+        let watch = clock.$today.dropFirst().sink { _ in changed.fulfill() }
+
+        current = evening.addingTimeInterval(5 * 60)
+        center.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        await spin(0.3)
+        XCTAssertEqual(clock.today, Calendar.current.startOfDay(for: evening), "same day: no redraw")
+
+        current = evening.addingTimeInterval(20 * 60)
+        center.post(name: .NSCalendarDayChanged, object: nil)
+        await fulfillment(of: [changed], timeout: 2)
+        XCTAssertEqual(clock.today, Calendar.current.startOfDay(for: current))
+        watch.cancel()
+    }
+
     // MARK: B7 - trial attribution
 
     func testB7_ineligibleBuyerDidNotStartTrial() {

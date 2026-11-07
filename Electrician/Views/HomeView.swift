@@ -18,6 +18,8 @@ struct HomeView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @StateObject private var records = PracticeRecordStore.shared
     @StateObject private var minuteStore = CodeMinuteStore.shared
+    /// Observed only so Home redraws when the date rolls over.
+    @StateObject private var day = DayClock()
     @State private var path: [AppDestination] = []
     @State private var showPaywall = false
     @State private var showSettings = false
