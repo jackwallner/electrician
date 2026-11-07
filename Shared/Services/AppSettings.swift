@@ -102,6 +102,11 @@ final class AppSettings: ObservableObject {
     /// looks like the app is broken.
     @Published var reminderPermissionDenied = false
 
+    /// The daily reminder was asked for and iOS refused it. Onboarding promises
+    /// to schedule it once notifications are turned on, so a return to the app
+    /// with permission granted turns it back on (`resumeDailyReminderIfAllowed`).
+    private(set) var dailyReminderAwaitingPermission = false
+
     @Published var reminderTime: Date {
         didSet {
             let parts = Calendar.current.dateComponents([.hour, .minute], from: reminderTime)
@@ -165,14 +170,45 @@ final class AppSettings: ObservableObject {
     private func requestPermissionAndSchedule() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             Task { @MainActor in
-                if granted {
-                    self.scheduleReminder()
-                } else {
-                    self.reminderEnabled = false
-                    self.reminderPermissionDenied = true
-                }
+                self.handleReminderAuthorization(granted: granted)
             }
         }
+    }
+
+    func handleReminderAuthorization(granted: Bool) {
+        if granted {
+            reminderPermissionDenied = false
+            dailyReminderAwaitingPermission = false
+            scheduleReminder()
+        } else {
+            reminderEnabled = false
+            reminderPermissionDenied = true
+            dailyReminderAwaitingPermission = true
+        }
+    }
+
+    /// "No reminders": the refusal no longer needs a warning or a retry.
+    func declineReminders() {
+        reminderEnabled = false
+        reminderPermissionDenied = false
+        dailyReminderAwaitingPermission = false
+    }
+
+    /// Called when the app comes back to the foreground.
+    func resumeDailyReminderIfAllowed() {
+        guard dailyReminderAwaitingPermission else { return }
+        UNUserNotificationCenter.current().getNotificationSettings { notificationSettings in
+            let status = notificationSettings.authorizationStatus
+            let authorized = status == .authorized || status == .provisional || status == .ephemeral
+            Task { @MainActor in
+                self.resumeDailyReminder(authorized: authorized)
+            }
+        }
+    }
+
+    func resumeDailyReminder(authorized: Bool) {
+        guard authorized, dailyReminderAwaitingPermission, !reminderEnabled else { return }
+        reminderEnabled = true
     }
 
     private func scheduleReminder() {
@@ -201,6 +237,7 @@ final class AppSettings: ObservableObject {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             Task { @MainActor in
                 if granted {
+                    self.reminderPermissionDenied = false
                     self.scheduleExamWarmUpReminder()
                 } else {
                     self.examWarmUpReminderEnabled = false

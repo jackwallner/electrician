@@ -729,7 +729,7 @@ struct OnboardingView: View {
                     icon: "bell.slash",
                     selected: !settings.reminderEnabled
                 ) {
-                    settings.reminderEnabled = false
+                    settings.declineReminders()
                 }
             }
             if settings.reminderEnabled {
@@ -1302,6 +1302,9 @@ struct OnboardingView: View {
         // the update sheet off a fresh install.
         WhatsNew.markCurrentAsBaseline()
         profile.completeSetup()
+        // The reminder step already showed this refusal; Settings must not
+        // raise it again as an alert.
+        settings.reminderPermissionDenied = false
         progress.hasOnboarded = true
     }
 }

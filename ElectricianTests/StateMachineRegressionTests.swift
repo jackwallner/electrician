@@ -115,4 +115,42 @@ final class StateMachineRegressionTests: XCTestCase {
         await spin(1.0)
         XCTAssertNil(AppRouter.shared.pendingDestination, "the member's tap is delivered")
     }
+
+    // MARK: B2 - reminder denial in onboarding
+
+    func testB2_laterGrantClearsDenialWarning() {
+        let settings = AppSettings(defaults: suite)
+        settings.handleReminderAuthorization(granted: false)
+        XCTAssertTrue(settings.reminderPermissionDenied, "precondition")
+        XCTAssertFalse(settings.reminderEnabled, "precondition")
+        settings.handleReminderAuthorization(granted: true)
+        XCTAssertFalse(settings.reminderPermissionDenied)
+    }
+
+    /// "Turn them on there and we will schedule it": coming back with
+    /// permission turns the reminder the user asked for back on.
+    func testB2_returningWithPermissionTurnsReminderBackOn() {
+        let settings = AppSettings(defaults: suite)
+        settings.handleReminderAuthorization(granted: false)
+        settings.resumeDailyReminder(authorized: false)
+        XCTAssertFalse(settings.reminderEnabled, "still off while iOS refuses")
+        settings.resumeDailyReminder(authorized: true)
+        XCTAssertTrue(settings.reminderEnabled)
+        XCTAssertTrue(suite.bool(forKey: "settings.reminderEnabled"))
+    }
+
+    func testB2_noRemindersEndsWarningAndRetry() {
+        let settings = AppSettings(defaults: suite)
+        settings.handleReminderAuthorization(granted: false)
+        settings.declineReminders()
+        XCTAssertFalse(settings.reminderPermissionDenied)
+        settings.resumeDailyReminder(authorized: true)
+        XCTAssertFalse(settings.reminderEnabled, "a declined reminder is not switched back on")
+    }
+
+    func testB2_noRetryWithoutAnEarlierRefusal() {
+        let settings = AppSettings(defaults: suite)
+        settings.resumeDailyReminder(authorized: true)
+        XCTAssertFalse(settings.reminderEnabled)
+    }
 }
