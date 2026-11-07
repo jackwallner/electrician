@@ -86,6 +86,12 @@ final class SubscriptionService: NSObject, ObservableObject {
     static let shared = SubscriptionService()
 
     @Published private(set) var isPro = false
+    /// True once `isPro` reflects a current answer rather than the launch
+    /// default. RevenueCat replays its cached `CustomerInfo` when the delegate is
+    /// set, and a cache older than a few days reports a live subscription as
+    /// inactive, so a "not entitled" answer only counts when it is fresh. Always
+    /// true when RevenueCat is not configured: the DEBUG override is the answer.
+    @Published private(set) var entitlementKnown = false
     @Published private(set) var offerings: Offerings?
     @Published private(set) var offeringState: OfferingState = .idle
     /// Product identifier to whether this Apple Account may still start the
@@ -119,6 +125,7 @@ final class SubscriptionService: NSObject, ObservableObject {
 
     func start() {
         configureIfNeeded()
+        if !isConfigured { entitlementKnown = true }
         #if DEBUG
         if storeKitPrices.isEmpty {
             storeKitPrices = Self.pricesFromStoreKitCatalog()
@@ -481,14 +488,39 @@ final class SubscriptionService: NSObject, ObservableObject {
     private static let entitlementKey = "electrician_pro"
 
     private func apply(_ info: CustomerInfo) {
-        let entitled = info.entitlements[Self.entitlementKey]?.isActive == true
+        applyEntitlement(
+            info.entitlements[Self.entitlementKey]?.isActive == true,
+            requestedAt: info.requestDate
+        )
+    }
+
+    /// How old a "not entitled" answer may be and still count as current.
+    /// Matches RevenueCat's own foreground cache lifetime.
+    static let currentAnswerWindow: TimeInterval = 5 * 60
+
+    static func isCurrentAnswer(entitled: Bool, requestedAt: Date, now: Date = Date()) -> Bool {
+        entitled || now.timeIntervalSince(requestedAt) <= currentAnswerWindow
+    }
+
+    func applyEntitlement(_ entitled: Bool, requestedAt: Date, now: Date = Date()) {
         #if DEBUG
         let override = UserDefaults.standard.bool(forKey: localOverrideKey)
         #else
         let override = false
         #endif
         isPro = entitled || override
+        if !entitlementKnown, Self.isCurrentAnswer(entitled: isPro, requestedAt: requestedAt, now: now) {
+            entitlementKnown = true
+        }
     }
+
+    #if DEBUG
+    /// Test seam: puts the service back in the launch state where RevenueCat
+    /// has not answered yet.
+    func setEntitlementKnownForTesting(_ known: Bool) {
+        entitlementKnown = known
+    }
+    #endif
 }
 
 extension SubscriptionService: PurchasesDelegate {
