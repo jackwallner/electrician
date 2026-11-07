@@ -7,7 +7,7 @@ Developer notes and historical audits for this repository. The published site re
 - [NEC 2023 question-bank audit](audits/nec2023-question-bank-2026-10-22.md): item register, corrections, citations and cross-platform validation
 - [State machine audit 2026-11-06](audits/state-machines-2026-11-06.md): 7 state bugs (2 proved by test, 5 code path), machines and transition tables
 - [State machine audit review 2026-11-06](audits/state-machines-2026-11-06-review.md): independent review, 1 confirmed, 4 minor, 1 not a bug, 1 unverified; the audit's machines section is from another app
-- [State machine audit fixes 2026-11-06](audits/state-machines-2026-11-06-fixes.md): 7 of 7 in-scope claims fixed (B1 to B5, B7, R1), regression tests and run ids
+- [State machine audit fixes 2026-11-06](audits/state-machines-2026-11-06-fixes.md): 6 of 7 in-scope claims fixed (B1 to B5, B7), R1 backed out and held for Jack, regression tests and run ids
 
 - [aso827.md](audits/aso827.md): Electrician ASO Audit
 - [audit824.md](audits/audit824.md): Electrician end-to-end product audit
