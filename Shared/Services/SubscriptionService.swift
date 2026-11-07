@@ -287,6 +287,12 @@ final class SubscriptionService: NSObject, ObservableObject {
         trialEligibility = next
     }
 
+    /// A configured trial only starts for an Apple Account that has not used
+    /// one. Unknown eligibility counts as eligible, as it does on the paywall.
+    static func purchaseStartsTrial(offersFreeTrial: Bool, eligible: Bool?) -> Bool {
+        offersFreeTrial && eligible != false
+    }
+
     /// Whether to advertise the free trial for a plan.
     func isEligibleForTrial(_ plan: PaywallPlan) -> Bool {
         guard plan != .lifetime else { return false }
@@ -442,7 +448,11 @@ final class SubscriptionService: NSObject, ObservableObject {
             throw PurchaseError.notConfigured
         }
         guard let package else { throw PurchaseError.offeringsUnavailable }
-        let startedTrial = package.storeProduct.introductoryDiscount?.paymentMode == .freeTrial
+        let productID = package.storeProduct.productIdentifier
+        let startedTrial = Self.purchaseStartsTrial(
+            offersFreeTrial: package.storeProduct.introductoryDiscount?.paymentMode == .freeTrial,
+            eligible: trialEligibility[productID]
+        )
         let result = try await Purchases.shared.purchase(package: package)
         // RevenueCat reports a user backing out of Apple's sheet as a normal
         // result, not an error. Treating it as a failure is what used to shove

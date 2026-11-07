@@ -235,4 +235,13 @@ final class StateMachineRegressionTests: XCTestCase {
         XCTAssertEqual(CandidateProfile(defaults: suite).edition, .nec2023)
         XCTAssertEqual(profile.snapshot(), opened)
     }
+
+    // MARK: B7 - trial attribution
+
+    func testB7_ineligibleBuyerDidNotStartTrial() {
+        XCTAssertFalse(SubscriptionService.purchaseStartsTrial(offersFreeTrial: true, eligible: false))
+        XCTAssertTrue(SubscriptionService.purchaseStartsTrial(offersFreeTrial: true, eligible: true))
+        XCTAssertTrue(SubscriptionService.purchaseStartsTrial(offersFreeTrial: true, eligible: nil))
+        XCTAssertFalse(SubscriptionService.purchaseStartsTrial(offersFreeTrial: false, eligible: true))
+    }
 }
