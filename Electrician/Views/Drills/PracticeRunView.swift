@@ -325,7 +325,7 @@ struct PracticeRunView: View {
         }
         // A run the player quit before answering anything is not an
         // achievement; sending it to the completion screen would fake one.
-        guard attempted > 0 || mode == .review else {
+        guard attempted > 0 else {
             dismiss()
             return
         }
