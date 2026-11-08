@@ -1161,10 +1161,11 @@ struct OnboardingView: View {
                         Text("Privacy").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
                     }
                     Button {
-                        Task { try? await subscriptions.restore() }
+                        restore()
                     } label: {
                         Text("Restore").frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
                     }
+                    .disabled(purchasing)
                 }
                 .font(.caption2)
                 .foregroundStyle(Theme.inkTertiary)
@@ -1274,6 +1275,25 @@ struct OnboardingView: View {
                 switch error {
                 case .notConfigured, .offeringsUnavailable, .packageMissing:
                     showPaywallFallback = true
+                }
+            } catch {
+                purchaseError = error.localizedDescription
+            }
+        }
+    }
+
+    /// A restored member moves on like a buyer, rather than staying on a screen
+    /// whose CTA would sell them a second subscription. A miss says so.
+    private func restore() {
+        purchasing = true
+        Task {
+            defer { purchasing = false }
+            do {
+                try await subscriptions.restore()
+                if subscriptions.isPro {
+                    startTour()
+                } else {
+                    purchaseError = String(localized: "No previous purchase found on this Apple Account.")
                 }
             } catch {
                 purchaseError = error.localizedDescription
