@@ -245,7 +245,7 @@ struct PracticeRunView: View {
         // Generated ids are unique per question, so feeding them to the
         // seen/missed sets would grow those sets forever and teach the daily
         // mix nothing. Authored items still feed it.
-        if !mode.isGenerated {
+        if item.isReviewable {
             progress.recordItem(id: item.id, correct: correct)
         }
         if correct {
