@@ -6,11 +6,11 @@ Web page: https://jackwallner.com/ios/electrician/best-journeyman-electrician-te
 
 ## Best Journeyman Electrician Test Prep App
 
-By Jack Wallner · Last updated November 11, 2026
+By Jack Wallner · Last updated November 12, 2026
 
 **Best for state-by-state exam lists and a large question bank:** NEC Electrical Exam by Dakota. **Best for 8,000+ questions in English and Spanish plus field calculators:** NEC Mastery. **Best for full-length timed mock exams:** Journeyman Electrician Pro. **Best for drilling the code calculations with fresh problems and step-by-step working:** Electrician Exam Practice 2026, the app I make. Journeyman Electrician (2025) is a simple free option, but it was last updated in January 2025.
 
-**How we compared (November 11, 2026):** I read each app's US App Store listing and pulled its rating, rating count, supported devices, purchase types and last update from Apple's store data. I did not install or subscribe to the other apps, so what I say about them comes from their own listings. Electrician Exam Practice 2026's entry comes from its code and listing. Prices are left out on purpose, because they vary by region and change.
+**How we compared (November 12, 2026):** I read each app's US App Store listing and pulled its rating, rating count, supported devices, purchase types and last update from Apple's store data. I did not install or subscribe to the other apps, so what I say about them comes from their own listings. Electrician Exam Practice 2026's entry comes from its code and listing. Prices are left out on purpose, because they vary by region and change.
 
 **Disclosure:** Jack Wallner makes Electrician Exam Practice 2026, one of the apps below, so read its entry with that in mind.
 
@@ -20,13 +20,13 @@ NEC Electrical Exam by Dakota and NEC Mastery have the largest question banks, J
 
 | App | Best for | Price model | Apple Watch | iPad | Account | Rating (count) | Last updated |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| [NEC Electrical Exam by Dakota](https://apps.apple.com/us/app/nec-electrical-exam-by-dakota/id1673601265) | State exam lists, 3,000+ questions, AI tutor | Free + paid upgrades | No | Yes | Not stated | 4.75 (521) | Sep 17, 2026 |
+| [NEC Electrical Exam by Dakota](https://apps.apple.com/us/app/nec-electrical-exam-by-dakota/id1673601265) | State exam lists, 3,000+ questions, AI tutor | Free + paid upgrades | No | Yes | Not stated | 4.75 (522) | Sep 17, 2026 |
 | [NEC Mastery](https://apps.apple.com/us/app/nec-mastery/id6720711044) | Bilingual question bank, calculators, hour log | Free + paid question bank | No | Yes | Not stated | 4.83 (177) | Sep 30, 2026 |
 | [Journeyman Electrician Pro](https://apps.apple.com/us/app/journeyman-electrician-pro/id6759343517) | Full timed mock exams and a diagnostic | Free + subscription | No | Yes | Not stated | 4.89 (80) | Nov 6, 2026 |
 | [Journeyman Electrician (2025)](https://apps.apple.com/us/app/journeyman-electrician-2025/id1632434426) | Simple free practice and mock tests | Free + remove-ads purchase | No | Yes | Not stated | 4.47 (302) | Jan 16, 2025 |
 | [Electrician Exam Practice 2026](https://apps.apple.com/us/app/electrician-exam-practice-2026/id6804828725?pt=128748779&ct=jw-electrician-best-journeyman-electrici&mt=8) | Generated calculation drills with numbered working | Free + subscription or lifetime | No | Yes | None | No ratings yet | Nov 7, 2026 |
 
-Ratings and counts are US App Store figures as of November 11, 2026. Apple Watch and iPad show the devices each listing supports. "Not stated" means the listing does not say whether an account is needed. Price models describe the structure only.
+Ratings and counts are US App Store figures as of November 12, 2026. Apple Watch and iPad show the devices each listing supports. "Not stated" means the listing does not say whether an account is needed. Price models describe the structure only.
 
 ## What is each exam prep app best at?
 
@@ -54,7 +54,7 @@ This app drills the parts of the exam that cost time: finding the right article 
 
 ## What other electrician exam apps will you see?
 
-Two more apps come up when you search for journeyman electrician test prep. I did not install either; the notes below come from their App Store listings as of November 11, 2026.
+Two more apps come up when you search for journeyman electrician test prep. I did not install either; the notes below come from their App Store listings as of November 12, 2026.
 
 ### NEC Journeyman Electrician
 
@@ -119,4 +119,4 @@ Related: [How to Calculate Conduit Fill (NEC Chapter 9)](https://jackwallner.com
 - [NEC Journeyman Electrician on the App Store](https://apps.apple.com/us/app/nec-journeyman-electrician/id6503954644)
 - [Electrician Test Prep 2026 on the App Store](https://apps.apple.com/us/app/electrician-test-prep-2026/id6449624235)
 
-Electrician Exam Practice 2026 is an independent app and is not affiliated with the NFPA or with any app compared here. App details were checked on November 11, 2026 and may change.
+Electrician Exam Practice 2026 is an independent app and is not affiliated with the NFPA or with any app compared here. App details were checked on November 12, 2026 and may change.
