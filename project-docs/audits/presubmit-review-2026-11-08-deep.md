@@ -1,0 +1,27 @@
+# Pre-submit deep review, 2026-11-08
+
+Branch `review/2026-11-08-electrician-deep`, cut from `origin/main` at `7dfbaa3` (1.0.6, build 30).
+
+Scope: the live version is 1.0.5 (App Store lookup reports 1.0.5, released 2026-11-07). The last 1.0.5 commit in `project.yml` history is `bf63e1e`; the app-source diff `bf63e1e..7dfbaa3` covers 13 files (DayClock, entitlement freshness, reminder retry, flashcard Undo, Exam Target Cancel, Language row). The deep pass then read every user-reachable path on `origin/main`: purchase, restore, paywall, onboarding, notifications, persistence and decoding, Home and the iPhone Duo split, drill runners, Code Minute, Settings and localization. No simulator or local xcodebuild was used.
+
+## Findings
+
+| Severity | File:line | What happens | Status |
+|---|---|---|---|
+| P1 | `Electrician/Views/OnboardingView.swift:1287` | The trial step's Restore ran `try? await subscriptions.restore()` and dropped the result. A returning member who restored stayed on the trial screen with no confirmation, and its CTA still offered to start a monthly trial (a lifetime owner is trial-eligible, so they could be billed for a subscription they do not need). A failed restore was silent too. | Fixed (`fix: finish onboarding when Restore finds a membership`). A found membership now finishes onboarding like a purchase; a miss or error shows the existing alert copy. Restore is disabled while a purchase or restore is in flight. No unit test: the action is view-private and RevenueCat is never configured in the test host. |
+| P1 | `Electrician/Views/Drills/PracticeRunView.swift:328` | `guard attempted > 0 \|\| mode == .review`: tapping Close in Fix My Mistakes (Home tile, or Stats' "Practice these traps now") before answering anything opened the completion screen at 0/N with confetti, recorded a finished session, bumped the streak and banked a rating-prompt moment. The comment above the guard says exactly this must not happen. | Fixed (`fix: closing an unanswered Fix My Mistakes run no longer counts as a session`). Close with nothing answered now just dismisses. No unit test: the path needs a toolbar tap in a hosted view. |
+| P2 | `Electrician/Views/Drills/PracticeRunView.swift:248` | Review runs gated `progress.recordItem` on `!mode.isGenerated`, which is true for `.review`, so every answer to a generated Fix My Mistakes problem wrote a one-off `gen-<skill>-<UUID>` id into the persisted `seenItems`/`missedItems` sets, which are never pruned. | Fixed (`fix: keep Fix My Mistakes' generated ids out of the seen and missed sets`). Gated on `item.isReviewable`, as `QuickSessionView` already does; authored review items still feed the sets. |
+| P2 | `Electrician/Views/Drills/FlashcardDrillView.swift:340` | `fling()` had no `isFlinging` guard, unlike the drag gesture, `choose()` and Undo. A fast second tap on Knew it, Again or Next during the 0.28 s throw could commit twice and grade the next card before it was shown. | Fixed (`fix: ignore a second Knew it, Again or Next tap while the card is flying`). Timing-dependent, so no unit test. |
+| P2 | `Electrician/Views/HomeView.swift:324` | R1 from the 2026-11-06 audit: a cold launch from the Exam Warm-Up notification can reach `consumePendingDestination` before RevenueCat answers, so a member may see the paywall for a moment until `isPro` flips and the sheet dismisses itself. | Not fixed. Held for Jack in `state-machines-2026-11-06-fixes.md`; the earlier hold was backed out in `6dad6eb` as unproven. |
+| P2 | `Shared/Content/CodeMinuteContent.swift:101` | Both generated Code Minute items share `trackingID: "code-minute-rollup"` but carry different rooms, and `PracticeRecordStore.record` overwrites `roomID` each answer, so the conductors-room answer is credited to `calc-room` in room stats and the weakest-room pick. | Not fixed. Stats skew only, and changing the tracking id would orphan the existing persisted row. |
+| P2 | `Shared/Services/AppSettings.swift:108` | `dailyReminderAwaitingPermission` lives in memory only, so the onboarding promise to schedule the reminder once notifications are allowed holds only until the app is terminated. | Not fixed. Documented as session-scoped in the 2026-11-06 fixes; no wrong reminder is ever scheduled. |
+
+## Checked and clean
+- Purchase: offering and package lookups throw distinct errors; cancel is an outcome, not an error; entitlement confirmation polls; paywall auto-dismisses on `isPro` and always has Close, Restore, Terms (Apple EULA) and Privacy links. Prices come only from StoreKit; trial copy follows eligibility. The `electrician_pro` entitlement and keys are unchanged.
+- Gating: every paid entry point (training tiles, paid rooms, Plus drills, Stats targeted practice, Settings Exam Warm-Up) checks `isPro`; free rooms stay open.
+- Persistence: all decoders use `try?` with empty fallbacks and no persisted model changed since 1.0.5; `PracticeRecord.reviewSuppressed` stays optional for old data; legacy `gameNight` keys and route value untouched.
+- Notifications: one identifier per reminder, removed before each add, so no double scheduling; the warm-up reminder clears for lapsed members only on a current answer.
+- Release: DEBUG-only Duo capture, local Pro override and RevenueCat probe; no placeholder UI, other-platform links, hard-coded prices or health claims. `python3 Tools/Localization/check.py`: 1721 keys, 0 problems.
+
+## Tests
+See the final status in the commit that adds this report.
