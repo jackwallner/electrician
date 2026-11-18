@@ -142,7 +142,7 @@ struct StatsView: View {
                         Spacer()
                         Text(percent(stat.accuracy))
                             .font(Theme.numeric(.subheadline, weight: .bold))
-                            .foregroundStyle(barColor(stat.accuracy))
+                            .foregroundStyle(textColor(stat.accuracy))
                     }
                     accuracyBar(stat.accuracy)
                     Text("\(stat.correct) of \(stat.attempts) right")
@@ -171,7 +171,7 @@ struct StatsView: View {
                         Spacer()
                         Text(percent(stat.accuracy))
                             .font(Theme.numeric(.subheadline, weight: .bold))
-                            .foregroundStyle(barColor(stat.accuracy))
+                            .foregroundStyle(textColor(stat.accuracy))
                     }
                     accuracyBar(stat.accuracy)
                     Text("\(stat.correct) of \(stat.attempts) right")
@@ -218,6 +218,8 @@ struct StatsView: View {
                     Label("Practice these traps now", systemImage: "play.fill")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(Theme.voltage)
+                        .frame(minHeight: 44, alignment: .leading)
+                        .contentShape(Rectangle())
                 }
                 .padding(.top, 2)
             } else {
@@ -227,6 +229,8 @@ struct StatsView: View {
                     Label("Unlock targeted practice", systemImage: "lock.fill")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(Theme.voltage)
+                        .frame(minHeight: 44, alignment: .leading)
+                        .contentShape(Rectangle())
                 }
                 .padding(.top, 2)
             }
@@ -274,6 +278,12 @@ struct StatsView: View {
 
     private func percent(_ fraction: Double) -> String {
         "\(Int((fraction * 100).rounded()))%"
+    }
+
+    private func textColor(_ fraction: Double) -> Color {
+        if fraction >= 0.8 { return Theme.rightGreen }
+        if fraction >= 0.6 { return Theme.brassInk }
+        return Theme.copperInk
     }
 
     private func barColor(_ fraction: Double) -> Color {
