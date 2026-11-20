@@ -1,5 +1,6 @@
 # Audits
 
+- [2026-11-20-bug-ux.html](2026-11-20-bug-ux.html): Bug and UX catalog, 2026-11-20: 11 bugs (3 medium, 8 low; 6 confirmed), 21 UX items, October audit items rechecked. Catalog only, nothing fixed.
 - [NEC 2023 question bank](nec2023-question-bank-2026-10-22.md): every authored item, generator corrections, sources and validation.
 - [ASO audit](aso827.md)
 - [Product audit](audit824.md)
