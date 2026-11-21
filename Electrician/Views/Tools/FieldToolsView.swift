@@ -190,11 +190,15 @@ private struct VoltageDropToolView: View {
     @State private var material = ConductorMaterial.copper
     @State private var phase = Phase.single
     @State private var systemVolts = 120
-    @State private var amps = 16.0
-    @State private var feet = 100.0
+    // Text, not Double: a numeric field leaves its last parsed value in place
+    // when cleared, so a blank Load still answered for 16 A.
+    @State private var ampsText = "16"
+    @State private var feetText = "100"
 
     private var result: FieldCalculators.VoltageDropResult? {
-        FieldCalculators.voltageDrop(
+        guard let amps = FieldCalculators.number(from: ampsText),
+              let feet = FieldCalculators.number(from: feetText) else { return nil }
+        return FieldCalculators.voltageDrop(
             size: size,
             material: material,
             phase: phase,
@@ -222,7 +226,7 @@ private struct VoltageDropToolView: View {
                 HStack {
                     Text("Load")
                     Spacer()
-                    TextField("A", value: $amps, format: .number)
+                    TextField("A", text: $ampsText)
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.trailing)
                         .frame(width: 80)
@@ -231,7 +235,7 @@ private struct VoltageDropToolView: View {
                 HStack {
                     Text("One-way")
                     Spacer()
-                    TextField("ft", value: $feet, format: .number)
+                    TextField("ft", text: $feetText)
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.trailing)
                         .frame(width: 80)
