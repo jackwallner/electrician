@@ -98,7 +98,9 @@ enum CodeMinuteContent {
                     citation: scenario.citation,
                     sourceLabel: String(localized: "Code Minute"),
                     roomID: shape.0 == .ampacity ? "conductors-room" : "calc-room",
-                    trackingID: "code-minute-rollup",
+                    // One row per room: a shared row took whichever room
+                    // answered last and moved the other's attempts with it.
+                    trackingID: shape.0 == .ampacity ? "code-minute-rollup-ampacity" : "code-minute-rollup-calc",
                     isReviewable: false,
                     mistakes: scenario.mistakes
                 )
