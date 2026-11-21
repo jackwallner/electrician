@@ -347,6 +347,7 @@ struct PaywallView: View {
     var source: String = "electrician_paywall_sheet"
     @EnvironmentObject private var subscriptions: SubscriptionService
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var selectedPlan: PaywallPlan = .yearly
     @State private var purchasing = false
     @State private var restoring = false
@@ -375,39 +376,17 @@ struct PaywallView: View {
                     .padding()
                     .frame(maxWidth: 680)
                     .frame(maxWidth: .infinity)
+                // At accessibility sizes a docked footer would cover most of
+                // the screen, so it scrolls with the plans instead.
+                if dynamicTypeSize.isAccessibilitySize {
+                    purchaseFooter
+                }
             }
             .background(Theme.background)
             .safeAreaInset(edge: .bottom) {
-                VStack(spacing: 8) {
-                    if pricesUnavailable {
-                        unavailableNotice
-                    } else {
-                        Text(PaywallPricing.terms(subscriptions, selectedPlan))
-                            .font(.caption)
-                            .foregroundStyle(Theme.inkSecondary)
-                            .multilineTextAlignment(.center)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    Button {
-                        if pricesUnavailable { retry() } else { purchase() }
-                    } label: {
-                        Group {
-                            if purchasing || retrying {
-                                ProgressView().tint(.white)
-                            } else if pricesUnavailable {
-                                Text("Try Again")
-                            } else {
-                                Text(selectedPlan.ctaTitle(trial: ctaTrial))
-                            }
-                        }
-                        .primaryCTA()
-                    }
-                    .disabled(purchasing || retrying || (!canPurchase && !pricesUnavailable))
-                    .opacity(!canPurchase && !pricesUnavailable ? 0.5 : 1)
-                    footerLinks
+                if !dynamicTypeSize.isAccessibilitySize {
+                    purchaseFooter
                 }
-                .padding()
-                .background(.thinMaterial)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -428,6 +407,39 @@ struct PaywallView: View {
             }
             .task { subscriptions.trackPaywallImpression(id: source) }
         }
+    }
+
+    private var purchaseFooter: some View {
+        VStack(spacing: 8) {
+            if pricesUnavailable {
+                unavailableNotice
+            } else {
+                Text(PaywallPricing.terms(subscriptions, selectedPlan))
+                    .font(.caption)
+                    .foregroundStyle(Theme.inkSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Button {
+                if pricesUnavailable { retry() } else { purchase() }
+            } label: {
+                Group {
+                    if purchasing || retrying {
+                        ProgressView().tint(.white)
+                    } else if pricesUnavailable {
+                        Text("Try Again")
+                    } else {
+                        Text(selectedPlan.ctaTitle(trial: ctaTrial))
+                    }
+                }
+                .primaryCTA()
+            }
+            .disabled(purchasing || retrying || (!canPurchase && !pricesUnavailable))
+            .opacity(!canPurchase && !pricesUnavailable ? 0.5 : 1)
+            footerLinks
+        }
+        .padding()
+        .background(.thinMaterial)
     }
 
     private var ctaTrial: String? {
