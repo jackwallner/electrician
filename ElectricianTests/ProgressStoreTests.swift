@@ -73,6 +73,83 @@ final class ProgressStoreTests: XCTestCase {
         XCTAssertEqual(store.streakCount, 2, "The stored run is untouched; only what is shown changes")
     }
 
+    // MARK: Time zone moves
+
+    /// Runs `body` with the phone's zone set to `start`, restoring it after.
+    private func inZone(_ start: String, _ body: () throws -> Void) rethrows {
+        let saved = NSTimeZone.default
+        defer { NSTimeZone.default = saved }
+        NSTimeZone.default = TimeZone(identifier: start)!
+        try body()
+    }
+
+    private func move(to zone: String) {
+        NSTimeZone.default = TimeZone(identifier: zone)!
+        XCTAssertEqual(Calendar.current.timeZone.identifier, zone, "precondition: the calendar follows the zone")
+    }
+
+    /// Tue 10 Nov 2026, 17:00 UTC: 12:00 in New York, 09:00 in Los Angeles.
+    private let tuesdayNoonNewYork = Date(timeIntervalSince1970: 1_794_330_000)
+
+    /// A stored New York midnight read in Los Angeles is 21:00 the day before,
+    /// so a second drill on the same Tuesday counted as a new day.
+    func testSameDaySessionAfterFlyingWestKeepsTheStreak() {
+        inZone("America/New_York") {
+            store.recordSession(drillID: "a", now: tuesdayNoonNewYork)
+            move(to: "America/Los_Angeles")
+            store.recordSession(drillID: "b", now: tuesdayNoonNewYork.addingTimeInterval(3600))
+            XCTAssertEqual(store.streakCount, 1)
+            XCTAssertEqual(store.currentStreak(now: tuesdayNoonNewYork.addingTimeInterval(3600)), 1)
+        }
+    }
+
+    func testSameDaySessionAfterFlyingEastKeepsTheStreak() {
+        inZone("America/Los_Angeles") {
+            store.recordSession(drillID: "a", now: tuesdayNoonNewYork)
+            move(to: "America/New_York")
+            store.recordSession(drillID: "b", now: tuesdayNoonNewYork.addingTimeInterval(3600))
+            XCTAssertEqual(store.streakCount, 1)
+        }
+    }
+
+    func testNextDayAfterFlyingWestStillGrowsTheStreak() {
+        inZone("America/New_York") {
+            store.recordSession(drillID: "a", now: tuesdayNoonNewYork)
+            move(to: "America/Los_Angeles")
+            store.recordSession(drillID: "b", now: tuesdayNoonNewYork.addingTimeInterval(86_400))
+            XCTAssertEqual(store.streakCount, 2)
+        }
+    }
+
+    func testGetStartedStaysDoneAfterFlyingWest() {
+        inZone("America/New_York") {
+            store.markQuickSessionCompleted(now: tuesdayNoonNewYork)
+            move(to: "America/Los_Angeles")
+            XCTAssertTrue(store.quickSessionCompletedToday(now: tuesdayNoonNewYork))
+            XCTAssertFalse(store.quickSessionCompletedToday(now: tuesdayNoonNewYork.addingTimeInterval(86_400)))
+        }
+    }
+
+    /// Older builds stored the local midnight as a Date. Those installs keep
+    /// their streak and today's Get Started, in their own zone or after a move.
+    func testDaysStoredByOlderBuildsStillRead() {
+        inZone("America/New_York") {
+            let midnight = Calendar.current.startOfDay(for: tuesdayNoonNewYork)
+            defaults.set(midnight, forKey: "progress.lastActiveDay")
+            defaults.set(midnight, forKey: "progress.lastQuickSessionDay")
+            defaults.set(4, forKey: "progress.streakCount")
+            let legacy = ProgressStore(defaults: defaults)
+            XCTAssertTrue(legacy.quickSessionCompletedToday(now: tuesdayNoonNewYork))
+            move(to: "America/Los_Angeles")
+            XCTAssertTrue(legacy.quickSessionCompletedToday(now: tuesdayNoonNewYork))
+            XCTAssertEqual(legacy.currentStreak(now: tuesdayNoonNewYork), 4)
+            legacy.recordSession(drillID: "a", now: tuesdayNoonNewYork)
+            XCTAssertEqual(legacy.streakCount, 4, "Same day, so the run is unchanged")
+            legacy.recordSession(drillID: "a", now: tuesdayNoonNewYork.addingTimeInterval(86_400))
+            XCTAssertEqual(legacy.streakCount, 5)
+        }
+    }
+
     func testNothingPractisedReadsZero() {
         XCTAssertEqual(store.currentStreak(), 0)
     }
