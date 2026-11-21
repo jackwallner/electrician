@@ -19,9 +19,10 @@ struct RootView: View {
             }
         }
         .animation(Theme.Motion.screen, value: hasOnboarded)
-        .onChange(of: scenePhase) { _, phase in
+        .onChange(of: scenePhase, initial: true) { _, phase in
             guard phase == .active else { return }
             settings.resumeDailyReminderIfAllowed()
+            settings.refreshReminders()
         }
     }
 }

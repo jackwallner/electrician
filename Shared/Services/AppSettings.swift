@@ -211,6 +211,38 @@ final class AppSettings: ObservableObject {
         reminderEnabled = true
     }
 
+    /// Called at launch and whenever the app comes back. A pending request
+    /// does not travel with a backup restore or a new phone, and iOS can turn
+    /// notifications off behind the app, while the toggles kept reading on.
+    /// This re-adds what the toggles promise, or turns them off and says why.
+    func refreshReminders() {
+        guard reminderEnabled || examWarmUpReminderEnabled else { return }
+        UNUserNotificationCenter.current().getNotificationSettings { notificationSettings in
+            let status = notificationSettings.authorizationStatus
+            Task { @MainActor in
+                self.refreshReminders(status: status)
+            }
+        }
+    }
+
+    func refreshReminders(status: UNAuthorizationStatus) {
+        switch status {
+        case .authorized, .provisional, .ephemeral:
+            if reminderEnabled { scheduleReminder() }
+            if examWarmUpReminderEnabled { scheduleExamWarmUpReminder() }
+        case .denied:
+            if reminderEnabled { handleReminderAuthorization(granted: false) }
+            if examWarmUpReminderEnabled {
+                examWarmUpReminderEnabled = false
+                reminderPermissionDenied = true
+            }
+        default:
+            // Never asked on this install (a restored backup): ask again.
+            if reminderEnabled { requestPermissionAndSchedule() }
+            if examWarmUpReminderEnabled { requestPermissionAndScheduleExamWarmUp() }
+        }
+    }
+
     private func scheduleReminder() {
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [Self.reminderID])
