@@ -79,16 +79,40 @@ final class CodeMinuteTests: XCTestCase {
         }
     }
 
-    /// Generated daily items roll into one bounded stats row rather than
-    /// creating an unbounded pile of one-off records.
-    func testGeneratedDailyItemsShareOneTrackingRow() {
-        let challenge = CodeMinuteContent.challenge(for: day(2026, 8, 24))
-        let generated = challenge.items.filter { $0.id.contains("-gen-") }
-        XCTAssertFalse(generated.isEmpty)
-        for item in generated {
-            XCTAssertEqual(item.trackingID, "code-minute-rollup", item.id)
-            XCTAssertFalse(item.isReviewable, "\(item.id) would be scheduled back into review")
+    /// Generated daily items roll into bounded stats rows rather than
+    /// creating an unbounded pile of one-off records: one row per room, so
+    /// each answer is credited to the room it belongs to.
+    func testGeneratedDailyItemsRollUpOneRowPerRoom() {
+        for offset in 0..<14 {
+            let date = Calendar.current.date(byAdding: .day, value: offset, to: day(2026, 8, 24))!
+            let generated = CodeMinuteContent.challenge(for: date).items.filter { $0.id.contains("-gen-") }
+            XCTAssertEqual(generated.count, 2)
+            XCTAssertEqual(Set(generated.map(\.trackingID)).count, generated.count,
+                           "two rooms on one row: the row keeps whichever room answered last")
+            for item in generated {
+                XCTAssertTrue(item.trackingID.hasPrefix("code-minute-rollup"), item.id)
+                XCTAssertNotEqual(item.trackingID, item.id, "a per-day id grows the store without bound")
+                XCTAssertFalse(item.isReviewable, "\(item.id) would be scheduled back into review")
+            }
         }
+    }
+
+    /// Answering a whole Code Minute credits each generated item to its own
+    /// room in the stats.
+    @MainActor
+    func testGeneratedDailyAnswersKeepTheirRoomInStats() {
+        let suite = "CodeMinuteTests.rooms"
+        let defaults = UserDefaults(suiteName: suite)!
+        defaults.removePersistentDomain(forName: suite)
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let store = PracticeRecordStore(defaults: defaults)
+        let generated = CodeMinuteContent.challenge(for: day(2026, 8, 24)).items.filter { $0.id.contains("-gen-") }
+        for item in generated {
+            store.record(itemID: item.trackingID, roomID: item.roomID, correct: true, isReviewable: item.isReviewable)
+        }
+        let rooms = Dictionary(uniqueKeysWithValues: store.roomStats().map { ($0.id, $0.attempts) })
+        XCTAssertEqual(rooms["conductors-room"], 1)
+        XCTAssertEqual(rooms["calc-room"], 1)
     }
 
     func testCategoriesAreCoveredAcrossASet() {
