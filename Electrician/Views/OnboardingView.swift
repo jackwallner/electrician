@@ -100,6 +100,11 @@ struct OnboardingView: View {
             guard newStep == .trial else { return }
             subscriptions.trackPaywallImpression(id: "electrician_onboarding_trial", oncePerSession: true)
         }
+        // The fallback paywall hands over in `paywallDismissed` instead.
+        .onChange(of: subscriptions.isPro) { _, isPro in
+            guard isPro, step == .trial, !showPaywallFallback else { return }
+            startTour()
+        }
         .sheet(isPresented: $showPaywallFallback, onDismiss: paywallDismissed) {
             PaywallView(source: "electrician_onboarding_fallback")
         }
@@ -1224,6 +1229,12 @@ struct OnboardingView: View {
 
     private func advance() {
         guard let next = Step(rawValue: step.rawValue + 1) else { return }
+        // A member (a purchase that landed after the app was killed, say) is
+        // never sold the trial again: the plan recap leads straight in.
+        if next == .trial, subscriptions.isPro {
+            startTour()
+            return
+        }
         goingForward = true
         step = next
     }
