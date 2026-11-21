@@ -13,7 +13,8 @@ import SwiftUI
 /// the panes split or join, so folded and unfolded each get the full walk.
 ///
 /// Routes: home, quick, room-<id>, drill-<id>, endless, minute, warmup, timed,
-/// fix, tools, readiness, howto, stats, settings, paywall.
+/// fix, tools, readiness, howto, stats, settings, paywall, and notify (the
+/// Exam Warm-Up notification tapped over whatever is open).
 enum DuoScreenshotMode {
     private static let arguments = ProcessInfo.processInfo.arguments
 
@@ -205,6 +206,11 @@ extension HomeView {
 
     @MainActor
     private func openDuoRoute(_ route: String) async {
+        // A tapped Exam Warm-Up notification, over whatever is open.
+        if route == "notify" {
+            AppRouter.shared.route(to: .examWarmUpSession)
+            return
+        }
         setDuoSheets(settings: false, paywall: false)
         duoRoute = nil
         try? await Task.sleep(nanoseconds: 700_000_000)
