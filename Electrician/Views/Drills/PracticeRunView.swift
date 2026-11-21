@@ -155,7 +155,11 @@ struct PracticeRunView: View {
             // An endless run has no natural end, so it must always offer one.
             if mode != .timed {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(mode == .review ? String(localized: "Close") : String(localized: "Finish")) { finish() }
+                    Button(mode == .review ? String(localized: "Close") : String(localized: "Finish")) {
+                        // Review has a last item, so Close is a bail-out, not
+                        // an end: only the last item's Finish completes it.
+                        if mode == .review { dismiss() } else { finish() }
+                    }
                         .foregroundStyle(Theme.voltage)
                 }
             }
