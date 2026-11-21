@@ -230,6 +230,7 @@ struct PaywallContent: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
     }
 }
 
