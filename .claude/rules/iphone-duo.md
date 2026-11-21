@@ -92,7 +92,8 @@ override. No RevenueCat, no network. `-DuoTour -DuoRoutes a,b` walks Home
 through routes on a timer (the capture job cannot tap); dwell is
 `-DuoTourStep` folded and `-DuoTourStepRegular` unfolded, and the tour restarts
 on fold/unfold. Routes: home, quick, room-<id>, drill-<id>, endless, minute,
-warmup, timed, fix, tools, readiness, howto, stats, settings, paywall. The
+warmup, timed, fix, tools, readiness, howto, stats, settings, paywall, and `notify` (routes
+the Exam Warm-Up notification tap without closing what is open). The
 `stats` route pushes Your Progress on the left too, so skip it for inner shots.
 Pass `-electrician.suppressWhatsNew`.
 

@@ -328,6 +328,10 @@ struct HomeView: View {
             showPaywall = true
             return
         }
+        // A sheet stays on top of a pushed path, so the session would open
+        // unseen behind Settings or What's New.
+        showSettings = false
+        showWhatsNew = false
         path = [destination]
     }
 
