@@ -5,70 +5,70 @@ struct CandidateProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var opened: CandidateProfile.Snapshot?
 
+    // Always pushed, never presented, so no NavigationStack of its own: one
+    // nested inside Home's path-driven stack popped straight back to Home.
     var body: some View {
-        NavigationStack {
-            Form {
+        Form {
+            Section {
+                CandidateProfileFields()
+            } header: {
+                Text("Your exam target")
+            } footer: {
+                Text("Electrician uses \(NECTables.edition) values, unchanged across the \(NECTables.coverageLabel). A different edition or local amendment can change an answer, so verify against the code in force where you work.")
+            }
+
+            if let record = profile.jurisdictionRecord {
                 Section {
-                    CandidateProfileFields()
+                    JurisdictionFactsCard(record: record)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
                 } header: {
-                    Text("Your exam target")
-                } footer: {
-                    Text("Electrician uses \(NECTables.edition) values, unchanged across the \(NECTables.coverageLabel). A different edition or local amendment can change an answer, so verify against the code in force where you work.")
-                }
-
-                if let record = profile.jurisdictionRecord {
-                    Section {
-                        JurisdictionFactsCard(record: record)
-                            .listRowInsets(EdgeInsets())
-                            .listRowBackground(Color.clear)
-                    } header: {
-                        Text("What we know about \(record.displayName)")
-                    }
-                }
-
-                Section("How your edition lines up") {
-                    Text(profile.editionAdvice)
-                        .font(.footnote)
-                        .foregroundStyle(Theme.inkSecondary)
-                    NavigationLink {
-                        EditionView()
-                    } label: {
-                        Label("What changes between editions", systemImage: "books.vertical")
-                    }
-                }
-
-                Section("What this app covers") {
-                    Text("Code navigation, conductors and ampacity, installation rules, grounding and motors, dwelling service and load calculations, and \(PracticeSkill.allCases.count) generated calculation shapes. Special occupancies, hazardous locations and the low-voltage chapters are not covered yet.")
-                        .font(.footnote)
-                        .foregroundStyle(Theme.inkSecondary)
-                    Text(profile.licenseTrack.emphasis)
-                        .font(.footnote)
-                        .foregroundStyle(Theme.inkSecondary)
+                    Text("What we know about \(record.displayName)")
                 }
             }
-            .scrollContentBackground(.hidden)
-            .background(Theme.background)
-            .tint(Theme.voltage)
-            .navigationTitle("Exam Target")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                // Once: returning from the jurisdiction picker appears again.
-                if opened == nil { opened = profile.snapshot() }
+
+            Section("How your edition lines up") {
+                Text(profile.editionAdvice)
+                    .font(.footnote)
+                    .foregroundStyle(Theme.inkSecondary)
+                NavigationLink {
+                    EditionView()
+                } label: {
+                    Label("What changes between editions", systemImage: "books.vertical")
+                }
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
-                        if let opened { profile.restore(opened) }
-                        dismiss()
-                    }
+
+            Section("What this app covers") {
+                Text("Code navigation, conductors and ampacity, installation rules, grounding and motors, dwelling service and load calculations, and \(PracticeSkill.allCases.count) generated calculation shapes. Special occupancies, hazardous locations and the low-voltage chapters are not covered yet.")
+                    .font(.footnote)
+                    .foregroundStyle(Theme.inkSecondary)
+                Text(profile.licenseTrack.emphasis)
+                    .font(.footnote)
+                    .foregroundStyle(Theme.inkSecondary)
+            }
+        }
+        .scrollContentBackground(.hidden)
+        .background(Theme.background)
+        .tint(Theme.voltage)
+        .navigationTitle("Exam Target")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            // Once: returning from the jurisdiction picker appears again.
+            if opened == nil { opened = profile.snapshot() }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Cancel") {
+                    if let opened { profile.restore(opened) }
+                    dismiss()
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Save") {
-                        profile.completeSetup()
-                        dismiss()
-                    }
-                    .disabled(!profile.canCompleteSetup)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Save") {
+                    profile.completeSetup()
+                    dismiss()
                 }
+                .disabled(!profile.canCompleteSetup)
             }
         }
     }
