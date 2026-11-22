@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.jackwallner.electrician.AppGraph
 import com.jackwallner.electrician.data.AlarmReminderScheduler
+import com.jackwallner.electrician.ui.nav.AppSheets
 import com.jackwallner.electrician.ui.nav.LocalNavigator
 import com.jackwallner.electrician.ui.nav.NavStack
 import com.jackwallner.electrician.ui.nav.Navigator
@@ -61,9 +62,10 @@ fun RootScreen(graph: AppGraph, pendingRoute: String?, onRouteConsumed: () -> Un
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val navigator = remember { Navigator() }
-    var paywallSource by remember { mutableStateOf<String?>(null) }
-    var showWhatsNew by remember { mutableStateOf(false) }
-    var showFeedback by remember { mutableStateOf(false) }
+    val sheets = remember { AppSheets() }
+    var paywallSource by sheets::paywallSource
+    var showWhatsNew by sheets::showWhatsNew
+    var showFeedback by sheets::showFeedback
     var prepAfterUpgrade by remember { mutableStateOf(false) }
     var pendingGrant by remember { mutableStateOf<(() -> Unit)?>(null) }
     val isPro = graph.subscriptions.isPro
@@ -136,9 +138,11 @@ fun RootScreen(graph: AppGraph, pendingRoute: String?, onRouteConsumed: () -> Un
         if (!membershipResolved && !membershipWaitOver) return@LaunchedEffect
         onRouteConsumed()
         if (isPro) {
-            navigator.popToRoot()
-            navigator.push(Route.Session(gameNightPrepItems(graph), SessionPurpose.GameNightPrep))
+            sheets.open(Route.Session(gameNightPrepItems(graph), SessionPurpose.GameNightPrep), navigator)
         } else {
+            // What's New and Feedback draw above the paywall; close them so it shows.
+            showWhatsNew = false
+            showFeedback = false
             prepAfterUpgrade = true
             paywallSource = "electrician_home_sheet"
         }

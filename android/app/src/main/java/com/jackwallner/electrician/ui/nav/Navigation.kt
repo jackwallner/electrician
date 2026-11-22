@@ -113,6 +113,23 @@ class Navigator {
     }
 }
 
+/** The app-wide sheets, held as plain state so a route that arrives from outside can clear them. */
+@Stable
+class AppSheets {
+    var paywallSource by mutableStateOf<String?>(null)
+    var showWhatsNew by mutableStateOf(false)
+    var showFeedback by mutableStateOf(false)
+
+    /** A notification's destination: every sheet closes first, or the screen is pushed underneath one. */
+    fun open(route: Route, navigator: Navigator) {
+        paywallSource = null
+        showWhatsNew = false
+        showFeedback = false
+        navigator.popToRoot()
+        navigator.push(route)
+    }
+}
+
 private val LocalEntryId = staticCompositionLocalOf { -1 }
 
 /**
