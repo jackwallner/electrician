@@ -18,6 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.jackwallner.electrician.AppGraph
 import com.jackwallner.electrician.data.AlarmReminderScheduler
@@ -67,7 +69,7 @@ fun RootScreen(graph: AppGraph, pendingRoute: String?, onRouteConsumed: () -> Un
     val isPro = graph.subscriptions.isPro
 
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        if (granted) pendingGrant?.invoke() else graph.settings.reminderPermissionDenied = true
+        if (granted) pendingGrant?.invoke() else graph.settings.remindersRefused()
         pendingGrant = null
     }
     val requestNotifications: (() -> Unit) -> Unit = { onGranted ->
@@ -77,6 +79,14 @@ fun RootScreen(graph: AppGraph, pendingRoute: String?, onRouteConsumed: () -> Un
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             pendingGrant = onGranted
             permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    // At launch and on each return to the app: put back the reminders the
+    // switches promise, or ask, and on a refusal switch them off and say why.
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        if (pendingGrant == null && graph.settings.refreshReminders(AlarmReminderScheduler.canNotify(context))) {
+            requestNotifications { graph.settings.rescheduleAll() }
         }
     }
 

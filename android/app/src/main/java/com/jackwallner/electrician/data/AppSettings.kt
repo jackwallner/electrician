@@ -116,6 +116,28 @@ class AppSettings(private val defaults: KeyValueStore, private val scheduler: Re
         if (gameNightReminderEnabled) scheduleGameNight()
     }
 
+    /**
+     * Called at launch and on each return to the app. An alarm does not travel
+     * with a restored backup and is dropped by a force stop, and Android can
+     * turn notifications off behind the app, while the switches kept reading
+     * on. Re-lays what the switches promise and returns false; returns true
+     * when a reminder is on but notifications are not allowed, so the caller
+     * asks and reports a refusal to `remindersRefused`.
+     */
+    fun refreshReminders(canNotify: Boolean): Boolean {
+        if (!reminderEnabled && !gameNightReminderEnabled) return false
+        if (!canNotify) return true
+        rescheduleAll()
+        return false
+    }
+
+    /** Notifications were refused: nothing switched on can be delivered, so say so. */
+    fun remindersRefused() {
+        if (reminderEnabled) updateReminderEnabled(false)
+        if (gameNightReminderEnabled) updateGameNightReminderEnabled(false)
+        reminderPermissionDenied = true
+    }
+
     private fun scheduleGameNight() = scheduler?.scheduleGameNight(gameNightDay.dayOfWeek, gameNightHour, gameNightMinute)
 
     private object Keys {
