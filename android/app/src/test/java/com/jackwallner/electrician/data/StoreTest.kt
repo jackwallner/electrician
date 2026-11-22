@@ -112,13 +112,41 @@ class StoreTest {
         val prefix = PracticeSkill.ampacity.itemPrefix
         store.record(prefix + "a", room, correct = false)
         store.record(prefix + "b", room, correct = true)
-        store.record("code-minute-rollup", "calc-room", correct = false, isReviewable = false)
+        store.record("code-minute-rollup-calc", "calc-room", correct = false, isReviewable = false)
         assertEquals(2, store.records[PracticeSkill.ampacity.raw]!!.attempts)
         assertEquals(0, store.dueCount())
         store.record("q1", room, correct = false)
         store.record("calc-ampacity-1", "calc-room", correct = false)
         assertEquals(2, store.dueCount())
         assertEquals(listOf("q1"), store.reviewQueue(presentable = setOf("q1")))
+    }
+
+    /** iOS B5: each generated Code Minute item rolls up into its own room's row. */
+    @Test
+    fun generatedDailyItemsRollUpOneRowPerRoom() {
+        for (offset in 0L until 14L) {
+            val generated = CodeMinuteContent.challenge(LocalDate.of(2026, 8, 24).plusDays(offset))
+                .questions.map { it.item }.filter { "-gen-" in it.id }
+            assertEquals(2, generated.size)
+            assertEquals("two rooms on one row: the row keeps whichever room answered last",
+                generated.size, generated.map { it.trackingID }.toSet().size)
+            generated.forEach { item ->
+                assertTrue(item.id, item.trackingID.startsWith("code-minute-rollup"))
+                assertTrue("a per-day id grows the store without bound", item.trackingID != item.id)
+                assertFalse("${item.id} would be scheduled back into review", item.isReviewable)
+            }
+        }
+    }
+
+    @Test
+    fun generatedDailyAnswersKeepTheirRoomInStats() {
+        val store = PracticeRecordStore(defaults, clock)
+        CodeMinuteContent.challenge(LocalDate.of(2026, 8, 24)).questions.map { it.item }
+            .filter { "-gen-" in it.id }
+            .forEach { store.record(it.trackingID, it.roomID, correct = true, isReviewable = it.isReviewable) }
+        val rooms = store.roomStats().associate { it.id to it.attempts }
+        assertEquals(1, rooms["conductors-room"])
+        assertEquals(1, rooms["calc-room"])
     }
 
     @Test

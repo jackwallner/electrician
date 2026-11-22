@@ -218,7 +218,9 @@ object CodeMinuteContent {
                 choices = scenario.choices, answerIndex = scenario.answerIndex,
                 explanation = scenario.steps.firstOrNull().orEmpty(), steps = scenario.steps, citation = scenario.citation,
                 sourceLabel = "Code Minute", roomID = if (category == CodeMinuteCategory.ampacity) "conductors-room" else "calc-room",
-                trackingID = "code-minute-rollup", isReviewable = false, mistakes = scenario.mistakes,
+                // One row per room: a shared row took whichever room answered last.
+                trackingID = if (category == CodeMinuteCategory.ampacity) "code-minute-rollup-ampacity" else "code-minute-rollup-calc",
+                isReviewable = false, mistakes = scenario.mistakes,
             ))
         }
         val pool = SessionBuilder.choicePool(true).sortedWith { a, b -> swiftCompare(a.id, b.id) }

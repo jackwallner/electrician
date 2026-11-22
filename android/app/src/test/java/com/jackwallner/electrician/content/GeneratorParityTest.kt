@@ -55,6 +55,7 @@ class GeneratorParityTest {
                 assertEquals(item.getJSONArray("choices").strings(), actual.item.choices)
                 assertEquals(item.getInt("answerIndex"), actual.item.answerIndex)
                 assertEquals(item.getString("prompt"), actual.item.prompt)
+                assertEquals(item.getString("trackingID"), actual.item.trackingID)
             }
         }
     }

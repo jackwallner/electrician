@@ -9,7 +9,7 @@
     "Shared/Content/CalcGeneratorLoads.swift": "64da784b0b5832c62d5d9f44591a23e28364601b2d1ebe80c1d8dbc7a43de86a",
     "Shared/Content/CalcGeneratorMotors.swift": "7198da051488fc76b1e28f22868930c34288ea6c9f4e5a5f242d99caa1a2f1d8",
     "Shared/Content/CodeBasicsContent.swift": "7bad7807de965deaab29671e95da2b7a27adc1ff93473b41fc6d1a9f790d7e21",
-    "Shared/Content/CodeMinuteContent.swift": "123ba7f3d3a2f8e9d62052c1b1bbdbcaaf317ad625805aa29149aa7346dd64af",
+    "Shared/Content/CodeMinuteContent.swift": "1cc5d461ec1f6cb0cc0f6f6f32968449e157b4cb2afb309c074343847e5d5098",
     "Shared/Content/ConductorContent.swift": "34ed8b6294b39cff92269a4df2e29186e7cf8f83b6552a2c3d182457f33c80b8",
     "Shared/Content/DrillLibrary.swift": "98a0f6be180e9e9ffe441fa3f48128d2cdd22a9d5b3979797c57696a6f87149c",
     "Shared/Content/EndlessPractice.swift": "f786e2d73ad02d41616e0177cf2e628b529127907de681ee96c4b9372a93035d",
@@ -33,7 +33,7 @@
     "Shared/Models/NECTables.swift": "bf37fb31e4b49cbb53138bfefc30bfbf9fa10e924debd728a8100607ad2832fe",
     "Shared/Models/PluralLabel.swift": "0670cf30c1694a55604dfcdb5dfc6461f408f0ae8b92fb9071497e53432beb6d",
     "Shared/Models/SeededGenerator.swift": "2f6cecada20e34e8ceccfc8102b5db1b476e44b5de9616139b7e2e26c8640f47",
-    "Shared/Services/CandidateProfile.swift": "f59ab56aa91d7fa99b2293b22d3567592eca75496e2289a5e7ddc2b0cb7d80ba",
+    "Shared/Services/CandidateProfile.swift": "78b92eb6409984046177168fb501ffa69c64f30cd0eeb10166d1af91b4ee339e",
     "scripts/android-export/main.swift": "14a223f3b643afdfdd41b4fdf4b61f176fa8b42ed30c14bd11449684c3fb758f"
   }
 }

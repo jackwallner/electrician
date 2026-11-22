@@ -34365,7 +34365,7 @@
               "That is still under the 90 A termination limit, so the derated value stands: 45.5 A.",
               "Report 45.5 A as 45.5 A to the nearest 0.1 A. Compare actual loads against the unrounded allowable ampacity."
             ],
-            "trackingID" : "code-minute-rollup"
+            "trackingID" : "code-minute-rollup-ampacity"
           }
         },
         {
@@ -34420,7 +34420,7 @@
               "3\/4\" EMT is 0.533 in² interior, and 40% of that is 0.2132 in².",
               "0.2132 in² covers the 0.1596 in² bundle, and the next size down does not, so 3\/4\" is the answer."
             ],
-            "trackingID" : "code-minute-rollup"
+            "trackingID" : "code-minute-rollup-calc"
           }
         },
         {
@@ -34597,7 +34597,7 @@
               "That is still under the 30 A termination limit, so the derated value stands: 26.88 A.",
               "Report 26.88 A as 26.9 A to the nearest 0.1 A. Compare actual loads against the unrounded allowable ampacity."
             ],
-            "trackingID" : "code-minute-rollup"
+            "trackingID" : "code-minute-rollup-ampacity"
           }
         },
         {
@@ -34652,7 +34652,7 @@
               "1-1\/2\" EMT is 2.036 in² interior, and 40% of that is 0.8144 in².",
               "0.8144 in² covers the 0.7416 in² bundle, and the next size down does not, so 1-1\/2\" is the answer."
             ],
-            "trackingID" : "code-minute-rollup"
+            "trackingID" : "code-minute-rollup-calc"
           }
         },
         {
@@ -34824,7 +34824,7 @@
               "That is still under the 120 A termination limit, so the derated value stands: 61.425 A.",
               "Report 61.425 A as 61.4 A to the nearest 0.1 A. Compare actual loads against the unrounded allowable ampacity."
             ],
-            "trackingID" : "code-minute-rollup"
+            "trackingID" : "code-minute-rollup-ampacity"
           }
         },
         {
@@ -34879,7 +34879,7 @@
               "1-1\/4\" EMT is 1.496 in² interior, and 40% of that is 0.5984 in².",
               "0.5984 in² covers the 0.4392 in² bundle, and the next size down does not, so 1-1\/4\" is the answer."
             ],
-            "trackingID" : "code-minute-rollup"
+            "trackingID" : "code-minute-rollup-calc"
           }
         },
         {
@@ -35040,7 +35040,7 @@
               "That is still under the 150 A termination limit, so the derated value stands: 123.76 A.",
               "Report 123.76 A as 123.8 A to the nearest 0.1 A. Compare actual loads against the unrounded allowable ampacity."
             ],
-            "trackingID" : "code-minute-rollup"
+            "trackingID" : "code-minute-rollup-ampacity"
           }
         },
         {
@@ -35095,7 +35095,7 @@
               "1-1\/4\" EMT is 1.496 in² interior, and 40% of that is 0.5984 in².",
               "0.5984 in² covers the 0.4392 in² bundle, and the next size down does not, so 1-1\/4\" is the answer."
             ],
-            "trackingID" : "code-minute-rollup"
+            "trackingID" : "code-minute-rollup-calc"
           }
         },
         {
