@@ -41,6 +41,13 @@ sealed interface PracticeMode {
     data object Review : PracticeMode
 
     val isGenerated: Boolean get() = this != Review
+
+    /**
+     * Whether the bar button ends the run with its completion screen. Review
+     * has a last item, so its Close is a bail-out: only that item's Finish
+     * completes the run.
+     */
+    val closeEndsRun: Boolean get() = this != Review
 }
 
 /** Every pushed destination in the app. */

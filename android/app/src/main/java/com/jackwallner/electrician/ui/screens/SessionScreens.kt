@@ -356,7 +356,11 @@ fun PracticeRunScreen(mode: PracticeMode, initialItems: List<QuickItem>) {
         title,
         onBack = { navigator.pop() },
         trailing = if (mode != PracticeMode.Timed) {
-            { BarTextButton(if (mode == PracticeMode.Review) "Close" else "Finish") { finish() } }
+            {
+                BarTextButton(if (mode == PracticeMode.Review) "Close" else "Finish") {
+                    if (mode.closeEndsRun) finish() else navigator.pop()
+                }
+            }
         } else null,
     ) {
         DrillStage(confetti, particleCount = particles, answerRect = answerRect, flash = flash.value) {
