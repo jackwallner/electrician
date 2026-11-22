@@ -919,6 +919,18 @@ struct OnboardingView: View {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
 
+                // At accessibility sizes the footer scrolls below the argument
+                // card, which puts the price a screen and a half down. The
+                // disclosure moves up under the headline so the price is
+                // always on the first screen.
+                if footerScrolls {
+                    Text(trialDisclosure)
+                        .font(.footnote)
+                        .foregroundStyle(Theme.inkSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+
                 runsOutCard
 
                 VStack(alignment: .leading, spacing: 12) {
@@ -1139,11 +1151,13 @@ struct OnboardingView: View {
                         .contentShape(Rectangle())
                 }
 
-                Text(trialDisclosure)
-                    .font(.caption2)
-                    .foregroundStyle(Theme.inkTertiary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
+                if !footerScrolls {
+                    Text(trialDisclosure)
+                        .font(.caption2)
+                        .foregroundStyle(Theme.inkTertiary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
 
             Button {
