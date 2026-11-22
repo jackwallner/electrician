@@ -99,6 +99,12 @@ private val datePresets = listOf(
 )
 
 /**
+ * A member (a purchase that landed after the app was closed, say) is never
+ * sold the trial again: the plan recap leads straight in.
+ */
+internal fun onboardingSkipsTrial(nextIsTrial: Boolean, isPro: Boolean): Boolean = nextIsTrial && isPro
+
+/**
  * A step machine, not a pager: a pager cannot refuse a swipe, so the old
  * version let a candidate swipe past a disabled Continue into the paywall with
  * no jurisdiction set. One `step` with `canAdvance` gating it fixes that.
@@ -155,6 +161,11 @@ private fun OnboardingSteps(skillLevel: String, onSkill: (String) -> Unit, onDon
     LaunchedEffect(Unit) { if (!graph.defaults.contains("candidate.edition")) profile.updateEdition("unsure") }
     LaunchedEffect(step) { if (onTrial) service.trackPaywallImpression("electrician_onboarding_trial", oncePerSession = true) }
     LaunchedEffect(isPro, showFallback) { if (isPro && showFallback) { showFallback = false; onDone() } }
+    // Membership that arrives while the trial step is showing (a purchase
+    // that landed late) ends onboarding. The fallback paywall hands over above.
+    LaunchedEffect(isPro, onTrial, showFallback, purchasing) {
+        if (isPro && onTrial && !showFallback && !purchasing) { profile.completeSetup(); onDone() }
+    }
 
     val canAdvance = when (step) {
         Step.JURISDICTION -> profile.jurisdiction.isNotEmpty()
@@ -200,6 +211,7 @@ private fun OnboardingSteps(skillLevel: String, onSkill: (String) -> Unit, onDon
         }
         if (step == Step.TRIAL) { purchase(); return }
         if (step == Step.PLAN) profile.completeSetup()
+        if (onboardingSkipsTrial(nextIsTrial = step == Step.PLAN, isPro = isPro)) { onDone(); return }
         go(Step.entries[step.ordinal + 1])
     }
 
