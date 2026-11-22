@@ -2,6 +2,7 @@
 
 - [2026-11-20-bug-ux.html](2026-11-20-bug-ux.html): Bug and UX catalog, 2026-11-20: 11 bugs (3 medium, 8 low; 6 confirmed), 21 UX items, October audit items rechecked. Catalog only, nothing fixed.
 - [2026-11-20-bug-fixes.md](2026-11-20-bug-fixes.md): Independent review of the fixes for the 2026-11-20 catalog: all 11 verified, full unit (223) and UI (13) suites green at 6d28bda, Android B5 port open
+- [2026-11-21-android-bug-port.md](2026-11-21-android-bug-port.md): Android port of the 2026-11-20 fixes: 5 ported with tests (reminders at launch, Fix My Mistakes close, Code Minute rows, entitled onboarding, warm-up over a sheet), 4 already fine, 2 not applicable; 82 unit tests green
 - [NEC 2023 question bank](nec2023-question-bank-2026-10-22.md): every authored item, generator corrections, sources and validation.
 - [ASO audit](aso827.md)
 - [Product audit](audit824.md)
