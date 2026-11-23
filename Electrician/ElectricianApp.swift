@@ -10,6 +10,9 @@ struct ElectricianApp: App {
     @StateObject private var candidateProfile = CandidateProfile.shared
 
     init() {
+        #if DEBUG
+        DuoScreenshotMode.startFreshIfAsked()
+        #endif
         // Once per cold launch; the rating prompt waits for the second.
         ReviewPromptTracker.recordAppLaunch()
         #if DEBUG

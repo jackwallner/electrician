@@ -28,6 +28,19 @@ enum DuoScreenshotMode {
 
     /// A journeyman candidate five weeks out from the exam, a week into a
     /// streak, strong on the free rooms and still working on the calculations.
+    /// `-QAFreshInstall <token>`: the release gate's journeys start from an
+    /// empty install. The simulator can hand a reinstalled app its previous
+    /// defaults back, so wipe them once per token; a relaunch inside the same
+    /// journey passes the same token and keeps what it is checking.
+    static func startFreshIfAsked() {
+        let defaults = UserDefaults.standard
+        guard let token = defaults.string(forKey: "QAFreshInstall"),
+              defaults.string(forKey: "qa.freshInstallToken") != token,
+              let domain = Bundle.main.bundleIdentifier else { return }
+        defaults.removePersistentDomain(forName: domain)
+        defaults.set(token, forKey: "qa.freshInstallToken")
+    }
+
     @MainActor
     static func seedIfNeeded() {
         let defaults = UserDefaults.standard

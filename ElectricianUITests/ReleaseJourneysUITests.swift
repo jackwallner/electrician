@@ -8,7 +8,7 @@ final class ReleaseJourneysUITests: XCTestCase {
 
     func test1FirstRunToTrialAndHome() {
         let app = XCUIApplication(bundleIdentifier: "com.jackwallner.electrician")
-        QA.launch(app, arguments: ["-electrician.suppressWhatsNew"])
+        QA.launch(app, arguments: ["-QAFreshInstall", UUID().uuidString, "-electrician.suppressWhatsNew"])
         checkpoint("open-book", button: "Continue", in: app)
         tap("Continue", in: app)
         checkpoint("what-fails", button: "Continue", in: app)
@@ -42,7 +42,7 @@ final class ReleaseJourneysUITests: XCTestCase {
 
     func test2HomeToolsUpgradeSettingsAndReturn() {
         let app = XCUIApplication(bundleIdentifier: "com.jackwallner.electrician")
-        QA.launch(app, arguments: ["-DuoSeed", "-electrician.suppressWhatsNew"])
+        QA.launch(app, arguments: ["-QAFreshInstall", UUID().uuidString, "-DuoSeed", "-electrician.suppressWhatsNew"])
         home("home", in: app)
         let tools = reveal(app.buttons.containing(NSPredicate(format: "label BEGINSWITH %@ OR label BEGINSWITH %@", "Field tools", "Praxis-Tools")).firstMatch, in: app)
         tools.tap()
@@ -63,7 +63,7 @@ final class ReleaseJourneysUITests: XCTestCase {
 
     func testCoreLoopCodeMinuteAnswersSavesAndSurvivesRelaunch() {
         let app = XCUIApplication(bundleIdentifier: "com.jackwallner.electrician")
-        QA.launch(app, arguments: ["-DuoSeed", "-electrician.suppressWhatsNew"])
+        QA.launch(app, arguments: ["-QAFreshInstall", UUID().uuidString, "-DuoSeed", "-electrician.suppressWhatsNew"])
         home("home", in: app)
         openCodeMinute(in: app)
         QA.checkpoint(app, "code-minute")
