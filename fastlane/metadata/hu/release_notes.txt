@@ -1,1 +1,1 @@
-A Electrician már orosz, német, kínai, spanyol, vietnámi és ukrán nyelven is elérhető. A frissítés javításokat és fejlesztéseket is tartalmaz.
+Háttérbeli fejlesztések és hibajavítások, hogy a Electrician gördülékenyen működjön. Köszönjük, hogy itt vagy.

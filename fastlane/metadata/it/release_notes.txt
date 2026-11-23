@@ -1,1 +1,1 @@
-Electrician è ora disponibile in russo, tedesco, cinese, spagnolo, vietnamita e ucraino. Include anche correzioni e miglioramenti.
+Miglioramenti dietro le quinte e correzioni di bug per far funzionare Electrician senza intoppi. Grazie di esserci.

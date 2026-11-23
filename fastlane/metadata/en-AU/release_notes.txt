@@ -1,1 +1,1 @@
-Electrician is now available in Russian, German, Chinese, Spanish, Vietnamese and Ukrainian. Also includes fixes and improvements.
+Behind-the-scenes improvements and fixes to keep Electrician running smoothly. Thank you for being here.

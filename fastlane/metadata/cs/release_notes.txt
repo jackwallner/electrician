@@ -1,1 +1,1 @@
-Electrician je nyní k dispozici v těchto jazycích: ruština, němčina, čínština, španělština, vietnamština a ukrajinština. Součástí jsou také opravy a vylepšení.
+Vylepšení na pozadí a opravy chyb, aby Electrician běžel hladce. Děkujeme, že jste tu.
