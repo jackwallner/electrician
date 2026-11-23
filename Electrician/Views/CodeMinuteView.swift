@@ -238,9 +238,11 @@ struct CodeMinuteResultView: View {
                     Spacer()
                     Text("\(result.correct(in: category))/\(result.total(in: category))")
                         .font(Theme.numeric(.subheadline, weight: .bold))
-                        .foregroundStyle(inkColor(for: category))
+                        .foregroundStyle(Theme.ink)
                 }
-                .accessibilityElement(children: .combine)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(category.title)
+                .accessibilityValue("\(result.correct(in: category))/\(result.total(in: category))")
             }
         }
         .padding(16)
@@ -269,14 +271,6 @@ struct CodeMinuteResultView: View {
     }
 
     /// The same grade as `color(for:)`, held dark enough to read as text on the card.
-    private func inkColor(for category: CodeMinuteCategory) -> Color {
-        let correct = result.correct(in: category)
-        let total = result.total(in: category)
-        if correct == total { return Theme.voltage }
-        if correct > 0 { return Theme.brassInk }
-        return Theme.copperInk
-    }
-
     private func color(for category: CodeMinuteCategory) -> Color {
         let correct = result.correct(in: category)
         let total = result.total(in: category)
