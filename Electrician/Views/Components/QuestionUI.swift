@@ -227,7 +227,7 @@ struct QuestionPager<Choices: View>: View {
             // that room. Do NOT reach for `scrollClipDisabled()` instead: an
             // unclipped scroll view draws its overflow straight through the
             // navigation bar above and the drill's Next button below.
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .onChange(of: answered) { _, isAnswered in
                 guard isAnswered else { return }

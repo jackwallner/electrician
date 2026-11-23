@@ -240,6 +240,8 @@ struct CodeMinuteResultView: View {
                         .font(Theme.numeric(.subheadline, weight: .bold))
                         .foregroundStyle(Theme.ink)
                 }
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(category.title)
                 .accessibilityValue("\(result.correct(in: category))/\(result.total(in: category))")
