@@ -38,6 +38,10 @@ one and you learn *which* mistake you made.
 
 Miss a calculation and you get numbered steps, so the skipped step is easy to find.
 
+### Built around your mistakes
+
+Progress names the errors that keep catching you. Fix My Mistakes brings back what you still need and builds new problems that set the same trap, and Exam Warm-Up works your weakest area.
+
 ## What is free in Electrician Exam Practice?
 
 Code Basics, Conductors & Ampacity and Installation Rules, including
