@@ -6,7 +6,7 @@ Web page: https://jackwallner.com/ios/electrician/how-to-calculate-conduit-fill.
 
 ## How to Calculate Conduit Fill (NEC Chapter 9)
 
-By Jack Wallner · Last updated October 28, 2026 · Based on the 2023 NEC
+By Jack Wallner · Last updated November 24, 2026 · Based on the 2023 NEC
 
 This guide uses the 2023 NEC. NFPA has since published the 2026 edition, and each state adopts an edition on its own schedule, often with amendments. Confirm the edition your authority having jurisdiction enforces before relying on a table value.
 
