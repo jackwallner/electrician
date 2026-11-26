@@ -23,6 +23,9 @@ struct OnboardingView: View {
     @State private var purchasing = false
     @State private var showPaywallFallback = false
     @State private var purchaseError: String?
+    /// Ask to Buy: the request is with a parent. A notice, not a failure, and
+    /// only for as long as the candidate stays on the trial step.
+    @State private var awaitingApproval = false
     @State private var jurisdictionQuery = ""
     /// Set when the candidate reopens the list after already choosing. The
     /// list is 53 rows: leaving it expanded under the answer pushes the facts
@@ -1138,6 +1141,13 @@ struct OnboardingView: View {
     private var footer: some View {
         VStack(spacing: 8) {
             if step == .trial {
+                if awaitingApproval {
+                    Text(PurchaseError.waitingForApproval.errorDescription ?? "")
+                        .font(.footnote)
+                        .foregroundStyle(Theme.inkSecondary)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 Button {
                     startTour()
                 } label: {
@@ -1260,6 +1270,7 @@ struct OnboardingView: View {
     private func back() {
         guard let previous = Step(rawValue: step.rawValue - 1) else { return }
         goingForward = false
+        awaitingApproval = false
         step = previous
     }
 
@@ -1277,6 +1288,7 @@ struct OnboardingView: View {
             return
         }
         purchasing = true
+        awaitingApproval = false
         Task {
             defer { purchasing = false }
             await subscriptions.ensureOfferings()
@@ -1304,6 +1316,12 @@ struct OnboardingView: View {
                 switch error {
                 case .notConfigured, .offeringsUnavailable, .packageMissing:
                     showPaywallFallback = true
+                case .waitingForApproval:
+                    // Approval arrives through the customer-info update, which
+                    // moves on via the `isPro` observer above.
+                    awaitingApproval = true
+                case .storeUnreachable:
+                    purchaseError = error.errorDescription
                 }
             } catch {
                 purchaseError = error.localizedDescription
