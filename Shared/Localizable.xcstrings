@@ -59484,6 +59484,53 @@
         }
       }
     },
+    "Start my free trial" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meine kostenlose Testphase starten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start my free trial"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empieza mi prueba gratuita"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать мой бесплатный период"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почати мій безкоштовний пробний період"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bắt đầu dùng thử miễn phí của tôi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始我的免费试用"
+          }
+        }
+      }
+    },
     "Start practising" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -59527,6 +59574,53 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "开始练习"
+          }
+        }
+      }
+    },
+    "Start your free trial" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine kostenlose Testphase starten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start your free trial"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empieza tu prueba gratuita"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать ваш бесплатный период"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почати ваш безкоштовний пробний період"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bắt đầu dùng thử miễn phí của bạn"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始你的免费试用"
           }
         }
       }

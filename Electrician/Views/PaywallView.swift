@@ -8,10 +8,9 @@ enum PaywallPlan: String, CaseIterable {
     /// returning subscriber is not eligible for the introductory offer, and
     /// promising them a free trial is a promise the store refuses at the
     /// confirmation sheet.
-    func ctaTitle(trial: String?) -> String {
+    func ctaTitle(trial: String?, cta: TrialCTA = .sevenDay) -> String {
         guard self != .lifetime else { return String(localized: "Unlock \(Membership.name) Forever") }
-        guard let trial else { return String(localized: "Subscribe to \(Membership.name)") }
-        return String(localized: "Start \(trial) free")
+        return cta.title(trialLength: trial)
     }
 
     var packageType: PackageType {
@@ -429,7 +428,7 @@ struct PaywallView: View {
                     } else if pricesUnavailable {
                         Text("Try Again")
                     } else {
-                        Text(selectedPlan.ctaTitle(trial: ctaTrial))
+                        Text(selectedPlan.ctaTitle(trial: ctaTrial, cta: subscriptions.trialCTAArm))
                     }
                 }
                 .primaryCTA()

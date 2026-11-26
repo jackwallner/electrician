@@ -1129,8 +1129,7 @@ struct OnboardingView: View {
     }
 
     private var trialCTATitle: String {
-        guard let trialLength else { return String(localized: "Subscribe to \(Membership.name)") }
-        return String(localized: "Start \(trialLength) free")
+        subscriptions.trialCTAArm.title(trialLength: trialLength)
     }
 
     // MARK: - Footer

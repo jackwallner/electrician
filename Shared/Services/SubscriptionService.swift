@@ -246,7 +246,8 @@ final class SubscriptionService: NSObject, ObservableObject {
         if let offering = offerings?.current?.identifier {
             attributes["offering_id"] = offering
         }
-
+        // The wording arm this customer saw, so a test reads by attribute too.
+        attributes[TrialCTA.metadataKey] = trialCTAArm.rawValue
         Purchases.shared.attribution.setAttributes(attributes)
     }
 
