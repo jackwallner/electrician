@@ -10,6 +10,7 @@ Developer notes and historical audits for this repository. The published site re
 - [State machine audit fixes 2026-11-06](audits/state-machines-2026-11-06-fixes.md): 6 of 7 in-scope claims fixed (B1 to B5, B7), R1 backed out and held for Jack, regression tests and run ids
 - [State machine fixes verification 2026-11-06](audits/state-machines-2026-11-06-verify.md): PASS, B1 to B5 and B7 work, B1/B2/B3/B5 fail with their fix reverted, B4 proved in the UI against the base, 212/212 on HEAD, one pre-existing Exam Target navigation bug found
 
+- [Rollout 2026-11-24](audits/rollout-2026-11-24.md): Ask to Buy pending state, remote config `trial_cta`, star prompt at good results; full suite not yet run
 - [aso827.md](audits/aso827.md): Electrician ASO Audit
 - [audit824.md](audits/audit824.md): Electrician end-to-end product audit
 
