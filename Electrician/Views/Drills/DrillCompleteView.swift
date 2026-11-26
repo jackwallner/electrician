@@ -83,9 +83,10 @@ struct DrillCompleteView: View {
         .requestsReview(after: reviewMoment)
     }
 
-    /// A finished drill is a positive moment: Apple's rating prompt may follow
-    /// once the confetti has landed.
+    /// A finished drill with a good result is a positive moment: Apple's rating
+    /// prompt may follow once the confetti has landed. A weak score is not one.
     private func recordPositiveMoment() {
+        guard ReviewPromptTracker.isGoodResult(score: score, total: total) else { return }
         ReviewPromptTracker.recordPositiveMoment()
         reviewMoment += 1
     }

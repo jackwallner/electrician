@@ -96,6 +96,30 @@ final class ReviewPromptTrackerTests: XCTestCase {
         XCTAssertFalse(ReviewPromptTracker.shouldRequestAfterPositiveMoment(hasCompletedSetup: true, listingIsLive: false))
     }
 
+    /// A good result is half right or better; a weak score is never a moment.
+    func testGoodResultNeedsHalfOrBetter() {
+        XCTAssertTrue(ReviewPromptTracker.isGoodResult(score: 5, total: 5))
+        XCTAssertTrue(ReviewPromptTracker.isGoodResult(score: 3, total: 6), "Exactly half counts")
+        XCTAssertTrue(ReviewPromptTracker.isGoodResult(score: 4, total: 7))
+        XCTAssertFalse(ReviewPromptTracker.isGoodResult(score: 3, total: 7))
+        XCTAssertFalse(ReviewPromptTracker.isGoodResult(score: 0, total: 5))
+        XCTAssertFalse(ReviewPromptTracker.isGoodResult(score: 0, total: 0), "Nothing graded is not a good score")
+    }
+
+    /// Flashcards grade nothing, so a finished set has no bad result.
+    func testUngradedSessionIsAGoodResult() {
+        XCTAssertTrue(ReviewPromptTracker.isGoodResult(score: nil, total: 12))
+    }
+
+    /// A weak drill records no moment, so nothing is pending to ask about.
+    func testWeakResultLeavesNothingPending() {
+        launch(2)
+        if ReviewPromptTracker.isGoodResult(score: 1, total: 8) { ReviewPromptTracker.recordPositiveMoment() }
+        XCTAssertFalse(shouldAsk())
+        if ReviewPromptTracker.isGoodResult(score: 6, total: 8) { ReviewPromptTracker.recordPositiveMoment() }
+        XCTAssertTrue(shouldAsk())
+    }
+
     func testFeedbackMailURLCarriesTheMessage() {
         let url = FeedbackSheet.feedbackMailURL(body: "more box fill drills please")
         XCTAssertNotNil(url)

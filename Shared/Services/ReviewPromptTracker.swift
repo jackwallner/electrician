@@ -116,6 +116,16 @@ enum ReviewPromptTracker {
         launchCount += 1
     }
 
+    /// A good result: the drill or Code Minute was finished and at least half
+    /// of what was graded was right. A session with nothing graded (flashcards)
+    /// has no bad outcome to speak of, so finishing it counts. A weak score is
+    /// never a moment: asking for a rating right after someone missed most of a
+    /// drill is the one time the ask reads as tone-deaf.
+    static func isGoodResult(score: Int?, total: Int) -> Bool {
+        guard let score else { return true }
+        return total > 0 && score * 2 >= total
+    }
+
     static func recordPositiveMoment() {
         positiveMomentCount += 1
         hasPendingPositiveMoment = true
