@@ -75314,6 +75314,53 @@
         }
       }
     },
+    "Waiting for approval. Your purchase unlocks once it is approved." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warte auf Genehmigung. Dein Kauf wird freigeschaltet, sobald er genehmigt ist."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting for approval. Your purchase unlocks once it is approved."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esperando aprobación. Tu compra se desbloqueará cuando se apruebe."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ожидается одобрение. Покупка разблокируется сразу после одобрения."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очікується схвалення. Покупка розблокується одразу після схвалення."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đang chờ phê duyệt. Giao dịch sẽ được mở khóa khi được phê duyệt."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在等待批准。购买获批后即可解锁。"
+          }
+        }
+      }
+    },
     "Walk in ready" : {
       "extractionState" : "manual",
       "localizations" : {

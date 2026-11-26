@@ -33,7 +33,7 @@ enum PurchaseOutcome: Sendable {
 /// customer whose product was misconfigured in App Store Connect all saw the
 /// same sentence, and so did we in the logs. They are three different problems
 /// with three different fixes.
-enum PurchaseError: LocalizedError {
+enum PurchaseError: LocalizedError, Equatable {
     /// RevenueCat is not configured at all (simulator, or the DEBUG placeholder
     /// key). Only reachable in development.
     case notConfigured
@@ -42,13 +42,24 @@ enum PurchaseError: LocalizedError {
     /// The offering arrived but has no package for this plan, which means the
     /// product is missing or misconfigured rather than the network being down.
     case packageMissing(PaywallPlan)
+    /// Ask to Buy: a parent has the request. Apple finishes it later and the
+    /// customer-info update unlocks the membership. Not a failure, so screens
+    /// show it as a notice and never route to another paywall.
+    case waitingForApproval
+    /// The connection dropped while Apple's sheet was open or being settled.
+    /// Reads as the same translated line as `offeringsUnavailable`, but is its
+    /// own case: onboarding sends `offeringsUnavailable` to the plan picker,
+    /// and a lost connection mid-purchase must not open one.
+    case storeUnreachable
 
     var errorDescription: String? {
         switch self {
         case .notConfigured:
             return String(localized: "Purchases are not available in this build.")
-        case .offeringsUnavailable:
+        case .offeringsUnavailable, .storeUnreachable:
             return String(localized: "The App Store isn't reachable right now. Check your connection and try again.")
+        case .waitingForApproval:
+            return String(localized: "Waiting for approval. Your purchase unlocks once it is approved.")
         case .packageMissing:
             return String(localized: "That plan isn't available right now. Try another plan, or Restore if you have already bought it.")
         }
@@ -61,6 +72,21 @@ enum PurchaseError: LocalizedError {
         case .notConfigured: return "RevenueCat not configured" // l10n:ignore
         case .offeringsUnavailable: return "no current offering" // l10n:ignore
         case .packageMissing(let plan): return "offering has no \(plan.rawValue) package" // l10n:ignore
+        case .waitingForApproval: return "purchase pending approval (Ask to Buy)" // l10n:ignore
+        case .storeUnreachable: return "store unreachable during purchase" // l10n:ignore
+        }
+    }
+
+    /// What a RevenueCat purchase error is shown as. Its own descriptions are
+    /// English only, and a pending Ask to Buy is not a failure. A lost
+    /// connection reads as the existing translated "not reachable" line. Every
+    /// other error passes through unchanged.
+    static func shown(_ error: Error) -> Error {
+        guard let code = error as? RevenueCat.ErrorCode else { return error }
+        switch code {
+        case .paymentPendingError: return PurchaseError.waitingForApproval
+        case .networkError, .offlineConnectionError: return PurchaseError.storeUnreachable
+        default: return error
         }
     }
 }
@@ -220,6 +246,7 @@ final class SubscriptionService: NSObject, ObservableObject {
         if let offering = offerings?.current?.identifier {
             attributes["offering_id"] = offering
         }
+
         Purchases.shared.attribution.setAttributes(attributes)
     }
 
@@ -453,19 +480,23 @@ final class SubscriptionService: NSObject, ObservableObject {
             offersFreeTrial: package.storeProduct.introductoryDiscount?.paymentMode == .freeTrial,
             eligible: trialEligibility[productID]
         )
-        let result = try await Purchases.shared.purchase(package: package)
-        // RevenueCat reports a user backing out of Apple's sheet as a normal
-        // result, not an error. Treating it as a failure is what used to shove
-        // a second paywall in front of someone who just said "not now".
-        if result.userCancelled { return .cancelled }
-        apply(result.customerInfo)
-        ConversionDiagnostics.recordConversion(
-            plan: package.storeProduct.productIdentifier,
-            startedTrial: startedTrial,
-            offeringID: package.presentedOfferingContext.offeringIdentifier
-        )
-        syncConversionAttributes()
-        return .purchased
+        do {
+            let result = try await Purchases.shared.purchase(package: package)
+            // RevenueCat reports a user backing out of Apple's sheet as a normal
+            // result, not an error. Treating it as a failure is what used to shove
+            // a second paywall in front of someone who just said "not now".
+            if result.userCancelled { return .cancelled }
+            apply(result.customerInfo)
+            ConversionDiagnostics.recordConversion(
+                plan: package.storeProduct.productIdentifier,
+                startedTrial: startedTrial,
+                offeringID: package.presentedOfferingContext.offeringIdentifier
+            )
+            syncConversionAttributes()
+            return .purchased
+        } catch {
+            throw PurchaseError.shown(error)
+        }
     }
 
     /// StoreKit says the money moved; RevenueCat's entitlement can take a beat
