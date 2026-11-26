@@ -288,6 +288,7 @@ struct CodeMinuteResultView: View {
         Haptics.success()
         SoundPlayer.play(.complete)
         progress.recordSession(drillID: CodeMinuteContent.drill.id)
+        guard ReviewPromptTracker.isGoodResult(score: result.score, total: result.total) else { return }
         ReviewPromptTracker.recordPositiveMoment()
         reviewMoment += 1
     }

@@ -109,12 +109,22 @@ The Swift symbols are the part that was safe to rename.
   (flipped 2026-09-18): share URL, Rate row and rating prompt are on. For a
   new app on this shell, keep it `false` until the listing is live, since every
   `apps.apple.com/app/id...` URL built from a draft record 404s.
-- **Ratings: no custom rating question** (App Review 5.6.1). A finished drill
-  or Code Minute records a positive moment; `requestsReview(after:)` calls
-  Apple's prompt about 3s later if the screen is still clear. Gates: second cold
-  launch, onboarding done, 30-day cooldown, listing live. Only the Settings
-  "Rate Electrician" row ends the asks; "Send Feedback" (`FeedbackSheet`) never
-  does.
+- **Ratings: no custom rating question** (App Review 5.6.1). The only automatic
+  asks are two good results: a finished drill (half right or better, or an
+  ungraded flashcard set) and a finished Code Minute (half right or better).
+  Weak scores record nothing. `requestsReview(after:)` calls Apple's prompt about
+  3s later if the view is still on screen and nothing was presented over it
+  since the moment. Gates: second cold launch, onboarding done, 30-day
+  cooldown, listing live, `rating_prompt` not "off". Only the Settings "Rate
+  Electrician" row ends the asks; "Send Feedback" (`FeedbackSheet`) never does.
+- **Remote config** (`Shared/Services/RemoteConfig.swift`) reads the current
+  RevenueCat offering's metadata. Wording tests go through offering metadata
+  `trial_cta` (`seven_day` control, `my`, `your`); the control text is the
+  shipped copy. `rating_prompt: off` pauses the star prompt and must be set the
+  same on every offering. DEBUG pin: `-electrician.rc.<key> <value>`.
+- **Ask to Buy** shows as a calm "Waiting for approval" notice
+  (`PurchaseError.waitingForApproval`), never an error alert or a second
+  paywall. Approval unlocks through the `PurchasesDelegate` update.
 - **The price ladder is 9.99 monthly / 39.99 yearly / 89.99 lifetime**, matching
   `Electrician.storekit` and the `SubscriptionService` fallback. Change one and
   change all three or the paywall quotes a price the store will not charge. The
